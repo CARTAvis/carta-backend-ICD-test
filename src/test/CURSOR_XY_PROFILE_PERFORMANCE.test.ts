@@ -7,8 +7,8 @@ let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 60000; // The larger file, the more required time.
-let readFileTimeout = 60000;
+let openFileTimeout = 40000;
+let readFileTimeout = 120000;
 let count: number[];
 
 describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {   
