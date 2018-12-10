@@ -154,8 +154,8 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                         // Preapare the message
                                         let messageSetImageView = CARTA.SetImageView.create({
                                             fileId: 0, imageBounds: {xMin: 0, xMax: openFileMessage.fileInfoExtended.width, yMin: 0, yMax: openFileMessage.fileInfoExtended.height}, 
-                                            mip: mip, compressionType: compressionType, 
-                                            compressionQuality: compressionQuality, numSubsets: numSubsets
+                                            mip, compressionType, 
+                                            compressionQuality, numSubsets
                                         });
                                         payload = CARTA.SetImageView.encode(messageSetImageView).finish();
                                         eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
