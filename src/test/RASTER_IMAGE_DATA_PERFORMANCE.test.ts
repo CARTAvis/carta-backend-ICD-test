@@ -7,8 +7,8 @@ let expectRootPath = "";
 let testSubdirectoryName = "set_QA"; // for NRAO backend
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 60000; // The larger file, the more required time.
-let readFileTimeout = 60000;
+let openFileTimeout = 40000; // The larger file, the more required time.
+let readFileTimeout = 100000;
 let count: number[];
 
 describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {   
@@ -69,39 +69,38 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
         ].map(
             function ([testFileName, imageBounds, mip, compressionType, compressionQuality, numSubsets]: 
                     [string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
-                
-                describe(`open the file "${testFileName}" and ...`,
-                () => {
-                    beforeEach( 
-                    done => {
-                        Connection.onmessage = (event: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                            if (eventName === "REGISTER_VIEWER_ACK") {
-                                // Assertion
-                                let eventData = new Uint8Array(event.data, 36);
-                                expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(true);
-
-                                // Preapare the message
-                                let message = CARTA.OpenFile.create({
-                                    directory: testSubdirectoryName, 
-                                    file: testFileName, hdu: "0", fileId: 0, 
-                                    renderMode: CARTA.RenderMode.RASTER
-                                });
-                                let payload = CARTA.OpenFile.encode(message).finish();
-                                let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                done();
-                            }                
-                        };    
-                    }, openFileTimeout);       
+                                   
+                test(`assert the file "${testFileName}" opens.`, 
+                done => {                 
                     
-                });     
+                    // Preapare the message
+                    let message = CARTA.OpenFile.create({
+                        directory: testSubdirectoryName, 
+                        file: testFileName, hdu: "0", fileId: 0, 
+                        renderMode: CARTA.RenderMode.RASTER
+                    });
+                    let payload = CARTA.OpenFile.encode(message).finish();
+                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                    eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
+                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                    eventDataTx.set(payload, 36);
+
+                    Connection.send(eventDataTx);
+   
+                    // While receive a message
+                    Connection.onmessage = (eventOpen: MessageEvent) => {
+                        let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
+                        if (eventName === "OPEN_FILE_ACK") {
+                            let eventData = new Uint8Array(eventOpen.data, 36);
+                            let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                            // console.log(openFileMessage);
+                            expect(openFileMessage.success).toBe(true);
+
+                            done();
+                        } // if
+                    }; // onmessage
+                }, openFileTimeout); // test
                 
                 let mean: number;
                 let squareDiffs: number[];
@@ -155,8 +154,8 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                         // Preapare the message
                                         let messageSetImageView = CARTA.SetImageView.create({
                                             fileId: 0, imageBounds: {xMin: 0, xMax: openFileMessage.fileInfoExtended.width, yMin: 0, yMax: openFileMessage.fileInfoExtended.height}, 
-                                            mip: 3, compressionType: CARTA.CompressionType.ZFP, 
-                                            compressionQuality: 11, numSubsets: 4
+                                            mip: mip, compressionType: compressionType, 
+                                            compressionQuality: compressionQuality, numSubsets: numSubsets
                                         });
                                         payload = CARTA.SetImageView.encode(messageSetImageView).finish();
                                         eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
