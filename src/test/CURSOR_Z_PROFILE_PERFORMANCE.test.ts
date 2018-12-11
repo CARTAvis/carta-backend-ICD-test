@@ -84,7 +84,7 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                 test(`assert the directory "${dir}" opens.`, 
                 done => {
                     // Preapare the message
-                    let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
+                    let message = CARTA.FileListRequest.create({directory: dir});
                     let payload = CARTA.FileListRequest.encode(message).finish();
                     let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
             

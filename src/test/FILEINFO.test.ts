@@ -54,7 +54,7 @@ describe("FILEINFO tests", () => {
                 test(`assert the directory "${dir}" opens.`, 
                 done => {
                     // Preapare the message on a eventData
-                    let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
+                    let message = CARTA.FileListRequest.create({directory: dir});
                     let payload = CARTA.FileListRequest.encode(message).finish();
                     let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
             
