@@ -4,10 +4,10 @@ import * as Utility from "./testUtilityFunction";
 let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "";
-let testSubdirectoryName = "set_QA"; // for NRAO backend
+let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 40000; // The larger file, the more required time.
+let openFileTimeout = 40000;
 let readFileTimeout = 100000;
 let count: number[];
 
