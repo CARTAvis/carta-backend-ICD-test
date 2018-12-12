@@ -107,7 +107,8 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
         );
     });
 
-    describe(`prepare the file "${testFileName}"`, () => {
+    describe(`test the file "${testFileName}"`, () => {
+        
         test(`assert the file "${testFileName}" loads info.`, 
         done => {
             // Preapare the message
@@ -289,7 +290,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
             // Preapare the message
             let message = CARTA.OpenFile.create({
                 directory: testSubdirectoryName, 
-                file: testFileName, hdu: "0", fileId: 0, 
+                file: testFileName, hdu: "0", fileId: 0,
                 renderMode: CARTA.RenderMode.RASTER
             });
             let payload = CARTA.OpenFile.encode(message).finish();
@@ -298,25 +299,16 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
             eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
             eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
             eventDataTx.set(payload, 36);
-
+            
             Connection.send(eventDataTx);
-
+            
             done();
+
         }, connectionTimeout);       
         
         test(`assert the return message.`, 
         done => {
-            // Preapare the message
-            let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-            let payload = CARTA.FileListRequest.encode(message).finish();
-            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-    
-            eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-            eventDataTx.set(payload, 36);
-    
-            Connection.send(eventDataTx);
-    
+
             // While receive a message
             Connection.onmessage = (event: MessageEvent) => {
                 let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));                
@@ -334,17 +326,6 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
 
         test(`assert "file info".`, 
         done => {
-            // Preapare the message
-            let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-            let payload = CARTA.FileListRequest.encode(message).finish();
-            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-    
-            eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-            eventDataTx.set(payload, 36);
-    
-            Connection.send(eventDataTx);
-    
             // While receive a message
             Connection.onmessage = (event: MessageEvent) => {
                 let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));                
@@ -362,17 +343,6 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
 
         test(`assert "file info extended".`, 
         done => {
-            // Preapare the message
-            let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-            let payload = CARTA.FileListRequest.encode(message).finish();
-            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-    
-            eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-            eventDataTx.set(payload, 36);
-    
-            Connection.send(eventDataTx);
-    
             // While receive a message
             Connection.onmessage = (event: MessageEvent) => {
                 let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));                
@@ -381,13 +351,27 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
                     let openFileMessage = CARTA.OpenFileAck.decode(eventData);
                     // console.log(openFileMessage.fileInfoExtended.headerEntries);
 
-                    expect(openFileMessage.fileInfoExtended.computedEntries).toEqual([]);
                     expect(openFileMessage.fileInfoExtended.depth).toEqual(1);
                     expect(openFileMessage.fileInfoExtended.height).toEqual(1024);
                     expect(openFileMessage.fileInfoExtended.width).toEqual(1024);
                     expect(openFileMessage.fileInfoExtended.stokes).toEqual(1);
                     expect(openFileMessage.fileInfoExtended.stokesVals).toEqual([""]);
                     expect(openFileMessage.fileInfoExtended.dimensions).toEqual(4);
+
+                    done();
+                } // if
+            }; // onmessage "FILE_LIST_RESPONSE"
+        }, connectionTimeout); // test
+
+        test(`assert "file info extended headerEntries".`, 
+        done => {
+            // While receive a message
+            Connection.onmessage = (event: MessageEvent) => {
+                let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));                
+                if (eventName === "OPEN_FILE_ACK") {
+                    let eventData = new Uint8Array(event.data, 36);
+                    let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                    // console.log(openFileMessage.fileInfoExtended.headerEntries);
 
                     expect(parseInt(openFileMessage.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS").value)).toEqual(4);
                     expect(parseInt(openFileMessage.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS1").value)).toEqual(1024);
@@ -401,7 +385,8 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
                 } // if
             }; // onmessage "FILE_LIST_RESPONSE"
         }, connectionTimeout); // test
-    });
+
+    });    
 
     describe(`open the file "${testFileName} and read image data ...`, 
     () => {
@@ -421,215 +406,195 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
             eventDataTx.set(payload, 36);
 
             Connection.send(eventDataTx);
+            
+            // While receive a message
+            Connection.onmessage = (eventOpen: MessageEvent) => {
+                let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
+                if (eventName === "OPEN_FILE_ACK") {
+                    let eventData = new Uint8Array(eventOpen.data, 36);
+                    let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                    expect(openFileMessage.success).toBe(true);
+                    
+                    done();
+                }
+            };
 
-            done();
         }, connectionTimeout);
 
-        describe(`read raster image data with extended info.`, () => {
-            [[0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.NONE, 0, 4, 465124],
+        describe(`test raster image data with extended info.`, () => {
+            [[0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.NONE, 0, 4, 465124, 0, 0, 
+                    1024, 1024, 0.000010574989573797211, -0.0012399675051710801, {idx: 117, value: 11452}, 1048576, 
+                    {point: {x: 190, y: 156, xMax: 341}, value: 0.005836978}, {point: {x: 155, y: 127, xMax: 341}, value: 0.0002207166}],
              // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  0, 4, 133200],
              // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  5, 4,  12104],
             ].map(
-                function([fileID, imageBounds, mip, compressionType, compressionQuality, numSubsets, imageDataLength]: 
-                         [number, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number, number]) {
+                function([fileID, imageBounds, mip, compressionType, compressionQuality, numSubsets, imageDataLength, channel, stokes, 
+                            numBins, binsLength, binWidth, firstBinCenter, binsValue, channelHistogramSum, 
+                            assertPoint1, assertPoint2]: 
+                         [number, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number, number, number, number, 
+                            number, number, number, number, {idx: number, value: number}, number, 
+                            {point: {x: number, y: number, xMax: number}, value: number}, {point: {x: number, y: number, xMax: number}, value: number}]) {
+                    
                     test(`assert the file returns correct image info.`, 
                     done => {
+                        // Preapare the message
+                        let messageSetImageView = CARTA.SetImageView.create({
+                            fileId: fileID, imageBounds, mip, 
+                            compressionType, compressionQuality, numSubsets
+                        });
+                        let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                        eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
+                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                        eventDataTx.set(payload, 36);
+
+                        Connection.send(eventDataTx);
+
                         // While receive a message
-                        Connection.onmessage = (eventOpen: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                            if (eventName === "OPEN_FILE_ACK") {
-                                let eventData = new Uint8Array(eventOpen.data, 36);
-                                let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                expect(openFileMessage.success).toBe(true);
+                        Connection.onmessage = (eventRasterImage: MessageEvent) => {
+                            let eventName = Utility.getEventName(new Uint8Array(eventRasterImage.data, 0, 32));
+                            if (eventName === "RASTER_IMAGE_DATA") {
+                                let eventRasterImageData = new Uint8Array(eventRasterImage.data, 36);
+                                let rasterImageDataMessage = CARTA.RasterImageData.decode(eventRasterImageData);
 
-                                // Preapare the message
-                                let messageSetImageView = CARTA.SetImageView.create({
-                                    fileId: fileID, imageBounds, mip, 
-                                    compressionType, compressionQuality, numSubsets
-                                });
-                                let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                                let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                                expect(rasterImageDataMessage.fileId).toEqual(fileID);
+                                expect(rasterImageDataMessage.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
+                                expect(rasterImageDataMessage.compressionType).toEqual(compressionType);
+                                if (rasterImageDataMessage.compressionType !== CARTA.CompressionType.NONE) {
+                                    expect(rasterImageDataMessage.compressionQuality).toEqual(compressionQuality);                                        
+                                }
+                                expect(rasterImageDataMessage.mip).toEqual(mip);
+                                expect(rasterImageDataMessage.channel).toEqual(channel);
+                                expect(rasterImageDataMessage.stokes).toEqual(stokes);
 
-                                eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                                    if (eventName === "RASTER_IMAGE_DATA") {
-                                        eventData = new Uint8Array(eventRasterImageData.data, 36);
-                                        let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-
-                                        expect(rasterImageDataMessage.fileId).toEqual(fileID);
-                                        expect(rasterImageDataMessage.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
-                                        expect(rasterImageDataMessage.compressionType).toEqual(compressionType);
-                                        if (rasterImageDataMessage.compressionType !== CARTA.CompressionType.NONE) {
-                                            expect(rasterImageDataMessage.compressionQuality).toEqual(compressionQuality);                                        
-                                        }
-                                        expect(rasterImageDataMessage.mip).toEqual(mip);
-                                        expect(rasterImageDataMessage.channel).toEqual(0);
-                                        expect(rasterImageDataMessage.stokes).toEqual(0);
-       
-                                        done();
-                                    } // if
-                                }; // onmessage
+                                done();
                             } // if
-                        }; // onmessage "OPEN_FILE_ACK"
+                        }; // onmessage
                                          
                     } // done
                     , connectionTimeout); // test
 
                     test(`assert channel histogram data.`, 
                     done => {
+                        // Preapare the message
+                        let messageSetImageView = CARTA.SetImageView.create({
+                            fileId: fileID, imageBounds, mip, 
+                            compressionType, compressionQuality, numSubsets
+                        });
+                        let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                        eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
+                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                        eventDataTx.set(payload, 36);
+
+                        Connection.send(eventDataTx);
+
                         // While receive a message
-                        Connection.onmessage = (eventOpen: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                            if (eventName === "OPEN_FILE_ACK") {
-                                let eventData = new Uint8Array(eventOpen.data, 36);
-                                let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                expect(openFileMessage.success).toBe(true);
+                        Connection.onmessage = (eventRasterImageData: MessageEvent) => {
+                            let eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
+                            if (eventName === "RASTER_IMAGE_DATA") {
+                                let eventData = new Uint8Array(eventRasterImageData.data, 36);
+                                let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
+                                let channelHistogram = rasterImageDataMessage.channelHistogramData.histograms[0];
+                                // console.log(channelHistogram);
 
-                                // Preapare the message
-                                let messageSetImageView = CARTA.SetImageView.create({
-                                    fileId: fileID, imageBounds, mip, 
-                                    compressionType, compressionQuality, numSubsets
-                                });
-                                let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                                let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                                expect(channelHistogram.numBins).toEqual(numBins);
+                                expect(channelHistogram.bins.length).toEqual(binsLength);
+                                expect(channelHistogram.binWidth).toBeCloseTo(binWidth, 12);
+                                expect(channelHistogram.firstBinCenter).toBeCloseTo(firstBinCenter, 9);
+                                expect(channelHistogram.bins[binsValue.idx]).toEqual(binsValue.value);
 
-                                eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
+                                let HistogramSum = 0;
+                                channelHistogram.bins.forEach((x) => HistogramSum += x );
+                                expect(HistogramSum).toEqual(channelHistogramSum);
 
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                                    if (eventName === "RASTER_IMAGE_DATA") {
-                                        eventData = new Uint8Array(eventRasterImageData.data, 36);
-                                        let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-                                        let channelHistogram = rasterImageDataMessage.channelHistogramData.histograms[0];
-                                        // console.log(channelHistogram);
-
-                                        expect(channelHistogram.numBins).toEqual(10001);
-                                        expect(channelHistogram.bins.length).toEqual(10001);
-                                        expect(channelHistogram.binWidth).toBeCloseTo(0.000001082878967281431, 12);
-                                        expect(channelHistogram.firstBinCenter).toBeCloseTo(-0.0012452549999579787, 9);
-                                        expect(channelHistogram.bins[999]).toEqual(358);
-
-                                        let channelHistogramSum = 0;
-                                        channelHistogram.bins.forEach((x) => channelHistogramSum += x );
-                                        expect(channelHistogramSum).toEqual(302412);
-
-                                        done();
-                                    } // if
-                                }; // onmessage
+                                done();
                             } // if
-                        }; // onmessage "OPEN_FILE_ACK"                                         
+                        }; // onmessage
+                                                               
                     } // done
                     , connectionTimeout); // test
 
                     test(`assert nan_encodings is empty.`, 
                     done => {
+                        // Preapare the message
+                        let messageSetImageView = CARTA.SetImageView.create({
+                            fileId: fileID, imageBounds, mip, 
+                            compressionType, compressionQuality, numSubsets
+                        });
+                        let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                        eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
+                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                        eventDataTx.set(payload, 36);
+
+                        Connection.send(eventDataTx);
+
                         // While receive a message
-                        Connection.onmessage = (eventOpen: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                            if (eventName === "OPEN_FILE_ACK") {
-                                let eventData = new Uint8Array(eventOpen.data, 36);
-                                let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                expect(openFileMessage.success).toBe(true);
+                        Connection.onmessage = (eventRasterImageData: MessageEvent) => {
+                            let eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
+                            if (eventName === "RASTER_IMAGE_DATA") {
+                                let eventData = new Uint8Array(eventRasterImageData.data, 36);
+                                let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
+                                let nanEncodings = rasterImageDataMessage.nanEncodings;
+                                // console.log(nanEncodings.length);
 
-                                // Preapare the message
-                                let messageSetImageView = CARTA.SetImageView.create({
-                                    fileId: fileID, imageBounds, mip, 
-                                    compressionType, compressionQuality, numSubsets
-                                });
-                                let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                                let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                                if (compressionType === CARTA.CompressionType.NONE) {
+                                    expect(nanEncodings.length).toEqual(0);
+                                } else {
+                                    expect(nanEncodings.length).toBeGreaterThan(0);
+                                }                                   
 
-                                eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                                    if (eventName === "RASTER_IMAGE_DATA") {
-                                        eventData = new Uint8Array(eventRasterImageData.data, 36);
-                                        let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-                                        let nanEncodings = rasterImageDataMessage.nanEncodings;
-                                        // console.log(nanEncodings.length);
-
-                                        if (compressionType === CARTA.CompressionType.NONE) {
-                                            expect(nanEncodings.length).toEqual(0);
-                                        } else {
-                                            expect(nanEncodings.length).toBeGreaterThan(0);
-                                        }                                   
-
-                                        done();
-                                    } // if
-                                }; // onmessage
+                                done();
                             } // if
-                        }; // onmessage "OPEN_FILE_ACK"                                         
+                        }; // onmessage
+                                                              
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert data value at position (190, 156) & (155, 127).`, 
+                    test(`assert data value at position (${assertPoint1.point.x}, ${assertPoint1.point.y}) & (${assertPoint2.point.x}, ${assertPoint2.point.y}).`, 
                     done => {
+                        // Preapare the message
+                        let messageSetImageView = CARTA.SetImageView.create({
+                            fileId: fileID, imageBounds, mip, 
+                            compressionType, compressionQuality, numSubsets
+                        });
+                        let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                        eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
+                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                        eventDataTx.set(payload, 36);
+
+                        Connection.send(eventDataTx);
+
                         // While receive a message
-                        Connection.onmessage = (eventOpen: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                            if (eventName === "OPEN_FILE_ACK") {
-                                let eventData = new Uint8Array(eventOpen.data, 36);
-                                let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                expect(openFileMessage.success).toBe(true);
+                        Connection.onmessage = (eventRasterImageData: MessageEvent) => {
+                            let eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
+                            if (eventName === "RASTER_IMAGE_DATA") {
+                                let eventData = new Uint8Array(eventRasterImageData.data, 36);
+                                let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
+                                let imageData = rasterImageDataMessage.imageData;
 
-                                // Preapare the message
-                                let messageSetImageView = CARTA.SetImageView.create({
-                                    fileId: fileID, imageBounds, mip, 
-                                    compressionType, compressionQuality, numSubsets
-                                });
-                                let payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                                let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                                let imageDataSum = 0;
+                                imageData.forEach((x) => imageDataSum += x.length );
+                                expect(imageDataSum).toEqual(imageDataLength);
 
-                                eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                                    if (eventName === "RASTER_IMAGE_DATA") {
-                                        eventData = new Uint8Array(eventRasterImageData.data, 36);
-                                        let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-                                        let imageData = rasterImageDataMessage.imageData;
-
-                                        let imageDataSum = 0;
-                                        imageData.forEach((x) => imageDataSum += x.length );
-                                        expect(imageDataSum).toEqual(imageDataLength);
-
-                                        if (compressionType === CARTA.CompressionType.NONE) {
-                                            let movingIndex = 4 * ( 156 * 341 + 190 );
-                                            // console.log(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0));
-                                            expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(0.005836978, 8);
-                                            
-                                            movingIndex = 4 * ( 127 * 341 + 155 );
-                                            expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(0.0002207166, 8);
-                                        }
-                                        
-                                        done();
-                                    } // if
-                                }; // onmessage
+                                if (compressionType === CARTA.CompressionType.NONE) {
+                                    let movingIndex = 4 * ( assertPoint1.point.y * assertPoint1.point.xMax + assertPoint1.point.x );
+                                    expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint1.value, 8);
+                                    
+                                    movingIndex = 4 * ( assertPoint2.point.y * assertPoint2.point.xMax + assertPoint2.point.x );
+                                    expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint2.value, 8);
+                                }
+                                
+                                done();
                             } // if
-                        }; // onmessage "OPEN_FILE_ACK"                                         
+                        }; // onmessage
+                                                                 
                     } // done
                     , connectionTimeout); // test
 
