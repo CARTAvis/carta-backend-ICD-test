@@ -10,7 +10,7 @@ let testReturnName = "REGISTER_VIEWER_ACK";
 
 describe("Websocket tests", () => {
     let testRemoteWebsocketSite = "wss://echo.websocket.org site";
-    test(`establish a connection to ${testRemoteWebsocketSite}.`, 
+    test(`establish a connection to "${testRemoteWebsocketSite}".`, 
     done => {
         // Construct a Websocket
         let Connection = new WebSocket("wss://echo.websocket.org");
@@ -22,7 +22,7 @@ describe("Websocket tests", () => {
         };
     }, connectTimeoutRemote);
 
-    test(`establish a connection to ${testServerUrl}.`, 
+    test(`establish a connection to "${testServerUrl}".`, 
     done => {
         // Construct a Websocket
         let Connection = new WebSocket(testServerUrl);
@@ -35,8 +35,8 @@ describe("Websocket tests", () => {
     }, connectTimeout);
 });
 
-describe("ACCESS_CARTA_DEFAULT tests", () => {
-    test(`send EventName: "${testEventName}" to CARTA ${testServerUrl} without session_id & api_key.`, 
+describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () => {
+    test(`send EventName: "${testEventName}" to CARTA "${testServerUrl}" without session_id & api_key.`, 
     done => {
         // Construct a Websocket
         let Connection = new WebSocket(testServerUrl);
@@ -110,7 +110,7 @@ describe("ACCESS_CARTA_DEFAULT tests", () => {
 
     }, connectTimeout);
 
-    describe(`receive EventName: "${testReturnName}" tests on CARTA ${testServerUrl}`, 
+    describe(`receive EventName: "${testReturnName}" tests on CARTA "${testServerUrl}"`, 
     () => {
 
         let Connection: WebSocket;
@@ -142,7 +142,7 @@ describe("ACCESS_CARTA_DEFAULT tests", () => {
             };
         }, connectTimeout);
     
-        test(`assert the received EventName is "${testReturnName}" within ${connectTimeout * 1e-3} seconds.`, 
+        test(`assert the received EventName is "${testReturnName}" within ${connectTimeout} ms.`, 
         done => {
             // While receive a message from Websocket server
             Connection.onmessage = (event: MessageEvent) => {
@@ -168,7 +168,7 @@ describe("ACCESS_CARTA_DEFAULT tests", () => {
                     parsedMessage = CARTA.RegisterViewerAck.decode(eventData);
                 }
                 expect(parsedMessage.sessionId).toBeDefined();
-                console.log(`current session ID is ${parsedMessage.sessionId}`);
+                console.log(`registed session ID is ${parsedMessage.sessionId}`);
 
                 done();
             };

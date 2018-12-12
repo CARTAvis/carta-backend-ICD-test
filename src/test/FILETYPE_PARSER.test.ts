@@ -3,10 +3,9 @@ import * as Utility from "./testUtilityFunction";
 
 let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "/home"; // Depend on OS
-let testSubdirectoryName = "set_QA"; // NRAO bacjend
-// let testSubdirectoryName = `${expectRootPath}/QA`; // ASIAA backend
-let connectTimeoutLocal = 300;
+let expectRootPath = "/home";
+let testSubdirectoryName = "set_QA";
+let connectTimeout = 300;
 
 describe("FILETYPE_PARSER tests", () => {   
     // Establish a websocket connection in the transfer form of binary: arraybuffer 
@@ -34,7 +33,7 @@ describe("FILETYPE_PARSER tests", () => {
             }
             done();
         };
-    }, connectTimeoutLocal);
+    }, connectTimeout);
 
     test(`connect to CARTA "${testServerUrl}" & ...`, 
     done => {
@@ -50,7 +49,7 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             }
         };
-    }, connectTimeoutLocal);
+    }, connectTimeout);
 
     test(`send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}" to access ${testSubdirectoryName}.`, 
     done => {
@@ -81,7 +80,7 @@ describe("FILETYPE_PARSER tests", () => {
             }
         };
 
-    }, connectTimeoutLocal);
+    }, connectTimeout);
 
     describe(`send EventName: "FILE_LIST_REQUEST" to CARTA ${testServerUrl}`, 
     () => {
@@ -107,9 +106,9 @@ describe("FILETYPE_PARSER tests", () => {
                     done();
                 }
             };    
-        }, connectTimeoutLocal);        
+        }, connectTimeout);        
         
-        test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectTimeoutLocal * 1e-3} seconds.`, 
+        test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, 
         done => {
             // While receive a message from Websocket server
             Connection.onmessage = (event: MessageEvent) => {
@@ -119,7 +118,7 @@ describe("FILETYPE_PARSER tests", () => {
 
                 done();
             };
-        }, connectTimeoutLocal);
+        }, connectTimeout);
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         done => {
@@ -130,7 +129,7 @@ describe("FILETYPE_PARSER tests", () => {
                 
                 done();
             };
-        }, connectTimeoutLocal);  
+        }, connectTimeout);  
 
         test(`assert the "FILE_LIST_RESPONSE.parent" is "${expectRootPath}".`, 
         done => {
@@ -142,7 +141,7 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             };
     
-        }, connectTimeoutLocal);
+        }, connectTimeout);
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is the path "${testSubdirectoryName}".`, 
         done => {
@@ -160,16 +159,20 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             };
     
-        }, connectTimeoutLocal);
+        }, connectTimeout);
 
-        describe(`assert the file exists`, () => {
-            [["S255_IR_sci.spw25.cube.I.pbcor.fits", CARTA.FileType.FITS, 7048405440],
-             ["SDC335.579-0.292.spw0.line.image", CARTA.FileType.CASA, 1864975311],
-             ["G34mm1.miriad", CARTA.FileType.MIRIAD, 7829305],
+        describe(`test the file is existent`, () => {
+            [
+             ["SDC335.579-0.292.spw0.line.image", CARTA.FileType.CASA, 1864975311, [""]],
+             ["S255_IR_sci.spw25.cube.I.pbcor.fits", CARTA.FileType.FITS, 7048405440, ["0"]],
+             ["spire500_ext.fits", CARTA.FileType.FITS, 17591040, ["0", "1", "2", "3", "4", "5", "6", "7", ]],
+             ["G34mm1_lsb_all.uv.part1.line.natwt.sml", CARTA.FileType.MIRIAD, 34521240, [""]],
+             ["orion_12co_hera.hdf5", CARTA.FileType.HDF5, 118888712, ["0"]],
             ].map(
-                ([file, type, size]) => {
+                function([file, type, size, hdu]:
+                         [string, CARTA.FileType, number, string[]]) {
     
-                    test(`assert the file "${file}" exists, image type is ${CARTA.FileType[type]}, and size = ${size}.`, 
+                    test(`assert the file "${file}" exists, image type is ${CARTA.FileType[type]}, size = ${size}, HDU = [${hdu}].`, 
                     done => {
                         // While receive a message from Websocket server
                         Connection.onmessage = (event: MessageEvent) => {
@@ -184,20 +187,22 @@ describe("FILETYPE_PARSER tests", () => {
                                 expect(fileInfo).toBeDefined();
                                 expect(fileInfo.type).toBe(type);
                                 expect(fileInfo.size.toNumber()).toBe(size);
+                                expect(fileInfo.HDUList).toEqual(hdu);
                             }
                             done();
                         };
-                    }, connectTimeoutLocal);
+                    }, connectTimeout);
+
                 }
             );
         });
         
-        describe(`assert the file does not exist`, () => {
-            [["empty2.miriad"], ["empty2.fits"], ["empty2.image"],
-             ["empty.txt"], ["empty.miriad"], ["empty.fits"], 
+        describe(`test the file is non-existent`, () => {
+            [["empty2.miriad"], ["empty2.fits"], ["empty2.image"], ["empty2.hdf5"],
+             ["empty.txt"], ["empty.miriad"], ["empty.fits"], ["empty.hdf5"],
              ["empty.image"],
             ].map(
-                ([file]) => {
+                function([file]: [string]) {
                     test(`assert the file "${file}" does not exist.`, 
                     done => {
                         // While receive a message from Websocket server
@@ -214,14 +219,14 @@ describe("FILETYPE_PARSER tests", () => {
                             }
                             done();
                         } ;
-                    }, connectTimeoutLocal);
+                    }, connectTimeout);
                 }
             );
         });        
         
-        describe(`assert the folder exists in "FILE_LIST_RESPONSE.subdirectory"`, () => {
+        describe(`test the folder is existent inside "${testSubdirectoryName}"`, () => {
             [["empty_folder"], ["empty.miriad"], ["empty.fits"], 
-             ["empty.image"],
+             ["empty.image"], ["empty.hdf5"],
             ].map(
                 ([folder]) => {
                     test(`assert the folder "${folder}" exists.`, 
@@ -240,7 +245,7 @@ describe("FILETYPE_PARSER tests", () => {
                             }
                             done();
                         };
-                    }, connectTimeoutLocal);
+                    }, connectTimeout);
                 }
             );
         });

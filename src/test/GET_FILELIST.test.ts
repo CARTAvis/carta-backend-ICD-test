@@ -265,44 +265,7 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
 });
 
 describe("GET_FILELIST_UNKNOWNPATH tests", () => {    
-
-    test(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
-    done => {
-        // Construct a Websocket
-        let Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-            } else {
-                console.log(`Can not open a connection.`);
-            }
-
-        };
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            expect(event.data.byteLength).toBeGreaterThan(0);
-
-            Connection.close();
-            done();
-        };
-
-    }, connectTimeout);
-
+    
     test(`send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}".`, 
     done => {
         // Construct a Websocket
@@ -452,7 +415,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
                 if (eventName === "FILE_LIST_RESPONSE") {
                     const eventData = new Uint8Array(event.data, 36);
                     expect(CARTA.FileListResponse.decode(eventData).message).toBeDefined();
-                    console.log(`As given a unknown path, returned message: "` + CARTA.FileListResponse.decode(eventData).message + `"`);
+                    console.log(`As given an unknown path, returning message: "` + CARTA.FileListResponse.decode(eventData).message + `"`);
                 }
 
                 Connection.close();
