@@ -423,7 +423,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
 
         describe(`test raster image data with extended info.`, () => {
             [[0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.NONE, 0, 4, 465124, 0, 0, 
-                    1024, 1024, 0.000010574989573797211, -0.0012399675051710801, {idx: 117, value: 11452}, 1048576, 
+                    1024, 1024, 0.000010574989573797211, -0.0012399675051710801, {idx: 117, value: 11452}, 302412, 
                     {point: {x: 190, y: 156, xMax: 341}, value: 0.005836978}, {point: {x: 155, y: 127, xMax: 341}, value: 0.0002207166}],
              // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  0, 4, 133200],
              // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  5, 4,  12104],
