@@ -5,7 +5,7 @@ let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
-let connectionTimeout = 20000;
+let connectionTimeout = 10000;
 
 describe("FILEINFO tests", () => {   
     let Connection: WebSocket;
@@ -108,13 +108,13 @@ describe("FILEINFO tests", () => {
 
             }, connectionTimeout);           
         
-        describe(`look for an existent file`, () => {
+        describe(`test an existent file`, () => {
             [
              ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,     CARTA.FileType.FITS,    [1920, 1920, 478, 1],   4],
-             ["spire500_ext.fits",                      "1",      17591040,     CARTA.FileType.FITS,    [830, 870],             2],
              ["SDC335.579-0.292.spw0.line.image",        "",    1864975311,     CARTA.FileType.CASA,    [336, 350, 3840, 1],    4],
              ["G34mm1_lsb_all.uv.part1.line.natwt.sml",  "",      34521240,   CARTA.FileType.MIRIAD,    [129, 129, 512, 1],     4],
              ["orion_12co_hera.hdf5",                   "0",     118888712,     CARTA.FileType.HDF5,    [688, 575, 35],         3],
+             ["spire500_ext.fits",                      "1",      17591040,     CARTA.FileType.FITS,    [830, 870],             2],
             ].map(
                 function([fileName, hdu,    fileSize,   fileType,       shape,      NAXIS]: 
                          [string,   string, number,     CARTA.FileType, number[],   number]) {
@@ -240,7 +240,7 @@ describe("FILEINFO_EXCEPTIONS tests", () => {
         };
     }, connectionTimeout);
 
-    describe(`access the folder ${testSubdirectoryName} and ...`, 
+    describe(`access the folder "${testSubdirectoryName}" and ...`, 
     () => {    
         beforeEach( 
             done => {
@@ -258,12 +258,12 @@ describe("FILEINFO_EXCEPTIONS tests", () => {
                 done();
             }, connectionTimeout);           
         
-        describe(`look for a non-existent file`, () => {
+        describe(`test an non-existent file`, () => {
             [["no_such_file.image"],
              ["broken_header.miriad"],
             ].map(
                 function([fileName]: [string]) {
-                    test(`assert the file "${fileName}" does not exist.`, 
+                    test(`assert the file "${fileName}" is non-existent.`, 
                     done => {
                         Connection.onmessage = (eventList: MessageEvent) => {
                             let eventName = Utility.getEventName(new Uint8Array(eventList.data, 0, 32));
