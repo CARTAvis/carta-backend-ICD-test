@@ -109,13 +109,13 @@ describe("CURSOR_Z_PROFILE tests", () => {
         describe(`get the z profiles at a cursor position`, () => {
             [[0, {x: 989, y: 1274}, 0, 0, 1, "z", 478, {idx: 300, value: -2.301968207024e-03}],
             ].map(
-                function([fileID, point, regionID, stokes, progress, coordinate, profileLen, assertPoint]: 
+                function([fileId, point, regionID, stokes, progress, coordinate, profileLen, assertPoint]: 
                         [number, {x: number, y: number}, number, number, number, string, number, {idx: number, value: number}]) {
                     
-                    test(`assert the fileID "${fileID}" returns within ${connectionTimeout}ms, as point {${point.x}, ${point.y}}.`, 
+                    test(`assert the fileId "${fileId}" returns within ${connectionTimeout}ms, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        const message = CARTA.SetCursor.create({fileId: fileId, point: point});
                         let payload = CARTA.SetCursor.encode(message).finish();
                         const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
@@ -133,7 +133,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                                 let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
                                 // console.log(spectralProfileDataMessage);
                                 
-                                expect(spectralProfileDataMessage.fileId).toEqual(fileID);
+                                expect(spectralProfileDataMessage.fileId).toEqual(fileId);
 
                                 done();
                             } // if
@@ -142,10 +142,10 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert the fileID "${fileID}" returns: fileId = ${fileID}, as point {${point.x}, ${point.y}}.`, 
+                    test(`assert the fileId "${fileId}" returns: fileId = ${fileId}, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        const message = CARTA.SetCursor.create({fileId: fileId, point: point});
                         let payload = CARTA.SetCursor.encode(message).finish();
                         const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
@@ -163,7 +163,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                                 let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
                                 // console.log(spectralProfileDataMessage);
                                 
-                                expect(spectralProfileDataMessage.fileId).toEqual(fileID);
+                                expect(spectralProfileDataMessage.fileId).toEqual(fileId);
 
                                 done();
                             } // if
@@ -172,10 +172,10 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert the fileID "${fileID}" returns: regionId = ${regionID},  as point {${point.x}, ${point.y}}.`, 
+                    test(`assert the fileId "${fileId}" returns: regionId = ${regionID},  as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        const message = CARTA.SetCursor.create({fileId: fileId, point: point});
                         let payload = CARTA.SetCursor.encode(message).finish();
                         const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
@@ -202,12 +202,12 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert the fileID "${fileID}" returns: stokes = ${stokes}, as point {${point.x}, ${point.y}}.`, 
+                    test(`assert the fileId "${fileId}" returns: stokes = ${stokes}, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        let message = CARTA.SetCursor.create({fileId, point});
                         let payload = CARTA.SetCursor.encode(message).finish();
-                        const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
                         eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
                         eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
@@ -232,12 +232,12 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert the fileID "${fileID}" returns: progress = ${progress},  as point {${point.x}, ${point.y}}.`, 
+                    test(`assert the fileId "${fileId}" returns: progress = ${progress},  as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        let message = CARTA.SetCursor.create({fileId, point});
                         let payload = CARTA.SetCursor.encode(message).finish();
-                        const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
                         eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
                         eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
@@ -262,14 +262,14 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     } // done
                     , connectionTimeout); // test
 
-                    test(`assert the fileID "${fileID}" returns: 
+                    test(`assert the fileId "${fileId}" returns: 
                         coordinate = "${coordinate}", length = "${profileLen}", 
                         vals[${assertPoint.idx}] = "${assertPoint.value}" as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        const message = CARTA.SetCursor.create({fileId: fileID, point: point});
+                        let message = CARTA.SetCursor.create({fileId, point});
                         let payload = CARTA.SetCursor.encode(message).finish();
-                        const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
                         eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
                         eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
@@ -278,21 +278,43 @@ describe("CURSOR_Z_PROFILE tests", () => {
                         Connection.send(eventDataTx);
 
                         // While receive a message
-                        Connection.onmessage = (eventInfo: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventInfo.data, 0, 32));
+                        Connection.onmessage = (eventInfo1: MessageEvent) => {
+                            let eventName = Utility.getEventName(new Uint8Array(eventInfo1.data, 0, 32));
                             if (eventName === "SPECTRAL_PROFILE_DATA") {
-                                let eventData = new Uint8Array(eventInfo.data, 36);
+                                let eventData = new Uint8Array(eventInfo1.data, 36);
                                 let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
                                 // console.log(spectralProfileDataMessage);
 
-                                let spectralProfileDataMessageProfile = 
-                                        spectralProfileDataMessage.profiles.find(f => f.coordinate === coordinate).vals;
-                                expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
-                                expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
-                                
-                                done();
+                                // Preapare the message
+                                message = CARTA.SetSpectralRequirements.create({fileId, regionId: 0, spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.None]}]});
+                                payload = CARTA.SetSpectralRequirements.encode(message).finish();
+                                eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                                eventDataTx.set(Utility.stringToUint8Array("SET_SPECTRAL_REQUIREMENTS", 32));
+                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                                eventDataTx.set(payload, 36);
+
+                                Connection.send(eventDataTx);
+
+                                // While receive a message
+                                Connection.onmessage = (eventInfo2: MessageEvent) => {
+                                    eventName = Utility.getEventName(new Uint8Array(eventInfo2.data, 0, 32));
+                                    if (eventName === "SPECTRAL_PROFILE_DATA") {
+                                        eventData = new Uint8Array(eventInfo2.data, 36);
+                                        spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
+                                        // console.log(spectralProfileDataMessage);
+
+                                        let spectralProfileDataMessageProfile = 
+                                                spectralProfileDataMessage.profiles.find(f => f.coordinate === coordinate).vals;
+                                        expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
+                                        expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
+                                        
+                                        done();
+                                    } // if
+                                }; // onmessage
                             } // if
                         }; // onmessage
+                        
                                             
                     } // done
                     , connectionTimeout); // test
