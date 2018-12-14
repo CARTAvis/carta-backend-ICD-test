@@ -98,7 +98,7 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
 
     }, connectTimeout);
 
-    describe(`receive EventName: "FILE_LIST_RESPONSE" tests on CARTA ${testServerUrl}`, 
+    describe(`test EventName: "FILE_LIST_RESPONSE" on CARTA "${testServerUrl}"`, 
     () => {
 
         let Connection: WebSocket;
@@ -315,7 +315,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
 
     }, connectTimeout);
 
-    describe(`access "/unknown/path" on CARTA ${testServerUrl}`, 
+    describe(`test "/unknown/path" on CARTA "${testServerUrl}"`, 
     () => {
 
         let Connection: WebSocket;
