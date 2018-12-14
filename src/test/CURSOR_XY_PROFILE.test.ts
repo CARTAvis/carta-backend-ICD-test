@@ -5,7 +5,7 @@ let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
-let connectionTimeout = 2000;
+let connectionTimeout = 1000;
 let testFileName = "qa_xyProfiler.fits";
 
 describe("CURSOR_XY_PROFILE tests", () => {   
@@ -87,6 +87,17 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     eventDataTx.set(payload, 36);
 
                     Connection.send(eventDataTx);
+
+                    // Preapare the message
+                    let messageSetSpatialReq = CARTA.SetSpatialRequirements.create({fileId: 0, regionId: 0, spatialProfiles: ["x", "y"]});
+                    payload = CARTA.SetSpatialRequirements.encode(messageSetSpatialReq).finish();
+                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                    eventDataTx.set(Utility.stringToUint8Array("SET_SPATIAL_REQUIREMENTS", 32));
+                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                    eventDataTx.set(payload, 36);
+
+                    Connection.send(eventDataTx);
                     
                     Connection.onmessage = (eventRasterImage: MessageEvent) => {
                         let eventNameRasterImage = Utility.getEventName(new Uint8Array(eventRasterImage.data, 0, 32));
@@ -120,7 +131,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     test(`assert the fileID "${fileId}" returns: Value=${value}, Profile length={${profileLen.x}, ${profileLen.y}}, Point={${assertPoint.x}, ${assertPoint.y}} as {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        let message = CARTA.SetCursor.create({fileId, point, spatialRequirements: {fileId, regionId: 0, spatialProfiles: ["x", "y"]}});
+                        let message = CARTA.SetCursor.create({fileId, point});
                         let payload = CARTA.SetCursor.encode(message).finish();
                         let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
@@ -176,7 +187,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     the #${oddPointY.idx + 1} value = ${oddPointY.value} with other values = ${oddPointY.others} on the profile_y as point {${point.x}, ${point.y}}.`, 
                     done => {
                         // Preapare the message
-                        let message = CARTA.SetCursor.create({fileId, point, spatialRequirements: {fileId, regionId: 0, spatialProfiles: ["x", "y"]}});
+                        let message = CARTA.SetCursor.create({fileId, point});
                         let payload = CARTA.SetCursor.encode(message).finish();
                         let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 

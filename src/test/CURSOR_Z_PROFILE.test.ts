@@ -5,7 +5,7 @@ let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
-let connectionTimeout = 3000;
+let connectionTimeout = 1000;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 
 describe("CURSOR_Z_PROFILE tests", () => {   
@@ -53,12 +53,12 @@ describe("CURSOR_Z_PROFILE tests", () => {
         beforeEach( 
         done => {
             // Preapare the message
-            let message = CARTA.OpenFile.create({
+            let messageOpen = CARTA.OpenFile.create({
                 directory: testSubdirectoryName, 
                 file: testFileName, hdu: "0", fileId: 0, 
                 renderMode: CARTA.RenderMode.RASTER
             });
-            let payload = CARTA.OpenFile.encode(message).finish();
+            let payload = CARTA.OpenFile.encode(messageOpen).finish();
             let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
 
             eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
@@ -71,8 +71,8 @@ describe("CURSOR_Z_PROFILE tests", () => {
             Connection.onmessage = (eventOpen: MessageEvent) => {
                 let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
                 if (eventName === "OPEN_FILE_ACK") {
-                    let eventData = new Uint8Array(eventOpen.data, 36);
-                    let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                    let eventDataOpen = new Uint8Array(eventOpen.data, 36);
+                    let openFileMessage = CARTA.OpenFileAck.decode(eventDataOpen);
                     expect(openFileMessage.success).toBe(true);
 
                     // Preapare the message
@@ -90,11 +90,22 @@ describe("CURSOR_Z_PROFILE tests", () => {
 
                     Connection.send(eventDataTx);
 
+                    // Preapare the message
+                    let messageSetSpectralReq = CARTA.SetSpectralRequirements.create({fileId: 0, regionId: 0, spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.None]}]});
+                    payload = CARTA.SetSpectralRequirements.encode(messageSetSpectralReq).finish();
+                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                    eventDataTx.set(Utility.stringToUint8Array("SET_SPECTRAL_REQUIREMENTS", 32));
+                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                    eventDataTx.set(payload, 36);
+
+                    Connection.send(eventDataTx);
+
                     Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                        if (eventName === "RASTER_IMAGE_DATA") {
-                            let eventData = new Uint8Array(eventRasterImageData.data, 36);
-                            let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
+                        let eventNameRasterImage = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
+                        if (eventNameRasterImage === "RASTER_IMAGE_DATA") {
+                            let eventDataRasterImage = new Uint8Array(eventRasterImageData.data, 36);
+                            let rasterImageDataMessage = CARTA.RasterImageData.decode(eventDataRasterImage);
                             expect(rasterImageDataMessage.imageData.length).toBeGreaterThan(0);
                             
                             done();
@@ -285,33 +296,12 @@ describe("CURSOR_Z_PROFILE tests", () => {
                                 let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
                                 // console.log(spectralProfileDataMessage);
 
-                                // Preapare the message
-                                message = CARTA.SetSpectralRequirements.create({fileId, regionId: 0, spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.None]}]});
-                                payload = CARTA.SetSpectralRequirements.encode(message).finish();
-                                eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                eventDataTx.set(Utility.stringToUint8Array("SET_SPECTRAL_REQUIREMENTS", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventInfo2: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventInfo2.data, 0, 32));
-                                    if (eventName === "SPECTRAL_PROFILE_DATA") {
-                                        eventData = new Uint8Array(eventInfo2.data, 36);
-                                        spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
-                                        // console.log(spectralProfileDataMessage);
-
-                                        let spectralProfileDataMessageProfile = 
-                                                spectralProfileDataMessage.profiles.find(f => f.coordinate === coordinate).vals;
-                                        expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
-                                        expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
-                                        
-                                        done();
-                                    } // if
-                                }; // onmessage
+                                let spectralProfileDataMessageProfile = 
+                                        spectralProfileDataMessage.profiles.find(f => f.coordinate === coordinate).vals;
+                                expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
+                                expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
+                                
+                                done();
                             } // if
                         }; // onmessage
                         
