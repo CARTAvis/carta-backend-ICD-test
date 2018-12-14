@@ -7,9 +7,9 @@ let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 40000;
+let openFileTimeout = 60000;
 let readPeriod = 200;
-let readFileTimeout = 120000;
+let readFileTimeout = 180000;
 let count: number[];
 
 describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {   
@@ -111,7 +111,7 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
         );
     });
 
-    describe(`prepare the files`, () => {
+    describe(`test the files`, () => {
         [
          ["hugeGaussian10k.fits",  28, CARTA.CompressionType.ZFP, 11, 4],
          ["hugeGaussian20k.fits",  56, CARTA.CompressionType.ZFP, 11, 4],
@@ -236,6 +236,17 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
 
                                         Connection.send(eventDataTx);
 
+                                        // Preapare the message
+                                        let messageSetSpatialReq = CARTA.SetSpatialRequirements.create({fileId: 0, regionId: 0, spatialProfiles: ["x", "y"]});
+                                        payload = CARTA.SetSpatialRequirements.encode(messageSetSpatialReq).finish();
+                                        eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                                        eventDataTx.set(Utility.stringToUint8Array("SET_SPATIAL_REQUIREMENTS", 32));
+                                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                                        eventDataTx.set(payload, 36);
+
+                                        Connection.send(eventDataTx);
+
                                         // While receive a message
                                         Connection.onmessage = (eventRasterImageData: MessageEvent) => {
                                             eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
@@ -270,7 +281,8 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                                                         eventData = new Uint8Array(eventInfo.data, 36);
                                                         let spatialProfileDataMessage = CARTA.SpatialProfileData.decode(eventData);
                                                         // console.log(spatialProfileDataMessage);
-                                                        
+
+                                                        expect(spatialProfileDataMessage.profiles.length).not.toEqual(0);                                                        
                                                         if (spatialProfileDataMessage.profiles.length > 0) {
                                                             count[idx] = new Date().getTime() - timer;
                                                         }

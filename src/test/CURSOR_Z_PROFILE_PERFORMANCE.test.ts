@@ -7,9 +7,9 @@ let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 60000;
+let openFileTimeout = 6000;
 let readPeriod = 200;
-let readFileTimeout = 60000;
+let readFileTimeout = 16000;
 let count: number[];
 
 describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {   
@@ -111,7 +111,7 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
         );
     });
 
-    describe(`prepare the files`, () => {
+    describe(`test the files`, () => {
         [
          ["SgrB2-N.spw0.line.fits", 2, CARTA.CompressionType.ZFP, 11, 4],
          ["OrionKL_sci.spw19.cube.I.pbcor.fits", 7, CARTA.CompressionType.ZFP, 11, 4],
@@ -175,7 +175,7 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                 let SD: number;
                 count = [0, 0, 0, 0, 0];
                 for (let idx = 0; idx < 5; idx++) {
-                    let timer: number = 0;
+                    let timer: number;
                     test(`assert a random cursor at round ${idx + 1}.`, 
                     done => {
                         // Preapare the message
@@ -233,6 +233,17 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                                         eventDataTx.set(payload, 36);
 
                                         Connection.send(eventDataTx);
+                                        
+                                        // Preapare the message
+                                        let messageSetSpectralReq = CARTA.SetSpectralRequirements.create({fileId: 0, regionId: 0, spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.None]}]});
+                                        payload = CARTA.SetSpectralRequirements.encode(messageSetSpectralReq).finish();
+                                        eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                                        eventDataTx.set(Utility.stringToUint8Array("SET_SPECTRAL_REQUIREMENTS", 32));
+                                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                                        eventDataTx.set(payload, 36);
+
+                                        Connection.send(eventDataTx);
 
                                         // While receive a message
                                         Connection.onmessage = (eventRasterImageData: MessageEvent) => {
@@ -245,8 +256,6 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                                                 let randPoint = {
                                                     x: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.xMax), 
                                                     y: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.yMax)};
-                                                                                        
-                                                Utility.sleep(readPeriod);
 
                                                 // Preapare the message
                                                 const setCursorMessage = CARTA.SetCursor.create({fileId: 0, point: randPoint});
@@ -256,10 +265,12 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                                                 eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
                                                 eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
                                                 eventDataTx.set(payload, 36);
+                                                                                        
+                                                Utility.sleep(readPeriod);
                     
                                                 Connection.send(eventDataTx);
                                                 
-                                                timer = new Date().getTime();                                        
+                                                timer = new Date().getTime();                             
 
                                                 // While receive a message
                                                 Connection.onmessage = (eventInfo: MessageEvent) => {
@@ -269,6 +280,7 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                                                         let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
                                                         // console.log(spectralProfileDataMessage);
                                                         
+                                                        expect(spectralProfileDataMessage.profiles.length).not.toEqual(0);
                                                         if (spectralProfileDataMessage.profiles.length > 0) {
                                                             count[idx] = new Date().getTime() - timer;
                                                         }

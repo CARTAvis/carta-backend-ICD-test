@@ -7,9 +7,9 @@ let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
-let openFileTimeout = 40000;
+let openFileTimeout = 60000;
 let readPeriod = 200;
-let readFileTimeout = 100000;
+let readFileTimeout = 180000;
 let count: number[];
 
 describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {   
@@ -52,7 +52,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
         };
     }, connectionTimeout);
     
-    describe(`prepare the files`, () => {
+    describe(`test the files`, () => {
         [ 
          ["cluster_00128.fits", {xMin: 0, xMax:   128, yMin: 0, yMax:   128},  1, CARTA.CompressionType.ZFP, 18, 4],
          ["cluster_00256.fits", {xMin: 0, xMax:   256, yMin: 0, yMax:   256},  1, CARTA.CompressionType.ZFP, 12, 4],
@@ -178,7 +178,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                             if (eventName === "RASTER_IMAGE_DATA") {
                                                 eventData = new Uint8Array(eventRasterImageData.data, 36);
                                                 let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-                                                expect(rasterImageDataMessage.imageData.length).toBeGreaterThan(0);
+                                                expect(rasterImageDataMessage.imageData.length).not.toEqual(0);
 
                                                 if (rasterImageDataMessage.imageData.length > 0) {
                                                     count[idx] = new Date().getTime() - timer;
