@@ -425,8 +425,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
             [[0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.NONE, 0, 4, 465124, 0, 0, 
                     1024, 1024, 0.000010574989573797211, -0.0012399675051710801, {idx: 117, value: 11452}, 302412, 
                     {point: {x: 190, y: 156, xMax: 341}, value: 0.005836978}, {point: {x: 155, y: 127, xMax: 341}, value: 0.0002207166}],
-             // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  0, 4, 133200],
-             // [0, {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024}, 3, CARTA.CompressionType.ZFP,  5, 4,  12104],
+             
             ].map(
                 function([fileID, imageBounds, mip, compressionType, compressionQuality, numSubsets, imageDataLength, channel, stokes, 
                             numBins, binsLength, binWidth, firstBinCenter, binsValue, channelHistogramSum, 
@@ -457,6 +456,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
                             if (eventName === "RASTER_IMAGE_DATA") {
                                 let eventRasterImageData = new Uint8Array(eventRasterImage.data, 36);
                                 let rasterImageDataMessage = CARTA.RasterImageData.decode(eventRasterImageData);
+                                // console.log(rasterImageDataMessage);
 
                                 expect(rasterImageDataMessage.fileId).toEqual(fileID);
                                 expect(rasterImageDataMessage.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
