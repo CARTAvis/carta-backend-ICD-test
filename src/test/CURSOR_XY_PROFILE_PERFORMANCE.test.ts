@@ -8,6 +8,7 @@ let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 40000;
+let readPeriod = 200;
 let readFileTimeout = 120000;
 let count: number[];
 
@@ -246,6 +247,8 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                                                 let randPoint = {
                                                     x: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.xMax), 
                                                     y: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.yMax)};
+                                                
+                                                Utility.sleep(readPeriod);
                                                 
                                                 // Preapare the message
                                                 const setCursorMessage = CARTA.SetCursor.create({fileId: 0, point: randPoint});

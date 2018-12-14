@@ -8,6 +8,7 @@ let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 40000;
+let readPeriod = 200;
 let readFileTimeout = 100000;
 let count: number[];
 
@@ -71,7 +72,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                     [string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
                                    
                 test(`assert the file "${testFileName}" opens.`, 
-                done => {                 
+                done => {
                     
                     // Preapare the message
                     let message = CARTA.OpenFile.create({
@@ -110,6 +111,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                     let timer: number = 0;
                     test(`assert the file "${testFileName}" reads image at round ${idx + 1}.`, 
                     done => {
+
                         // Preapare the message
                         let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
                         let payload = CARTA.FileListRequest.encode(message).finish();
@@ -149,7 +151,9 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                     if (eventName === "OPEN_FILE_ACK") {
                                         eventData = new Uint8Array(eventOpen.data, 36);
                                         let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                        expect(openFileMessage.success).toBe(true);
+                                        expect(openFileMessage.success).toBe(true);                                        
+
+                                        Utility.sleep(readPeriod);
 
                                         // Preapare the message
                                         let messageSetImageView = CARTA.SetImageView.create({
