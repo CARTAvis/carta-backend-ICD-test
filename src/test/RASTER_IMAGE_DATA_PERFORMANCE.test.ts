@@ -1,5 +1,6 @@
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
+import { array } from "prop-types";
 
 let WebSocket = require("ws");
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
@@ -10,7 +11,8 @@ let disconnectionTimeout = 1000;
 let openFileTimeout = 60000;
 let readPeriod = 200;
 let readFileTimeout = 180000;
-let count: number[];
+let count: number[][];
+let testTimes = 10;
 
 describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {   
     let Connection: WebSocket;
@@ -51,64 +53,74 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
             }
         };
     }, connectionTimeout);
-    
-    describe(`test the files`, () => {
-        [ 
-         ["cluster_00128.fits", {xMin: 0, xMax:   128, yMin: 0, yMax:   128},  1, CARTA.CompressionType.ZFP, 18, 4],
-         ["cluster_00256.fits", {xMin: 0, xMax:   256, yMin: 0, yMax:   256},  1, CARTA.CompressionType.ZFP, 12, 4],
-         ["cluster_00512.fits", {xMin: 0, xMax:   512, yMin: 0, yMax:   512},  2, CARTA.CompressionType.ZFP, 11, 4], 
-         ["cluster_01024.fits", {xMin: 0, xMax:  1024, yMin: 0, yMax:  1024},  3, CARTA.CompressionType.ZFP, 11, 4],
-         ["cluster_02048.fits", {xMin: 0, xMax:  2048, yMin: 0, yMax:  2048},  6, CARTA.CompressionType.ZFP, 11, 4],
-         ["cluster_04096.fits", {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096}, 12, CARTA.CompressionType.ZFP, 11, 4],  
-         ["cluster_08192.fits", {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192}, 23, CARTA.CompressionType.ZFP, 11, 4],
-         ["cluster_16384.fits", {xMin: 0, xMax: 16384, yMin: 0, yMax: 16384}, 46, CARTA.CompressionType.ZFP, 11, 4],
-         ["cluster_32768.fits", {xMin: 0, xMax: 32768, yMin: 0, yMax: 32768}, 92, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian10k.fits", {xMin: 0, xMax: 10000, yMin: 0, yMax: 10000},  28, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian20k.fits", {xMin: 0, xMax: 20000, yMin: 0, yMax: 20000},  56, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian40k.fits", {xMin: 0, xMax: 40000, yMin: 0, yMax: 40000}, 112, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian80k.fits", {xMin: 0, xMax: 80000, yMin: 0, yMax: 80000}, 223, CARTA.CompressionType.ZFP, 11, 4],
-        ].map(
-            function ([testFileName, imageBounds, mip, compressionType, compressionQuality, numSubsets]: 
-                    [string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
-                                   
-                test(`assert the file "${testFileName}" opens.`, 
-                done => {
+
+    let mean: number[];
+    let squareDiffs: number[][];
+    let SD: number[];
+    count = [];
+    squareDiffs = [];
+    SD = [];
+    mean = [];
+    for (let idx = 0; idx < testTimes; idx++) {
+        describe(`test the files`, () => {
+            [ 
+             [0,    "cluster_00128.fits", {xMin: 0, xMax:   128, yMin: 0, yMax:   128},  1, CARTA.CompressionType.ZFP, 18, 4],
+             [1,    "cluster_00256.fits", {xMin: 0, xMax:   256, yMin: 0, yMax:   256},  1, CARTA.CompressionType.ZFP, 12, 4],
+             [2,    "cluster_00512.fits", {xMin: 0, xMax:   512, yMin: 0, yMax:   512},  2, CARTA.CompressionType.ZFP, 11, 4], 
+             [3,    "cluster_01024.fits", {xMin: 0, xMax:  1024, yMin: 0, yMax:  1024},  3, CARTA.CompressionType.ZFP, 11, 4],
+             [4,    "cluster_02048.fits", {xMin: 0, xMax:  2048, yMin: 0, yMax:  2048},  6, CARTA.CompressionType.ZFP, 11, 4],
+             [5,    "cluster_04096.fits", {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096}, 12, CARTA.CompressionType.ZFP, 11, 4],  
+             [6,    "cluster_08192.fits", {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192}, 23, CARTA.CompressionType.ZFP, 11, 4],
+             [7,    "cluster_16384.fits", {xMin: 0, xMax: 16384, yMin: 0, yMax: 16384}, 46, CARTA.CompressionType.ZFP, 11, 4],
+             [8,    "cluster_32768.fits", {xMin: 0, xMax: 32768, yMin: 0, yMax: 32768}, 92, CARTA.CompressionType.ZFP, 11, 4],
+             [9,    "hugeGaussian10k.fits", {xMin: 0, xMax: 10000, yMin: 0, yMax: 10000},  28, CARTA.CompressionType.ZFP, 11, 4],
+             [10,   "hugeGaussian20k.fits", {xMin: 0, xMax: 20000, yMin: 0, yMax: 20000},  56, CARTA.CompressionType.ZFP, 11, 4],
+             [11,   "hugeGaussian40k.fits", {xMin: 0, xMax: 40000, yMin: 0, yMax: 40000}, 112, CARTA.CompressionType.ZFP, 11, 4],
+            //  [12,   "hugeGaussian80k.fits", {xMin: 0, xMax: 80000, yMin: 0, yMax: 80000}, 223, CARTA.CompressionType.ZFP, 11, 4],
+            ].map(
+                function ([fileIndex, testFileName, imageBounds, mip, compressionType, compressionQuality, numSubsets]: 
+                        [number, string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
+                                    
+                    if (idx === 0) {
+                        test.skip(`assert the file "${testFileName}" opens.`, 
+                        done => {
+                            
+                            // Preapare the message
+                            let message = CARTA.OpenFile.create({
+                                directory: testSubdirectoryName, 
+                                file: testFileName, hdu: "0", fileId: 0, 
+                                renderMode: CARTA.RenderMode.RASTER
+                            });
+                            let payload = CARTA.OpenFile.encode(message).finish();
+                            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                            eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
+                            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                            eventDataTx.set(payload, 36);
+
+                            Connection.send(eventDataTx);
+        
+                            // While receive a message
+                            Connection.onmessage = (eventOpen: MessageEvent) => {
+                                let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
+                                if (eventName === "OPEN_FILE_ACK") {
+                                    let eventData = new Uint8Array(eventOpen.data, 36);
+                                    let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                                    // console.log(openFileMessage);
+                                    expect(openFileMessage.success).toBe(true);
+
+                                    done();
+                                } // if
+                            }; // onmessage
+                        }, openFileTimeout); // test
+
+                        count.push(new Array(testTimes).fill(0));
+                        squareDiffs.push(new Array(testTimes).fill(0));
+                        mean.push(0);
+                        SD.push(0);  
+                    }                    
                     
-                    // Preapare the message
-                    let message = CARTA.OpenFile.create({
-                        directory: testSubdirectoryName, 
-                        file: testFileName, hdu: "0", fileId: 0, 
-                        renderMode: CARTA.RenderMode.RASTER
-                    });
-                    let payload = CARTA.OpenFile.encode(message).finish();
-                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                    eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-
-                    Connection.send(eventDataTx);
-   
-                    // While receive a message
-                    Connection.onmessage = (eventOpen: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                        if (eventName === "OPEN_FILE_ACK") {
-                            let eventData = new Uint8Array(eventOpen.data, 36);
-                            let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                            // console.log(openFileMessage);
-                            expect(openFileMessage.success).toBe(true);
-
-                            done();
-                        } // if
-                    }; // onmessage
-                }, openFileTimeout); // test
-                
-                let mean: number;
-                let squareDiffs: number[];
-                let SD: number;
-                count = [0, 0, 0, 0, 0];
-                for (let idx = 0; idx < 5; idx++) {
-                    let timer: number = 0;
+                    let timer: number;
                     test(`assert the file "${testFileName}" reads image at round ${idx + 1}.`, 
                     done => {
 
@@ -181,17 +193,17 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                                 expect(rasterImageDataMessage.imageData.length).not.toEqual(0);
 
                                                 if (rasterImageDataMessage.imageData.length > 0) {
-                                                    count[idx] = new Date().getTime() - timer;
+                                                    count[fileIndex][idx] = new Date().getTime() - timer;
                                                 }
 
-                                                if (idx + 1 === 5) {
-                                                    mean = count.reduce((a, b) => a + b, 0) / count.length;
-                                                    squareDiffs = count.map(function(value: number) {
-                                                            let diff = value - mean;
+                                                if (idx + 1 === testTimes) {
+                                                    mean[fileIndex] = count[fileIndex].reduce((a, b) => a + b, 0) / testTimes;
+                                                    squareDiffs[fileIndex] = count[fileIndex].map(function(value: number) {
+                                                            let diff = value - mean[fileIndex];
                                                             return diff * diff;
                                                         });
-                                                    SD = Math.sqrt(squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length);
-                                                    console.log(`for "${testFileName}": returning time = ${count} ms. mean = ${mean} ms. deviation = ${SD} ms.`);
+                                                    SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
+                                                    console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms.`);
                             
                                                 }
 
@@ -202,13 +214,13 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                 }; // onmessage "OPEN_FILE_ACK"
                             } // if
                         }; // onmessage "FILE_LIST_RESPONSE"
-                    }, readFileTimeout); // test
+                    }, readFileTimeout); // test 
                     
-                }           
+                }
+            );
+        }); // describe
 
-            }
-        );
-    }); // describe
+    }   
 
     afterEach( done => {
         Connection.close();
