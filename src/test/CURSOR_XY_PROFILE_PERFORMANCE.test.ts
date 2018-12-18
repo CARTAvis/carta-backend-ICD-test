@@ -10,7 +10,8 @@ let disconnectionTimeout = 1000;
 let openFileTimeout = 60000;
 let readPeriod = 200;
 let readFileTimeout = 180000;
-let count: number[];
+let count: number[][];
+let testTimes = 10;
 
 describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {   
     let Connection: WebSocket;
@@ -110,74 +111,86 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
             }
         );
     });
+    
+    let mean: number[];
+    let squareDiffs: number[][];
+    let SD: number[];
+    count = [];
+    squareDiffs = [];
+    SD = [];
+    mean = [];
+    for (let idx = 0; idx < testTimes; idx++) {
 
-    describe(`test the files`, () => {
-        [
-         ["hugeGaussian10k.fits",  28, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian20k.fits",  56, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian40k.fits", 112, CARTA.CompressionType.ZFP, 11, 4],
-         ["hugeGaussian80k.fits", 223, CARTA.CompressionType.ZFP, 11, 4],
-        ].map(
-            function ([testFileName, mip, compressionType, compressionQuality, numSubsets]: 
-                    [string, number, CARTA.CompressionType, number, number]) {
-                
-                test(`assert the file "${testFileName}" opens.`, 
-                done => {
-                    // Preapare the message
-                    let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-                    let payload = CARTA.FileListRequest.encode(message).finish();
-                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-            
-                    eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-            
-                    Connection.send(eventDataTx);
-            
-                    // While receive a message
-                    Connection.onmessage = (event: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                        if (eventName === "FILE_LIST_RESPONSE") {
-                            let eventData = new Uint8Array(event.data, 36);
-                            expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
+        describe(`test the files`, () => {
+            [
+            [0,     "hugeGaussian10k.fits",  28, CARTA.CompressionType.ZFP, 11, 4],
+            [1,     "hugeGaussian20k.fits",  56, CARTA.CompressionType.ZFP, 11, 4],
+            [2,     "hugeGaussian40k.fits", 112, CARTA.CompressionType.ZFP, 11, 4],
+            // [3,     "hugeGaussian80k.fits", 223, CARTA.CompressionType.ZFP, 11, 4],
+            ].map(
+                function ([fileIndex, testFileName, mip, compressionType, compressionQuality, numSubsets]: 
+                        [number, string, number, CARTA.CompressionType, number, number]) {
+                                        
+                    if (idx === 0) {
 
+                        test(`assert the file "${testFileName}" opens.`, 
+                        done => {
                             // Preapare the message
-                            message = CARTA.OpenFile.create({
-                                directory: testSubdirectoryName, 
-                                file: testFileName, hdu: "0", fileId: 0, 
-                                renderMode: CARTA.RenderMode.RASTER
-                            });
-                            payload = CARTA.OpenFile.encode(message).finish();
-                            eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                            eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
+                            let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
+                            let payload = CARTA.FileListRequest.encode(message).finish();
+                            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                    
+                            eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
                             eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
                             eventDataTx.set(payload, 36);
-
+                    
                             Connection.send(eventDataTx);
-
+                    
                             // While receive a message
-                            Connection.onmessage = (eventOpen: MessageEvent) => {
-                                eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                                if (eventName === "OPEN_FILE_ACK") {
-                                    eventData = new Uint8Array(eventOpen.data, 36);
-                                    let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                    // console.log(openFileMessage);
-                                    expect(openFileMessage.success).toBe(true);
+                            Connection.onmessage = (event: MessageEvent) => {
+                                let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
+                                if (eventName === "FILE_LIST_RESPONSE") {
+                                    let eventData = new Uint8Array(event.data, 36);
+                                    expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
 
-                                    done();
+                                    // Preapare the message
+                                    message = CARTA.OpenFile.create({
+                                        directory: testSubdirectoryName, 
+                                        file: testFileName, hdu: "0", fileId: 0, 
+                                        renderMode: CARTA.RenderMode.RASTER
+                                    });
+                                    payload = CARTA.OpenFile.encode(message).finish();
+                                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                                    eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
+                                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                                    eventDataTx.set(payload, 36);
+
+                                    Connection.send(eventDataTx);
+
+                                    // While receive a message
+                                    Connection.onmessage = (eventOpen: MessageEvent) => {
+                                        eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
+                                        if (eventName === "OPEN_FILE_ACK") {
+                                            eventData = new Uint8Array(eventOpen.data, 36);
+                                            let openFileMessage = CARTA.OpenFileAck.decode(eventData);
+                                            // console.log(openFileMessage);
+                                            expect(openFileMessage.success).toBe(true);
+
+                                            done();
+                                        } // if
+                                    }; // onmessage
                                 } // if
-                            }; // onmessage
-                        } // if
-                    }; // onmessage "FILE_LIST_RESPONSE"
-                }, openFileTimeout); // test
-                
-                let mean: number;
-                let squareDiffs: number[];
-                let SD: number;
-                count = [0, 0, 0, 0, 0];
-                for (let idx = 0; idx < 5; idx++) {
-                    let timer: number = 0;
+                            }; // onmessage "FILE_LIST_RESPONSE"
+                        }, openFileTimeout); // test
+
+                        count.push(new Array(testTimes).fill(0));
+                        squareDiffs.push(new Array(testTimes).fill(0));
+                        mean.push(0);
+                        SD.push(0);  
+                    }
+
+                    let timer: number;
                     test(`assert a random cursor at round ${idx + 1}.`, 
                     done => {
                         // Preapare the message
@@ -284,19 +297,19 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
 
                                                         expect(spatialProfileDataMessage.profiles.length).not.toEqual(0);                                                        
                                                         if (spatialProfileDataMessage.profiles.length > 0) {
-                                                            count[idx] = new Date().getTime() - timer;
+                                                            count[fileIndex][idx] = new Date().getTime() - timer;                                                        
                                                         }
         
-                                                        if (idx + 1 === 5) {
-                                                            mean = count.reduce((a, b) => a + b, 0) / count.length;
-                                                            squareDiffs = count.map(function(value: number) {
-                                                                    let diff = value - mean;
+                                                        if (idx + 1 === testTimes) {
+                                                            mean[fileIndex] = count[fileIndex].reduce((a, b) => a + b, 0) / testTimes;
+                                                            squareDiffs[fileIndex] = count[fileIndex].map(function(value: number) {
+                                                                    let diff = value - mean[fileIndex];
                                                                     return diff * diff;
                                                                 });
-                                                            SD = Math.sqrt(squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length);
-                                                            console.log(`open the file "${testFileName}" to set cursor randomly: returning time = ${count} ms. mean = ${mean} ms. deviation = ${SD} ms.`);
+                                                            SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
+                                                            console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms.`);
                                     
-                                                        }        
+                                                        }   
                                                         
                                                         done();
                                                     } // if
@@ -308,12 +321,12 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                             } // if
                         }; // onmessage "FILE_LIST_RESPONSE"
                     }, readFileTimeout); // test
-                    
-                }           
 
-            }
-        );
-    }); // describe
+                }
+            );
+        }); // describe
+
+    }
 
     afterEach( done => {
         Connection.close();
