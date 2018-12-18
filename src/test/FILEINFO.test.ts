@@ -274,7 +274,7 @@ describe("FILEINFO_EXCEPTIONS tests", () => {
     
                                 // Preapare the message on a eventData
                                 const message = CARTA.FileInfoRequest.create({
-                                                directory: testSubdirectoryName, file: fileName, hdu: "0"});
+                                                directory: testSubdirectoryName, file: fileName, hdu: ""});
                                 let payload = CARTA.FileInfoRequest.encode(message).finish();
                                 const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
     
