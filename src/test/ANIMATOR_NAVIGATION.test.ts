@@ -1,13 +1,15 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 500;
 let openFileTimeout = 1000;
 let readFileTimeout = 1000;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let WebSocket = require("ws");
 let messageReturnTimeout = 200;
 
 describe("ANIMATOR_NAVIGATION tests", () => {   
@@ -71,7 +73,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
         };
     }, connectionTimeout);
 
-    describe(`prepare the files`, () => {
+    describe(`read the files`, () => {
         [
          ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
          ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
@@ -134,7 +136,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
         );
     }); // describe
 
-    test(`assert image channel is 0 on file ID 0.`, 
+    test(`assert image channel to be 0 on file ID 0.`, 
     done => { 
         // Preapare the message
         let messageSetImageChanne = CARTA.SetImageChannels.create({
@@ -166,7 +168,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
         }; // onmessage "RASTER_IMAGE_DATA"
     }, readFileTimeout); // test
 
-    test(`assert image channel is 100 on file ID 1.`, 
+    test(`assert image channel to be 100 on file ID 1.`, 
     done => { 
         // Preapare the message
         let messageSetImageChanne = CARTA.SetImageChannels.create({
@@ -265,7 +267,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         };
     }, connectionTimeout);
 
-    describe(`prepare the files`, () => {
+    describe(`read the files`, () => {
         [
          ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
          ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
@@ -328,7 +330,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         );
     }); // describe
 
-    test(`assert not returns as require image channel: 1000 & stokes: 3 on file ID 0.`, 
+    test(`assert not returns (image channel: 1000 & stokes: 3 on file ID 0).`, 
     done => { 
         // Preapare the message
         let messageSetImageChanne = CARTA.SetImageChannels.create({
@@ -358,7 +360,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         
     }, readFileTimeout); // test
 
-    test(`assert not returns as require image channel: 3000 & stokes: 1 on file ID 1.`, 
+    test(`assert not returns (image channel: 3000 & stokes: 1 on file ID 1).`, 
     done => { 
         // Preapare the message
         let messageSetImageChanne = CARTA.SetImageChannels.create({
@@ -388,7 +390,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         
     }, readFileTimeout); // test
 
-    test(`assert not returns as require image channel: 0 & stokes: 0 on file ID 2.`, 
+    test(`assert not returns (image channel: 0 & stokes: 0 on file ID 2).`, 
     done => { 
         // Preapare the message
         let messageSetImageChanne = CARTA.SetImageChannels.create({

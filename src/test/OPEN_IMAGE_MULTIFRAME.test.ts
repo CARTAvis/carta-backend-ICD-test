@@ -1,13 +1,15 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let openFileTimeout = 2000;
 let readFileTimeout = 2000;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let WebSocket = require("ws");
 
 describe("OPEN_IMAGE_MULTIFRAME tests", () => {   
     let Connection: WebSocket;
@@ -70,7 +72,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
         };
     }, connectionTimeout);
 
-    describe(`prepare the files`, () => {
+    describe(`read the files`, () => {
         [
          ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
          ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
@@ -79,7 +81,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
             function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
                       [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
                                    
-                test(`assert the file "${testFileName}" opens.`, 
+                test(`assert the file "${testFileName}" to open.`, 
                 done => { 
                     // Preapare the message
                     let message = CARTA.OpenFile.create({
@@ -138,7 +140,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
                         }; // onmessage
                     }, openFileTimeout);
 
-                    test(`assert the file id of "${testFileName}" is ${fileId}.`, 
+                    test(`assert the file id of "${testFileName}" to be ${fileId}.`, 
                     done => { 
                         // Preapare the message
                         let messageSetImageView = CARTA.SetImageView.create({

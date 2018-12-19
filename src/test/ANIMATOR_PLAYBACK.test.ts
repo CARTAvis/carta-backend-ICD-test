@@ -124,7 +124,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
    
     let timer: number = 0;
     timer = new Date().getTime();
-
+    let timeElapsed: number = 0;
     for (let idx = 1; idx < playFrames + 1; idx++) {
         test(`assert image${idx} to play.`,
         done => {
@@ -153,18 +153,22 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                     expect(rasterImageDataMessage.channel).toEqual(idx);
                     expect(rasterImageDataMessage.stokes).toEqual(0);
 
+                    if ( idx === playFrames) {
+                        timeElapsed = new Date().getTime() - timer;
+                    }
+
                     done();
                 } // if
             }; // onmessage "RASTER_IMAGE_DATA"
         }, readFileTimeout); // test
+    
     }
 
-    test(`assert playing time within ${playTimeout}ms.`,
+    test(`assert playing time within ${playTimeout} ms.`,
     () => {
-        let timeElapsed = new Date().getTime() - timer;
-        console.log(`Mean fps = ${ playFrames * 1000 / timeElapsed} Hz`);
         expect(timeElapsed).toBeLessThan(playTimeout);
-    }); // test
+        console.log(`FPS = ${playFrames * 1000 / timeElapsed} Hz.`);
+    }); // test    
 
     afterAll( done => {
         Connection.close();
