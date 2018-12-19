@@ -8,7 +8,7 @@ let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 60000;
-let readPeriod = 200;
+let readPeriod = 500;
 let readFileTimeout = 180000;
 let count: number[][];
 let testTimes = 10;
@@ -126,7 +126,7 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
             [0,     "hugeGaussian10k.fits",  28, CARTA.CompressionType.ZFP, 11, 4],
             [1,     "hugeGaussian20k.fits",  56, CARTA.CompressionType.ZFP, 11, 4],
             [2,     "hugeGaussian40k.fits", 112, CARTA.CompressionType.ZFP, 11, 4],
-            // [3,     "hugeGaussian80k.fits", 223, CARTA.CompressionType.ZFP, 11, 4],
+            [3,     "hugeGaussian80k.fits", 223, CARTA.CompressionType.ZFP, 11, 4],
             ].map(
                 function ([fileIndex, testFileName, mip, compressionType, compressionQuality, numSubsets]: 
                         [number, string, number, CARTA.CompressionType, number, number]) {

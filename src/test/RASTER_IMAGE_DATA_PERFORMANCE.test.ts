@@ -64,19 +64,19 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
     for (let idx = 0; idx < testTimes; idx++) {
         describe(`test the files`, () => {
             [ 
-             [0,    "cluster_00128.fits", {xMin: 0, xMax:   128, yMin: 0, yMax:   128},  1, CARTA.CompressionType.ZFP, 18, 4],
-             [1,    "cluster_00256.fits", {xMin: 0, xMax:   256, yMin: 0, yMax:   256},  1, CARTA.CompressionType.ZFP, 12, 4],
-             [2,    "cluster_00512.fits", {xMin: 0, xMax:   512, yMin: 0, yMax:   512},  2, CARTA.CompressionType.ZFP, 11, 4], 
-             [3,    "cluster_01024.fits", {xMin: 0, xMax:  1024, yMin: 0, yMax:  1024},  3, CARTA.CompressionType.ZFP, 11, 4],
-             [4,    "cluster_02048.fits", {xMin: 0, xMax:  2048, yMin: 0, yMax:  2048},  6, CARTA.CompressionType.ZFP, 11, 4],
-             [5,    "cluster_04096.fits", {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096}, 12, CARTA.CompressionType.ZFP, 11, 4],  
-             [6,    "cluster_08192.fits", {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192}, 23, CARTA.CompressionType.ZFP, 11, 4],
-             [7,    "cluster_16384.fits", {xMin: 0, xMax: 16384, yMin: 0, yMax: 16384}, 46, CARTA.CompressionType.ZFP, 11, 4],
-             [8,    "cluster_32768.fits", {xMin: 0, xMax: 32768, yMin: 0, yMax: 32768}, 92, CARTA.CompressionType.ZFP, 11, 4],
-             [9,    "hugeGaussian10k.fits", {xMin: 0, xMax: 10000, yMin: 0, yMax: 10000},  28, CARTA.CompressionType.ZFP, 11, 4],
-             [10,   "hugeGaussian20k.fits", {xMin: 0, xMax: 20000, yMin: 0, yMax: 20000},  56, CARTA.CompressionType.ZFP, 11, 4],
-             [11,   "hugeGaussian40k.fits", {xMin: 0, xMax: 40000, yMin: 0, yMax: 40000}, 112, CARTA.CompressionType.ZFP, 11, 4],
-            //  [12,   "hugeGaussian80k.fits", {xMin: 0, xMax: 80000, yMin: 0, yMax: 80000}, 223, CARTA.CompressionType.ZFP, 11, 4],
+             [0,    "cluster_00128.fits",       {xMin: 0, xMax:   128, yMin: 0, yMax:   128},    1, CARTA.CompressionType.ZFP, 18, 4],
+             [1,    "cluster_00256.fits",       {xMin: 0, xMax:   256, yMin: 0, yMax:   256},    1, CARTA.CompressionType.ZFP, 12, 4],
+             [2,    "cluster_00512.fits",       {xMin: 0, xMax:   512, yMin: 0, yMax:   512},    2, CARTA.CompressionType.ZFP, 11, 4], 
+             [3,    "cluster_01024.fits",       {xMin: 0, xMax:  1024, yMin: 0, yMax:  1024},    3, CARTA.CompressionType.ZFP, 11, 4],
+             [4,    "cluster_02048.fits",       {xMin: 0, xMax:  2048, yMin: 0, yMax:  2048},    6, CARTA.CompressionType.ZFP, 11, 4],
+             [5,    "cluster_04096.fits",       {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096},   12, CARTA.CompressionType.ZFP, 11, 4],  
+             [6,    "cluster_08192.fits",       {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192},   23, CARTA.CompressionType.ZFP, 11, 4],
+             [7,    "cluster_16384.fits",       {xMin: 0, xMax: 16384, yMin: 0, yMax: 16384},   46, CARTA.CompressionType.ZFP, 11, 4],
+             [8,    "cluster_32768.fits",       {xMin: 0, xMax: 32768, yMin: 0, yMax: 32768},   92, CARTA.CompressionType.ZFP, 11, 4],
+             [9,    "hugeGaussian10k.fits",     {xMin: 0, xMax: 10000, yMin: 0, yMax: 10000},   28, CARTA.CompressionType.ZFP, 11, 4],
+             [10,   "hugeGaussian20k.fits",     {xMin: 0, xMax: 20000, yMin: 0, yMax: 20000},   56, CARTA.CompressionType.ZFP, 11, 4],
+             [11,   "hugeGaussian40k.fits",     {xMin: 0, xMax: 40000, yMin: 0, yMax: 40000},  112, CARTA.CompressionType.ZFP, 11, 4],
+            //  [12,   "hugeGaussian80k.fits",     {xMin: 0, xMax: 80000, yMin: 0, yMax: 80000},  223, CARTA.CompressionType.ZFP, 11, 4],
             ].map(
                 function ([fileIndex, testFileName, imageBounds, mip, compressionType, compressionQuality, numSubsets]: 
                         [number, string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
