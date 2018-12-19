@@ -45,7 +45,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`"${testEventName}" can not open a connection.`);
+                console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
             }
 
         };
@@ -86,7 +86,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
     
                     Connection.send(eventData);
                 } else {
-                    console.log(`"${testEventName}" can not open a connection.`);
+                    console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
                 }
                 done();
             };
@@ -123,7 +123,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
                 const eventData = new Uint8Array(event.data, 36);
                 let messageRegisterViewer = CARTA.RegisterViewerAck.decode(eventData).message;
                 expect(messageRegisterViewer).toBeDefined();
-                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${messageRegisterViewer}"`);
+                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${messageRegisterViewer}" @${Date.now()}`);
                 
                 done();
             };

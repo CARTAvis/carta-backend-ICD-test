@@ -305,7 +305,7 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
                                                                     return diff * diff;
                                                                 });
                                                             SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
-                                                            console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms.`);
+                                                            console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms. @${Date.now()}`);
                                     
                                                         }        
                                                         

@@ -167,7 +167,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
     test(`assert playing time within ${playTimeout} ms.`,
     () => {
         expect(timeElapsed).toBeLessThan(playTimeout);
-        console.log(`FPS = ${playFrames * 1000 / timeElapsed} Hz.`);
+        console.log(`FPS = ${playFrames * 1000 / timeElapsed} Hz. @${Date.now()}`);
     }); // test    
 
     afterAll( done => {
