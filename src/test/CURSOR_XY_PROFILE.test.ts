@@ -41,7 +41,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }
             
@@ -162,7 +162,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                                 expect(spatialProfileDataMessageProfileY.length).toEqual(profileLen.y);
                                                                 
                             } else if (eventNameProfile !== "SPECTRAL_PROFILE_DATA") {
-                                console.log(`Error message: "${eventNameProfile}"`);
+                                console.log(`Error message: "${eventNameProfile}" @${new Date()}`);
                             }
                             done();
                         }; // onmessage

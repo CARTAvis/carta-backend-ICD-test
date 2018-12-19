@@ -58,7 +58,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
 
                 Connection.send(eventData);
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
             }
 
         };
@@ -95,7 +95,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
 
                 Connection.send(eventData);
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
             }
 
         };
@@ -136,7 +136,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
     
                     Connection.send(eventData);
                 } else {
-                    console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                    console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
                 }
                 done();
             };
@@ -168,7 +168,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                     parsedMessage = CARTA.RegisterViewerAck.decode(eventData);
                 }
                 expect(parsedMessage.sessionId).toBeDefined();
-                console.log(`registed session ID is ${parsedMessage.sessionId} @${Date.now()}`);
+                console.log(`registed session ID is ${parsedMessage.sessionId} @${new Date()}`);
 
                 done();
             };

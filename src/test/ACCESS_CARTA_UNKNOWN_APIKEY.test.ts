@@ -45,7 +45,7 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
             }
 
         };
@@ -122,7 +122,7 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
                 const eventData = new Uint8Array(event.data, 36);
                 let messageRegisterViewer = CARTA.RegisterViewerAck.decode(eventData).message;
                 expect(messageRegisterViewer).toBeDefined();
-                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${messageRegisterViewer}" @${Date.now()}`);
+                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${messageRegisterViewer}" @${new Date()}`);
                 
                 done();
             };

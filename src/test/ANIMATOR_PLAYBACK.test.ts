@@ -116,7 +116,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                     }
                 }; // onmessage REGISTER_VIEWER_ACK
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }            
         };
@@ -167,7 +167,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
     test(`assert playing time within ${playTimeout} ms.`,
     () => {
         expect(timeElapsed).toBeLessThan(playTimeout);
-        console.log(`FPS = ${playFrames * 1000 / timeElapsed} Hz. @${Date.now()}`);
+        console.log(`FPS = ${playFrames * 1000 / timeElapsed} Hz. @${new Date()}`);
     }); // test    
 
     afterAll( done => {

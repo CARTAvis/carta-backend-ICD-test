@@ -29,7 +29,7 @@ describe("FILETYPE_PARSER tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
             }
             done();
         };
@@ -74,7 +74,7 @@ describe("FILETYPE_PARSER tests", () => {
                 expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
 
             //    console.log(CARTA.FileListResponse.decode(eventData));
-                console.log(`The root folder on backend is "${CARTA.FileListResponse.decode(eventData).parent}"`);
+                console.log(`The root folder on backend is "${CARTA.FileListResponse.decode(eventData).parent}" @${new Date()}`);
                 
                 done();
             }

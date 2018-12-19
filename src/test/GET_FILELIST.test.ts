@@ -34,7 +34,7 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`Can not open a connection. @${Date.now()}`);
+                console.log(`Can not open a connection. @${new Date()}`);
             }
 
         };
@@ -71,7 +71,7 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`Can not open a connection. @${Date.now()}`);
+                console.log(`Can not open a connection. @${new Date()}`);
             }
 
         };
@@ -124,7 +124,7 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
     
                     Connection.send(eventData);
                 } else {
-                    console.log(`Can not open a connection. @${Date.now()}`);
+                    console.log(`Can not open a connection. @${new Date()}`);
                     Connection.close();
                 }
             };
@@ -288,7 +288,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
 
                 Connection.send(eventData);
             } else {
-                console.log(`Can not open a connection. @${Date.now()}`);
+                console.log(`Can not open a connection. @${new Date()}`);
             }
 
         };
@@ -341,7 +341,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
     
                     Connection.send(eventData);
                 } else {
-                    console.log(`Can not open a connection. @${Date.now()}`);
+                    console.log(`Can not open a connection. @${new Date()}`);
                     Connection.close();
                 }
             };
@@ -415,7 +415,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
                 if (eventName === "FILE_LIST_RESPONSE") {
                     const eventData = new Uint8Array(event.data, 36);
                     expect(CARTA.FileListResponse.decode(eventData).message).toBeDefined();
-                    console.log(`As given an unknown path, returning message: "${CARTA.FileListResponse.decode(eventData).message}" @${Date.now()}`);
+                    console.log(`As given an unknown path, returning message: "${CARTA.FileListResponse.decode(eventData).message}" @${new Date()}`);
                 }
 
                 Connection.close();

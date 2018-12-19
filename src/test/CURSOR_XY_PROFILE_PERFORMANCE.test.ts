@@ -47,7 +47,7 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }
         };
@@ -307,7 +307,7 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                                                                     return diff * diff;
                                                                 });
                                                             SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
-                                                            console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms. @${Date.now()}`);
+                                                            console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms. @${new Date()}}`);
                                     
                                                         }   
                                                         

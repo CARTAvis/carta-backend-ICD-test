@@ -42,7 +42,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }
         };

@@ -67,7 +67,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }            
         };
@@ -261,7 +261,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }            
         };

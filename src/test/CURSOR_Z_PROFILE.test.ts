@@ -42,7 +42,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     }
                 };
             } else {
-                console.log(`Can not open a connection.`);
+                console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }            
         };
