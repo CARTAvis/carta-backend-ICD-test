@@ -13,4 +13,4 @@ Prerequisite `npm` packages can be installed using `npm install`.
 * **Building static protocol buffer code** is done using the `build_proto.sh` script in the `protobuf` folder, which builds the static JavaScript code, as well as the TypeScript definitions, and symlinks to the `node_modules/carta-protobuf` directory.
 
 
-Running test by `npm test`.
+Running test by `npm test src/test/target.test.ts`.
