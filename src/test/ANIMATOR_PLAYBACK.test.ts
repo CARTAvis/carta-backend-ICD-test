@@ -1,16 +1,18 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-import { read } from "fs";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
+let prepareTimeout = 1000; // ms
+let readFileTimeout = 1000; // ms
+let playTimeout = 15000; // ms
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let WebSocket = require("ws");
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
-let prepareTimeout = 1000;
-let readFileTimeout = 1000;
-let playFrames = 150;
-let playPeriod = 10;
-let playTimeout = 15000;
+let playFrames = 150; // image
+let playPeriod = 10; // ms
 
 describe("ANIMATOR_PLAYBACK tests", () => {   
     let Connection: WebSocket;
@@ -124,7 +126,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
     timer = new Date().getTime();
 
     for (let idx = 1; idx < playFrames + 1; idx++) {
-        test(`assert image${idx} plays.`,
+        test(`assert image${idx} to play.`,
         done => {
             setTimeout( () => {
                 // Preapare the message
@@ -157,10 +159,10 @@ describe("ANIMATOR_PLAYBACK tests", () => {
         }, readFileTimeout); // test
     }
 
-    test(`assert playing time wihtin ${playTimeout}ms.`,
+    test(`assert playing time within ${playTimeout}ms.`,
     () => {
         let timeElapsed = new Date().getTime() - timer;
-        console.log(`The mean fps: ${ playFrames * 1000 / timeElapsed}Hz`);
+        console.log(`Mean fps = ${ playFrames * 1000 / timeElapsed} Hz`);
         expect(timeElapsed).toBeLessThan(playTimeout);
     }); // test
 
