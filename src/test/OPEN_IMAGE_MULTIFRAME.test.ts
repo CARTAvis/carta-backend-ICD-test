@@ -9,8 +9,6 @@ let readFileTimeout = 2000;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let WebSocket = require("ws");
-
 describe("OPEN_IMAGE_MULTIFRAME tests", () => {   
     let Connection: WebSocket;
 

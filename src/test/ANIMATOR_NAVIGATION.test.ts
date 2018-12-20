@@ -9,7 +9,6 @@ let readFileTimeout = 1000;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let WebSocket = require("ws");
 let messageReturnTimeout = 200;
 
 describe("ANIMATOR_NAVIGATION tests", () => {   

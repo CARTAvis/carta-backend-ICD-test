@@ -1,18 +1,18 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-import { array } from "prop-types";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 60000;
-let readPeriod = 200;
 let readFileTimeout = 180000;
-let count: number[][];
 let testTimes = 10;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let count: number[][];
+let readPeriod = 200;
 
 describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {   
     let Connection: WebSocket;

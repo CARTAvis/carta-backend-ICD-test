@@ -1,11 +1,12 @@
+/// Manual
+let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+let testSubdirectoryName = "set_QA";
+let connectionTimeout = 1000;
+
+/// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let WebSocket = require("ws");
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "";
-let testSubdirectoryName = "set_QA";
-let connectionTimeout = 1000;
 let testFileName = "qa_xyProfiler.fits";
 
 describe("CURSOR_XY_PROFILE tests", () => {   

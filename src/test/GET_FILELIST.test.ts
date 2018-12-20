@@ -1,13 +1,15 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let testFileName = "aJ.fits";
-let fileType = CARTA.FileType.FITS;
 let testSubdirectoryName = "set_QA";
 let expectRootPath = "";
 let connectTimeout = 1000;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let testFileName = "aJ.fits";
+let fileType = CARTA.FileType.FITS;
 let testReturnName = "FILE_LIST_RESPONSE";
 
 describe("GET_FILELIST_ROOTPATH tests", () => {    

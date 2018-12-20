@@ -1,9 +1,11 @@
+/// Manual
+let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+let connectTimeout = 300;
+
+/// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let WebSocket = require("ws");
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let connectTimeout = 300;
 let testEventName = "REGISTER_VIEWER";
 let testReturnName = "REGISTER_VIEWER_ACK";
 

@@ -1,11 +1,12 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "/home";
 let testSubdirectoryName = "set_QA";
 let connectTimeout = 300;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 
 describe("FILETYPE_PARSER tests", () => {   
     // Establish a websocket connection in the transfer form of binary: arraybuffer 

@@ -9,7 +9,6 @@ let playTimeout = 15000; // ms
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let WebSocket = require("ws");
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 let playFrames = 150; // image
 let playPeriod = 10; // ms

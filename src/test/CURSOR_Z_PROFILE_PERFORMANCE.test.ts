@@ -1,17 +1,19 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let WebSocket = require("ws");
+/// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let expectRootPath = "";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 6000;
-let readPeriod = 200;
 let readFileTimeout = 16000;
-let count: number[][];
 let testTimes = 20;
+
+/// ICD defined
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
+
+let count: number[][];
+let readPeriod = 200;
 
 describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {   
     let Connection: WebSocket;
