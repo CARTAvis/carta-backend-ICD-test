@@ -197,15 +197,16 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                                 }
 
                                                 if (idx + 1 === testTimes) {
-                                                    mean[fileIndex] = count[fileIndex].reduce((a, b) => a + b, 0) / testTimes;
-                                                    squareDiffs[fileIndex] = count[fileIndex].map(function(value: number) {
+                                                    let naturalCount = count[fileIndex].filter(e => e !== 0);
+                                                    mean[fileIndex] = naturalCount.reduce((a, b) => a + b, 0) / testTimes;
+                                                    squareDiffs[fileIndex] = naturalCount.map(function(value: number) {
                                                             let diff = value - mean[fileIndex];
                                                             return diff * diff;
                                                         });
                                                     SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
-                                                    console.log(`for "${testFileName}": returning time = ${count[fileIndex]} ms. mean = ${mean[fileIndex]} ms. deviation = ${SD[fileIndex]} ms. @${new Date()}`);
-                            
-                                                }
+                                                    console.log(`for "${testFileName}": returning time = ${naturalCount} ms.  mean = ${mean[fileIndex]} ms.  deviation = ${SD[fileIndex]} ms. @${new Date()}`); 
+
+                                                }        
 
                                                 done();
                                             } // if
