@@ -1,7 +1,7 @@
 /// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let connectTimeout = 2000;
-let assertPeriod = 100;
+let connectTimeout = 500;
+let assertPeriod = 200;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -19,7 +19,7 @@ describe("Access Websocket concurrent tests", () => {
             Connection[idx].onopen = () => {
                 setTimeout( () => {
                     Connection[idx].close();
-                }, assertPeriod * (idx + 1));
+                }, assertPeriod);
             }; 
         }
     });
@@ -59,7 +59,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT tests: Testing multiple concurrent con
                     } else {
                         console.log(`connection #${idx} can not open. @${new Date()}`);
                     }
-                }, assertPeriod * (idx + 1));
+                }, assertPeriod);
             }; 
         }
     });
@@ -80,29 +80,24 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT tests: Testing multiple concurrent con
         }, connectTimeout);
 
         test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.success to be True.`, 
-        done => {
+        () => {
             expect(registerViewerAck[idx].success).toBe(true);
-            done();
-        }, connectTimeout);
+        });
 
         test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_id is not None.`, 
-        done => {
+        () => {
             expect(registerViewerAck[idx].sessionId).toBeDefined();
-            
-            done();
-        }, connectTimeout);
+        });
 
         test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_id is unique.`, 
-        done => {
+        () => {
             expect(registerViewerAck.filter(f => f.sessionId === registerViewerAck[idx].sessionId).length).toEqual(1);
-            done();
-        }, connectTimeout);
+        });
 
         test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_type is 0.`, 
-        done => {
+        () => {
             expect(registerViewerAck[idx].sessionType).toEqual(CARTA.SessionType.NEW);
-            done();
-        }, connectTimeout);
+        });
     }
     
     afterAll( () => {
