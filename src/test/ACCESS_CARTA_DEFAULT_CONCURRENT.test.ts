@@ -1,7 +1,6 @@
 /// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let connectTimeout = 500;
-let assertPeriod = 200;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -11,15 +10,14 @@ let testNumber = 10;
 let Connection: WebSocket[] = new Array(testNumber);
 
 describe("Access Websocket concurrent tests", () => {
-    beforeAll( () => {
+    beforeAll( done => {
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx] = new WebSocket(testServerUrl);
         }
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx].onopen = () => {
-                setTimeout( () => {
-                    Connection[idx].close();
-                }, assertPeriod);
+                Connection[idx].close();
+                done();
             }; 
         }
     });
@@ -36,30 +34,30 @@ describe("Access Websocket concurrent tests", () => {
 
 describe("ACCESS_CARTA_DEFAULT_CONCURRENT tests: Testing multiple concurrent connections to the backend.", () => {
     
-    beforeAll( () => {
+    beforeAll( done => {
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx] = new WebSocket(testServerUrl);
             Connection[idx].binaryType = "arraybuffer";
         }
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx].onopen = () => {
-                setTimeout( () => {
-                    // Checkout if Websocket server is ready
-                    if (Connection[idx].readyState === WebSocket.OPEN) {
-                        // Preapare the message on a eventData
-                        let message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                        let payload = CARTA.RegisterViewer.encode(message).finish();
-                        let eventData = new Uint8Array(32 + 4 + payload.byteLength);
+                // Checkout if Websocket server is ready
+                if (Connection[idx].readyState === WebSocket.OPEN) {
+                    // Preapare the message on a eventData
+                    let message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
+                    let payload = CARTA.RegisterViewer.encode(message).finish();
+                    let eventData = new Uint8Array(32 + 4 + payload.byteLength);
 
-                        eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                        eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventData.set(payload, 36);
+                    eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
+                    eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                    eventData.set(payload, 36);
 
-                        Connection[idx].send(eventData);
-                    } else {
-                        console.log(`connection #${idx} can not open. @${new Date()}`);
-                    }
-                }, assertPeriod);
+                    Connection[idx].send(eventData);
+
+                    done();
+                } else {
+                    console.log(`connection #${idx + 1} can not open. @${new Date()}`);
+                }
             }; 
         }
     });
