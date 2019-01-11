@@ -6,10 +6,11 @@ let connectTimeout = 100;
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
+import { util } from "protobufjs";
 
 let expectRootPath = "";
 let testFileName = "aJ.fits";
-let testNumber = 10;
+let testNumber = 500;
 let Connection: WebSocket[] = new Array(testNumber);
 
 describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file list at root path from multiple concurrent users.", () => {    
@@ -18,8 +19,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx] = new WebSocket(testServerUrl);
             Connection[idx].binaryType = "arraybuffer";
-        }
-        for (let idx = 0; idx < testNumber; idx++) {
+        
             Connection[idx].onopen = () => {
                 
                 // Checkout if Websocket server is ready
@@ -35,10 +35,26 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
 
                     Connection[idx].send(eventData);
 
-                    Connection[idx].onmessage = (messageEvent: MessageEvent) => {
-                        
-                        done();
-                    };
+                    if ( idx === testNumber - 1) {
+                        Connection[idx].onmessage = (messageEvent: MessageEvent) => {
+
+                            // Preapare the message on a eventData
+                            let messageFileListRequest = CARTA.FileListRequest.create({directory: expectRootPath});
+                            let payloadFileListRequest = CARTA.FileListRequest.encode(messageFileListRequest).finish();
+                            let eventDataFileListRequest = new Uint8Array(32 + 4 + payloadFileListRequest.byteLength);
+
+                            eventDataFileListRequest.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
+                            eventDataFileListRequest.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                            eventDataFileListRequest.set(payloadFileListRequest, 36);
+
+                            for (let idy = 0; idy < testNumber; idy++) {
+                                Connection[idy].send(eventDataFileListRequest);    
+                            }
+                            done();
+                            
+                        }; 
+                    }
+                    
                 } else {
                     console.log(`connection #${idx + 1} can not open. @${new Date()}`);
                 }
@@ -52,17 +68,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
 
         test(`connection #${idx + 1}: send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}".`, 
         done => {
-            // Preapare the message on a eventData
-            let message = CARTA.FileListRequest.create({directory: expectRootPath});
-            let payload = CARTA.FileListRequest.encode(message).finish();
-            let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-            eventData.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-            eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-            eventData.set(payload, 36);
-
-            Connection[idx].send(eventData);
-
+            
             Connection[idx].onmessage = (messageEvent: MessageEvent) => {
                 expect(messageEvent.data.byteLength).toBeGreaterThan(40);
                 let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
