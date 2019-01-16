@@ -1,15 +1,14 @@
 {
     "name": "carta-backend-test",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "private": true,
-    "homepage": "./",
+    "homepage": "",
     "dependencies": {
         "@blueprintjs/core": "^3.10.0",
         "@blueprintjs/icons": "^3.4.0",
         "@blueprintjs/select": "^3.4.0",
         "chart.js": "^2.7.3",
         "chartjs-plugin-annotation": "^0.5.7",
-        "electron": "^4.0.0-nightly.20181010",
         "golden-layout": "^1.5.9",
         "konva": "^2.6.0",
         "lodash": "^4.17.11",
@@ -38,12 +37,12 @@
         "start": "npm run git-info; npm-run-all -p watch-css start-js",
         "build-js": "react-scripts-ts build",
         "build": "npm run git-info; npm-run-all build-wrappers build-protobuf build-css build-js",
-        "test": "react-scripts-ts test --env=jsdom --watchAll",
+        "test": "react-scripts-ts test --env=jsdom --no-cache --watchAll",
         "eject": "react-scripts-ts eject"
     },
     "devDependencies": {
         "@types/chart.js": "^2.7.42",
-        "@types/jest": "^23.3.9",
+        "@types/jest": "^23.3.12",
         "@types/jquery": "^3.3.28",
         "@types/lodash": "^4.14.119",
         "@types/node": "^10.12.18",
