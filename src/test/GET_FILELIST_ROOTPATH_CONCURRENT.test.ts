@@ -1,5 +1,6 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+let testServerUrl = "ws://127.0.0.1:1234";
+// let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
 let connectTimeout = 1000;
 
@@ -88,32 +89,41 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
 
     }, connectTimeout);
 
-    for (let idx = 0; idx < testNumber; idx++) {
-        test(`connection #${idx + 1}: assert FILE_LIST_RESPONSE.success to be True.`, 
-        () => {
+    
+    test(`assert every FILE_LIST_RESPONSE.success to be True.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(fileListResponse[idx].success).toBe(true);
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert FILE_LIST_RESPONSE.parent is None.`, 
-        () => {
+    test(`assert every FILE_LIST_RESPONSE.parent is None.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(fileListResponse[idx].parent).toBe("");
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, 
-        () => {
+    test(`assert every FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(fileListResponse[idx].directory).toBe(expectRootPath);
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert "${testFileName}" in FILE_LIST_RESPONSE.files[].`, 
-        () => {
+    test(`assert every "${testFileName}" in FILE_LIST_RESPONSE.files[].`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(fileListResponse[idx].files.find(f => f.name === testFileName)).toBeDefined();
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert “${testSubdirectoryName}” in FILE_LIST_RESPONSE.subdirectories[].`, 
-        () => {
+    test(`assert every “${testSubdirectoryName}” in FILE_LIST_RESPONSE.subdirectories[].`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(fileListResponse[idx].subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
-        });
-    }
+        }
+    });
 
     test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, 
     () => {

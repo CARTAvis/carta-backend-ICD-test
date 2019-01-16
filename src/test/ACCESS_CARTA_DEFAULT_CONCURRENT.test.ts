@@ -1,5 +1,6 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+let testServerUrl = "ws://127.0.0.1:1234";
+// let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let connectTimeout = 500;
 
 /// ICD defined
@@ -109,27 +110,33 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
         });
     }, connectTimeout);
         
-    for (let idx = 0; idx < testNumber; idx++) {
-        test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.success to be True.`, 
-        () => {
+    test(`assert every REGISTER_VIEWER_ACK.success to be True.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(registerViewerAck[idx].success).toBe(true);
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_id is not None.`, 
-        () => {
+    test(`assert every REGISTER_VIEWER_ACK.session_id is not None.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(registerViewerAck[idx].sessionId).toBeDefined();
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_id is unique.`, 
-        () => {
+    test(`assert every REGISTER_VIEWER_ACK.session_id is unique.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(registerViewerAck.filter(f => f.sessionId === registerViewerAck[idx].sessionId).length).toEqual(1);
-        });
+        }
+    });
 
-        test(`connection #${idx + 1}: assert REGISTER_VIEWER_ACK.session_type is 0.`, 
-        () => {
+    test(`assert every REGISTER_VIEWER_ACK.session_type is 0.`, 
+    () => {
+        for (let idx = 0; idx < testNumber; idx++) {
             expect(registerViewerAck[idx].sessionType).toEqual(CARTA.SessionType.NEW);
-        });
-    }
+        }
+    });
     
     afterAll( () => {
         for (let idx = 0; idx < testNumber; idx++) {
