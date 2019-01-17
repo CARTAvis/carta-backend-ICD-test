@@ -79,7 +79,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
             function ([testFileName,                fileId,     hdu,    imageBounds,                                              mip,      compressionType,            compressionQuality, numSubsets]: 
                       [string,                      number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number,   CARTA.CompressionType,      number,             number]) {
                 
-                beforeAll( done => { 
+                test(`assert file "${testFileName}" to be ready.`, done => { 
                     // Preapare the message
                     let message = CARTA.OpenFile.create({
                         directory: testSubdirectoryName, 

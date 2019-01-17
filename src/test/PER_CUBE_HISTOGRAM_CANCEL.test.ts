@@ -1,5 +1,4 @@
 /// Manual
-// let testServerUrl = "ws://127.0.0.1:1234";
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
 let connectionTimeout = 1000;
@@ -75,7 +74,7 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
         };
     }, connectionTimeout);
 
-    describe(`read the files`, () => {
+    describe(`test the files`, () => {
         [
          ["supermosaic.10.fits",                         0,     "0",    {xMin: 0, xMax:  4224, yMin: 0, yMax:  1824},               1,      CARTA.CompressionType.ZFP,  11,                 4],
         //  ["HH211_IQU_zoom_4ch.image.pbcor",              0,     "0",    {xMin: 0, xMax:   251, yMin: 0, yMax:   251},               1,      CARTA.CompressionType.ZFP,  11,                 4],
@@ -97,8 +96,6 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                     eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
                     eventDataTx.set(payload, 36);
 
-                    Connection.send(eventDataTx);
-
                     // While receive a message
                     Connection.onmessage = (eventOpenFile: MessageEvent) => {
                         let eventName = Utility.getEventName(new Uint8Array(eventOpenFile.data, 0, 32));
@@ -117,8 +114,6 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                             eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
                             eventDataTx.set(payload, 36);
 
-                            Connection.send(eventDataTx);
-
                             // While receive a message
                             Connection.onmessage = (eventRasterImage: MessageEvent) => {
                                 eventName = Utility.getEventName(new Uint8Array(eventRasterImage.data, 0, 32));
@@ -127,24 +122,17 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                                     let rasterImageDataMessage = CARTA.RasterImageData.decode(eventRasterImageData);
                                     expect(rasterImageDataMessage.fileId).toEqual(fileId);
 
-                                    // Preapare the message
-                                    let messageSetHistogramReq = CARTA.SetHistogramRequirements.create({
-                                        fileId, regionId: -2, histograms: [{channel: -2, numBins: -1}]
-                                    });
-                                    payload = CARTA.SetHistogramRequirements.encode(messageSetHistogramReq).finish();
-                                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                    eventDataTx.set(Utility.stringToUint8Array("SET_HISTOGRAM_REQUIREMENTS", 32));
-                                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                    eventDataTx.set(payload, 36);
-
-                                    Connection.send(eventDataTx); 
-
                                     done();
                                 } // if
                             }; // onmessage
+
+                            Connection.send(eventDataTx);
+
                         } // if
                     }; // onmessage
+
+                    Connection.send(eventDataTx);
+
                 }, openFileTimeout);
                 
                 let regionHistogramProgress: number;
@@ -164,6 +152,20 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                             done();
                         } // if
                     }; // onmessage "REGION_HISTOGRAM_DATA"
+
+                    // Preapare the message
+                    let messageSetHistogramReq = CARTA.SetHistogramRequirements.create({
+                        fileId, regionId: -2, histograms: [{channel: -2, numBins: -1}]
+                    });
+                    let payload = CARTA.SetHistogramRequirements.encode(messageSetHistogramReq).finish();
+                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+
+                    eventDataTx.set(Utility.stringToUint8Array("SET_HISTOGRAM_REQUIREMENTS", 32));
+                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
+                    eventDataTx.set(payload, 36);
+
+                    Connection.send(eventDataTx); 
+
                 }, receiveDataTimeout); // test
 
                 test(`assert the second REGION_HISTOGRAM_DATA arrives.`, 
