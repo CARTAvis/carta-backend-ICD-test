@@ -1,6 +1,6 @@
 /// Manual
-let testServerUrl = "ws://127.0.0.1:1234";
-// let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+// let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4002";
+let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
 let connectTimeout = 1000;
 
@@ -51,8 +51,9 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
                 };
             });
         }
+        
         Promise.all(promiseConn).then( () => done() );
-    });
+    }, connectTimeout);
 
     let fileListResponse: CARTA.FileListResponse[] = new Array(testNumber);
     let promiseConnection: Promise<void>[] = new Array(testNumber);

@@ -1,6 +1,5 @@
 /// Manual
-let testServerUrl = "ws://127.0.0.1:1234";
-// let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
+let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4002";
 let connectTimeout = 500;
 
 /// ICD defined
@@ -38,6 +37,7 @@ describe("Access Websocket concurrent test", () => {
         for (let idx = 0; idx < testNumber; idx++) {
             promiseSet[idx] = new Promise( (resolve, reject) => {
                 Connection[idx].onclose = () => {
+                    expect(Connection[idx].readyState).toBe(WebSocket.CLOSED);
                     resolve();
                 }; 
             });
