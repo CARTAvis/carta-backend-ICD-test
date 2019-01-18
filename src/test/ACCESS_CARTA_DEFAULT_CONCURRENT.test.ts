@@ -1,6 +1,7 @@
 /// Manual
 let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4002";
-let connectTimeout = 500;
+let connectTimeout = 100;
+let testTimeout = 1000;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -10,7 +11,10 @@ let testNumber = 10;
 let Connection: WebSocket[] = new Array(testNumber);
 
 describe("Access Websocket concurrent test", () => {
-    beforeAll( done => {
+
+    test(`establish ${testNumber} connections to "${testServerUrl}".`, 
+    done => {
+
         let promiseSet: Promise<void>[] = Array(testNumber);
         
         for (let idx = 0; idx < testNumber; idx++) {
@@ -23,14 +27,14 @@ describe("Access Websocket concurrent test", () => {
                         console.log(`connection #${idx + 1} can not open. @${new Date()}`);
                         reject();
                     }
-                }; 
+                };
             });
         }
 
         Promise.all(promiseSet).then( () => done() );
-    });
+    }, testTimeout);
 
-    test(`establish ${testNumber} connections to "${testServerUrl}".`, 
+    test(`assert connections to "${testServerUrl}".`, 
     done => {
         let promiseSet: Promise<void>[] = Array(testNumber);
         
@@ -39,7 +43,11 @@ describe("Access Websocket concurrent test", () => {
                 Connection[idx].onclose = () => {
                     expect(Connection[idx].readyState).toBe(WebSocket.CLOSED);
                     resolve();
-                }; 
+                };
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, connectTimeout);
             });
         }
 
@@ -48,13 +56,13 @@ describe("Access Websocket concurrent test", () => {
         for (let idx = 0; idx < testNumber; idx++) {
          Connection[idx].close();
         }
-    }, connectTimeout);
+    }, testTimeout);
         
 });
 
 describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent connections to the backend.", () => {
     
-    beforeAll( done => {
+    test(`establish ${testNumber} connections to "${testServerUrl}".`, done => {
         let promiseSet: Promise<void>[] = Array(testNumber);
         
         for (let idx = 0; idx < testNumber; idx++) {
@@ -68,14 +76,14 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
                         console.log(`connection #${idx + 1} can not open. @${new Date()}`);
                         reject();
                     }
-                }; 
+                };
             });
         }
 
         Promise.all(promiseSet).then( () => done() );
     });
 
-    let registerViewerAck: CARTA.RegisterViewerAck[] = new Array(testNumber);
+    let registerViewerAck: CARTA.RegisterViewerAck[] = Array(testNumber);
 
     test(`${testNumber} connections send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
     done => {
@@ -92,6 +100,10 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
                         resolve();
                     }
                 };
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, connectTimeout);
             });
         }
 
@@ -108,7 +120,8 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
         Connection.forEach( (item, index, array) => {
             item.send(eventDataRegisterViewer);
         });
-    }, connectTimeout);
+        
+    }, testTimeout);
         
     test(`assert every REGISTER_VIEWER_ACK.success to be True.`, 
     () => {
@@ -139,9 +152,9 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
     });
     
     afterAll( () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            Connection[idx].close();
-        }
-    }, connectTimeout);
+        Connection.forEach( (item, index, array) => {
+            item.close();
+        });
+    });
 
 });
