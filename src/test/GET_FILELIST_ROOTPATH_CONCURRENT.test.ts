@@ -1,8 +1,10 @@
 /// Manual
-// let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4002";
+// let testServerUrl = "ws://127.0.0.1:1234";
+// let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4003";
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
 let connectTimeout = 1000;
+let testTimeout = 20000;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -15,7 +17,8 @@ let Connection: WebSocket[] = new Array(testNumber);
 
 describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file list at root path from multiple concurrent users.", () => {    
 
-    beforeAll( done => {
+    test(`establish ${testNumber} connections to "${testServerUrl}".`,
+    done => {
         let promiseConn: Promise<void>[] = new Array(testNumber);
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx] = new WebSocket(testServerUrl);
@@ -53,13 +56,13 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         }
         
         Promise.all(promiseConn).then( () => done() );
-    }, connectTimeout);
+    }, testTimeout);
 
     let fileListResponse: CARTA.FileListResponse[] = new Array(testNumber);
-    let promiseConnection: Promise<void>[] = new Array(testNumber);
-
+    
     test(`${testNumber} connections send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}".`, 
     done => {
+        let promiseConnection: Promise<void>[] = new Array(testNumber);
         for (let idx = 0; idx < testNumber; idx++) {
             promiseConnection[idx] = new Promise( (resolve, reject) => {
                 Connection[idx].onmessage = (messageEvent: MessageEvent) => {
@@ -69,8 +72,12 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
                         let messageEventData = new Uint8Array(messageEvent.data, 36);
                         fileListResponse[idx] = CARTA.FileListResponse.decode(messageEventData);
                         resolve();
-                    } // if
+                    }
                 };
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, connectTimeout);
             });
         }
         Promise.all(promiseConnection).then( () => done() );
@@ -88,42 +95,41 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
             Connection[idy].send(eventDataFileListRequest);    
         }
 
-    }, connectTimeout);
-
+    }, testTimeout);
     
     test(`assert every FILE_LIST_RESPONSE.success to be True.`, 
     () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            expect(fileListResponse[idx].success).toBe(true);
-        }
+        fileListResponse.forEach( (item, index, array) => {
+            expect(item.success).toBe(true);
+        });        
     });
 
     test(`assert every FILE_LIST_RESPONSE.parent is None.`, 
     () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            expect(fileListResponse[idx].parent).toBe("");
-        }
+        fileListResponse.forEach( (item, index, array) => {
+            expect(item.parent).toBe("");
+        });
     });
 
     test(`assert every FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, 
     () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            expect(fileListResponse[idx].directory).toBe(expectRootPath);
-        }
+        fileListResponse.forEach( (item, index, array) => {
+            expect(item.directory).toBe(expectRootPath);
+        });
     });
 
     test(`assert every "${testFileName}" in FILE_LIST_RESPONSE.files[].`, 
     () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            expect(fileListResponse[idx].files.find(f => f.name === testFileName)).toBeDefined();
-        }
+        fileListResponse.forEach( (item, index, array) => {
+            expect(item.files.find(f => f.name === testFileName)).toBeDefined();
+        });
     });
 
     test(`assert every “${testSubdirectoryName}” in FILE_LIST_RESPONSE.subdirectories[].`, 
     () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            expect(fileListResponse[idx].subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
-        }
+        fileListResponse.forEach( (item, index, array) => {
+            expect(item.subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
+        });
     });
 
     test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, 
@@ -140,9 +146,9 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
     });
 
     afterAll( () => {
-        for (let idx = 0; idx < testNumber; idx++) {
-            Connection[idx].close();
-        }
-    }, connectTimeout);
+        Connection.forEach( (item, index, array) => {
+            item.close();
+        });
+    });
     
 });
