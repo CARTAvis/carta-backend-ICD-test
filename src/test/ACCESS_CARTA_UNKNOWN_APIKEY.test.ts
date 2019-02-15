@@ -36,28 +36,24 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
             
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "5678"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
+                
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        done();
+                    }
+                );
 
-                eventData.set(Utility.stringToUint8Array(testEventName, 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "5678"
+                    }
+                );
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
+                console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
             }
 
-        };
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            expect(event.data.byteLength).toBeGreaterThan(40);
-
-            Connection.close();
-            done();
         };
 
     }, connectTimeout);
@@ -72,22 +68,12 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
             Connection.binaryType = "arraybuffer";
     
             // While open a Websocket
-            Connection.onopen = () => {
-                
+            Connection.onopen = () => {                
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
-                    // Preapare the message on a eventData
-                    const message = CARTA.RegisterViewer.create({sessionId: "an-unknown-session-id", apiKey: "1234"});
-                    let payload = CARTA.RegisterViewer.encode(message).finish();
-                    let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-    
-                    eventData.set(Utility.stringToUint8Array(testEventName, 32));
-                    eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventData.set(payload, 36);
-    
-                    Connection.send(eventData);
+                    // 
                 } else {
-                    console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                    console.log(`"${testServerUrl}" can not open a connection. @${Date.now()}`);
                 }
                 done();
             };
@@ -104,30 +90,46 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
 
                 done();
             };
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "5678"
+                }
+            );
         }, connectTimeout);
                
         test(`assert the "${testReturnName}.success" is false.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventData = new Uint8Array(event.data, 36);
-                expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(false);
-                
-                done();
-            };
+            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    expect(RegisterViewerAck.success).toBe(false);
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "5678"
+                }
+            );
         }, connectTimeout);
     
         test(`assert the "${testReturnName}.message" is not None.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventData = new Uint8Array(event.data, 36);
-                let messageRegisterViewer = CARTA.RegisterViewerAck.decode(eventData).message;
-                expect(messageRegisterViewer).toBeDefined();
-                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${messageRegisterViewer}" @${new Date()}`);
+            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    expect(RegisterViewerAck.message).toBeDefined();
+                    console.log(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAck.message}" @${new Date()}`);
                 
-                done();
-            };
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "5678"
+                }
+            );
         }, connectTimeout);
 
         afterEach( done => {

@@ -65,7 +65,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                 );
 
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
+                console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
             }
 
         };
@@ -99,7 +99,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                 );
 
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
+                console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
             }
 
         };
@@ -121,16 +121,9 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                 
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
-                    
-                    Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                        {
-                            sessionId: "", 
-                            apiKey: "1234"
-                        }
-                    );
-                    
+                    //                    
                 } else {
-                    console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
+                    console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
                 }
                 done();
             };
@@ -147,6 +140,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
 
                 done();
             };
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "an-unknown-session-id", 
+                    apiKey: "1234"
+                }
+            );
         }, connectTimeout);
     
         test(`assert the "${testReturnName}.session_id" is not None.`, 
@@ -160,7 +159,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                     done();
                 }
             );
-            
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "an-unknown-session-id", 
+                    apiKey: "1234"
+                }
+            );
         }, connectTimeout);
     
         test(`assert the "${testReturnName}.success" is true.`, 
@@ -171,6 +175,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                     done();
                 }
             );
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "an-unknown-session-id", 
+                    apiKey: "1234"
+                }
+            );
         }, connectTimeout);
     
         test(`assert the "${testReturnName}.session_type" is "CARTA.SessionType.NEW".`, 
@@ -179,6 +189,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
                 (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                     expect(RegisterViewerAck.sessionType).toBe(CARTA.SessionType.NEW);
                     done();
+                }
+            );
+            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "an-unknown-session-id", 
+                    apiKey: "1234"
                 }
             );
         }, connectTimeout);
