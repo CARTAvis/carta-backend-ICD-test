@@ -1,7 +1,7 @@
 /// Manual
 let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
 let testSubdirectoryName = "set_QA";
-let expectRootPath = "";
+let expectRootPath = "$BASE";
 let connectTimeout = 1000;
 
 /// ICD defined
@@ -12,95 +12,9 @@ let testFileName = "aJ.fits";
 let fileType = CARTA.FileType.FITS;
 let testReturnName = "FILE_LIST_RESPONSE";
 
-describe("GET_FILELIST_ROOTPATH tests", () => {    
+describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root path", () => {    
 
-    test(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
-    done => {
-        // Construct a Websocket
-        let Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-            }
-
-        };
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            expect(event.data.byteLength).toBeGreaterThan(0);
-
-            Connection.close();
-            done();
-        };
-
-    }, connectTimeout);
-
-    test(`send EventName: "FILE_LIST_RESPONSE" to CARTA "${testServerUrl}".`, 
-    done => {
-        // Construct a Websocket
-        let Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-            }
-
-        };
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-            if (eventName === "REGISTER_VIEWER_ACK") {
-                // Preapare the message on a eventData
-                const message = CARTA.FileListRequest.create({directory: ""});
-                let payload = CARTA.FileListRequest.encode(message).finish();
-                const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-    
-                eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventDataTx.set(payload, 36);
-    
-                Connection.send(eventDataTx);
-            } 
-            if (eventName === testReturnName) {
-                done();
-            }
-        };
-
-    }, connectTimeout);
-
-    describe(`test EventName: "FILE_LIST_RESPONSE" on CARTA "${testServerUrl}"`, 
+    describe(`connect to CARTA "${testServerUrl}" as request directory: "${expectRootPath}"`, 
     () => {
 
         let Connection: WebSocket;
@@ -112,212 +26,134 @@ describe("GET_FILELIST_ROOTPATH tests", () => {
     
             // While open a Websocket
             Connection.onopen = () => {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
-                    // Send event: "REGISTER_VIEWER"
-                    eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                    eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventData.set(payload, 36);
-    
-                    Connection.send(eventData);
+                    Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                            expect(RegisterViewerAck.success).toBe(true);
+                            done();
+                        }
+                    );
+                    Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                        {
+                            sessionId: "", 
+                            apiKey: "1234"
+                        }
+                    );
                 } else {
                     console.log(`Can not open a connection. @${new Date()}`);
-                    Connection.close();
                 }
             };
 
-            // While receive a message
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "REGISTER_VIEWER_ACK") {
-                    // Preapare the message on a eventData
-                    const message = CARTA.FileListRequest.create({directory: ""});
-                    let payload = CARTA.FileListRequest.encode(message).finish();
-                    const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-        
-                    eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-        
-                    Connection.send(eventDataTx); 
-                    done();
-                }
-            };
         }, connectTimeout);
     
-        test(`assert the received EventName is "${testReturnName}" within ${connectTimeout * 1e-3} seconds.`, 
+        test(`assert the "${testReturnName}" within ${connectTimeout} ms.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === testReturnName) {
-                    expect(event.data.byteLength).toBeGreaterThan(40);
-                    
-                    expect(eventName).toBe(testReturnName);
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    done();
                 }
-
-                Connection.close();
-                done();
-            };
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventData = new Uint8Array(event.data, 36);
-                    expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
-                }
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    expect(FileListResponse.success).toBe(true);
 
-                Connection.close();
-                done();
-            };
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);  
 
-        test(`assert the "FILE_LIST_RESPONSE.parent" is None.`, 
+        test(`assert the "FILE_LIST_RESPONSE.parent" is "" .`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventId = new Uint32Array(event.data, 32, 1)[0];
-                    const eventData = new Uint8Array(event.data, 36);
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    expect(FileListResponse.parent).toBe("");
 
-                    let parsedMessage;
-                    parsedMessage = CARTA.FileListResponse.decode(eventData);
-                    expect(parsedMessage.parent).toBe("");
+                    done();
                 }
-
-                Connection.close();
-                done();
-            };    
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is root path "${expectRootPath}".`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventId = new Uint32Array(event.data, 32, 1)[0];
-                    const eventData = new Uint8Array(event.data, 36);
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    expect(FileListResponse.directory).toBe(expectRootPath);
 
-                    let parsedMessage;
-                    parsedMessage = CARTA.FileListResponse.decode(eventData);
-                    expect(parsedMessage.directory).toBe(expectRootPath);
+                    done();
                 }
-
-                Connection.close();
-                done();
-            };    
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);
 
         test(`assert the file "${testFileName}" exists.`, 
-        done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventId = new Uint32Array(event.data, 32, 1)[0];
-                    const eventData = new Uint8Array(event.data, 36);
-
-                    let parsedMessage;
-                    parsedMessage = CARTA.FileListResponse.decode(eventData);
-
-                    let fileInfo = parsedMessage.files.find(f => f.name === testFileName);
+        done => {            
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    let fileInfo = FileListResponse.files.find(f => f.name === testFileName);
                     expect(fileInfo).toBeDefined();
                     expect(fileInfo.type).toBe(fileType);
-                }
 
-                done();                
-                Connection.close();
-            };
-    
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);
     
         test(`assert the subdirectory "${testSubdirectoryName}" exists.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventId = new Uint32Array(event.data, 32, 1)[0];
-                    const eventData = new Uint8Array(event.data, 36);
-
-                    let parsedMessage;
-                    parsedMessage = CARTA.FileListResponse.decode(eventData);
-
-                    let folderInfo = parsedMessage.subdirectories.find(f => f === testSubdirectoryName);
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    let folderInfo = FileListResponse.subdirectories.find(f => f === testSubdirectoryName);
                     expect(folderInfo).toBeDefined();
-                }
 
-                Connection.close();
-                done();
-            };
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
         }, connectTimeout);
-    
+        
+        afterEach( done => {
+            Connection.close();
+            done();
+        });
     });
+    
 });
 
-describe("GET_FILELIST_UNKNOWNPATH tests", () => {    
-    
-    test(`send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}".`, 
-    done => {
-        // Construct a Websocket
-        let Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-            }
-
-        };
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-            if (eventName === "REGISTER_VIEWER_ACK") {
-                // Preapare the message on a eventData
-                const message = CARTA.FileListRequest.create({directory: ""});
-                let payload = CARTA.FileListRequest.encode(message).finish();
-                const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-    
-                eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventDataTx.set(payload, 36);
-    
-                Connection.send(eventDataTx);
-            } 
-            if (eventName === testReturnName) {
-                done();
-            }
-        };
-
-    }, connectTimeout);
-
-    describe(`test "/unknown/path" on CARTA "${testServerUrl}"`, 
+describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list generation if the requested path does not exist", () => {    
+    describe(`connect to CARTA "${testServerUrl}" as request directory: "/unknown/path"`, 
     () => {
 
         let Connection: WebSocket;
@@ -329,101 +165,78 @@ describe("GET_FILELIST_UNKNOWNPATH tests", () => {
     
             // While open a Websocket
             Connection.onopen = () => {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
-                    // Send event: "REGISTER_VIEWER"
-                    eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                    eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventData.set(payload, 36);
-    
-                    Connection.send(eventData);
+                    Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                            expect(RegisterViewerAck.success).toBe(true);
+                            done();
+                        }
+                    );
+                    Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                        {
+                            sessionId: "", 
+                            apiKey: "1234"
+                        }
+                    );
                 } else {
                     console.log(`Can not open a connection. @${new Date()}`);
-                    Connection.close();
                 }
             };
 
-            // While receive a message
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "REGISTER_VIEWER_ACK") {
-                    // Preapare the message on a eventData
-                    const message = CARTA.FileListRequest.create({directory: ""});
-                    let payload = CARTA.FileListRequest.encode(message).finish();
-                    const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-        
-                    eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-        
-                    Connection.send(eventDataTx);
-                }
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    // Preapare the message on a eventData
-                    const message = CARTA.FileListRequest.create({directory: "/unknown/path"});
-                    let payload = CARTA.FileListRequest.encode(message).finish();
-                    const eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-        
-                    eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-        
-                    Connection.send(eventDataTx);
+        }, connectTimeout);
+    
+        test(`assert the "${testReturnName}" within ${connectTimeout} ms.`, 
+        done => {
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
                     done();
                 }
-            };
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: "/unknown/path"
+                }
+            );
         }, connectTimeout);
     
-        test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectTimeout * 1e-3} seconds.`, 
+        test(`assert the "FILE_LIST_RESPONSE.success" is false.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === testReturnName) {
-                    expect(event.data.byteLength).toBeGreaterThan(40);
-                    expect(eventName).toBe(testReturnName);
-                }
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    expect(FileListResponse.success).toBe(false);
 
-                Connection.close();
-                done();
-            };
-        }, connectTimeout);
-    
-        test(`assert the "${testReturnName}.success" is false.`, 
-        done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === testReturnName) {
-                    const eventData = new Uint8Array(event.data, 36);
-                    expect(CARTA.FileListResponse.decode(eventData).success).toBe(false);
+                    done();
                 }
-
-                Connection.close();
-                done();
-            };
-        }, connectTimeout); 
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: "/unknown/path"
+                }
+            );
+        }, connectTimeout);  
 
         test(`assert the "FILE_LIST_RESPONSE.message" is not None.`, 
         done => {
-            // While receive a message from Websocket server
-            Connection.onmessage = (event: MessageEvent) => {
-                const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                if (eventName === "FILE_LIST_RESPONSE") {
-                    const eventData = new Uint8Array(event.data, 36);
-                    expect(CARTA.FileListResponse.decode(eventData).message).toBeDefined();
-                    console.log(`As given an unknown path, returning message: "${CARTA.FileListResponse.decode(eventData).message}" @${new Date()}`);
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                (FileListResponse: CARTA.FileListResponse) => {
+                    expect(FileListResponse.message).toBeDefined();
+                    console.log(`As given an unknown path, returning message: "${FileListResponse.message}" @${new Date()}`);
+
+                    done();
                 }
-
-                Connection.close();
-                done();
-            };
-        }, connectTimeout); 
-
-    });
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );
+        }, connectTimeout);
+        
+        afterEach( done => {
+            Connection.close();
+            done();
+        });
+    });    
+    
 });
