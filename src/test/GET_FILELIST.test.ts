@@ -228,7 +228,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: expectRootPath
+                    directory: "/unknown/path"
                 }
             );
         }, connectTimeout);
