@@ -52,7 +52,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
                 );
 
             } else {
-                console.log(`"${testEventName}" can not open a connection. @${Date.now()}`);
+                console.log(`"${testServerUrl}" can not open a connection. @${Date.now()}`);
             }
 
         };
@@ -74,15 +74,9 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
                 
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
-                    
-                    // Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    //     {
-                    //         sessionId: "an-unknown-session-id", 
-                    //         apiKey: "1234"
-                    //     }
-                    // );
+                    //
                 } else {
-                    console.log(`"${testEventName}" can not open a connection. @${new Date()}`);
+                    console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
                 }
                 done();
             };
