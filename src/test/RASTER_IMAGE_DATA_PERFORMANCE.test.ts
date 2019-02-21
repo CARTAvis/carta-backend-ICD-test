@@ -1,7 +1,8 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let testSubdirectoryName = "set_QA";
-let connectionTimeout = 1000;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let testSubdirectoryName = config.path.QA;
+let connectionTimeout = config.timeout.connection;
 let disconnectionTimeout = 1000;
 let openFileTimeout = 60000;
 let readFileTimeout = 180000;

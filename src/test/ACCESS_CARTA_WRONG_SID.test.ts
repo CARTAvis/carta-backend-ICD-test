@@ -1,6 +1,7 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let connectTimeout = 300;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let connectTimeout = config.timeout.connection;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";

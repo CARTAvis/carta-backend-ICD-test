@@ -1,8 +1,9 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let expectRootPath = "/home";
-let testSubdirectoryName = "set_QA";
-let connectTimeout = 300;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let testSubdirectoryName = config.path.QA;
+let expectRootPath = config.path.root;
+let connectionTimeout = config.timeout.connection;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -34,7 +35,7 @@ describe("FILETYPE_PARSER tests", () => {
             }
             done();
         };
-    }, connectTimeout);
+    }, connectionTimeout);
 
     test(`connect to CARTA "${testServerUrl}" & ...`, 
     done => {
@@ -50,7 +51,7 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             }
         };
-    }, connectTimeout);
+    }, connectionTimeout);
 
     test(`send EventName: "FILE_LIST_REQUEST" to CARTA "${testServerUrl}" to access ${testSubdirectoryName}.`, 
     done => {
@@ -81,7 +82,7 @@ describe("FILETYPE_PARSER tests", () => {
             }
         };
 
-    }, connectTimeout);
+    }, connectionTimeout);
 
     describe(`send EventName: "FILE_LIST_REQUEST" to CARTA ${testServerUrl}`, 
     () => {
@@ -107,9 +108,9 @@ describe("FILETYPE_PARSER tests", () => {
                     done();
                 }
             };    
-        }, connectTimeout);        
+        }, connectionTimeout);        
         
-        test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, 
+        test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectionTimeout} ms.`, 
         done => {
             // While receive a message from Websocket server
             Connection.onmessage = (event: MessageEvent) => {
@@ -119,7 +120,7 @@ describe("FILETYPE_PARSER tests", () => {
 
                 done();
             };
-        }, connectTimeout);
+        }, connectionTimeout);
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         done => {
@@ -130,7 +131,7 @@ describe("FILETYPE_PARSER tests", () => {
                 
                 done();
             };
-        }, connectTimeout);  
+        }, connectionTimeout);  
 
         test(`assert the "FILE_LIST_RESPONSE.parent" is "${expectRootPath}".`, 
         done => {
@@ -142,7 +143,7 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             };
     
-        }, connectTimeout);
+        }, connectionTimeout);
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is the path "${testSubdirectoryName}".`, 
         done => {
@@ -160,7 +161,7 @@ describe("FILETYPE_PARSER tests", () => {
                 done();
             };
     
-        }, connectTimeout);
+        }, connectionTimeout);
 
         describe(`test the file is existent`, () => {
             [
@@ -192,7 +193,7 @@ describe("FILETYPE_PARSER tests", () => {
                             }
                             done();
                         };
-                    }, connectTimeout);
+                    }, connectionTimeout);
 
                 }
             );
@@ -220,7 +221,7 @@ describe("FILETYPE_PARSER tests", () => {
                             }
                             done();
                         } ;
-                    }, connectTimeout);
+                    }, connectionTimeout);
                 }
             );
         });        
@@ -246,7 +247,7 @@ describe("FILETYPE_PARSER tests", () => {
                             }
                             done();
                         };
-                    }, connectTimeout);
+                    }, connectionTimeout);
                 }
             );
         });

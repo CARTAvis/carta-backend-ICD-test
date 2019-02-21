@@ -1,8 +1,9 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let testSubdirectoryName = "set_QA";
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let testSubdirectoryName = config.path.QA;
+let readFileTimeout = config.timeout.readFile;
 let prepareTimeout = 1000; // ms
-let readFileTimeout = 1000; // ms
 let playTimeout = 15000; // ms
 
 /// ICD defined

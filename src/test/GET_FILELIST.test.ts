@@ -1,8 +1,9 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let testSubdirectoryName = "set_QA";
-let expectRootPath = "$BASE";
-let connectTimeout = 1000;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let testSubdirectoryName = config.path.QA;
+let expectRootPath = config.path.base;
+let connectTimeout = config.timeout.connection;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";

@@ -1,0 +1,14 @@
+{    
+    "serverURL": "wss://acdc0.asiaa.sinica.edu.tw/socket2",
+    "timeout": {
+        "connection": 1000,
+        "openFile": 1000,
+        "readFile": 1000
+    },
+    "path": {
+        "root": "",
+        "base": "$BASE",
+        "QA": "set_QA",
+        "performance": "set_QA_performance"
+    }
+}

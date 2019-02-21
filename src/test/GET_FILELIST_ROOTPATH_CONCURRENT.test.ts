@@ -1,9 +1,8 @@
 /// Manual
-// let testServerUrl = "ws://127.0.0.1:1234";
-// let testServerUrl = "ws://carta.asiaa.sinica.edu.tw:4003";
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let testSubdirectoryName = "set_QA";
-let connectTimeout = 1000;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let testSubdirectoryName = config.path.QA;
+let connectionTimeout = config.timeout.connection;
 let testTimeout = 20000;
 
 /// ICD defined
@@ -77,7 +76,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
-                }, connectTimeout);
+                }, connectionTimeout);
             });
         }
         Promise.all(promiseConnection).then( () => done() );

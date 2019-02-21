@@ -1,7 +1,7 @@
 /// Manual
-// let testServerUrl = "ws://127.0.0.1:1234";
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let connectTimeout = 200;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let connectionTimeout = config.timeout.connection;
 let testTimeout = 1000;
 
 /// ICD defined
@@ -31,7 +31,7 @@ describe("Access Websocket concurrent test", () => {
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
-                }, connectTimeout);
+                }, connectionTimeout);
             });
         }, Promise);
 
@@ -52,7 +52,7 @@ describe("Access Websocket concurrent test", () => {
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
-                }, connectTimeout);
+                }, connectionTimeout);
             });
         }, Promise);
 
@@ -87,7 +87,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
-                }, connectTimeout);
+                }, connectionTimeout);
             });
         }, Promise);
 
@@ -115,7 +115,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
-                }, connectTimeout);
+                }, connectionTimeout);
             });
         }, Promise);
 

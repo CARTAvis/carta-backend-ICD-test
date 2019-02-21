@@ -1,7 +1,7 @@
 /// Manual
-let testServerUrl = "wss://acdc0.asiaa.sinica.edu.tw/socket2";
-let connectTimeout = 300;
-let connectTimeoutRemote = 2000;
+import config from "./config.json";
+let testServerUrl = config.serverURL;
+let connectTimeout = config.timeout.connection;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -9,6 +9,7 @@ import * as Utility from "./testUtilityFunction";
 
 let testEventName = "REGISTER_VIEWER";
 let testReturnName = "REGISTER_VIEWER_ACK";
+
 
 describe("Websocket tests", () => {
     let testRemoteWebsocketSite = "wss://echo.websocket.org site";
@@ -22,7 +23,7 @@ describe("Websocket tests", () => {
             Connection.close();
             done();     // Return to this test
         };
-    }, connectTimeoutRemote);
+    }, connectTimeout);
 
     test(`establish a connection to "${testServerUrl}".`, 
     done => {
