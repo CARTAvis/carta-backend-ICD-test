@@ -21,27 +21,18 @@ describe("CURSOR_XY_PROFILE tests", () => {
         Connection.onopen = () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-                // While receive a message in the form of arraybuffer
-                Connection.onmessage = (event: MessageEvent) => {
-                    const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    if (eventName === "REGISTER_VIEWER_ACK") {
-                        expect(event.data.byteLength).toBeGreaterThan(0);
-                        eventData = new Uint8Array(event.data, 36);
-                        expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(true);
-                        
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
-                };
+                );
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
             } else {
                 console.log(`Can not open a connection. @${new Date()}`);
                 done();
@@ -53,66 +44,43 @@ describe("CURSOR_XY_PROFILE tests", () => {
     describe(`open the file "${testFileName} and ...`, 
     () => {
         beforeEach( 
-        done => {
-            // Preapare the message
-            let message = CARTA.OpenFile.create({
-                directory: testSubdirectoryName, 
-                file: testFileName, hdu: "0", fileId: 0, 
-                renderMode: CARTA.RenderMode.RASTER
-            });
-            let payload = CARTA.OpenFile.encode(message).finish();
-            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-            eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-            eventDataTx.set(payload, 36);
-
-            Connection.send(eventDataTx);
-
-            Connection.onmessage = (eventOpen: MessageEvent) => {
-                let eventNameOpen = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                if (eventNameOpen === "OPEN_FILE_ACK") {
-                    let eventOpenData = new Uint8Array(eventOpen.data, 36);
-                    expect(CARTA.OpenFileAck.decode(eventOpenData).success).toBe(true);
-
-                    // Preapare the message
-                    let messageSetImageView = CARTA.SetImageView.create({
-                        fileId: 0, imageBounds: {xMin: 0, xMax: 100, yMin: 0, yMax: 100}, 
-                        mip: 1, compressionType: CARTA.CompressionType.ZFP, 
-                        compressionQuality: 21, numSubsets: 4
-                    });
-                    payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                    eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-
-                    Connection.send(eventDataTx);
-
-                    // Preapare the message
-                    let messageSetSpatialReq = CARTA.SetSpatialRequirements.create({fileId: 0, regionId: 0, spatialProfiles: ["x", "y"]});
-                    payload = CARTA.SetSpatialRequirements.encode(messageSetSpatialReq).finish();
-                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                    eventDataTx.set(Utility.stringToUint8Array("SET_SPATIAL_REQUIREMENTS", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-
-                    Connection.send(eventDataTx);
-                    
-                    Connection.onmessage = (eventRasterImage: MessageEvent) => {
-                        let eventNameRasterImage = Utility.getEventName(new Uint8Array(eventRasterImage.data, 0, 32));
-                        if (eventNameRasterImage === "RASTER_IMAGE_DATA") {
-                            let eventRasterImageData = new Uint8Array(eventRasterImage.data, 36);
-                            let rasterImageDataMessage = CARTA.RasterImageData.decode(eventRasterImageData);
-                            expect(rasterImageDataMessage.imageData.length).toBeGreaterThan(0);
-                            
+        done => {            
+            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                (OpenFileAck: CARTA.OpenFileAck) => {
+                    expect(OpenFileAck.success).toBe(true);
+                    Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                        (RasterImageData: CARTA.RasterImageData) => {
+                            expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                             done();
                         }
-                    };
+                    );
+                    Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        {
+                            fileId: 0, 
+                            imageBounds: {xMin: 0, xMax: 100, yMin: 0, yMax: 100}, 
+                            mip: 1, 
+                            compressionType: CARTA.CompressionType.ZFP, 
+                            compressionQuality: 21, 
+                            numSubsets: 4
+                        }
+                    );
+                    Utility.setEvent(Connection, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+                        {
+                            fileId: 0, 
+                            regionId: 0, 
+                            spatialProfiles: ["x", "y"]
+                        }
+                    );
                 }
-            };
+            );
+            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                {
+                    directory: testSubdirectoryName, 
+                    file: testFileName, 
+                    hdu: "0", fileId: 0, 
+                    renderMode: CARTA.RenderMode.RASTER
+                }
+            );
         }, connectionTimeout);     
         
         describe(`test the xy profiles at certain cursor position`, () => {
@@ -131,44 +99,27 @@ describe("CURSOR_XY_PROFILE tests", () => {
                         [number, {x: number, y: number}, {x: number, y: number}, {x: number, y: number}, number]) {
                     
                     test(`assert the fileID "${fileId}" returns: Value=${value}, Profile length={${profileLen.x}, ${profileLen.y}}, Point={${assertPoint.x}, ${assertPoint.y}} as {${point.x}, ${point.y}}.`, 
-                    done => {
-                        // Preapare the message
-                        let message = CARTA.SetCursor.create({fileId, point});
-                        let payload = CARTA.SetCursor.encode(message).finish();
-                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                    done => {                        
+                        Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                            (SpatialProfileData: CARTA.SpatialProfileData) => {
+                                expect(SpatialProfileData.fileId).toEqual(fileId);
+                                expect(SpatialProfileData.value).toEqual(value);
+                                expect(SpatialProfileData.x).toEqual(assertPoint.x);
+                                expect(SpatialProfileData.y).toEqual(assertPoint.y);
 
-                        eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
-                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventDataTx.set(payload, 36);
-
-                        Connection.send(eventDataTx);
-
-                        // While receive a message
-                        Connection.onmessage = (eventProfile: MessageEvent) => {
-                            let eventNameProfile = Utility.getEventName(new Uint8Array(eventProfile.data, 0, 32));
-                            // console.log(eventNameProfile);
-                            if (eventNameProfile === "SPATIAL_PROFILE_DATA") {
-                                let eventProfileData = new Uint8Array(eventProfile.data, 36);
-                                // let eventId = new Uint32Array(eventProfile.data, 32, 1)[0];
-                                let spatialProfileDataMessage = CARTA.SpatialProfileData.decode(eventProfileData);
-                                // console.log(spatialProfileDataMessage);
-                                
-                                expect(spatialProfileDataMessage.fileId).toEqual(fileId);
-                                expect(spatialProfileDataMessage.value).toEqual(value);
-                                expect(spatialProfileDataMessage.x).toEqual(assertPoint.x);
-                                expect(spatialProfileDataMessage.y).toEqual(assertPoint.y);
-
-                                let spatialProfileDataMessageProfileX = spatialProfileDataMessage.profiles.find(f => f.coordinate === "x").values;
+                                let spatialProfileDataMessageProfileX = SpatialProfileData.profiles.find(f => f.coordinate === "x").values;
                                 expect(spatialProfileDataMessageProfileX.length).toEqual(profileLen.x);
-                                let spatialProfileDataMessageProfileY = spatialProfileDataMessage.profiles.find(f => f.coordinate === "y").values;
+                                let spatialProfileDataMessageProfileY = SpatialProfileData.profiles.find(f => f.coordinate === "y").values;
                                 expect(spatialProfileDataMessageProfileY.length).toEqual(profileLen.y);
-                                                                
-                            } else if (eventNameProfile !== "SPECTRAL_PROFILE_DATA") {
-                                console.log(`Error message: "${eventNameProfile}" @${new Date()}`);
+                                done();
                             }
-                            done();
-                        }; // onmessage
-                        
+                        );
+                        Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                            {
+                                fileId, 
+                                point,
+                            }
+                        );
                     }, connectionTimeout); // test
 
                 } // function([ ])
@@ -187,28 +138,11 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     test(`assert the profile in fileID "${fileId}" has: 
                     the #${oddPointX.idx + 1} value = ${oddPointX.value} with other values = ${oddPointX.others} on the profile_x & 
                     the #${oddPointY.idx + 1} value = ${oddPointY.value} with other values = ${oddPointY.others} on the profile_y as point {${point.x}, ${point.y}}.`, 
-                    done => {
-                        // Preapare the message
-                        let message = CARTA.SetCursor.create({fileId, point});
-                        let payload = CARTA.SetCursor.encode(message).finish();
-                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                        eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
-                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventDataTx.set(payload, 36);
-
-                        Connection.send(eventDataTx);
-
-                        // While receive a message
-                        Connection.onmessage = (eventInfo: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(eventInfo.data, 0, 32));
-                            if (eventName === "SPATIAL_PROFILE_DATA") {
-                                let eventData = new Uint8Array(eventInfo.data, 36);
-                                let spatialProfileDataMessage = CARTA.SpatialProfileData.decode(eventData);
-                                // console.log(spatialProfileDataMessage);
-
+                    done => {                        
+                        Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                            (SpatialProfileData: CARTA.SpatialProfileData) => {
                                 // Assert profile x
-                                spatialProfileDataMessage.profiles.find(f => f.coordinate === "x").values.forEach( 
+                                SpatialProfileData.profiles.find(f => f.coordinate === "x").values.forEach( 
                                     (value, index) => {
                                         if (index === oddPointX.idx) {
                                             expect(value).toEqual(oddPointX.value);
@@ -219,7 +153,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                                 );
 
                                 // Assert profile y
-                                spatialProfileDataMessage.profiles.find(f => f.coordinate === "y").values.forEach( 
+                                SpatialProfileData.profiles.find(f => f.coordinate === "y").values.forEach( 
                                     (value, index) => {
                                         if (index === oddPointY.idx) {
                                             expect(value).toEqual(oddPointY.value);
@@ -228,10 +162,15 @@ describe("CURSOR_XY_PROFILE tests", () => {
                                         }
                                     }
                                 );
-
                                 done();
-                            } // if
-                        }; // onmessage               
+                            }
+                        );
+                        Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                            {
+                                fileId, 
+                                point,
+                            }
+                        );              
                     } // done
                     , connectionTimeout); // test
                 } // function([ ])
