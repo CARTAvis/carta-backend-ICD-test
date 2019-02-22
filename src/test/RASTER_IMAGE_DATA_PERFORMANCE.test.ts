@@ -71,26 +71,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                 function ([fileIndex, testFileName, imageBounds, mip, compressionType, compressionQuality, numSubsets]: 
                         [number, string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
                                     
-                    if (idx === 0) {
-                        test.skip(`assert the file "${testFileName}" can be read.`, 
-                        done => {                            
-                            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                (OpenFileAck: CARTA.OpenFileAck) => {
-                                    expect(OpenFileAck.success).toBe(true);
-                                    done();
-                                }
-                            );
-                            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                                {
-                                    directory: testSubdirectoryName, 
-                                    file: testFileName, 
-                                    hdu: "0", 
-                                    fileId: 0, 
-                                    renderMode: CARTA.RenderMode.RASTER
-                                }
-                            ); 
-                        }, openFileTimeout);
-
+                    if (idx === 0) {                        
                         // Initialize array
                         count.push(new Array(testTimes).fill(0));
                         squareDiffs.push(new Array(testTimes).fill(0));
@@ -99,7 +80,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                     }                    
                     
                     let timer: number;
-                    test(`assert the file "${testFileName}" reads image at round ${idx + 1}.`, 
+                    test(`assert image be read at round ${idx + 1} on the file "${testFileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                             (OpenFileAck: CARTA.OpenFileAck) => {

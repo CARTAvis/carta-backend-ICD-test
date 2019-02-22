@@ -3,10 +3,8 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
-let disconnectionTimeout = 1000;
-let openFileTimeout = 6000;
 let readFileTimeout = 16000;
-let testTimes = 20;
+let testTimes = 10;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -26,94 +24,25 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
         Connection.onopen = () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(message).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
-
-                // While receive a message in the form of arraybuffer
-                Connection.onmessage = (event: MessageEvent) => {
-                    const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    if (eventName === "REGISTER_VIEWER_ACK") {
-                        expect(event.data.byteLength).toBeGreaterThan(0);
-                        eventData = new Uint8Array(event.data, 36);
-                        expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(true);
-                        
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
-                };
+                );
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
             } else {
                 console.log(`Can not open a connection. @${new Date()}`);
                 done();
             }
         };
     }, connectionTimeout);
-
-    test(`connect to CARTA "${testServerUrl}" & ...`, 
-    done => {
-        // Preapare the message on a eventData
-        const message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-        let payload = CARTA.RegisterViewer.encode(message).finish();
-        let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-        eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-        eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-        eventData.set(payload, 36);
-
-        Connection.send(eventData);
-
-        // While receive a message in the form of arraybuffer
-        Connection.onmessage = (event: MessageEvent) => {
-            const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-            if (eventName === "REGISTER_VIEWER_ACK") {
-                expect(event.data.byteLength).toBeGreaterThan(0);
-                eventData = new Uint8Array(event.data, 36);
-                expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(true);
-                
-                done();
-            }
-        };
-    }, connectionTimeout);
-
-    describe(`access directory`, () => {
-        [[expectRootPath], [testSubdirectoryName]
-        ].map(
-            ([dir]) => {
-                test(`assert the directory "${dir}" opens.`, 
-                done => {
-                    // Preapare the message
-                    let message = CARTA.FileListRequest.create({directory: dir});
-                    let payload = CARTA.FileListRequest.encode(message).finish();
-                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-            
-                    eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-            
-                    Connection.send(eventDataTx);
-            
-                    // While receive a message
-                    Connection.onmessage = (event: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                        if (eventName === "FILE_LIST_RESPONSE") {
-                            expect(event.data.byteLength).toBeGreaterThan(0);
-                            let eventData = new Uint8Array(event.data, 36);
-                            expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
-            
-                            done();
-                        }
-                    };
-                }, openFileTimeout);
-            }
-        );
-    });
-
+    
     let mean: number[];
     let squareDiffs: number[][];
     let SD: number[];
@@ -124,203 +53,100 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
     for (let idx = 0; idx < testTimes; idx++) {
         describe(`test the files`, () => {
             [
-            [0, "SgrB2-N.spw0.line.fits", 2, CARTA.CompressionType.ZFP, 11, 4],
-            [1, "OrionKL_sci.spw19.cube.I.pbcor.fits", 7, CARTA.CompressionType.ZFP, 11, 4],
+                [0, "SgrB2-N.spw0.line.fits", 2, CARTA.CompressionType.ZFP, 11, 4],
+                // [1, "OrionKL_sci.spw19.cube.I.pbcor.fits", 7, CARTA.CompressionType.ZFP, 11, 4],
             ].map(
                 function ([fileIndex, testFileName, mip, compressionType, compressionQuality, numSubsets]: 
                         [number, string, number, CARTA.CompressionType, number, number]) {
                             
                     if (idx === 0) {
-
-                        test(`assert the file "${testFileName}" opens.`, 
-                        done => {
-                            // Preapare the message
-                            let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-                            let payload = CARTA.FileListRequest.encode(message).finish();
-                            let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-                    
-                            eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                            eventDataTx.set(payload, 36);
-                    
-                            Connection.send(eventDataTx);
-                    
-                            // While receive a message
-                            Connection.onmessage = (event: MessageEvent) => {
-                                let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                                if (eventName === "FILE_LIST_RESPONSE") {
-                                    let eventData = new Uint8Array(event.data, 36);
-                                    expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
-
-                                    // Preapare the message
-                                    message = CARTA.OpenFile.create({
-                                        directory: testSubdirectoryName, 
-                                        file: testFileName, hdu: "0", fileId: 0, 
-                                        renderMode: CARTA.RenderMode.RASTER
-                                    });
-                                    payload = CARTA.OpenFile.encode(message).finish();
-                                    eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                    eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-                                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                    eventDataTx.set(payload, 36);
-
-                                    Connection.send(eventDataTx);
-
-                                    // While receive a message
-                                    Connection.onmessage = (eventOpen: MessageEvent) => {
-                                        eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                                        if (eventName === "OPEN_FILE_ACK") {
-                                            eventData = new Uint8Array(eventOpen.data, 36);
-                                            let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                            // console.log(openFileMessage);
-                                            expect(openFileMessage.success).toBe(true);
-
-                                            done();
-                                        } // if
-                                    }; // onmessage
-                                } // if
-                            }; // onmessage "FILE_LIST_RESPONSE"
-                        }, openFileTimeout); // test
-
+                        // Initialize array
                         count.push(new Array(testTimes).fill(0));
                         squareDiffs.push(new Array(testTimes).fill(0));
                         mean.push(0);
                         SD.push(0);  
-                    }
-                    
+                    }                    
                     
                     let timer: number;
-                    test(`assert a random cursor at round ${idx + 1}.`, 
+                    test(`assert a random cursor at round ${idx + 1} on the file "${testFileName}".`, 
                     done => {
-                        // Preapare the message
-                        let message = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-                        let payload = CARTA.FileListRequest.encode(message).finish();
-                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-                
-                        eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventDataTx.set(payload, 36);
-                
-                        Connection.send(eventDataTx);
-                
-                        // While receive a message
-                        Connection.onmessage = (event: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                            if (eventName === "FILE_LIST_RESPONSE") {
-                                let eventData = new Uint8Array(event.data, 36);
-                                expect(CARTA.FileListResponse.decode(eventData).success).toBe(true);
-
-                                // Preapare the message
-                                let messageOpenFile = CARTA.OpenFile.create({
-                                    directory: testSubdirectoryName, 
-                                    file: testFileName, hdu: "0", fileId: 0, 
-                                    renderMode: CARTA.RenderMode.RASTER
-                                });
-                                payload = CARTA.OpenFile.encode(messageOpenFile).finish();
-                                eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                eventDataTx.set(payload, 36);
-
-                                Connection.send(eventDataTx);
-
-                                // While receive a message
-                                Connection.onmessage = (eventOpen: MessageEvent) => {
-                                    eventName = Utility.getEventName(new Uint8Array(eventOpen.data, 0, 32));
-                                    if (eventName === "OPEN_FILE_ACK") {
-                                        eventData = new Uint8Array(eventOpen.data, 36);
-                                        let openFileMessage = CARTA.OpenFileAck.decode(eventData);
-                                        expect(openFileMessage.success).toBe(true);
-
-                                        // Preapare the message
-                                        let messageSetImageView = CARTA.SetImageView.create({
-                                            fileId: 0, imageBounds: {xMin: 0, xMax: openFileMessage.fileInfoExtended.width, yMin: 0, yMax: openFileMessage.fileInfoExtended.height}, 
-                                            mip, compressionType, 
-                                            compressionQuality, numSubsets
-                                        });
-                                        payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                                        eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                                        eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                        eventDataTx.set(payload, 36);
-
-                                        Connection.send(eventDataTx);
+                        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                            (OpenFileAck: CARTA.OpenFileAck) => {
+                                expect(OpenFileAck.success).toBe(true);
+                                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                    (RasterImageData: CARTA.RasterImageData) => {
+                                        expect(RasterImageData.imageData.length).toBeGreaterThan(0);
+                                        let randPoint = {
+                                            x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
+                                            y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)};
                                         
-                                        // Preapare the message
-                                        let messageSetSpectralReq = CARTA.SetSpectralRequirements.create({fileId: 0, regionId: 0, spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.None]}]});
-                                        payload = CARTA.SetSpectralRequirements.encode(messageSetSpectralReq).finish();
-                                        eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
+                                        Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
+                                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                                                expect(SpectralProfileData.profiles.length).not.toEqual(0);                                                        
+                                                if (SpectralProfileData.profiles.length > 0) {
+                                                    count[fileIndex][idx] = new Date().getTime() - timer;                                                        
+                                                }
 
-                                        eventDataTx.set(Utility.stringToUint8Array("SET_SPECTRAL_REQUIREMENTS", 32));
-                                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                        eventDataTx.set(payload, 36);
+                                                if (idx + 1 === testTimes) {
+                                                    let naturalCount = count[fileIndex].filter(e => e !== 0);
+                                                    mean[fileIndex] = naturalCount.reduce((a, b) => a + b, 0) / testTimes;
+                                                    squareDiffs[fileIndex] = naturalCount.map(function(value: number) {
+                                                            let diff = value - mean[fileIndex];
+                                                            return diff * diff;
+                                                        });
+                                                    SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
+                                                    console.log(`for "${testFileName}": returning time = ${naturalCount} ms.  mean = ${mean[fileIndex]} ms.  deviation = ${SD[fileIndex]} ms. @${new Date()}`); 
 
-                                        Connection.send(eventDataTx);
-
-                                        // While receive a message
-                                        Connection.onmessage = (eventRasterImageData: MessageEvent) => {
-                                            eventName = Utility.getEventName(new Uint8Array(eventRasterImageData.data, 0, 32));
-                                            if (eventName === "RASTER_IMAGE_DATA") {
-                                                eventData = new Uint8Array(eventRasterImageData.data, 36);
-                                                let rasterImageDataMessage = CARTA.RasterImageData.decode(eventData);
-                                                expect(rasterImageDataMessage.imageData.length).toBeGreaterThan(0);
-
-                                                let randPoint = {
-                                                    x: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.xMax), 
-                                                    y: Math.floor(Math.random() * rasterImageDataMessage.imageBounds.yMax)};
-
-                                                // Preapare the message
-                                                const setCursorMessage = CARTA.SetCursor.create({fileId: 0, point: randPoint});
-                                                payload = CARTA.SetCursor.encode(setCursorMessage).finish();
-                                                eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-                    
-                                                eventDataTx.set(Utility.stringToUint8Array("SET_CURSOR", 32));
-                                                eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                                                eventDataTx.set(payload, 36);
-                                                                                        
-                                                Utility.sleep(readPeriod);
-                    
-                                                Connection.send(eventDataTx);
-                                                
-                                                timer = new Date().getTime();                             
-
-                                                // While receive a message
-                                                Connection.onmessage = (eventInfo: MessageEvent) => {
-                                                    eventName = Utility.getEventName(new Uint8Array(eventInfo.data, 0, 32));
-                                                    if (eventName === "SPECTRAL_PROFILE_DATA") {
-                                                        eventData = new Uint8Array(eventInfo.data, 36);
-                                                        let spectralProfileDataMessage = CARTA.SpectralProfileData.decode(eventData);
-                                                        // console.log(spectralProfileDataMessage);
-                                                        
-                                                        expect(spectralProfileDataMessage.profiles.length).not.toEqual(0);
-                                                        if (spectralProfileDataMessage.profiles.length > 0) {
-                                                            count[fileIndex][idx] = new Date().getTime() - timer;
-                                                        }
-        
-                                                        if (idx + 1 === testTimes) {
-                                                            let naturalCount = count[fileIndex].filter(e => e !== 0);
-                                                            mean[fileIndex] = naturalCount.reduce((a, b) => a + b, 0) / testTimes;
-                                                            squareDiffs[fileIndex] = naturalCount.map(function(value: number) {
-                                                                    let diff = value - mean[fileIndex];
-                                                                    return diff * diff;
-                                                                });
-                                                            SD[fileIndex] = Math.sqrt(squareDiffs[fileIndex].reduce((a, b) => a + b, 0) / squareDiffs[fileIndex].length);
-                                                            console.log(`for "${testFileName}": returning time = ${naturalCount} ms.  mean = ${mean[fileIndex]} ms.  deviation = ${SD[fileIndex]} ms. @${new Date()}`); 
-
-                                                        }        
-                                                        
-                                                        done();
-                                                    } // if
-                                                }; // onmessage
-                                            } // if
-                                        }; // onmessage "RASTER_IMAGE_DATA"
-                                    } // if
-                                }; // onmessage "OPEN_FILE_ACK"
-                            } // if
-                        }; // onmessage "FILE_LIST_RESPONSE"
+                                                } 
+                                                done();
+                                            }
+                                        );
+                                        Utility.sleep(readPeriod);
+                                        Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                                            {
+                                                fileId: 0, 
+                                                point: randPoint,
+                                            }
+                                        );
+                                        timer = new Date().getTime();
+                                    }
+                                );
+                                Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                                    {
+                                        fileId: 0, 
+                                        imageBounds: {
+                                            xMin: 0, xMax: OpenFileAck.fileInfoExtended.width, 
+                                            yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
+                                        }, 
+                                        mip, 
+                                        compressionType, 
+                                        compressionQuality, 
+                                        numSubsets,
+                                    }
+                                );
+                                Utility.setEvent(Connection, "SET_SPECTRAL_REQUIREMENTS", CARTA.SetSpectralRequirements, 
+                                    {
+                                        fileId: 0, 
+                                        regionId: 0, 
+                                        spectralProfiles: [
+                                            {
+                                                coordinate: "z", 
+                                                statsTypes: [CARTA.StatsType.None]
+                                            }
+                                        ],
+                                    }
+                                );
+                            }
+                        );
+                        Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                            {
+                                directory: testSubdirectoryName, 
+                                file: testFileName, 
+                                hdu: "0", 
+                                fileId: 0, 
+                                renderMode: CARTA.RenderMode.RASTER
+                            }
+                        ); 
                     }, readFileTimeout); // test
                     
                 }
@@ -331,6 +157,6 @@ describe("CURSOR_Z_PROFILE_PERFORMANCE tests", () => {
     afterEach( done => {
         Connection.close();
         done();
-    }, disconnectionTimeout);
+    }, connectionTimeout);
 
 });
