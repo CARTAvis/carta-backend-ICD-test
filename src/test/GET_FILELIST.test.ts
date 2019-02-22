@@ -2,7 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
-let expectRootPath = config.path.base;
+let expectRootPath = ".";
 let connectTimeout = config.timeout.connection;
 
 /// ICD defined
@@ -217,13 +217,16 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
             );
         }, connectTimeout);  
 
-        test(`assert the "FILE_LIST_RESPONSE.message" is not None.`, 
+        test(`assert the "FILE_LIST_RESPONSE.message" is not empty.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 (FileListResponse: CARTA.FileListResponse) => {
                     expect(FileListResponse.message).toBeDefined();
-                    console.log(`As given an unknown path, returning message: "${FileListResponse.message}" @${new Date()}`);
-
+                    expect(FileListResponse.message).not.toEqual("");
+                    if ( FileListResponse.message !== "" ) {
+                        console.log(`As given an unknown path, returning message: "${FileListResponse.message}" @${new Date()}`);
+                    }
+                        
                     done();
                 }
             );
