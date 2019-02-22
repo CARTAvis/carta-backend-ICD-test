@@ -6,7 +6,7 @@
         "readFile": 1000
     },
     "path": {
-        "root": "",
+        "root": ".",
         "base": "$BASE",
         "QA": "set_QA",
         "performance": "set_QA_performance"

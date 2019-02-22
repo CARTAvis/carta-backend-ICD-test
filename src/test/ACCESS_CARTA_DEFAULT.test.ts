@@ -155,7 +155,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                     expect(RegisterViewerAck.sessionId).toBeDefined();
-                    console.log(`registed session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
+                    console.log(`registered session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
 
                     done();
                 }

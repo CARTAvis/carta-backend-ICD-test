@@ -2,7 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
-let expectRootPath = ".";
+let expectRootPath = config.path.root;
 let connectTimeout = config.timeout.connection;
 
 /// ICD defined

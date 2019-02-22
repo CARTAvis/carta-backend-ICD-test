@@ -2,7 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
-let expectRootPath = config.path.root;
+let expectRootPath = "/scratch/images";
 let connectionTimeout = config.timeout.connection;
 
 /// ICD defined

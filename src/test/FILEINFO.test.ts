@@ -3,7 +3,7 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let expectRootPath = config.path.root;
 let testSubdirectoryName = config.path.QA;
-let connectionTimeout = config.timeout.connection;
+let connectionTimeout = 20000;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -40,7 +40,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
     }, connectionTimeout);
     
     describe(`access directory`, () => {
-        [[expectRootPath], [testSubdirectoryName], ["$BASE"]
+        [[expectRootPath], [testSubdirectoryName], // ["$BASE"]
         ].map(
             ([dir]) => {
                 test(`assert the directory "${dir}" opens.`, 
@@ -80,11 +80,11 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
         
         describe(`test an existent file`, () => {
             [
-             ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,     CARTA.FileType.FITS,    [1920, 1920, 478, 1],   4],
-             ["SDC335.579-0.292.spw0.line.image",        "",    1864975311,     CARTA.FileType.CASA,    [336, 350, 3840, 1],    4],
-             ["G34mm1_lsb_all.uv.part1.line.natwt.sml",  "",      34521240,   CARTA.FileType.MIRIAD,    [129, 129, 512, 1],     4],
-             ["orion_12co_hera.hdf5",                   "0",     118888712,     CARTA.FileType.HDF5,    [688, 575, 35],         3],
-             ["spire500_ext.fits",                      "1",      17591040,     CARTA.FileType.FITS,    [830, 870],             2],
+                ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,     CARTA.FileType.FITS,    [1920, 1920, 478, 1],   4],
+                ["SDC335.579-0.292.spw0.line.image",        "",    1864975311,     CARTA.FileType.CASA,    [336, 350, 3840, 1],    4],
+                ["G34mm1_lsb_all.uv.part1.line.natwt.sml",  "",      34521240,   CARTA.FileType.MIRIAD,    [129, 129, 512, 1],     4],
+                // ["orion_12co_hera.hdf5",                   "0",     118888712,     CARTA.FileType.HDF5,    [688, 575, 35],         3],
+                ["spire500_ext.fits",                      "1",      17591040,     CARTA.FileType.FITS,    [830, 870],             2],
             ].map(
                 function([fileName, hdu,    fileSize,   fileType,       shape,      NAXIS]: 
                          [string,   string, number,     CARTA.FileType, number[],   number]) {
