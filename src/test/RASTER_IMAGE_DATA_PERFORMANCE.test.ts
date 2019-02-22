@@ -72,7 +72,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                         [number, string, {xMin: number, xMax: number, yMin: number, yMax: number}, number, CARTA.CompressionType, number, number]) {
                                     
                     if (idx === 0) {
-                        test(`assert the file "${testFileName}" can be read.`, 
+                        test.skip(`assert the file "${testFileName}" can be read.`, 
                         done => {                            
                             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                 (OpenFileAck: CARTA.OpenFileAck) => {
@@ -89,8 +89,9 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                                     renderMode: CARTA.RenderMode.RASTER
                                 }
                             ); 
-                        }, openFileTimeout); // test
+                        }, openFileTimeout);
 
+                        // Initialize array
                         count.push(new Array(testTimes).fill(0));
                         squareDiffs.push(new Array(testTimes).fill(0));
                         mean.push(0);
