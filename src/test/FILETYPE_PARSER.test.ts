@@ -2,7 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
-let expectRootPath = "/scratch/images";
+let expectRootPath = config.path.root;
 let connectionTimeout = config.timeout.connection;
 
 /// ICD defined
@@ -125,7 +125,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
              ["S255_IR_sci.spw25.cube.I.pbcor.fits", CARTA.FileType.FITS, 7048405440, ["0"]],
              ["spire500_ext.fits", CARTA.FileType.FITS, 17591040, ["0", "1", "2", "3", "4", "5", "6", "7", ]],
              ["G34mm1_lsb_all.uv.part1.line.natwt.sml", CARTA.FileType.MIRIAD, 34521240, [""]],
-             ["orion_12co_hera.hdf5", CARTA.FileType.HDF5, 118888712, ["0"]],
+	     //["orion_12co_hera.hdf5", CARTA.FileType.HDF5, 118888712, ["0"]],
             ].map(
                 function([file, type, size, hdu]:
                          [string, CARTA.FileType, number, string[]]) {

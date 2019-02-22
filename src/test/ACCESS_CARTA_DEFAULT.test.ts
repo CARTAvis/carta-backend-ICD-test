@@ -143,7 +143,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             };
             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: "",
                     apiKey: "1234"
                 }
             );
@@ -162,7 +162,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: "",
                     apiKey: "1234"
                 }
             );
@@ -178,7 +178,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: "",
                     apiKey: "1234"
                 }
             );
@@ -194,7 +194,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: "",
                     apiKey: "1234"
                 }
             );

@@ -52,11 +52,11 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
             );
         }, connectTimeout);
                
-        test(`assert the "${testReturnName}.success" is false.`, 
+        test(`assert the "${testReturnName}.success" is true.`,
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                    expect(RegisterViewerAck.success).toBe(false);
+                    expect(RegisterViewerAck.success).toBe(true);
                     done();
                 }
             );
@@ -68,12 +68,12 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
             );
         }, connectTimeout);
     
-        test(`assert the "${testReturnName}.message" is not empty.`, 
+        test(`assert the "${testReturnName}.message" is empty.`,
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                     expect(RegisterViewerAck.message).toBeDefined();
-                    expect(RegisterViewerAck.message).not.toEqual("");
+                    expect(RegisterViewerAck.message).toEqual("");
                     if ( RegisterViewerAck.message !== "" ) {
                         console.log(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAck.message}" @${new Date()}`);
                     }
