@@ -80,15 +80,15 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
         
         describe(`test an existent file`, () => {
             [
-                ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,     CARTA.FileType.FITS,    [1920, 1920, 478, 1],   4],
-                ["SDC335.579-0.292.spw0.line.image",        "",    1864975311,     CARTA.FileType.CASA,    [336, 350, 3840, 1],    4],
-                ["G34mm1_lsb_all.uv.part1.line.natwt.sml",  "",      34521240,   CARTA.FileType.MIRIAD,    [129, 129, 512, 1],     4],
-                // ["orion_12co_hera.hdf5",                   "0",     118888712,     CARTA.FileType.HDF5,    [688, 575, 35],         3],
-                ["spire500_ext.fits",                      "1",      17591040,     CARTA.FileType.FITS,    [830, 870],             2],
+                ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,      CARTA.FileType.FITS,        [1920, 1920, 478, 1],   4],
+                ["SDC335.579-0.292.spw0.line.image",        "",    1864975311,      CARTA.FileType.CASA,        [336, 350, 3840, 1],    4],
+                ["G34mm1_lsb_all.uv.part1.line.natwt.sml",  "",      34521240,      CARTA.FileType.MIRIAD,      [129, 129, 512, 1],     4],
+                // ["orion_12co_hera.hdf5",                   "0",     118888712,      CARTA.FileType.HDF5,        [688, 575, 35],         3],
+                ["spire500_ext.fits",                      "1",      17591040,      CARTA.FileType.FITS,        [830, 870],             2],
             ].map(
                 function([fileName, hdu,    fileSize,   fileType,       shape,      NAXIS]: 
                          [string,   string, number,     CARTA.FileType, number[],   number]) {
-                    test(`assert the ${CARTA.FileType[fileType]} file "${fileName}".`, 
+                    test(`assert the info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
                             (FileInfoResponse: CARTA.FileInfoResponse) => {
@@ -98,6 +98,23 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                                 expect(FileInfoResponse.fileInfo.size.toString()).toEqual(fileSize.toString());
                                 expect(FileInfoResponse.fileInfo.type).toBe(fileType);
 
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                            {
+                                directory: testSubdirectoryName, 
+                                file: fileName, 
+                                hdu
+                            }
+                        );
+                                                 
+                    }, connectionTimeout);
+                    test(`assert the extended info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
+                    done => {
+                        Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            (FileInfoResponse: CARTA.FileInfoResponse) => {
+                                
                                 expect(FileInfoResponse.fileInfoExtended.dimensions).toEqual(NAXIS);
                                 expect(FileInfoResponse.fileInfoExtended.width).toEqual(shape[0]);
                                 expect(FileInfoResponse.fileInfoExtended.height).toEqual(shape[1]);
@@ -115,6 +132,23 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                                     fileInfoExtComputedShape.replace("[", "").replace("]", "").split(",").map(Number)
                                     ).toEqual(shape);
 
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                            {
+                                directory: testSubdirectoryName, 
+                                file: fileName, 
+                                hdu
+                            }
+                        );
+                                                 
+                    }, connectionTimeout);
+                    test(`assert the header info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
+                    done => {
+                        Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            (FileInfoResponse: CARTA.FileInfoResponse) => {
+                                
                                 const fileInfoExtHeaderNAXIS = 
                                     FileInfoResponse.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS").value;
                                 expect(parseInt(fileInfoExtHeaderNAXIS)).toEqual(NAXIS);
@@ -130,9 +164,9 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                                     expect(parseInt(fileInfoExtHeaderNAXIS3)).toEqual(shape[2]);
                                 }
                                 if (NAXIS > 3) {
-                                const fileInfoExtHeaderNAXIS4 = 
-                                    FileInfoResponse.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS4").value;
-                                expect(parseInt(fileInfoExtHeaderNAXIS4)).toEqual(shape[3]);
+                                    const fileInfoExtHeaderNAXIS4 = 
+                                        FileInfoResponse.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS4").value;
+                                    expect(parseInt(fileInfoExtHeaderNAXIS4)).toEqual(shape[3]);
                                 }
                                 done();
                             }
@@ -145,8 +179,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                             }
                         );
                                                  
-                    } // done
-                    , connectionTimeout); // test
+                    }, connectionTimeout);
                 } // function([ ])
             ); // map
         }); // describe
