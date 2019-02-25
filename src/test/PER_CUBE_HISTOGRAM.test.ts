@@ -22,49 +22,29 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
         Connection.onopen = () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
-                // Preapare the message on a eventData
-                let messageOpen = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                let payload = CARTA.RegisterViewer.encode(messageOpen).finish();
-                let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                eventData.set(payload, 36);
-
-                Connection.send(eventData);
                 
-                // While receive a message in the form of arraybuffer
-                Connection.onmessage = (event: MessageEvent) => {
-                    let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    if (eventName === "REGISTER_VIEWER_ACK") {
-                        expect(event.data.byteLength).toBeGreaterThan(0);
-                        eventData = new Uint8Array(event.data, 36);
-                        expect(CARTA.RegisterViewerAck.decode(eventData).success).toBe(true);
-                        
-                        // Preapare the message
-                        let messageFileList = CARTA.FileListRequest.create({directory: testSubdirectoryName});
-                        payload = CARTA.FileListRequest.encode(messageFileList).finish();
-                        let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-                
-                        eventDataTx.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-                        eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventDataTx.set(payload, 36);
-                
-                        Connection.send(eventDataTx);
-                
-                        // While receive a message
-                        Connection.onmessage = (eventFileList: MessageEvent) => {
-                            eventName = Utility.getEventName(new Uint8Array(eventFileList.data, 0, 32));
-                            if (eventName === "FILE_LIST_RESPONSE") {
-                                expect(eventFileList.data.byteLength).toBeGreaterThan(0);
-                                let eventDataFileList = new Uint8Array(eventFileList.data, 36);
-                                expect(CARTA.FileListResponse.decode(eventDataFileList).success).toBe(true);
-                
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            FileListResponse => {
+                                expect(FileListResponse.success).toBe(true);
                                 done();
                             }
-                        };
+                        );
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: testSubdirectoryName
+                            }
+                        );
                     }
-                };
+                );
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
             } else {
                 console.log(`Can not open a connection. @${new Date()}`);
                 done();
@@ -80,105 +60,72 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
             function ([testFileName,                fileId,     hdu,    imageBounds,                                              mip,      compressionType,            compressionQuality, numSubsets]: 
                       [string,                      number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number,   CARTA.CompressionType,      number,             number]) {
                 
-                test(`assert file "${testFileName}" to be ready.`, done => { 
-                    // Preapare the message
-                    let message = CARTA.OpenFile.create({
-                        directory: testSubdirectoryName, 
-                        file: testFileName, hdu, fileId, 
-                        renderMode: CARTA.RenderMode.RASTER
-                    });
-                    let payload = CARTA.OpenFile.encode(message).finish();
-                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                    eventDataTx.set(Utility.stringToUint8Array("OPEN_FILE", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-
-                    // While receive a message
-                    Connection.onmessage = (eventOpenFile: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(eventOpenFile.data, 0, 32));
-                        if (eventName === "OPEN_FILE_ACK") {
-                            // Preapare the message
-                            let messageSetImageView = CARTA.SetImageView.create({
-                                fileId, 
-                                imageBounds: {xMin: imageBounds.xMin, xMax: imageBounds.xMax, yMin: imageBounds.yMin, yMax: imageBounds.yMax}, 
-                                mip, compressionType,
-                                compressionQuality, numSubsets, 
-                            });
-                            payload = CARTA.SetImageView.encode(messageSetImageView).finish();
-                            eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                            eventDataTx.set(Utility.stringToUint8Array("SET_IMAGE_VIEW", 32));
-                            eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                            eventDataTx.set(payload, 36);
-
-                            // While receive a message
-                            Connection.onmessage = (eventRasterImage: MessageEvent) => {
-                                eventName = Utility.getEventName(new Uint8Array(eventRasterImage.data, 0, 32));
-                                if (eventName === "RASTER_IMAGE_DATA") {
-                                    let eventRasterImageData = new Uint8Array(eventRasterImage.data, 36);
-                                    let rasterImageDataMessage = CARTA.RasterImageData.decode(eventRasterImageData);
-                                    expect(rasterImageDataMessage.fileId).toEqual(fileId);
-
+                test(`assert file "${testFileName}" to be ready.`, 
+                done => {
+                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                        OpenFileAck => {
+                            expect(OpenFileAck.success).toBe(true);
+                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                RasterImageData => {
+                                    expect(RasterImageData.fileId).toEqual(fileId);
                                     done();
-                                } // if
-                            }; // onmessage
-
-                            Connection.send(eventDataTx);
-
-                        } // if
-                    }; // onmessage
-                    
-                    Connection.send(eventDataTx);
+                                }
+                            );
+                            Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                                {
+                                    fileId, 
+                                    imageBounds: {
+                                        xMin: imageBounds.xMin, xMax: imageBounds.xMax, 
+                                        yMin: imageBounds.yMin, yMax: imageBounds.yMax
+                                    }, 
+                                    mip, 
+                                    compressionType,
+                                    compressionQuality, 
+                                    numSubsets,
+                                }
+                            );
+                        }
+                    );
+                    Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                        {
+                            directory: testSubdirectoryName, 
+                            file: testFileName, 
+                            hdu, fileId, 
+                            renderMode: CARTA.RenderMode.RASTER,
+                        }
+                    );
 
                 }, openFileTimeout);
                 
                 let regionHistogramProgress: number;
                 test(`assert the first REGION_HISTOGRAM_DATA arrives.`, 
                 done => { 
-                    
-                    // While receive a message
-                    Connection.onmessage = (messageEvent: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                        if (eventName === "REGION_HISTOGRAM_DATA") {
-                            let messageRegionHistogramData = new Uint8Array(messageEvent.data, 36);
-                            let regionHistogramData = CARTA.RegionHistogramData.decode(messageRegionHistogramData);
-                            regionHistogramProgress = regionHistogramData.progress;
+                    Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                        RegionHistogramData => {
+                            regionHistogramProgress = RegionHistogramData.progress;
                             expect(regionHistogramProgress).toBeGreaterThan(0);
-                            expect(regionHistogramData.regionId).toEqual(-2);
-                            
+                            expect(RegionHistogramData.regionId).toEqual(-2);
                             done();
-                        } // if
-                    }; // onmessage "REGION_HISTOGRAM_DATA"
-
-                    // Preapare the message
-                    let messageSetHistogramReq = CARTA.SetHistogramRequirements.create({
-                        fileId, regionId: -2, histograms: [{channel: -2, numBins: -1}]
-                    });
-                    let payload = CARTA.SetHistogramRequirements.encode(messageSetHistogramReq).finish();
-                    let eventDataTx = new Uint8Array(32 + 4 + payload.byteLength);
-
-                    eventDataTx.set(Utility.stringToUint8Array("SET_HISTOGRAM_REQUIREMENTS", 32));
-                    eventDataTx.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                    eventDataTx.set(payload, 36);
-
-                    Connection.send(eventDataTx); 
+                        }
+                    );
+                    Utility.setEvent(Connection, "SET_HISTOGRAM_REQUIREMENTS", CARTA.SetHistogramRequirements, 
+                        {
+                            fileId, 
+                            regionId: -2, 
+                            histograms: [{channel: -2, numBins: -1}],
+                        }
+                    );
 
                 }, receiveDataTimeout); // test
 
                 test(`assert the second REGION_HISTOGRAM_DATA arrives.`, 
-                done => {
-                    // While receive a message
-                    Connection.onmessage = (messageEvent: MessageEvent) => {
-                        let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                        if (eventName === "REGION_HISTOGRAM_DATA") {
-                            let messageRegionHistogramData = new Uint8Array(messageEvent.data, 36);
-                            let regionHistogramData = CARTA.RegionHistogramData.decode(messageRegionHistogramData);
-                            expect(regionHistogramData.progress).toBeGreaterThan(regionHistogramProgress);
-                            
+                done => {                    
+                    Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                        RegionHistogramData => {
+                            expect(RegionHistogramData.progress).toBeGreaterThan(regionHistogramProgress);
                             done();
-                        } // if
-                    }; // onmessage "REGION_HISTOGRAM_DATA"
+                        }
+                    );
                 }, receiveDataTimeout); // test
 
                 test(`assert the REGION_HISTOGRAM_DATA as the progress be just greater than 0.5 .`, 
