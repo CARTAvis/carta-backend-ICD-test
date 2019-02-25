@@ -4,7 +4,8 @@
         "connection": 1000,
         "openFile": 1000,
         "readFile": 1000,
-        "concurrent": 2000
+        "concurrent": 2000,
+        "mouseEvent": 300
     },
     "path": {
         "root": ".",

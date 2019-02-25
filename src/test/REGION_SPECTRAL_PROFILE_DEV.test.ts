@@ -3,7 +3,7 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
-let operationTimeout = 500;
+let mouseEventTimeout = config.timeout.mouseEvent;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -41,22 +41,27 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                                 Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
                                     {
                                         fileId: 0, 
-                                        imageBounds: {xMin: 0, xMax: 1920, yMin: 0, yMax: 1920}, 
+                                        imageBounds: {
+                                            xMin: 0, xMax: 1920, 
+                                            yMin: 0, yMax: 1920
+                                        }, 
                                         mip: 4, 
                                         compressionType: CARTA.CompressionType.ZFP, 
                                         compressionQuality: 11, 
-                                        numSubsets: 4
+                                        numSubsets: 4,
                                     }
                                 );
                             }  
                         );
                         
                         Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                        {
-                            directory: testSubdirectoryName, 
-                            file: testFileName, hdu: "0", fileId: 0, 
-                            renderMode: CARTA.RenderMode.RASTER
-                        }
+                            {
+                                directory: testSubdirectoryName, 
+                                file: testFileName, 
+                                hdu: "0", 
+                                fileId: 0, 
+                                renderMode: CARTA.RenderMode.RASTER,
+                            }
                         );
 
                     }
@@ -65,7 +70,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                 Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                     {
                         sessionId: "", 
-                        apiKey: "1234"
+                        apiKey: "1234",
                     }
                 );
 
@@ -77,7 +82,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
         };
     }, connectionTimeout);
  
-    test(`Test set region.`, 
+    test(`Test to set a region.`, 
     done => {
         Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
             SetRegionAck => {
@@ -90,17 +95,24 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
 
         Utility.setEvent(Connection, "SET_REGION", CARTA.SetRegion, 
             {
-                fileId: 0, regionId: -1, regionName: "a box",
+                fileId: 0, 
+                regionId: -1, 
+                regionName: "a box",
                 regionType: CARTA.RegionType.RECTANGLE, 
-                channelMin: -1, channelMax: -1, stokes: [],
-                controlPoints: [{x: 1000, y: 1300}, {x: 200, y: 300}],
-                rotation: 0
+                channelMin: -1, 
+                channelMax: -1, 
+                stokes: [],
+                controlPoints: [
+                    {x: 1000, y: 1300}, 
+                    {x: 200, y: 300}
+                ],
+                rotation: 0,
             }
         );
 
-    }, operationTimeout);
+    }, mouseEventTimeout);
 
-    test(`Test region spectral profile.`, 
+    test(`Assert region spectral profile.`, 
     done => {
 
         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
@@ -117,12 +129,16 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
 
         Utility.setEvent(Connection, "SET_SPECTRAL_REQUIREMENTS", CARTA.SetSpectralRequirements, 
             {
-                fileId: 0, regionId: 1, 
-                spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Mean]}]
+                fileId: 0, 
+                regionId: 1, 
+                spectralProfiles: [{
+                    coordinate: "z", 
+                    statsTypes: [CARTA.StatsType.Mean]
+                }],
             }
         );
         
-    }, operationTimeout);
+    }, mouseEventTimeout);
 
     afterAll( done => {
         Connection.close();
