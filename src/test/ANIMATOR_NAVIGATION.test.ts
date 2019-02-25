@@ -24,10 +24,10 @@ describe("ANIMATOR_NAVIGATION tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 done();
                             }
@@ -63,10 +63,10 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                 test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
                 done => {
                     Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                        (OpenFileAck: CARTA.OpenFileAck) => {
+                        OpenFileAck => {
                             expect(OpenFileAck.success).toBe(true);
                             Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                (RasterImageData: CARTA.RasterImageData) => {
+                                RasterImageData => {
                                     expect(RasterImageData.fileId).toEqual(fileId);
                                     done();
                                 }
@@ -106,7 +106,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
     test(`assert image channel to be 0 on file ID 0.`, 
     done => {
         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-            (RasterImageData: CARTA.RasterImageData) => {
+            RasterImageData => {
                 expect(RasterImageData.fileId).toEqual(0);
                 expect(RasterImageData.channel).toEqual(1);
                 expect(RasterImageData.stokes).toEqual(1);
@@ -127,7 +127,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
     test(`assert image channel to be 100 on file ID 1.`, 
     done => {
         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-            (RasterImageData: CARTA.RasterImageData) => {
+            RasterImageData => {
                 expect(RasterImageData.fileId).toEqual(1);
                 expect(RasterImageData.channel).toEqual(100);
                 expect(RasterImageData.stokes).toEqual(0);

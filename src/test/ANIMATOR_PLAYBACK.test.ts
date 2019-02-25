@@ -26,16 +26,16 @@ describe("ANIMATOR_PLAYBACK tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {                
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                    (OpenFileAck: CARTA.OpenFileAck) => {
+                                    OpenFileAck => {
                                         expect(OpenFileAck.success).toBe(true);
                                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                            (RasterImageData: CARTA.RasterImageData) => {
+                                            RasterImageData => {
                                                 expect(RasterImageData.fileId).toEqual(0);
                                                 done();
                                             }
@@ -93,7 +93,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
         test(`assert image${idx} to play.`,
         done => {
             Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                (RasterImageData: CARTA.RasterImageData) => {
+                RasterImageData => {
                     expect(RasterImageData.fileId).toEqual(0);
                     expect(RasterImageData.channel).toEqual(idx);
                     expect(RasterImageData.stokes).toEqual(0);

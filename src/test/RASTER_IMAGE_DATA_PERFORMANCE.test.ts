@@ -26,7 +26,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -83,10 +83,10 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE tests", () => {
                     test(`assert image be read at round ${idx + 1} on the file "${testFileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            (OpenFileAck: CARTA.OpenFileAck) => {
+                            OpenFileAck => {
                                 expect(OpenFileAck.success).toBe(true);
                                 Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                    (RasterImageData: CARTA.RasterImageData) => {
+                                    RasterImageData => {
                                         expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                                         if (RasterImageData.imageData.length > 0) {
                                             count[fileIndex][idx] = new Date().getTime() - timer;

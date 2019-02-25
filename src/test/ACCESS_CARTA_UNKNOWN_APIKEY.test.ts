@@ -55,7 +55,7 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
         test(`assert the "${testReturnName}.success" is true.`,
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.success).toBe(true);
                     done();
                 }
@@ -71,7 +71,7 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
         test(`assert the "${testReturnName}.message" is empty.`,
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.message).toBeDefined();
                     expect(RegisterViewerAck.message).toEqual("");
                     if ( RegisterViewerAck.message !== "" ) {

@@ -22,7 +22,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -46,10 +46,10 @@ describe("CURSOR_XY_PROFILE tests", () => {
         beforeEach( 
         done => {            
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                        (RasterImageData: CARTA.RasterImageData) => {
+                        RasterImageData => {
                             expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                             done();
                         }
@@ -101,7 +101,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     test(`assert the fileID "${fileId}" returns: Value=${value}, Profile length={${profileLen.x}, ${profileLen.y}}, Point={${assertPoint.x}, ${assertPoint.y}} as {${point.x}, ${point.y}}.`, 
                     done => {                        
                         Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
-                            (SpatialProfileData: CARTA.SpatialProfileData) => {
+                            SpatialProfileData => {
                                 expect(SpatialProfileData.fileId).toEqual(fileId);
                                 expect(SpatialProfileData.value).toEqual(value);
                                 expect(SpatialProfileData.x).toEqual(assertPoint.x);
@@ -140,7 +140,7 @@ describe("CURSOR_XY_PROFILE tests", () => {
                     the #${oddPointY.idx + 1} value = ${oddPointY.value} with other values = ${oddPointY.others} on the profile_y as point {${point.x}, ${point.y}}.`, 
                     done => {                        
                         Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
-                            (SpatialProfileData: CARTA.SpatialProfileData) => {
+                            SpatialProfileData => {
                                 // Assert profile x
                                 SpatialProfileData.profiles.find(f => f.coordinate === "x").values.forEach( 
                                     (value, index) => {

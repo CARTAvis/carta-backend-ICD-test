@@ -22,7 +22,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -45,10 +45,10 @@ describe("CURSOR_Z_PROFILE tests", () => {
         beforeEach( 
         done => {            
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                        (RasterImageData: CARTA.RasterImageData) => {
+                        RasterImageData => {
                             expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                             done();
                         }
@@ -94,7 +94,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     test(`assert the fileId "${fileId}" returns within ${connectionTimeout}ms, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 done();
                             }
                         );
@@ -110,7 +110,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     test(`assert the fileId "${fileId}" returns: fileId = ${fileId}, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 expect(SpectralProfileData.fileId).toEqual(fileId);
                                 done();
                             }
@@ -127,7 +127,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     test(`assert the fileId "${fileId}" returns: regionId = ${regionID},  as point {${point.x}, ${point.y}}.`, 
                     done => {                        
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 expect(SpectralProfileData.regionId).toEqual(regionID);
                                 done();
                             }
@@ -144,7 +144,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     test(`assert the fileId "${fileId}" returns: stokes = ${stokes}, as point {${point.x}, ${point.y}}.`, 
                     done => {
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 expect(SpectralProfileData.stokes).toEqual(stokes);
                                 done();
                             }
@@ -161,7 +161,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                     test(`assert the fileId "${fileId}" returns: progress = ${progress},  as point {${point.x}, ${point.y}}.`, 
                     done => {
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 expect(SpectralProfileData.progress).toEqual(progress);
                                 done();
                             }
@@ -180,7 +180,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
                         vals[${assertPoint.idx}] = "${assertPoint.value}" as point {${point.x}, ${point.y}}.`, 
                     done => {                        
                         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
+                            SpectralProfileData => {
                                 let spectralProfileDataMessageProfile = 
                                     SpectralProfileData.profiles.find(f => f.coordinate === coordinate).vals;
                                 expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);

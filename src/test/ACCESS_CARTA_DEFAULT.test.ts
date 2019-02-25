@@ -52,7 +52,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             if (Connection.readyState === WebSocket.OPEN) {
 
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -86,7 +86,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             if (Connection.readyState === WebSocket.OPEN) {
 
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -153,7 +153,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         done => {
             
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.sessionId).toBeDefined();
                     console.log(`registered session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
 
@@ -171,7 +171,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         test(`assert the "${testReturnName}.success" is true.`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.success).toBe(true);
                     done();
                 }
@@ -187,7 +187,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         test(`assert the "${testReturnName}.session_type" is "CARTA.SessionType.NEW".`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.sessionType).toBe(CARTA.SessionType.NEW);
                     done();
                 }

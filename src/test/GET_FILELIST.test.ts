@@ -30,7 +30,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
                     Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        RegisterViewerAck => {
                             expect(RegisterViewerAck.success).toBe(true);
                             done();
                         }
@@ -51,7 +51,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the "${testReturnName}" within ${connectTimeout} ms.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     done();
                 }
             );
@@ -65,7 +65,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.success).toBe(true);
 
                     done();
@@ -81,7 +81,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the "FILE_LIST_RESPONSE.parent" is "" .`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.parent).toBe("");
 
                     done();
@@ -97,7 +97,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the "FILE_LIST_RESPONSE.directory" is root path "${expectRootPath}".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.directory).toBe(expectRootPath);
 
                     done();
@@ -113,7 +113,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the file "${testFileName}" exists.`, 
         done => {            
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     let fileInfo = FileListResponse.files.find(f => f.name === testFileName);
                     expect(fileInfo).toBeDefined();
                     expect(fileInfo.type).toBe(fileType);
@@ -131,7 +131,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
         test(`assert the subdirectory "${testSubdirectoryName}" exists.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     let folderInfo = FileListResponse.subdirectories.find(f => f === testSubdirectoryName);
                     expect(folderInfo).toBeDefined();
 
@@ -169,7 +169,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
                 // Checkout if Websocket server is ready
                 if (Connection.readyState === WebSocket.OPEN) {
                     Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        RegisterViewerAck => {
                             expect(RegisterViewerAck.success).toBe(true);
                             done();
                         }
@@ -190,7 +190,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
         test(`assert the "${testReturnName}" within ${connectTimeout} ms.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     done();
                 }
             );
@@ -204,7 +204,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
         test(`assert the "FILE_LIST_RESPONSE.success" is false.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.success).toBe(false);
 
                     done();
@@ -220,7 +220,7 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
         test(`assert the "FILE_LIST_RESPONSE.message" is not empty.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.message).toBeDefined();
                     expect(FileListResponse.message).not.toEqual("");
                     if ( FileListResponse.message !== "" ) {

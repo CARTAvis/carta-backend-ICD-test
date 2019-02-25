@@ -22,10 +22,10 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {                
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 done();
                             }
@@ -65,7 +65,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
                     test(`assert the file "${testFileName}" to open.`, 
                     done => {                    
                         Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            (OpenFileAck: CARTA.OpenFileAck) => {
+                            OpenFileAck => {
                                 expect(OpenFileAck.success).toBe(true);
                                 expect(OpenFileAck.fileId).toEqual(fileId);
                                 done();
@@ -85,7 +85,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
                     test(`assert the file id of "${testFileName}" to be ${fileId}.`, 
                     done => {
                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            (RasterImageData: CARTA.RasterImageData) => {
+                            RasterImageData => {
                                 expect(RasterImageData.fileId).toEqual(fileId);
                                 done();
                             }

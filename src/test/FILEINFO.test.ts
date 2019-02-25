@@ -21,7 +21,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -46,7 +46,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                 test(`assert the directory "${dir}" opens.`, 
                 done => {                    
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                        (FileListResponse: CARTA.FileListResponse) => {
+                        FileListResponse => {
                             expect(FileListResponse.success).toBe(true);
                             done();
                         }
@@ -66,7 +66,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
         beforeEach( 
             done => {
                 Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                    (FileListResponse: CARTA.FileListResponse) => {
+                    FileListResponse => {
                         expect(FileListResponse.success).toBe(true);
                         done();
                     }
@@ -91,7 +91,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                     test(`assert the info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                            (FileInfoResponse: CARTA.FileInfoResponse) => {
+                            FileInfoResponse => {
                                 expect(FileInfoResponse.success).toBe(true);
                                 expect(FileInfoResponse.fileInfo.HDUList.find( f => f === hdu)).toEqual(hdu);
                                 expect(FileInfoResponse.fileInfo.name).toBe(fileName);
@@ -113,7 +113,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                     test(`assert the extended info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                            (FileInfoResponse: CARTA.FileInfoResponse) => {
+                            FileInfoResponse => {
                                 
                                 expect(FileInfoResponse.fileInfoExtended.dimensions).toEqual(NAXIS);
                                 expect(FileInfoResponse.fileInfoExtended.width).toEqual(shape[0]);
@@ -147,7 +147,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                     test(`assert the header info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                            (FileInfoResponse: CARTA.FileInfoResponse) => {
+                            FileInfoResponse => {
                                 
                                 const fileInfoExtHeaderNAXIS = 
                                     FileInfoResponse.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS").value;

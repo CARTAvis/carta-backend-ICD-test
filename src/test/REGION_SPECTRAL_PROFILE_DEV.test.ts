@@ -24,15 +24,15 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
             if (Connection.readyState === WebSocket.OPEN) {
                 
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         
                         Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            (OpenFileAck: CARTA.OpenFileAck) => {
+                            OpenFileAck => {
                                 expect(OpenFileAck.success).toBe(true);
 
                                 Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                    (RasterImageData: CARTA.RasterImageData) => {
+                                    RasterImageData => {
                                         expect(RasterImageData.imageData.length).toBeGreaterThan(1);
                                         
                                         done();
@@ -80,7 +80,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
     test(`Test set region.`, 
     done => {
         Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
-            (SetRegionAck: CARTA.SetRegionAck) => {
+            SetRegionAck => {
                 expect(SetRegionAck.success).toBe(true);
                 expect(SetRegionAck.regionId).toEqual(1);
                 
@@ -104,7 +104,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
     done => {
 
         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-            (SpectralProfileData: CARTA.SpectralProfileData) => {
+            SpectralProfileData => {
                 expect(SpectralProfileData.fileId).toEqual(0);
                 expect(SpectralProfileData.regionId).toEqual(1);
                 expect(SpectralProfileData.stokes).toEqual(0);

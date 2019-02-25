@@ -22,7 +22,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         done();
                     }
@@ -43,7 +43,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
     test(`access ${testSubdirectoryName} on CARTA "${testServerUrl}".`, 
     done => {
         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-            (FileListResponse: CARTA.FileListResponse) => {
+            FileListResponse => {
                 expect(FileListResponse.success).toBe(true);
                 console.log(`The root folder on backend is "${FileListResponse.parent}" @${new Date()}`);
                 
@@ -63,7 +63,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectionTimeout} ms.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     done();
                 }
             );
@@ -77,7 +77,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.success).toBe(true);
                     done();
                 }
@@ -92,7 +92,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         test(`assert the "FILE_LIST_RESPONSE.parent" is "${expectRootPath}".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.parent).toBe(expectRootPath);
                     done();
                 }
@@ -107,7 +107,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         test(`assert the "FILE_LIST_RESPONSE.directory" is the path "${testSubdirectoryName}".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                FileListResponse => {
                     expect(FileListResponse.directory).toBe(testSubdirectoryName);
                     done();
                 }
@@ -133,7 +133,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                     test(`assert the file "${file}" exists, image type is ${CARTA.FileType[type]}, size = ${size}, HDU = [${hdu}].`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
 
                                 let fileInfo = FileListResponse.files.find(f => f.name === file);
@@ -165,7 +165,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                     test(`assert the file "${file}" does not exist.`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 let fileInfo = FileListResponse.files.find(f => f.name === file);
                                 expect(fileInfo).toBeUndefined();
@@ -191,7 +191,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                     test(`assert the folder "${folder}" exists.`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 let folderInfo = FileListResponse.subdirectories.find(f => f === folder);
                                 expect(folderInfo).toBeDefined();

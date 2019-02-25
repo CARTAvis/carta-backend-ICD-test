@@ -58,7 +58,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
         test(`assert the "${testReturnName}.success" is false.`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.success).toBe(false);
                     done();
                 }
@@ -74,7 +74,7 @@ describe("ACCESS_CARTA_WRONG_SID tests", () => {
         test(`assert the "${testReturnName}.message" is not empty.`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                RegisterViewerAck => {
                     expect(RegisterViewerAck.message).toBeDefined();
                     expect(RegisterViewerAck.message).not.toEqual("");
                     if ( RegisterViewerAck.message !== "" ) {

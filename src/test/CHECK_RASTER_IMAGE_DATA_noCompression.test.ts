@@ -24,10 +24,10 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             // Checkout if Websocket server is ready
             if (Connection.readyState === WebSocket.OPEN) {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
+                            FileListResponse => {
                                 expect(FileListResponse.success).toBe(true);
                                 done();
                             }
@@ -58,7 +58,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         test(`assert the file "${testFileName}" info be able to read.`, 
         done => {            
             Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                (FileInfoResponse: CARTA.FileInfoResponse) => {
+                FileInfoResponse => {
                     expect(FileInfoResponse.success).toBe(true);
                     done();
                 }
@@ -75,7 +75,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         test(`assert the file "${testFileName}" be able to open.`, 
         done => {
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     done();
                 }
@@ -94,10 +94,10 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         test(`assert the file "${testFileName}" image be able to read.`, 
         done => {            
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                        (RasterImageData: CARTA.RasterImageData) => {
+                        RasterImageData => {
                             expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                             done();
                         }
@@ -135,7 +135,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         beforeEach( 
         done => {
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     OpenFileAckTemp = OpenFileAck;
                     done();
@@ -192,7 +192,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         beforeEach( 
         done => {            
             Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                (OpenFileAck: CARTA.OpenFileAck) => {
+                OpenFileAck => {
                     expect(OpenFileAck.success).toBe(true);
                     done();
                 }
@@ -224,7 +224,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     test(`assert the file returns correct image info.`, 
                     done => {
                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            (RasterImageData: CARTA.RasterImageData) => {
+                            RasterImageData => {
                                 expect(RasterImageData.fileId).toEqual(fileId);
                                 expect(RasterImageData.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
                                 expect(RasterImageData.compressionType).toEqual(compressionType);
@@ -252,7 +252,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     test(`assert channel histogram data.`, 
                     done => {                        
                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            (RasterImageData: CARTA.RasterImageData) => {
+                            RasterImageData => {
                                 let channelHistogram = RasterImageData.channelHistogramData.histograms[0];
                                 expect(channelHistogram.numBins).toEqual(numBins);
                                 expect(channelHistogram.bins.length).toEqual(binsLength);
@@ -281,7 +281,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     test(`assert nan_encodings is empty.`, 
                     done => {
                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            (RasterImageData: CARTA.RasterImageData) => {
+                            RasterImageData => {
                                 let nanEncodings = RasterImageData.nanEncodings;
                                 if (compressionType === CARTA.CompressionType.NONE) {
                                     expect(nanEncodings.length).toEqual(0);
@@ -306,7 +306,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     test(`assert data value at position (${assertPoint1.point.x}, ${assertPoint1.point.y}) & (${assertPoint2.point.x}, ${assertPoint2.point.y}).`, 
                     done => {
                         Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            (RasterImageData: CARTA.RasterImageData) => {
+                            RasterImageData => {
                                 let imageData = RasterImageData.imageData;
                                 let imageDataSum = 0;
                                 imageData.forEach((x) => imageDataSum += x.length );
