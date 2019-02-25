@@ -3,7 +3,8 @@
     "timeout": {
         "connection": 1000,
         "openFile": 1000,
-        "readFile": 1000
+        "readFile": 1000,
+        "concurrent": 2000
     },
     "path": {
         "root": ".",

@@ -3,7 +3,7 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
-let testTimeout = 20000;
+let concurrentTimeout = config.timeout.concurrent;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -27,24 +27,18 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
                     // console.log(promiseConn);
                     // Checkout if Websocket server is ready
                     if (Connection[idx].readyState === WebSocket.OPEN) {
-                        // Preapare the message on a eventData
-                        let message = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-                        let payload = CARTA.RegisterViewer.encode(message).finish();
-                        let eventData = new Uint8Array(32 + 4 + payload.byteLength);
-
-                        eventData.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-                        eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-                        eventData.set(payload, 36);
-
-                        Connection[idx].onmessage = (event: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                            if (eventName === "REGISTER_VIEWER_ACK") {
+                        Utility.getEvent(Connection[idx], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                            RegisterViewerAck => {
+                                expect(RegisterViewerAck.success).toBe(true);
                                 resolve();
                             }
-                        };
-                        
-                        Connection[idx].send(eventData);
-                        
+                        );
+                        Utility.setEvent(Connection[idx], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                            {
+                                sessionId: "", 
+                                apiKey: "1234"
+                            }
+                        );
                     } else {
                         console.log(`connection #${idx + 1} can not open. @${new Date()}`);
                         reject();
@@ -55,7 +49,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         }
         
         Promise.all(promiseConn).then( () => done() );
-    }, testTimeout);
+    }, concurrentTimeout);
 
     let fileListResponse: CARTA.FileListResponse[] = new Array(testNumber);
     
@@ -64,15 +58,13 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         let promiseConnection: Promise<void>[] = new Array(testNumber);
         for (let idx = 0; idx < testNumber; idx++) {
             promiseConnection[idx] = new Promise( (resolve, reject) => {
-                Connection[idx].onmessage = (messageEvent: MessageEvent) => {
-                    expect(messageEvent.data.byteLength).toBeGreaterThan(40);
-                    let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    if (eventName === "FILE_LIST_RESPONSE") {
-                        let messageEventData = new Uint8Array(messageEvent.data, 36);
-                        fileListResponse[idx] = CARTA.FileListResponse.decode(messageEventData);
+                Utility.getEvent(Connection[idx], "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    FileListResponse => {
+                        expect(FileListResponse.success).toBe(true);
+                        fileListResponse[idx] = FileListResponse;
                         resolve();
                     }
-                };
+                );
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
@@ -80,21 +72,16 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
             });
         }
         Promise.all(promiseConnection).then( () => done() );
-
-        // Preapare the message on a eventData
-        let messageFileListRequest = CARTA.FileListRequest.create({directory: expectRootPath});
-        let payloadFileListRequest = CARTA.FileListRequest.encode(messageFileListRequest).finish();
-        let eventDataFileListRequest = new Uint8Array(32 + 4 + payloadFileListRequest.byteLength);
-
-        eventDataFileListRequest.set(Utility.stringToUint8Array("FILE_LIST_REQUEST", 32));
-        eventDataFileListRequest.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-        eventDataFileListRequest.set(payloadFileListRequest, 36);
-
-        for (let idy = 0; idy < testNumber; idy++) {
-            Connection[idy].send(eventDataFileListRequest);    
-        }
-
-    }, testTimeout);
+        
+        Connection.forEach( (value, index, array) => {
+            Utility.setEvent(value, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectRootPath
+                }
+            );  
+        });  
+        
+    }, concurrentTimeout);
     
     test(`assert every FILE_LIST_RESPONSE.success to be True.`, 
     () => {

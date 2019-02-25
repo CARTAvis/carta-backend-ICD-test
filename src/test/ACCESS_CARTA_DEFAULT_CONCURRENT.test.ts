@@ -2,7 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectionTimeout = config.timeout.connection;
-let testTimeout = 1000;
+let concurrentTimeout = config.timeout.concurrent;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
@@ -37,9 +37,9 @@ describe("Access Websocket concurrent test", () => {
 
         Promise.all(promiseSet).then( () => done() );
 
-    }, testTimeout);
+    }, concurrentTimeout);
 
-    test(`assert connections to "${testServerUrl}".`, 
+    test(`close ${testNumber} connections from "${testServerUrl}".`, 
     done => {
         let promiseSet: Promise<void>[] = Array(testNumber).fill(Promise);
         
@@ -62,7 +62,7 @@ describe("Access Websocket concurrent test", () => {
             Connection[idx].close();
         }
 
-    }, testTimeout);
+    }, concurrentTimeout);
         
 });
 
@@ -93,7 +93,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
 
         Promise.all(promiseSet).then( () => done() );
         
-    });
+    }, concurrentTimeout);
 
     let registerViewerAck: CARTA.RegisterViewerAck[] = Array(testNumber).fill(CARTA.RegisterViewerAck);
 
@@ -103,15 +103,13 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
         
         promiseSet.forEach( (item, index, array) => {
             array[index] = new Promise( (resolve, reject) => {
-                Connection[index].onmessage = (event: MessageEvent) => {
-                    expect(event.data.byteLength).toBeGreaterThan(40);
-                    let eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    if (eventName === "REGISTER_VIEWER_ACK") {
-                        let eventData = new Uint8Array(event.data, 36);
-                        registerViewerAck[index] = CARTA.RegisterViewerAck.decode(eventData);
+                Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        registerViewerAck[index] = RegisterViewerAck;
                         resolve();
                     }
-                };
+                );
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
@@ -121,19 +119,16 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
 
         Promise.all(promiseSet).then( () => done() );
 
-        let messageRegisterViewer = CARTA.RegisterViewer.create({sessionId: "", apiKey: "1234"});
-        let payloadRegisterViewer = CARTA.RegisterViewer.encode(messageRegisterViewer).finish();
-        let eventDataRegisterViewer = new Uint8Array(32 + 4 + payloadRegisterViewer.byteLength);
-
-        eventDataRegisterViewer.set(Utility.stringToUint8Array("REGISTER_VIEWER", 32));
-        eventDataRegisterViewer.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-        eventDataRegisterViewer.set(payloadRegisterViewer, 36);
-
         Connection.forEach( (item, index, array) => {
-            item.send(eventDataRegisterViewer);
+            Utility.setEvent(item, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234"
+                }
+            );
         });
-        
-    }, testTimeout);
+
+    }, concurrentTimeout);
         
     test(`assert every REGISTER_VIEWER_ACK.success to be True.`, 
     () => {
