@@ -89,8 +89,8 @@ describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend w
         test(`assert the "${testReturnName}.session_type" is 1.`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.session_type).toEqual(1);
+                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    expect(RegisterViewerAck.sessionType).toEqual(1);
                     done();
                 }
             );
