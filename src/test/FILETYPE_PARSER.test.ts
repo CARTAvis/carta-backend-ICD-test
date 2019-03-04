@@ -1,8 +1,9 @@
 /// Manual
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let testSubdirectoryName = config.path.QA;
 let expectRootPath = config.path.root;
+let expectBasePath = config.path.base;
+let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
 
 /// ICD defined
@@ -39,23 +40,22 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             done();
         };
     }, connectionTimeout);
-
-    test(`access ${testSubdirectoryName} on CARTA "${testServerUrl}".`, 
+    
+    let baseDirectory: string;
+    test(`assert the base path.`, 
     done => {
+        
         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-            FileListResponse => {
-                expect(FileListResponse.success).toBe(true);
-                console.log(`The root folder on backend is "${FileListResponse.parent}" @${new Date()}`);
-                
+            FileListResponseBase => {                
+                baseDirectory = FileListResponseBase.directory;    
                 done();
             }
         );
         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
             {
-                directory: testSubdirectoryName
+                directory: expectBasePath
             }
         );
-
     }, connectionTimeout);
 
     describe(`send EventName: "FILE_LIST_REQUEST" to CARTA ${testServerUrl}`, 
@@ -69,7 +69,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName
                 }
             );
         }, connectionTimeout);
@@ -84,37 +84,37 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName
                 }
             );
-        }, connectionTimeout);  
+        }, connectionTimeout);         
 
-        test(`assert the "FILE_LIST_RESPONSE.parent" is "${expectRootPath}".`, 
+        test(`assert the "FILE_LIST_RESPONSE.parent" is "${baseDirectory}".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
-                    expect(FileListResponse.parent).toBe(expectRootPath);
+                    expect(FileListResponse.parent).toBe(baseDirectory);
                     done();
                 }
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName
                 }
             );
         }, connectionTimeout);
 
-        test(`assert the "FILE_LIST_RESPONSE.directory" is the path "${testSubdirectoryName}".`, 
+        test(`assert the "FILE_LIST_RESPONSE.directory" is the path "$BASE/${testSubdirectoryName}".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
-                    expect(FileListResponse.directory).toBe(testSubdirectoryName);
+                    expect(FileListResponse.directory).toBe(baseDirectory + "/" + testSubdirectoryName);
                     done();
                 }
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName
                 }
             );
         }, connectionTimeout);
@@ -146,7 +146,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName
                             }
                         );
                     }, connectionTimeout);
@@ -174,7 +174,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName
                             }
                         );
                     }, connectionTimeout);
@@ -200,7 +200,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName
                             }
                         );
                     }, connectionTimeout);
