@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let readFileTimeout = 180000;
 let testTimes = 10;
@@ -10,6 +11,7 @@ let testTimes = 10;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let count: number[][];
 let readPeriod = 500;
 
@@ -27,7 +29,18 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
-                        done();
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: expectBasePath
+                            }
+                        );
                     }
                 );
                 Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
@@ -138,7 +151,7 @@ describe("CURSOR_XY_PROFILE_PERFORMANCE tests", () => {
                         );
                         Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: testFileName, 
                                 hdu: "0", 
                                 fileId: 0, 
