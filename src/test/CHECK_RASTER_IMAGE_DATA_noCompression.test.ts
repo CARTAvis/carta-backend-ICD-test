@@ -2,13 +2,14 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
-let expectRootPath = config.path.root;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let testFileName = "G14.114-0.574.continuum.image.pbcor.fits";
 
 describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMAGE_DATA without compression", 
@@ -27,14 +28,15 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -65,7 +67,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0",
                 }
@@ -82,7 +84,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0", 
                     fileId: 0, 
@@ -119,7 +121,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0", 
                     fileId: 0, 
@@ -143,7 +145,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0", 
                     fileId: 0, 
@@ -199,7 +201,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0", 
                     fileId: 0, 
