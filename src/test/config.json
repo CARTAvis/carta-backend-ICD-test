@@ -1,5 +1,5 @@
 {    
-    "serverURL": "wss://acdc0.asiaa.sinica.edu.tw/socket2",
+    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socket",
     "timeout": {
         "connection": 1000,
         "openFile": 1000,

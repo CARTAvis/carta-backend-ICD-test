@@ -2,14 +2,16 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let expectRootPath = config.path.root;
+let expectBasePath = config.path.base;
 let testSubdirectoryName = config.path.QA;
-let connectionTimeout = 20000;
+let connectionTimeout = 10000;
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-describe("FILEINFO test: Testing if info of a image file is correctly delivered by the backend", () => {   
+describe("FILEINFO test: Testing if info of an image file is correctly delivered by the backend", 
+() => {   
     let Connection: WebSocket;
 
     beforeEach( done => {
@@ -40,14 +42,18 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
     }, connectionTimeout);
     
     describe(`access directory`, () => {
-        [[expectRootPath], [testSubdirectoryName], // ["$BASE"]
+        [
+            [expectRootPath],
+            [expectBasePath],
+            [expectBasePath + "/" + testSubdirectoryName], 
         ].map(
             ([dir]) => {
-                test(`assert the directory "${dir}" opens.`, 
-                done => {                    
+                test(`assert the directory "${dir}" to open.`, 
+                done => {             
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                        FileListResponse => {
+                    FileListResponse => {
                             expect(FileListResponse.success).toBe(true);
+                            // console.log(FileListResponse.directory);
                             done();
                         }
                     );
@@ -61,23 +67,36 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
         );
     });
 
-    describe(`access the folder ${testSubdirectoryName} and ...`, 
+    describe(`access the folder "${testSubdirectoryName}" and ...`, 
     () => {
+        let baseDirectory: string; 
         beforeEach( 
             done => {
                 Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                    FileListResponse => {
-                        expect(FileListResponse.success).toBe(true);
-                        done();
+                FileListResponseBase => {
+                        expect(FileListResponseBase.success).toBe(true);
+                        baseDirectory = FileListResponseBase.directory;
+                        
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                        FileListResponse => {
+                                expect(FileListResponse.success).toBe(true);
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: baseDirectory + "/" + testSubdirectoryName
+                            }
+                        );
                     }
                 );
                 Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                     {
-                        directory: testSubdirectoryName
+                        directory: expectBasePath 
                     }
                 );
-            }, connectionTimeout);           
-        
+            }, connectionTimeout); 
+
         describe(`test an existent file`, () => {
             [
                 ["S255_IR_sci.spw25.cube.I.pbcor.fits",    "0",    7048405440,      CARTA.FileType.FITS,        [1920, 1920, 478, 1],   4],
@@ -91,19 +110,18 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                     test(`assert the info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     done => {
                         Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                            FileInfoResponse => {
+                            (FileInfoResponse: CARTA.FileInfoResponse) => {
                                 expect(FileInfoResponse.success).toBe(true);
                                 expect(FileInfoResponse.fileInfo.HDUList.find( f => f === hdu)).toEqual(hdu);
                                 expect(FileInfoResponse.fileInfo.name).toBe(fileName);
                                 expect(FileInfoResponse.fileInfo.size.toString()).toEqual(fileSize.toString());
                                 expect(FileInfoResponse.fileInfo.type).toBe(fileType);
-
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
                                 hdu
                             }
@@ -137,7 +155,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                         );
                         Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
                                 hdu
                             }
@@ -173,7 +191,7 @@ describe("FILEINFO test: Testing if info of a image file is correctly delivered 
                         );
                         Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
                                 hdu
                             }
@@ -224,20 +242,33 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
 
     describe(`access the folder "${testSubdirectoryName}" and ...`, 
     () => {    
+        let baseDirectory: string; 
         beforeEach( 
             done => {
                 Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                    (FileListResponse: CARTA.FileListResponse) => {
-                        expect(FileListResponse.success).toBe(true);
-                        done();
+                FileListResponseBase => {
+                        expect(FileListResponseBase.success).toBe(true);
+                        baseDirectory = FileListResponseBase.directory;
+                        
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                        FileListResponse => {
+                                expect(FileListResponse.success).toBe(true);
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: baseDirectory + "/" + testSubdirectoryName
+                            }
+                        );
                     }
                 );
                 Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                     {
-                        directory: testSubdirectoryName
+                        directory: expectBasePath 
                     }
                 );
-            }, connectionTimeout);           
+            }, connectionTimeout);            
         
         describe(`test an non-existent file`, () => {
             [
@@ -256,7 +287,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                         );
                         Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
                                 hdu: ""
                             }
