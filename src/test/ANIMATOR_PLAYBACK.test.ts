@@ -2,14 +2,16 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let readFileTimeout = config.timeout.readFile;
 let prepareTimeout = 1000; // ms
-let playTimeout = 15000; // ms
+let playTimeout = 20000; // ms
 
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 let playFrames = 150; // image
 let playPeriod = 10; // ms
@@ -29,8 +31,9 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                        FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                     OpenFileAck => {
                                         expect(OpenFileAck.success).toBe(true);
@@ -57,7 +60,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                                 );
                                 Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                     {
-                                        directory: testSubdirectoryName, 
+                                        directory: baseDirectory + "/" + testSubdirectoryName, 
                                         file: testFileName, 
                                         hdu: "0", 
                                         fileId: 0, 
@@ -68,7 +71,7 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }

@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
@@ -10,6 +11,7 @@ let readFileTimeout = config.timeout.readFile;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let messageReturnTimeout = 200;
 
 describe("ANIMATOR_NAVIGATION tests", () => {   
@@ -27,14 +29,15 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -90,7 +93,7 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                     );
                     Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
-                            directory: testSubdirectoryName, 
+                            directory: baseDirectory + "/" + testSubdirectoryName, 
                             file: testFileName, 
                             hdu, 
                             fileId, 
@@ -165,14 +168,15 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            (FileListResponse: CARTA.FileListResponse) => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -228,7 +232,7 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                     );
                     Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
-                            directory: testSubdirectoryName, 
+                            directory: baseDirectory + "/" + testSubdirectoryName, 
                             file: testFileName, 
                             hdu, 
                             fileId, 

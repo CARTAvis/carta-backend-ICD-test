@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
@@ -9,6 +10,8 @@ let readFileTimeout = config.timeout.readFile;
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
+
+let baseDirectory: string;
 
 describe("OPEN_IMAGE_MULTIFRAME tests", () => {   
     let Connection: WebSocket;
@@ -25,14 +28,15 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -73,7 +77,7 @@ describe("OPEN_IMAGE_MULTIFRAME tests", () => {
                         );
                         Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                             {
-                                directory: testSubdirectoryName, 
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: testFileName, 
                                 hdu, 
                                 fileId, 
