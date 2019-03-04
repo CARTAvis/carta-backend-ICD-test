@@ -3,6 +3,7 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let expectRootPath = config.path.root;
+let expectBasePath = config.path.base;
 let connectTimeout = config.timeout.connection;
 
 /// ICD defined
@@ -110,8 +111,25 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
             );
         }, connectTimeout);
 
+        let baseDirectory: string;
+        test(`assert the base path.`, 
+        done => {
+            
+            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                FileListResponseBase => {                
+                    baseDirectory = FileListResponseBase.directory;    
+                    done();
+                }
+            );
+            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectBasePath
+                }
+            );
+        }, connectTimeout);
+
         test(`assert the file "${testFileName}" exists.`, 
-        done => {            
+        done => {    
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
                     let fileInfo = FileListResponse.files.find(f => f.name === testFileName);
@@ -123,7 +141,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: expectRootPath
+                    directory: baseDirectory
                 }
             );
         }, connectTimeout);
@@ -140,7 +158,7 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
             );
             Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: expectRootPath
+                    directory: baseDirectory
                 }
             );
         }, connectTimeout);
