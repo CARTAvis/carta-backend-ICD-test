@@ -1,6 +1,7 @@
 /// Manual
 import config from "./config.json";
 let testServerUrl = config.serverURL;
+let expectBasePath = config.path.base;
 let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
 
@@ -9,6 +10,7 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
+let baseDirectory: string;
 
 describe("CURSOR_Z_PROFILE tests", () => {   
     let Connection: WebSocket;
@@ -24,7 +26,17 @@ describe("CURSOR_Z_PROFILE tests", () => {
                 Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
-                        done();
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            FileListResponseBase => {                
+                                baseDirectory = FileListResponseBase.directory;    
+                                done();
+                            }
+                        );
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: expectBasePath
+                            }
+                        );
                     }
                 );
                 Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
@@ -77,7 +89,7 @@ describe("CURSOR_Z_PROFILE tests", () => {
             );
             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
-                    directory: testSubdirectoryName, 
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0", fileId: 0, 
                     renderMode: CARTA.RenderMode.RASTER
