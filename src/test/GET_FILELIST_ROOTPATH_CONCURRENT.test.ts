@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectRootPath = config.path.root;
 let connectionTimeout = config.timeout.connection;
 let concurrentTimeout = config.timeout.concurrent;
 
@@ -9,7 +10,6 @@ let concurrentTimeout = config.timeout.concurrent;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
-let expectRootPath = "";
 let testFileName = "aJ.fits";
 let testNumber = 10;
 let Connection: WebSocket[] = new Array(testNumber);
@@ -104,14 +104,15 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         });
     });
 
-    test(`assert every "${testFileName}" in FILE_LIST_RESPONSE.files[].`, 
+    test.skip(`assert "${testFileName}" in every FILE_LIST_RESPONSE.files[].`, 
     () => {
         fileListResponse.forEach( (item, index, array) => {
-            expect(item.files.find(f => f.name === testFileName)).toBeDefined();
+            // console.log(item);
+            expect(item.files.find(f => f.name === testFileName)).toBeDefined();            
         });
     });
 
-    test(`assert every “${testSubdirectoryName}” in FILE_LIST_RESPONSE.subdirectories[].`, 
+    test.skip(`assert “${testSubdirectoryName}” in every FILE_LIST_RESPONSE.subdirectories[].`, 
     () => {
         fileListResponse.forEach( (item, index, array) => {
             expect(item.subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
@@ -120,7 +121,6 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
 
     test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, 
     () => {
-        // console.log(fileListResponse);
         expect(fileListResponse[0]).toBeDefined();
         expect(fileListResponse.every(f => JSON.stringify(f.files) === JSON.stringify(fileListResponse[0].files))).toBe(true);
     });
