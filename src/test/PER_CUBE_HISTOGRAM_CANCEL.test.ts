@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let openFileTimeout = 8000;
 let receiveDataTimeout = 6000;
@@ -11,6 +12,7 @@ let userWaitTimeout = 85000;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let messageReturnTimeout = 4000;
 let waitCancelTimeout = 10000;
 
@@ -29,14 +31,15 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -90,7 +93,7 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                     );
                     Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
-                            directory: testSubdirectoryName, 
+                            directory: baseDirectory + "/" + testSubdirectoryName, 
                             file: testFileName, 
                             hdu, 
                             fileId, 

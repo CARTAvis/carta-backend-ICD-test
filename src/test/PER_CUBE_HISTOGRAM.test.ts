@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let openFileTimeout = 5000;
 let receiveDataTimeout = 5000;
@@ -10,6 +11,8 @@ let userWaitTimeout = 35000;
 /// ICD defined
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
+
+let baseDirectory: string;
 
 describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogram", () => {   
     let Connection: WebSocket;
@@ -27,14 +30,15 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 done();
                             }
                         );
                         Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: testSubdirectoryName
+                                directory: expectBasePath
                             }
                         );
                     }
@@ -88,7 +92,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     );
                     Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
-                            directory: testSubdirectoryName, 
+                            directory: baseDirectory + "/" + testSubdirectoryName, 
                             file: testFileName, 
                             hdu, fileId, 
                             renderMode: CARTA.RenderMode.RASTER,
