@@ -2,6 +2,7 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
+let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let mouseEventTimeout = config.timeout.mouseEvent;
 
@@ -9,6 +10,7 @@ let mouseEventTimeout = config.timeout.mouseEvent;
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 
+let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 
 describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to assist backend development", () => {   
@@ -27,43 +29,54 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         
-                        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            OpenFileAck => {
-                                expect(OpenFileAck.success).toBe(true);
-
-                                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                    RasterImageData => {
-                                        expect(RasterImageData.imageData.length).toBeGreaterThan(1);
-                                        
-                                        done();
-                                });  
+                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            FileListResponseBase => {
+                                expect(FileListResponseBase.success).toBe(true);
+                                baseDirectory = FileListResponseBase.directory;
                                 
-                                Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
+                                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                    OpenFileAck => {
+                                        expect(OpenFileAck.success).toBe(true);
+
+                                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                            RasterImageData => {
+                                                expect(RasterImageData.imageData.length).toBeGreaterThan(1);
+                                                
+                                                done();
+                                        });  
+                                        
+                                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
+                                            {
+                                                fileId: 0, 
+                                                imageBounds: {
+                                                    xMin: 0, xMax: 1920, 
+                                                    yMin: 0, yMax: 1920
+                                                }, 
+                                                mip: 4, 
+                                                compressionType: CARTA.CompressionType.ZFP, 
+                                                compressionQuality: 11, 
+                                                numSubsets: 4,
+                                            }
+                                        );
+                                    }  
+                                );
+                                Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                     {
+                                        directory: baseDirectory + "/" + testSubdirectoryName, 
+                                        file: testFileName, 
+                                        hdu: "0", 
                                         fileId: 0, 
-                                        imageBounds: {
-                                            xMin: 0, xMax: 1920, 
-                                            yMin: 0, yMax: 1920
-                                        }, 
-                                        mip: 4, 
-                                        compressionType: CARTA.CompressionType.ZFP, 
-                                        compressionQuality: 11, 
-                                        numSubsets: 4,
+                                        renderMode: CARTA.RenderMode.RASTER,
                                     }
                                 );
-                            }  
-                        );
-                        
-                        Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                            {
-                                directory: testSubdirectoryName, 
-                                file: testFileName, 
-                                hdu: "0", 
-                                fileId: 0, 
-                                renderMode: CARTA.RenderMode.RASTER,
-                            }
-                        );
 
+                            }
+                        );      
+                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                            {
+                                directory: expectBasePath
+                            }
+                        );        
                     }
                 );
                 
@@ -81,7 +94,9 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
             
         };
     }, connectionTimeout);
- 
+
+    // test(`Test beforeAll().`,()=>{});
+
     test(`Test to set region.`, 
     done => {
         Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
