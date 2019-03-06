@@ -89,7 +89,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             );
         }, connectionTimeout);         
 
-        test(`assert the "FILE_LIST_RESPONSE.parent" is "${baseDirectory}".`, 
+        test(`assert the "FILE_LIST_RESPONSE.parent" is "$BASE".`, 
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
@@ -108,7 +108,8 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         done => {
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
-                    expect(FileListResponse.directory).toBe(baseDirectory + "/" + testSubdirectoryName);
+                    expect(FileListResponse.directory).toBe(baseDirectory === expectRootPath ? testSubdirectoryName : baseDirectory + "/" + testSubdirectoryName);
+                    console.log(FileListResponse.directory);
                     done();
                 }
             );
