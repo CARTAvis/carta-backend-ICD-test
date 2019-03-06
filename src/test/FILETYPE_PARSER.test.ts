@@ -109,7 +109,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
                 FileListResponse => {
                     expect(FileListResponse.directory).toBe(baseDirectory === expectRootPath ? testSubdirectoryName : baseDirectory + "/" + testSubdirectoryName);
-                    console.log(FileListResponse.directory);
+                    // console.log(FileListResponse.directory);
                     done();
                 }
             );
