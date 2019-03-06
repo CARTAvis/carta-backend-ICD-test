@@ -1,23 +1,23 @@
 import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
-import * as os from "os";
 
+let pidusage = require("pidusage");
 let serverURL = "ws://127.0.0.1";
 let port = 5678;
 let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
 let baseDirectory = "$HOME/CARTA/Images";
 let testDirectory = "set_QA_performance";    
 let connectTimeout = 2000;
-let openFileTimeout = 8000;
+let openFileTimeout = 4000;
 let logMessage = false;
 let imageFiles: string[] = [
-    "cube_A_03200_z00001.fits", 
-    "cube_B_03200_z00001.fits", 
-    "cube_C_03200_z00001.fits", 
-    "cube_D_03200_z00001.fits", 
-    "cube_E_03200_z00001.fits", 
-    "cube_F_03200_z00001.fits",
+    "cube_A_01600_z00001.fits", 
+    "cube_B_01600_z00001.fits", 
+    "cube_C_01600_z00001.fits", 
+    "cube_D_01600_z00001.fits", 
+    "cube_E_01600_z00001.fits", 
+    "cube_F_01600_z00001.fits",
 ];
 let imageIdx = -1;
 function arrayNext (arr: any) {
@@ -51,7 +51,7 @@ describe("Image open performance: ", () => {
             }            
         });
         
-        Utility.sleep(200);
+        Utility.sleep(500);
         
         let Connection = new WebSocket(`${serverURL}:${port}`);
         
@@ -80,9 +80,7 @@ describe("Image open performance: ", () => {
         
     }, connectTimeout);
 
-    let timeEpoch: {time: number, thread: number, CPUusage: number}[] = [];
-    let startMeasures: {tick: number, idle: number}[]; 
-    let endMeasures: {tick: number, idle: number}[];                   
+    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     describe(`Change the number of thread: `, () => {
         [
             // [64], [48], [32], [24], 
@@ -108,7 +106,7 @@ describe("Image open performance: ", () => {
                         }
                     });
                     
-                    Utility.sleep(500);
+                    Utility.sleep(1000);
 
                     let timer: number = 0;        
                     let timeElapsed: number = 0;
@@ -124,7 +122,6 @@ describe("Image open performance: ", () => {
                                     OpenFileAck => {
                                         expect(OpenFileAck.success).toBe(true);
                                         timeElapsed = new Date().getTime() - timer;
-                                        endMeasures = delta();
                                         // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
                                                                                 
                                         Connection.close();
@@ -150,29 +147,33 @@ describe("Image open performance: ", () => {
                             }
                         );
                         timer = new Date().getTime();
-                        startMeasures = delta();
                     };
 
-                    Connection.onclose = () => {
-                        const percentageCPU = endMeasures.map((end, i) => {
-                            let tickDelta = end.tick - startMeasures[i].tick;
-                            return (tickDelta / (tickDelta + (end.idle - startMeasures[i].idle)) * 100);
-                        });
-                        // console.log(percentageCPU.map(e => e.toPrecision(5) + "%").join(` `), "\n");
-                        // console.log(percentageCPU.reduce((a, b) => a + b).toPrecision(5) + "%", "\n");
-
+                    Connection.onclose = async () => {
+                        
+                        let usage: {
+                            cpu: number,
+                            memory: number,
+                            ppid: number,
+                            pid: number,
+                            ctime: number,
+                            elapsed: number,
+                            timestamp: number,
+                        } = await pidusage(cartaBackend.pid);
                         timeEpoch.push({
-                            time: timeElapsed, 
+                            time: usage.ctime, 
                             thread: threadNumber, 
-                            CPUusage: percentageCPU.reduce((a, b) => a + b)
+                            CPUusage: usage.cpu,
+                            RAM: usage.memory
                         });
-                                        
-                        cartaBackend.kill();
+
+                        await cartaBackend.kill();
                     };
 
                     cartaBackend.on("close", () => {
                         if (threadNumber === 2) {
-                            console.log(`Testing time: \n${timeEpoch.map(e => `${e.time.toPrecision(5)} ms with CPU usage = ${e.CPUusage.toPrecision(5)}% as thread number = ${e.thread}`).join(` \n`)}`);
+                            console.log(`Backend testing outcome:\n${timeEpoch
+                                .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread number = ${e.thread}`).join(` \n`)}`);
                         }                      
 
                         done();
@@ -184,17 +185,3 @@ describe("Image open performance: ", () => {
     });
     
 });    
-
-function delta() {
-    const cpus = os.cpus();
-
-    return cpus.map(cpu => {
-        const times = cpu.times;
-        return {
-        tick: Object.keys(times)
-                    .filter(time => time === "user")
-                    .reduce((tick, time) => { tick += times[time]; return tick; }, 0),
-        idle: times.idle,
-        };
-    });
-}
