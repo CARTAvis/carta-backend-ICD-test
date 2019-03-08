@@ -1,27 +1,40 @@
 import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
+import fileName from "./file.json";
 
 let pidusage = require("pidusage");
 let serverURL = "ws://127.0.0.1";
 let port = 5678;
-let threadNumber = 16;
 let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
 let baseDirectory = "$HOME/CARTA/Images";
-let testDirectory = "set_QA_performance/cube_A";    
+let testDirectory = "set_QA_performance";    
 let connectTimeout = 2000;
-let openFileTimeout = 15000;
+let openFileTimeout = 4000;
 let logMessage = false;
-let imageFiles: string[] = [
-    // "cube_A_51200_z00001.fits", 
-    // "cube_A_25600_z00001.fits", 
-    "cube_A_12800_z00001.fits", 
-    "cube_A_06400_z00001.fits", 
-    "cube_A_03200_z00001.fits", 
-    "cube_A_01600_z00001.fits", 
-    "cube_A_00800_z00001.fits", 
-    "cube_A_00400_z00001.fits", 
-    "cube_A_00200_z00001.fits",
+let imageFiles = fileName.imageFiles2fits;
+
+let imageIdx = -1;
+function arrayNext (arr: any) {
+    arr.next = () => { 
+        if (++imageIdx >= arr.length) {
+            imageIdx = 0;
+        } 
+        return arr[imageIdx];
+    };
+    arr.current = () => { return arr[imageIdx]; };
+    return arr;
+}
+let testThreadNumber: number[] = [
+    // 64,
+    // 32,
+    // 24,
+    // 16,
+    12,
+    8,
+    4,
+    2,
+    1,
 ];
 
 describe("Image open performance: ", () => {    
@@ -29,7 +42,7 @@ describe("Image open performance: ", () => {
     test(`Preparing... dry run.`, 
     done => {
         let cartaBackend = child_process.exec(
-            `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
+            `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=16`,
             {
                 cwd: backendDirectory, 
                 timeout: 20000
@@ -75,10 +88,10 @@ describe("Image open performance: ", () => {
 
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     describe(`Change the number of thread: `, () => {
-        imageFiles.map(
-            function(imageFile: string) {
+        testThreadNumber.map(
+            function(threadNumber: number) {
                 
-                test(`open "${imageFile}" on backend.`, 
+                test(`open "${arrayNext(imageFiles).next()}" on backend with thread number = ${threadNumber}.`, 
                 async done => {
                     let cartaBackend = child_process.exec(
                         `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
@@ -120,7 +133,7 @@ describe("Image open performance: ", () => {
                                 Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                     {
                                         directory: testDirectory, 
-                                        file: imageFile, 
+                                        file: arrayNext(imageFiles).current(), 
                                         hdu: "0", 
                                         fileId: 0, 
                                         renderMode: CARTA.RenderMode.RASTER,
@@ -150,6 +163,7 @@ describe("Image open performance: ", () => {
                             elapsed: number,
                             timestamp: number,
                         } = await pidusage(cartaBackend.pid);
+
                         timeEpoch.push({
                             time: usage.ctime, 
                             thread: threadNumber, 
@@ -161,9 +175,9 @@ describe("Image open performance: ", () => {
                     };
 
                     cartaBackend.on("close", () => {
-                        if (imageFile === imageFiles[imageFiles.length - 1]) {
+                        if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
                             console.log(`Backend testing outcome:\n${timeEpoch
-                                .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as file: ${imageFile}`).join(` \n`)}`);
+                                .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
                         }                      
 
                         done();

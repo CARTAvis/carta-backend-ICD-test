@@ -1,0 +1,182 @@
+{
+    "imageFiles2fits": [
+        "cube_A/cube_A_00200_z00001.fits", 
+        "cube_B/cube_B_00200_z00001.fits", 
+        "cube_C/cube_C_00200_z00001.fits",     
+        "cube_D/cube_D_00200_z00001.fits"
+    ],
+    "imageFiles4fits": [
+        "cube_A/cube_A_00400_z00001.fits", 
+        "cube_B/cube_B_00400_z00001.fits", 
+        "cube_C/cube_C_00400_z00001.fits",     
+        "cube_D/cube_D_00400_z00001.fits"
+    ],
+    "imageFiles8fits": [
+        "cube_A/cube_A_00800_z00001.fits", 
+        "cube_B/cube_B_00800_z00001.fits", 
+        "cube_C/cube_C_00800_z00001.fits",     
+        "cube_D/cube_D_00800_z00001.fits"
+    ],
+    "imageFiles16fits": [
+        "cube_A/cube_A_01600_z00001.fits", 
+        "cube_B/cube_B_01600_z00001.fits", 
+        "cube_C/cube_C_01600_z00001.fits",     
+        "cube_D/cube_D_01600_z00001.fits"
+    ],
+    "imageFiles32fits": [
+        "cube_A/cube_A_03200_z00001.fits", 
+        "cube_B/cube_B_03200_z00001.fits", 
+        "cube_C/cube_C_03200_z00001.fits",     
+        "cube_D/cube_D_03200_z00001.fits"
+    ],
+    "imageFiles64fits": [
+        "cube_A/cube_A_06400_z00001.fits", 
+        "cube_B/cube_B_06400_z00001.fits", 
+        "cube_C/cube_C_06400_z00001.fits",     
+        "cube_D/cube_D_06400_z00001.fits"
+    ],
+    "imageFiles128fits": [
+        "cube_A/cube_A_12800_z00001.fits", 
+        "cube_B/cube_B_12800_z00001.fits", 
+        "cube_C/cube_C_12800_z00001.fits",     
+        "cube_D/cube_D_12800_z00001.fits"
+    ],
+    "imageFiles256fits": [
+        "cube_A/cube_A_25600_z00001.fits", 
+        "cube_B/cube_B_25600_z00001.fits", 
+        "cube_C/cube_C_25600_z00001.fits",     
+        "cube_D/cube_D_25600_z00001.fits"
+    ],
+    "imageFiles512fits": [
+        "cube_A/cube_A_51200_z00001.fits", 
+        "cube_B/cube_B_51200_z00001.fits", 
+        "cube_C/cube_C_51200_z00001.fits",     
+        "cube_D/cube_D_51200_z00001.fits"
+    ],
+    "imageFiles2image": [
+        "cube_A/cube_A_00200_z00001.image", 
+        "cube_B/cube_B_00200_z00001.image", 
+        "cube_C/cube_C_00200_z00001.image",     
+        "cube_D/cube_D_00200_z00001.image"
+    ],
+    "imageFiles4image": [
+        "cube_A/cube_A_00400_z00001.image", 
+        "cube_B/cube_B_00400_z00001.image", 
+        "cube_C/cube_C_00400_z00001.image",     
+        "cube_D/cube_D_00400_z00001.image"
+    ],
+    "imageFiles8image": [
+        "cube_A/cube_A_00800_z00001.image", 
+        "cube_B/cube_B_00800_z00001.image", 
+        "cube_C/cube_C_00800_z00001.image",     
+        "cube_D/cube_D_00800_z00001.image"
+    ],
+    "imageFiles16image": [
+        "cube_A/cube_A_01600_z00001.image", 
+        "cube_B/cube_B_01600_z00001.image", 
+        "cube_C/cube_C_01600_z00001.image",     
+        "cube_D/cube_D_01600_z00001.image"
+    ],
+    "imageFiles32image": [
+        "cube_A/cube_A_03200_z00001.image", 
+        "cube_B/cube_B_03200_z00001.image", 
+        "cube_C/cube_C_03200_z00001.image",     
+        "cube_D/cube_D_03200_z00001.image"
+    ],
+    "imageFiles64image": [
+        "cube_A/cube_A_06400_z00001.image", 
+        "cube_B/cube_B_06400_z00001.image", 
+        "cube_C/cube_C_06400_z00001.image",     
+        "cube_D/cube_D_06400_z00001.image"
+    ],
+    "imageFiles128image": [
+        "cube_A/cube_A_12800_z00001.image", 
+        "cube_B/cube_B_12800_z00001.image", 
+        "cube_C/cube_C_12800_z00001.image",     
+        "cube_D/cube_D_12800_z00001.image"
+    ],
+    "imageFiles256image": [
+        "cube_A/cube_A_25600_z00001.image", 
+        "cube_B/cube_B_25600_z00001.image", 
+        "cube_C/cube_C_25600_z00001.image",     
+        "cube_D/cube_D_25600_z00001.image"
+    ],
+    "imageFiles512image": [
+        "cube_A/cube_A_51200_z00001.image", 
+        "cube_B/cube_B_51200_z00001.image", 
+        "cube_C/cube_C_51200_z00001.image",     
+        "cube_D/cube_D_51200_z00001.image"
+    ],
+    "imageFilesAfits": [
+        "cube_A/cube_A_12800_z00001.fits", 
+        "cube_A/cube_A_06400_z00001.fits", 
+        "cube_A/cube_A_03200_z00001.fits", 
+        "cube_A/cube_A_01600_z00001.fits", 
+        "cube_A/cube_A_00800_z00001.fits", 
+        "cube_A/cube_A_00400_z00001.fits", 
+        "cube_A/cube_A_00200_z00001.fits"
+    ],
+    "imageFilesBfits": [
+        "cube_B/cube_B_12800_z00001.fits", 
+        "cube_B/cube_B_06400_z00001.fits", 
+        "cube_B/cube_B_03200_z00001.fits", 
+        "cube_B/cube_B_01600_z00001.fits", 
+        "cube_B/cube_B_00800_z00001.fits", 
+        "cube_B/cube_B_00400_z00001.fits", 
+        "cube_B/cube_B_00200_z00001.fits"
+    ],
+    "imageFilesCfits": [
+        "cube_C/cube_C_12800_z00001.fits", 
+        "cube_C/cube_C_06400_z00001.fits", 
+        "cube_C/cube_C_03200_z00001.fits", 
+        "cube_C/cube_C_01600_z00001.fits", 
+        "cube_C/cube_C_00800_z00001.fits", 
+        "cube_C/cube_C_00400_z00001.fits", 
+        "cube_C/cube_C_00200_z00001.fits"
+    ],
+    "imageFilesDfits": [
+        "cube_D/cube_D_12800_z00001.fits", 
+        "cube_D/cube_D_06400_z00001.fits", 
+        "cube_D/cube_D_03200_z00001.fits", 
+        "cube_D/cube_D_01600_z00001.fits", 
+        "cube_D/cube_D_00800_z00001.fits", 
+        "cube_D/cube_D_00400_z00001.fits", 
+        "cube_D/cube_D_00200_z00001.fits"
+    ],
+    "imageFilesAimage": [
+        "cube_A/cube_A_12800_z00001.image", 
+        "cube_A/cube_A_06400_z00001.image", 
+        "cube_A/cube_A_03200_z00001.image", 
+        "cube_A/cube_A_01600_z00001.image", 
+        "cube_A/cube_A_00800_z00001.image", 
+        "cube_A/cube_A_00400_z00001.image", 
+        "cube_A/cube_A_00200_z00001.image"
+    ],
+    "imageFilesBimage": [
+        "cube_B/cube_B_12800_z00001.image", 
+        "cube_B/cube_B_06400_z00001.image", 
+        "cube_B/cube_B_03200_z00001.image", 
+        "cube_B/cube_B_01600_z00001.image", 
+        "cube_B/cube_B_00800_z00001.image", 
+        "cube_B/cube_B_00400_z00001.image", 
+        "cube_B/cube_B_00200_z00001.image"
+    ],
+    "imageFilesCimage": [
+        "cube_C/cube_C_12800_z00001.image", 
+        "cube_C/cube_C_06400_z00001.image", 
+        "cube_C/cube_C_03200_z00001.image", 
+        "cube_C/cube_C_01600_z00001.image", 
+        "cube_C/cube_C_00800_z00001.image", 
+        "cube_C/cube_C_00400_z00001.image", 
+        "cube_C/cube_C_00200_z00001.image"
+    ],
+    "imageFilesDimage": [
+        "cube_D/cube_D_12800_z00001.image", 
+        "cube_D/cube_D_06400_z00001.image", 
+        "cube_D/cube_D_03200_z00001.image", 
+        "cube_D/cube_D_01600_z00001.image", 
+        "cube_D/cube_D_00800_z00001.image", 
+        "cube_D/cube_D_00400_z00001.image", 
+        "cube_D/cube_D_00200_z00001.image"
+    ]
+}
