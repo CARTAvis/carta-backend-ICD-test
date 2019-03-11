@@ -12,7 +12,7 @@ let testDirectory = "set_QA_performance";
 let connectTimeout = 2000;
 let openFileTimeout = 4000;
 let logMessage = false;
-let imageFiles = fileName.imageFiles2fits;
+let imageFiles = fileName.imageFiles128fits;
 
 let imageIdx = -1;
 function arrayNext (arr: any) {
@@ -26,10 +26,10 @@ function arrayNext (arr: any) {
     return arr;
 }
 let testThreadNumber: number[] = [
-    // 64,
-    // 32,
-    // 24,
-    // 16,
+    64,
+    32,
+    24,
+    16,
     12,
     8,
     4,
@@ -37,7 +37,7 @@ let testThreadNumber: number[] = [
     1,
 ];
 
-describe("Image open performance: ", () => {    
+describe("Image open performance: 1 user on 1 backend change thread number", () => {    
  
     test(`Preparing... dry run.`, 
     done => {
@@ -56,8 +56,6 @@ describe("Image open performance: ", () => {
                 console.log(data);
             }            
         });
-        
-        Utility.sleep(500);
         
         let Connection = new WebSocket(`${serverURL}:${port}`);
         
@@ -86,6 +84,7 @@ describe("Image open performance: ", () => {
         
     }, connectTimeout);
 
+    let portAdd = 10;
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     describe(`Change the number of thread: `, () => {
         testThreadNumber.map(
@@ -94,7 +93,7 @@ describe("Image open performance: ", () => {
                 test(`open "${arrayNext(imageFiles).next()}" on backend with thread number = ${threadNumber}.`, 
                 async done => {
                     let cartaBackend = child_process.exec(
-                        `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
+                        `"./carta_backend" root=base base=${baseDirectory} port=${port + portAdd++} threads=${threadNumber}`,
                         {
                             cwd: backendDirectory, 
                             timeout: 20000
@@ -109,13 +108,13 @@ describe("Image open performance: ", () => {
                         }
                     });
                     
-                    Utility.sleep(1000);
-
                     let timer: number = 0;        
                     let timeElapsed: number = 0;
 
                     let Connection = await new WebSocket(`${serverURL}:${port}`);
                     
+                    Utility.sleep(1000); // Wait for ps result
+
                     Connection.binaryType = "arraybuffer";
                     Connection.onopen = () => {
                         Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 

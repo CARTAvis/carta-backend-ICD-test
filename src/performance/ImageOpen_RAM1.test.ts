@@ -15,7 +15,7 @@ let openFileTimeout = 15000;
 let logMessage = false;
 let imageFiles = fileName.imageFilesAfits;
 
-describe("Image open performance: ", () => {    
+describe("Image open performance:  1 user on 1 backend change image size", () => {    
  
     test(`Preparing... dry run.`, 
     done => {
@@ -34,8 +34,6 @@ describe("Image open performance: ", () => {
                 console.log(data);
             }            
         });
-        
-        Utility.sleep(500);
         
         let Connection = new WebSocket(`${serverURL}:${port}`);
         
@@ -64,6 +62,7 @@ describe("Image open performance: ", () => {
         
     }, connectTimeout);
 
+    let portAdd = 10;
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number, fileName: string}[] = [];
     describe(`Change the image size as thread = ${threadNumber}: `, () => {
         imageFiles.map(
@@ -72,7 +71,7 @@ describe("Image open performance: ", () => {
                 test(`open "${imageFile}" on backend.`, 
                 async done => {
                     let cartaBackend = child_process.exec(
-                        `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
+                        `"./carta_backend" root=base base=${baseDirectory} port=${port + portAdd++} threads=${threadNumber}`,
                         {
                             cwd: backendDirectory, 
                             timeout: 20000
@@ -93,6 +92,8 @@ describe("Image open performance: ", () => {
                     let timeElapsed: number = 0;
 
                     let Connection = await new WebSocket(`${serverURL}:${port}`);
+                    
+                    Utility.sleep(1000); // Wait for ps result
                     
                     Connection.binaryType = "arraybuffer";
                     Connection.onopen = () => {
