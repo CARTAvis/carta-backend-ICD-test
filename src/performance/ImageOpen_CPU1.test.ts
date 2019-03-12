@@ -5,14 +5,14 @@ import fileName from "./file.json";
 
 let pidusage = require("pidusage");
 let serverURL = "ws://127.0.0.1";
-let port = 5678;
+let port = 44444;
 let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
 let baseDirectory = "$HOME/CARTA/Images";
 let testDirectory = "set_QA_performance";    
 let connectTimeout = 2000;
-let openFileTimeout = 4000;
+let openFileTimeout = 8000;
 let logMessage = false;
-let imageFiles = fileName.imageFiles128fits;
+let imageFiles = fileName.imageFiles32fits;
 
 let imageIdx = -1;
 function arrayNext (arr: any) {
@@ -41,11 +41,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
  
     test(`Preparing... dry run.`, 
     done => {
+        
         let cartaBackend = child_process.exec(
-            `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=16`,
+            `./carta_backend root=base base=${baseDirectory} port=5678 threads=4`,
             {
                 cwd: backendDirectory, 
-                timeout: 20000
+                timeout: 5000
             }
         );
         cartaBackend.on("error", error => {
@@ -55,48 +56,52 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
             if (logMessage) {
                 console.log(data);
             }            
-        });
+        });      
         
-        let Connection = new WebSocket(`${serverURL}:${port}`);
-        
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = () => {
-            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    
-                    Connection.close();
-                }
-            );
-            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                {
-                    sessionId: "", 
-                    apiKey: "1234"
-                }
-            );
-        };
-        Connection.onclose = () => {
-            cartaBackend.kill();
-        };
+        setTimeout(() => {
+            let Connection = new WebSocket(`${serverURL}:5678`);
+            Connection.binaryType = "arraybuffer";
+
+            Connection.onopen = () => {
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        
+                        Connection.close();
+                    }
+                );
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
+            };
+            Connection.onclose = () => {
+                cartaBackend.kill();
+            };
+        }, 300);
+
         cartaBackend.on("close", () => {
             done();
         });
-        
+
     }, connectTimeout);
 
-    let portAdd = 10;
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+
     describe(`Change the number of thread: `, () => {
         testThreadNumber.map(
             function(threadNumber: number) {
-                
                 test(`open "${arrayNext(imageFiles).next()}" on backend with thread number = ${threadNumber}.`, 
-                async done => {
+                done => {
+                    
+                    port += threadNumber;
                     let cartaBackend = child_process.exec(
-                        `"./carta_backend" root=base base=${baseDirectory} port=${port + portAdd++} threads=${threadNumber}`,
+                        `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
                         {
                             cwd: backendDirectory, 
-                            timeout: 20000
+                            timeout: 10000
                         }
                     );
                     cartaBackend.on("error", error => {
@@ -110,75 +115,76 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                     
                     let timer: number = 0;        
                     let timeElapsed: number = 0;
-
-                    let Connection = await new WebSocket(`${serverURL}:${port}`);
                     
-                    Utility.sleep(1000); // Wait for ps result
-
-                    Connection.binaryType = "arraybuffer";
-                    Connection.onopen = () => {
-                        Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                            RegisterViewerAck => {
-                                expect(RegisterViewerAck.success).toBe(true);
-                                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                    OpenFileAck => {
-                                        expect(OpenFileAck.success).toBe(true);
-                                        timeElapsed = new Date().getTime() - timer;
-                                        // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
-                                                                                
-                                        Connection.close();
-                                    }
-                                );
-                                Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                                    {
-                                        directory: testDirectory, 
-                                        file: arrayNext(imageFiles).current(), 
-                                        hdu: "0", 
-                                        fileId: 0, 
-                                        renderMode: CARTA.RenderMode.RASTER,
-                                    }
-                                );
-                                // console.log(cartaBackend.pid);          
-                            }
-                        );
-
-                        Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                            {
-                                sessionId: "", 
-                                apiKey: "1234"
-                            }
-                        );
-                        timer = new Date().getTime();
-                    };
-
-                    Connection.onclose = async () => {
+                    setTimeout(async () => {
+                        let Connection = await new WebSocket(`${serverURL}:${port}`);
+                        Connection.binaryType = "arraybuffer";
                         
-                        let usage: {
-                            cpu: number,
-                            memory: number,
-                            ppid: number,
-                            pid: number,
-                            ctime: number,
-                            elapsed: number,
-                            timestamp: number,
-                        } = await pidusage(cartaBackend.pid);
+                        Connection.onopen = () => {
+                            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                RegisterViewerAck => {
+                                    expect(RegisterViewerAck.success).toBe(true);
+                                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                        (OpenFileAck: CARTA.OpenFileAck) => {
+                                            if (!OpenFileAck.success) {
+                                                console.log(OpenFileAck.message);
+                                            }
+                                            expect(OpenFileAck.success).toBe(true);
+                                            timeElapsed = new Date().getTime() - timer;
+                                            // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
+                                            
+                                            Connection.close();
+                                        }
+                                    );
+                                    Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                                        {
+                                            directory: testDirectory, 
+                                            file: arrayNext(imageFiles).current(), 
+                                            hdu: "0", 
+                                            fileId: 0, 
+                                            renderMode: CARTA.RenderMode.RASTER,
+                                        }
+                                    );          
+                                }
+                            );
 
-                        timeEpoch.push({
-                            time: usage.ctime, 
-                            thread: threadNumber, 
-                            CPUusage: usage.cpu,
-                            RAM: usage.memory
-                        });
+                            Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                {
+                                    sessionId: "", 
+                                    apiKey: "1234"
+                                }
+                            );
+                            timer = new Date().getTime();
+                        };
 
-                        await cartaBackend.kill();
-                    };
+                        Connection.onclose = async () => {
+                            let usage: {
+                                cpu: number,
+                                memory: number,
+                                ppid: number,
+                                pid: number,
+                                ctime: number,
+                                elapsed: number,
+                                timestamp: number,
+                            } = await pidusage(cartaBackend.pid);
+
+                            timeEpoch.push({
+                                time: timeElapsed, 
+                                thread: threadNumber, 
+                                CPUusage: usage.cpu,
+                                RAM: usage.memory
+                            });
+
+                            cartaBackend.kill();
+                        };
+                    }, 1000);
 
                     cartaBackend.on("close", () => {
                         if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
                             console.log(`Backend testing outcome:\n${timeEpoch
                                 .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
-                        }                      
-
+                        } 
+                        
                         done();
                     });
                     
