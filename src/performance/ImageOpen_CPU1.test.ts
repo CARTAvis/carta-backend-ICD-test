@@ -92,7 +92,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
 
     describe(`Change the number of thread: `, () => {
         testThreadNumber.map(
-            function(threadNumber: number) {
+            (threadNumber: number) => {
                 test(`open "${arrayNext(imageFiles).next()}" on backend with thread number = ${threadNumber}.`, 
                 done => {
                     
@@ -156,28 +156,31 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             );
                             timer = new Date().getTime();
                         };
+                        
+                        Connection.onclose =  () => {
+                            setTimeout( async () => {
+                                let usage: {
+                                    cpu: number,
+                                    memory: number,
+                                    ppid: number,
+                                    pid: number,
+                                    ctime: number,
+                                    elapsed: number,
+                                    timestamp: number,
+                                } = await pidusage(cartaBackend.pid);
 
-                        Connection.onclose = async () => {
-                            let usage: {
-                                cpu: number,
-                                memory: number,
-                                ppid: number,
-                                pid: number,
-                                ctime: number,
-                                elapsed: number,
-                                timestamp: number,
-                            } = await pidusage(cartaBackend.pid);
+                                timeEpoch.push({
+                                    time: timeElapsed, 
+                                    thread: threadNumber, 
+                                    CPUusage: usage.cpu,
+                                    RAM: usage.memory
+                                });
 
-                            timeEpoch.push({
-                                time: timeElapsed, 
-                                thread: threadNumber, 
-                                CPUusage: usage.cpu,
-                                RAM: usage.memory
-                            });
-
-                            cartaBackend.kill();
+                                cartaBackend.kill();
+                            }, 500);
                         };
-                    }, 1000);
+                        
+                    }, 500);
 
                     cartaBackend.on("close", () => {
                         if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
