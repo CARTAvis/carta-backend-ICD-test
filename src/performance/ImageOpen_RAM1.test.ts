@@ -71,7 +71,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                     );      
                                 }
                             );
-
+                            Utility.sleep(20);
                             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                 {
                                     sessionId: "", 

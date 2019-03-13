@@ -6,7 +6,7 @@ import fileName from "./file.json";
 
 let pidusage = require("pidusage");
 let serverURL = "ws://127.0.0.1";
-let port = 5555;
+let port = 11111;
 let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
 let baseDirectory = "$HOME/CARTA/Images";
 let testDirectory = "set_QA_performance";    
@@ -16,9 +16,9 @@ let logMessage = false;
 let testUserNumber = 8;
 let testImageFiles = [
     // fileName.imageFiles2fits,
-    fileName.imageFiles4fits,
+    // fileName.imageFiles4fits,
     fileName.imageFiles8fits,
-    // fileName.imageFiles16fits,
+    fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
@@ -111,7 +111,7 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
             describe(`Change the number of thread, ${testUserNumber} users open image on 1 backend: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
-                        
+
                         test(`Open image as thread# = ${testUserNumber * threadNumber}.`, 
                         done => {
                             port ++;
@@ -130,10 +130,11 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                                     console.log(data);
                                 }
                             });
+
                             setTimeout(() => {
-                                let Connection: WebSocket[] = new Array(testUserNumber);
+                                let Connection: WebSocket[] = [];
                                 for ( let index = 0; index < testUserNumber; index++) {
-                                    Connection[index] = new WebSocket(`${serverURL}:${port}`);
+                                    Connection.push(new WebSocket(`${serverURL}:${port}`));
                                     expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
                                 }
                                 
@@ -147,7 +148,7 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                                                 Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                                     OpenFileAck => {
                                                         if (!OpenFileAck.success) {
-                                                            console.log(arrayNext(imageFiles).current() + " : " + OpenFileAck.message);
+                                                            console.error(arrayNext(imageFiles).current() + " : " + OpenFileAck.message);
                                                         }
                                                         expect(OpenFileAck.success).toBe(true);
                                                                                                 
@@ -166,7 +167,7 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                                                 );         
                                             }
                                         );
-
+                                        Utility.sleep(20);
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 
@@ -211,7 +212,7 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                                     }, 500); // Wait for ps                               
                                 });
                                 
-                            }, 500); // Wait for backend ready
+                            }, 300); // Wait for backend ready
 
                             cartaBackend.on("close", () => {
                                 if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {

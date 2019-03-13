@@ -162,7 +162,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                                 );         
                                             }
                                         );
-
+                                        Utility.sleep(20);                                        
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 

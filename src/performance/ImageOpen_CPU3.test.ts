@@ -163,7 +163,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                                 );         
                                             }
                                         );
-
+                                        Utility.sleep(20);                                        
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 
