@@ -11,14 +11,14 @@ let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
 let baseDirectory = "$HOME/CARTA/Images";
 let testDirectory = "set_QA_performance";    
 let connectTimeout = 3000;
-let openFileTimeout = 10000;
+let openFileTimeout = 12000;
 let logMessage = false;
 let testUserNumber = 8;
 let testImageFiles = [
     // fileName.imageFiles2fits,
-    // fileName.imageFiles4fits,
+    fileName.imageFiles4fits,
     fileName.imageFiles8fits,
-    fileName.imageFiles16fits,
+    // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
@@ -37,8 +37,17 @@ function arrayNext (arr: any) {
     arr.current = () => { return arr[imageIdx]; };
     return arr;
 }
+let testThreadNumber: number[] = [    
+    // 8,
+    // 7,
+    6,
+    5,
+    4,
+    3,
+    2,
+];
 
-describe("Image open performance: 1 thread per user, ${testUserNumber} users on 1 backend.", () => {    
+describe("Image open performance: change thread number per user, ${testUserNumber} users on 1 backend.", () => {    
     
     test(`Preparing... dry run.`, 
     done => {
@@ -50,7 +59,7 @@ describe("Image open performance: 1 thread per user, ${testUserNumber} users on 
             }
         );
         cartaBackend.on("error", error => {
-            console.log(`error: ${error}`);
+            console.error(`error: ${error}`);
         });
         cartaBackend.stdout.on("data", data => {
             if (logMessage) {
@@ -100,21 +109,21 @@ describe("Image open performance: 1 thread per user, ${testUserNumber} users on 
         (imageFiles: string[]) => {
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
             describe(`Change the number of thread, ${testUserNumber} users open image on 1 backend: `, () => {
-                imageFiles.map(
-                    (imageFile: string) => {
+                testThreadNumber.map(
+                    (threadNumber: number) => {
                         
-                        test(`Open ${imageFile}.`, 
+                        test(`Open image as thread# = ${testUserNumber * threadNumber}.`, 
                         done => {
                             port ++;
                             let cartaBackend = child_process.exec(
-                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${testUserNumber}`,
+                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${testUserNumber * threadNumber}`,
                                 {
                                     cwd: backendDirectory, 
                                     timeout: openFileTimeout
                                 }
                             );
                             cartaBackend.on("error", error => {
-                                console.log(`error: \n ${error}`);
+                                console.error(`error: \n ${error}`);
                             });
                             cartaBackend.stdout.on("data", data => {
                                 if (logMessage) {
@@ -193,7 +202,7 @@ describe("Image open performance: 1 thread per user, ${testUserNumber} users on 
                                     
                                         timeEpoch.push({
                                             time: usage.ctime, 
-                                            thread: testUserNumber, 
+                                            thread: testUserNumber * threadNumber, 
                                             CPUusage: usage.cpu,
                                             RAM: usage.memory
                                         });
@@ -205,7 +214,7 @@ describe("Image open performance: 1 thread per user, ${testUserNumber} users on 
                             }, 500); // Wait for backend ready
 
                             cartaBackend.on("close", () => {
-                                if (imageFile === imageFiles[imageFiles.length - 1]) {
+                                if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
                                     console.log(`Backend testing outcome:\n${timeEpoch
                                         .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
                                 }                      
