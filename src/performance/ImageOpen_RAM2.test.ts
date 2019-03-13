@@ -47,7 +47,7 @@ let testThreadNumber: number[] = [
     2,
 ];
 
-describe("Image open performance: change thread number per user, ${testUserNumber} users on 1 backend.", () => {    
+describe(`Image open performance: change thread number per user, ${testUserNumber} users on 1 backend.`, () => {    
     
     test(`Preparing... dry run.`, 
     done => {
