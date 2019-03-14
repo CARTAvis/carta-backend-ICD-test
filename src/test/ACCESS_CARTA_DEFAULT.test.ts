@@ -10,13 +10,12 @@ import * as Utility from "./testUtilityFunction";
 let testEventName = "REGISTER_VIEWER";
 let testReturnName = "REGISTER_VIEWER_ACK";
 
-
 describe("Websocket tests", () => {
     let testRemoteWebsocketSite = "wss://echo.websocket.org site";
-    test(`establish a connection to "${testRemoteWebsocketSite}".`, 
+    test.skip(`establish a connection to "${testRemoteWebsocketSite}".`, 
     done => {
         // Construct a Websocket
-        let Connection = new WebSocket("wss://echo.websocket.org");
+        let Connection = new WebSocket(testRemoteWebsocketSite);
 
         // While open a Websocket
         Connection.onopen = () => {
