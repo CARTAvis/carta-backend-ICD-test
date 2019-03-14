@@ -14,7 +14,7 @@ import * as Utility from "./testUtilityFunction";
 let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 let playFrames = 150; // image
-let playPeriod = 10; // ms
+let playPeriod = 1; // ms
 
 describe("ANIMATOR_PLAYBACK tests", () => {   
     let Connection: WebSocket;
