@@ -6,7 +6,7 @@ import config from "./config.json";
 let pidusage = require("pidusage");
 
 let serverURL = config.serverURL;
-let port = config.port;
+let port = config.port + 1000;
 let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;
