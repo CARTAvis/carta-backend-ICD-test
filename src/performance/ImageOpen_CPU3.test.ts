@@ -46,64 +46,64 @@ let testThreadNumber: number[] = [
 ];
 
 describe("Image open performance: change thread number per user, 8 users on 1 backend.", () => {    
-    testImageFiles.map(
-        (imageFiles: string[]) => { 
-            test(`Preparing... dry run.`, 
-            done => {
-                let cartaBackend = child_process.exec(
-                    `"./carta_backend" root=base base=${baseDirectory} port=1234 threads=4`,
-                    {
-                        cwd: backendDirectory, 
-                        timeout: 5000
+    test(`Preparing... dry run.`, 
+    done => {
+        let cartaBackend = child_process.exec(
+            `"./carta_backend" root=base base=${baseDirectory} port=1234 threads=4`,
+            {
+                cwd: backendDirectory, 
+                timeout: 5000
+            }
+        );
+        cartaBackend.on("error", error => {
+            console.log(`error: ${error}`);
+        });
+        cartaBackend.stdout.on("data", data => {
+            if (logMessage) {
+                console.log(data);
+            }            
+        });
+
+        setTimeout( () => {
+
+            let Connection = new WebSocket(`${serverURL}:1234`);
+            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
+            
+            Connection.binaryType = "arraybuffer";
+            Connection.onopen = () => {
+                expect(Connection.readyState).toBe(WebSocket.OPEN);
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {                            
+                        expect(RegisterViewerAck.success).toBe(true);
+                        // console.log("test done");
+                        
+                        Connection.close();
+                        expect(Connection.readyState).toBe(WebSocket.CLOSING);
                     }
                 );
-                cartaBackend.on("error", error => {
-                    console.log(`error: ${error}`);
-                });
-                cartaBackend.stdout.on("data", data => {
-                    if (logMessage) {
-                        console.log(data);
-                    }            
-                });
-
-                setTimeout( () => {
-
-                    let Connection = new WebSocket(`${serverURL}:1234`);
-                    expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-                    
-                    Connection.binaryType = "arraybuffer";
-                    Connection.onopen = () => {
-                        expect(Connection.readyState).toBe(WebSocket.OPEN);
-                        Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                            RegisterViewerAck => {                            
-                                expect(RegisterViewerAck.success).toBe(true);
-                                // console.log("test done");
-                                
-                                Connection.close();
-                                expect(Connection.readyState).toBe(WebSocket.CLOSING);
-                            }
-                        );
-                        Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                            {
-                                sessionId: "", 
-                                apiKey: "1234"
-                            }
-                        );
-                    };
-                    
-                    Connection.onclose = () => {
-                        expect(Connection.readyState).toBe(WebSocket.CLOSED);
-                        cartaBackend.kill();
-                    };  
-                        
-                }, 100);
-
-                cartaBackend.on("close", () => {
-                    done();
-                });
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
+            };
+            
+            Connection.onclose = () => {
+                expect(Connection.readyState).toBe(WebSocket.CLOSED);
+                cartaBackend.kill();
+            };  
                 
-            }, connectTimeout);
+        }, 100);
 
+        cartaBackend.on("close", () => {
+            done();
+        });
+                
+    }, connectTimeout);
+
+    testImageFiles.map(
+        (imageFiles: string[]) => { 
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
             describe(`Change the number of thread, 8 users open image on 1 backend: `, () => {
                 testThreadNumber.map(

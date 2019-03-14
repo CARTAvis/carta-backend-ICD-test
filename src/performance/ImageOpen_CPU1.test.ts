@@ -46,57 +46,58 @@ let testThreadNumber: number[] = [
 ];
 
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
-    testImageFiles.map(
-        (imageFiles: string[]) => {
-            test(`Preparing... dry run.`, 
-            done => {
-                
-                let cartaBackend = child_process.exec(
-                    `./carta_backend root=base base=${baseDirectory} port=5678 threads=4`,
-                    {
-                        cwd: backendDirectory, 
-                        timeout: 5000
+    
+    test(`Preparing... dry run.`, 
+    done => {
+        
+        let cartaBackend = child_process.exec(
+            `./carta_backend root=base base=${baseDirectory} port=5678 threads=4`,
+            {
+                cwd: backendDirectory, 
+                timeout: 5000
+            }
+        );
+        cartaBackend.on("error", error => {
+            console.log(`error: ${error}`);
+        });
+        cartaBackend.stdout.on("data", data => {
+            if (logMessage) {
+                console.log(data);
+            }            
+        });      
+        
+        setTimeout(() => {
+            let Connection = new WebSocket(`${serverURL}:5678`);
+            Connection.binaryType = "arraybuffer";
+
+            Connection.onopen = () => {
+                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        
+                        Connection.close();
                     }
                 );
-                cartaBackend.on("error", error => {
-                    console.log(`error: ${error}`);
-                });
-                cartaBackend.stdout.on("data", data => {
-                    if (logMessage) {
-                        console.log(data);
-                    }            
-                });      
-                
-                setTimeout(() => {
-                    let Connection = new WebSocket(`${serverURL}:5678`);
-                    Connection.binaryType = "arraybuffer";
+                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
+            };
+            Connection.onclose = () => {
+                cartaBackend.kill();
+            };
+        }, 300);
 
-                    Connection.onopen = () => {
-                        Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                            RegisterViewerAck => {
-                                expect(RegisterViewerAck.success).toBe(true);
-                                
-                                Connection.close();
-                            }
-                        );
-                        Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                            {
-                                sessionId: "", 
-                                apiKey: "1234"
-                            }
-                        );
-                    };
-                    Connection.onclose = () => {
-                        cartaBackend.kill();
-                    };
-                }, 300);
+        cartaBackend.on("close", () => {
+            done();
+        });
 
-                cartaBackend.on("close", () => {
-                    done();
-                });
+    }, connectTimeout);
 
-            }, connectTimeout);
-
+    testImageFiles.map(
+        (imageFiles: string[]) => {
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
 
             describe(`Change the number of thread: `, () => {
