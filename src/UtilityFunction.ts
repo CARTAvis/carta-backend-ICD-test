@@ -56,3 +56,14 @@ export function getEvent(
         }
     };
 }
+/// Roll array item
+export function arrayNext (arr: any, state: {index: number}) {
+    arr.next = () => { 
+        if (++state.index >= arr.length) {
+            state.index = 0;
+        } 
+        return arr[state.index];
+    };
+    arr.current = () =>  arr[state.index];
+    return arr;
+}

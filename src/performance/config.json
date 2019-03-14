@@ -1,0 +1,20 @@
+{    
+    "serverURL": "ws://127.0.0.1",
+    "port": 55555,
+    "timeout": {
+        "connection": 2000,
+        "openFile": 8000,
+        "readFile": 8000
+    },
+    "wait": {
+        "exec": 500,
+        "ps": 500,
+        "event": 20
+    },
+    "path": {
+        "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
+        "base": "$HOME/CARTA/Images",
+        "performance": "set_QA_performance"
+    },
+    "log" : false
+}

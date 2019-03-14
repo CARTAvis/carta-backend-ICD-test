@@ -2,16 +2,22 @@ import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
-
+import config from "./config.json";
 let pidusage = require("pidusage");
-let serverURL = "ws://127.0.0.1";
-let port = 5555;
-let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
-let baseDirectory = "$HOME/CARTA/Images";
-let testDirectory = "set_QA_performance";    
-let connectTimeout = 3000;
-let openFileTimeout = 10000;
-let logMessage = false;
+
+let serverURL = config.serverURL;
+let port = config.port;
+let backendDirectory = config.path.backend;
+let baseDirectory = config.path.base;
+let testDirectory = config.path.performance;    
+let connectTimeout = config.timeout.connection;
+let openFileTimeout = config.timeout.openFile;
+let execWait = config.wait.exec;
+let psWait = config.wait.ps;
+let eventWait = config.wait.event;
+let logMessage = config.log;
+let state = {index: -1};
+
 let testUserNumber = 8;
 let testImageFiles = [
     fileName.imageFiles2fits,
@@ -23,20 +29,9 @@ let testImageFiles = [
     // fileName.imageFiles128fits,
 ];
 
-let imageIdx = -1;
-function arrayNext (arr: any) {
-    arr.next = () => { 
-        if (++imageIdx >= arr.length) {
-            imageIdx = 0;
-        } 
-        return arr[imageIdx];
-    };
-    arr.current = () => { return arr[imageIdx]; };
-    return arr;
-}
 let testThreadNumber: number[] = [    
-    // 8,
-    // 7,
+    8,
+    7,
     6,
     5,
     4,
@@ -144,7 +139,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                                 Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                                     OpenFileAck => {
                                                         if (!OpenFileAck.success) {
-                                                            console.log(arrayNext(imageFiles).current() + " : " + OpenFileAck.message);
+                                                            console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
                                                         }
                                                         expect(OpenFileAck.success).toBe(true);
                                                                                                 
@@ -155,7 +150,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                                 Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
                                                     {
                                                         directory: testDirectory, 
-                                                        file: arrayNext(imageFiles).next(), 
+                                                        file: Utility.arrayNext(imageFiles, state).next(), 
                                                         hdu: "0", 
                                                         fileId: 0, 
                                                         renderMode: CARTA.RenderMode.RASTER,
@@ -163,7 +158,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                                 );         
                                             }
                                         );
-                                        Utility.sleep(20);                                        
+                                        Utility.sleep(eventWait);                                        
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 
@@ -205,10 +200,10 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                         });
                                     
                                         await cartaBackend.kill(); 
-                                    }, 500); // Wait for ps                               
+                                    }, psWait); // Wait for ps                               
                                 });
                                 
-                            }, 500); // Wait for backend ready
+                            }, execWait); // Wait for backend ready
 
                             cartaBackend.on("close", () => {
                                 if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {

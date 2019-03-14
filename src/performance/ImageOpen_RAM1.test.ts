@@ -2,17 +2,21 @@ import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
-
+import config from "./config.json";
 let pidusage = require("pidusage");
-let serverURL = "ws://127.0.0.1";
-let port = 5555;
+
+let serverURL = config.serverURL;
+let port = config.port;
+let backendDirectory = config.path.backend;
+let baseDirectory = config.path.base;
+let testDirectory = config.path.performance;
+let openFileTimeout = config.timeout.openFile;
+let execWait = config.wait.exec;
+let psWait = config.wait.ps;
+let eventWait = config.wait.event;
+let logMessage = config.log;
+
 let threadNumber = 16;
-let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
-let baseDirectory = "$HOME/CARTA/Images";
-let testDirectory = "set_QA_performance";    
-let connectTimeout = 2000;
-let openFileTimeout = 15000;
-let logMessage = false;
 let imageFiles = fileName.imageFilesAfits;
 
 describe("Image open performance:  1 user on 1 backend change image size", () => {    
@@ -71,7 +75,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                     );      
                                 }
                             );
-                            Utility.sleep(20);
+                            Utility.sleep(eventWait);
                             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                 {
                                     sessionId: "", 
@@ -101,10 +105,10 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                 });
 
                                 await cartaBackend.kill();
-                            }, 500);
+                            }, psWait);
                         };
                         
-                    }, 500);
+                    }, execWait);
 
                     cartaBackend.on("close", () => {
                         if (imageFile === imageFiles[imageFiles.length - 1]) {

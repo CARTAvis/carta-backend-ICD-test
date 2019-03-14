@@ -2,37 +2,30 @@ import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
-
+import config from "./config.json";
 let pidusage = require("pidusage");
-let serverURL = "ws://127.0.0.1";
-let port = 44444;
-let backendDirectory = "/Users/zarda/GitHub/carta-backend-nrao/build";
-let baseDirectory = "$HOME/CARTA/Images";
-let testDirectory = "set_QA_performance";    
-let connectTimeout = 2000;
-let openFileTimeout = 8000;
-let logMessage = false;
+
+let serverURL = config.serverURL;
+let port = config.port;
+let backendDirectory = config.path.backend;
+let baseDirectory = config.path.base;
+let testDirectory = config.path.performance;    
+let connectTimeout = config.timeout.connection;
+let openFileTimeout = config.timeout.openFile;
+let execWait = config.wait.exec;
+let psWait = config.wait.ps;
+let logMessage = config.log;
+let state = {index: -1};
+
 let testImageFiles = [
     fileName.imageFiles2fits,
-    fileName.imageFiles4fits,
-    fileName.imageFiles8fits,
+    // fileName.imageFiles4fits,
+    // fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
 ];
-
-let imageIdx = -1;
-function arrayNext (arr: any) {
-    arr.next = () => { 
-        if (++imageIdx >= arr.length) {
-            imageIdx = 0;
-        } 
-        return arr[imageIdx];
-    };
-    arr.current = () => { return arr[imageIdx]; };
-    return arr;
-}
 let testThreadNumber: number[] = [
     64,
     32,
@@ -103,15 +96,15 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
             describe(`Change the number of thread: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
-                        test(`open "${arrayNext(imageFiles).next()}" on backend with thread number = ${threadNumber}.`, 
+                        test(`open "${Utility.arrayNext(imageFiles, state).next()}" on backend with thread number = ${threadNumber}.`, 
                         done => {
                             
                             port += threadNumber;
                             let cartaBackend = child_process.exec(
-                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
+                                `./carta_backend root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
                                 {
                                     cwd: backendDirectory, 
-                                    timeout: 10000
+                                    timeout: openFileTimeout
                                 }
                             );
                             cartaBackend.on("error", error => {
@@ -149,7 +142,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                             Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                                 {
                                                     directory: testDirectory, 
-                                                    file: arrayNext(imageFiles).current(), 
+                                                    file: Utility.arrayNext(imageFiles, state).current(), 
                                                     hdu: "0", 
                                                     fileId: 0, 
                                                     renderMode: CARTA.RenderMode.RASTER,
@@ -187,10 +180,10 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                         });
 
                                         cartaBackend.kill();
-                                    }, 500);
+                                    }, psWait);
                                 };
                                 
-                            }, 500);
+                            }, execWait);
 
                             cartaBackend.on("close", () => {
                                 if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
