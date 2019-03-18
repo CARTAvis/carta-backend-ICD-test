@@ -28,7 +28,7 @@ describe("Spatial profile performance:  1 user on 1 backend change image size", 
         imageFiles.map(
             (imageFile: string) => {
                 
-                test(`open "${imageFile}" on backend.`, 
+                test(`set cursor randomly ${setCursorRepeat} times on "${imageFile}".`, 
                 done => {
                     port ++;
                     let cartaBackend = child_process.exec(

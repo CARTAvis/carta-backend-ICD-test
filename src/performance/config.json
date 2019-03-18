@@ -10,7 +10,7 @@
         "exec": 500,
         "ps": 500,
         "event": 30,
-        "cursor": 30
+        "cursor": 35
     },
     "repeat": {
         "cursor": 25
