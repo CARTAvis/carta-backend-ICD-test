@@ -72,7 +72,8 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                             fileId: 0, 
                                             renderMode: CARTA.RenderMode.RASTER,
                                         }
-                                    );      
+                                    );
+                                    timer = new Date().getTime();      
                                 }
                             );
                             Utility.sleep(eventWait);
@@ -82,7 +83,6 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                     apiKey: "1234"
                                 }
                             );
-                            timer = new Date().getTime();
                         };
                         
                         Connection.onclose = () => {

@@ -18,9 +18,9 @@ let logMessage = config.log;
 let state = {index: -1};
 
 let testImageFiles = [
-    fileName.imageFiles2fits,
+    // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
-    // fileName.imageFiles8fits,
+    fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
@@ -147,7 +147,8 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                                     fileId: 0, 
                                                     renderMode: CARTA.RenderMode.RASTER,
                                                 }
-                                            );          
+                                            );
+                                            timer = new Date().getTime();          
                                         }
                                     );
 
@@ -157,7 +158,6 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                             apiKey: "1234"
                                         }
                                     );
-                                    timer = new Date().getTime();
                                 };
                                 
                                 Connection.onclose =  () => {
