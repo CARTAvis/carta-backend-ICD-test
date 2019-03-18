@@ -16,8 +16,8 @@ let readFileTimeout = config.timeout.readFile;
 let execWait = config.wait.exec;
 let psWait = config.wait.ps;
 let cursorWait = config.wait.cursor;
-let logMessage = config.log;
 let setCursorRepeat = config.repeat.cursor;
+let logMessage = config.log;
 let state = {index: -1};
 
 let testImageFiles = [
