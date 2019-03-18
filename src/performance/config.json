@@ -13,7 +13,7 @@
         "cursor": 30
     },
     "repeat": {
-        "cursor": 50
+        "cursor": 20
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",

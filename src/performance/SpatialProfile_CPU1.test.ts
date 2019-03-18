@@ -3,7 +3,7 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
-import { cursorTo } from "readline";
+
 let pidusage = require("pidusage");
 
 let serverURL = config.serverURL;
@@ -122,8 +122,8 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                             let timer: number = 0;        
                             let timeElapsed: number = 0;
 
-                            setTimeout(async () => {
-                                let Connection = await new WebSocket(`${serverURL}:${port}`);
+                            setTimeout(() => {
+                                let Connection = new WebSocket(`${serverURL}:${port}`);
                                 Connection.binaryType = "arraybuffer";
                                 
                                 Connection.onopen = () => {
@@ -143,13 +143,14 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                                                 x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
                                                                 y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)};
                                                             
-                                                            for ( let index = 0; index < setCursorRepeat; index++) {
+                                                            timer = new Date().getTime();
+                                                            for ( let index = 1; index <= setCursorRepeat; index++) {
                                                                 Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
                                                                     SpatialProfileData => {
-                                                                        expect(SpatialProfileData.profiles.length).not.toEqual(0);                                                        
-                                                                        timeElapsed += new Date().getTime() - timer;
+                                                                        expect(SpatialProfileData.profiles.length).not.toEqual(0);
 
-                                                                        if (index === setCursorRepeat - 1) {
+                                                                        if (index === setCursorRepeat) {                                                        
+                                                                            timeElapsed = new Date().getTime() - timer - cursorWait * setCursorRepeat;
                                                                             Connection.close(); 
                                                                         }
                                                                         
@@ -162,7 +163,6 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                                                         point: randPoint,
                                                                     }
                                                                 );
-                                                                timer = new Date().getTime();
                                                             }
                                                         }
                                                     );
@@ -221,7 +221,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                         } = await pidusage(cartaBackend.pid);
 
                                         timeEpoch.push({
-                                            time: timeElapsed, 
+                                            time: setCursorRepeat === 0 ? 0 : timeElapsed / setCursorRepeat, 
                                             thread: threadNumber, 
                                             CPUusage: usage.cpu,
                                             RAM: usage.memory
