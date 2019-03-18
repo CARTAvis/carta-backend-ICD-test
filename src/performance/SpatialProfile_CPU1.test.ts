@@ -12,7 +12,7 @@ let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
-let openFileTimeout = config.timeout.openFile;
+let readFileTimeout = config.timeout.readFile;
 let execWait = config.wait.exec;
 let psWait = config.wait.ps;
 let cursorWait = config.wait.cursor;
@@ -107,7 +107,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                 `./carta_backend root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
                                 {
                                     cwd: backendDirectory, 
-                                    timeout: openFileTimeout
+                                    timeout: readFileTimeout
                                 }
                             );
                             cartaBackend.on("error", error => {
@@ -150,7 +150,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                                                         expect(SpatialProfileData.profiles.length).not.toEqual(0);
 
                                                                         if (index === setCursorRepeat) {                                                        
-                                                                            timeElapsed = new Date().getTime() - timer - cursorWait * setCursorRepeat;
+                                                                            timeElapsed = (new Date().getTime() - timer) / setCursorRepeat - cursorWait;
                                                                             Connection.close(); 
                                                                         }
                                                                         
@@ -221,7 +221,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                         } = await pidusage(cartaBackend.pid);
 
                                         timeEpoch.push({
-                                            time: setCursorRepeat === 0 ? 0 : timeElapsed / setCursorRepeat, 
+                                            time: timeElapsed, 
                                             thread: threadNumber, 
                                             CPUusage: usage.cpu,
                                             RAM: usage.memory
@@ -242,7 +242,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                 done();
                             });
                             
-                        }, openFileTimeout);
+                        }, readFileTimeout);
                     }
                 );
             });

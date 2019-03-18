@@ -4,7 +4,7 @@
     "timeout": {
         "connection": 2000,
         "openFile": 8000,
-        "readFile": 8000
+        "readFile": 12000
     },
     "wait": {
         "exec": 500,
@@ -13,7 +13,7 @@
         "cursor": 30
     },
     "repeat": {
-        "cursor": 20
+        "cursor": 25
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
