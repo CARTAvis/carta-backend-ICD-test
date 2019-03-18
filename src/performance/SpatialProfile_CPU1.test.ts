@@ -138,31 +138,31 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                                     expect(OpenFileAck.success).toBe(true);
                                                     Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
                                                         RasterImageData => {
-                                                        expect(RasterImageData.imageData.length).toBeGreaterThan(0);
-                                                        let randPoint = {
-                                                            x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
-                                                            y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)};
-                                                        
-                                                        for ( let index = 0; index < setCursorRepeat; index++) {
-                                                            Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
-                                                                SpatialProfileData => {
-                                                                    expect(SpatialProfileData.profiles.length).not.toEqual(0);                                                        
-                                                                    timeElapsed += new Date().getTime() - timer;
+                                                            expect(RasterImageData.imageData.length).toBeGreaterThan(0);
+                                                            let randPoint = {
+                                                                x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
+                                                                y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)};
+                                                            
+                                                            for ( let index = 0; index < setCursorRepeat; index++) {
+                                                                Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                                                                    SpatialProfileData => {
+                                                                        expect(SpatialProfileData.profiles.length).not.toEqual(0);                                                        
+                                                                        timeElapsed += new Date().getTime() - timer;
 
-                                                                    if (index === setCursorRepeat - 1) {
-                                                                        Connection.close(); 
+                                                                        if (index === setCursorRepeat - 1) {
+                                                                            Connection.close(); 
+                                                                        }
+                                                                        
                                                                     }
-                                                                    
-                                                                }
-                                                            );
-                                                            Utility.sleep(cursorWait);
-                                                            Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                                                                {
-                                                                    fileId: 0, 
-                                                                    point: randPoint,
-                                                                }
-                                                            );
-                                                            timer = new Date().getTime();
+                                                                );
+                                                                Utility.sleep(cursorWait);
+                                                                Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                                                                    {
+                                                                        fileId: 0, 
+                                                                        point: randPoint,
+                                                                    }
+                                                                );
+                                                                timer = new Date().getTime();
                                                             }
                                                         }
                                                     );

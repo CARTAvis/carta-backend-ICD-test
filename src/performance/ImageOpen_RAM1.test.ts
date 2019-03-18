@@ -47,6 +47,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
 
                     let timer: number = 0;        
                     let timeElapsed: number = 0;
+
                     setTimeout( () => {
                         let Connection = new WebSocket(`${serverURL}:${port}`);
 
@@ -64,6 +65,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                             Connection.close();
                                         }
                                     );
+                                    Utility.sleep(eventWait);
                                     Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                         {
                                             directory: testDirectory, 
@@ -76,7 +78,6 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                     timer = new Date().getTime();      
                                 }
                             );
-                            Utility.sleep(eventWait);
                             Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                 {
                                     sessionId: "", 
@@ -97,7 +98,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                                     timestamp: number,
                                 } = await pidusage(cartaBackend.pid);
                                 timeEpoch.push({
-                                    time: usage.ctime, 
+                                    time: timeElapsed, 
                                     thread: threadNumber, 
                                     CPUusage: usage.cpu,
                                     RAM: usage.memory,

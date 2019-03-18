@@ -122,6 +122,10 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                     console.log(data);
                                 }
                             });
+                            
+                            let timer: number = 0;        
+                            let timeElapsed: number = 0;
+
                             setTimeout(() => {
                                 let Connection: WebSocket[] = new Array(userNumber);
                                 for ( let index = 0; index < userNumber; index++) {
@@ -139,14 +143,16 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                                 Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                                     OpenFileAck => {
                                                         if (!OpenFileAck.success) {
-                                                            console.log(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
+                                                            console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
                                                         }
                                                         expect(OpenFileAck.success).toBe(true);
-                                                                                                
+                                                        timeElapsed += new Date().getTime() - timer;
+
                                                         connection.close();
                                                         expect(connection.readyState).toBe(WebSocket.CLOSING);
                                                     }
                                                 );
+                                                Utility.sleep(eventWait);
                                                 Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
                                                     {
                                                         directory: testDirectory, 
@@ -155,10 +161,10 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                                         fileId: 0, 
                                                         renderMode: CARTA.RenderMode.RASTER,
                                                     }
-                                                );         
+                                                );
+                                                timer = new Date().getTime();         
                                             }
-                                        );
-                                        Utility.sleep(eventWait);                                        
+                                        );                                        
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 
@@ -193,7 +199,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                         } = await pidusage(cartaBackend.pid);
                                     
                                         timeEpoch.push({
-                                            time: usage.ctime, 
+                                            time: timeElapsed, 
                                             thread: userNumber, 
                                             CPUusage: usage.cpu,
                                             RAM: usage.memory

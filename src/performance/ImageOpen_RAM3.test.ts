@@ -72,6 +72,9 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                 }
                             });
 
+                            let timer: number = 0;        
+                            let timeElapsed: number = 0;
+        
                             setTimeout(() => {
                                 let Connection: WebSocket[] = [];
                                 for ( let index = 0; index < userNumber; index++) {
@@ -92,11 +95,13 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                                             console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
                                                         }
                                                         expect(OpenFileAck.success).toBe(true);
+                                                        timeElapsed += new Date().getTime() - timer;
                                                                                                 
                                                         connection.close();
                                                         expect(connection.readyState).toBe(WebSocket.CLOSING);
                                                     }
                                                 );
+                                                Utility.sleep(eventWait);
                                                 Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
                                                     {
                                                         directory: testDirectory, 
@@ -105,10 +110,10 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                                         fileId: 0, 
                                                         renderMode: CARTA.RenderMode.RASTER,
                                                     }
-                                                );         
+                                                );  
+                                                timer = new Date().getTime();        
                                             }
                                         );
-                                        Utility.sleep(eventWait);
                                         Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                             {
                                                 sessionId: "", 
@@ -143,7 +148,7 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                         } = await pidusage(cartaBackend.pid);
                                     
                                         timeEpoch.push({
-                                            time: usage.ctime, 
+                                            time: timeElapsed, 
                                             thread: userNumber, 
                                             CPUusage: usage.cpu,
                                             RAM: usage.memory
