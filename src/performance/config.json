@@ -9,7 +9,11 @@
     "wait": {
         "exec": 500,
         "ps": 500,
-        "event": 30
+        "event": 30,
+        "cursor": 30
+    },
+    "repeat": {
+        "cursor": 50
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
