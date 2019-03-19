@@ -104,19 +104,19 @@ describe("ANIMATOR_PLAYBACK tests", () => {
     for (let idx = 1; idx < playFrames + 1; idx++) {
         test(`assert image${idx} to play.`,
         done => {
-            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                RasterImageData => {
-                    expect(RasterImageData.fileId).toEqual(0);
-                    expect(RasterImageData.channel).toEqual(idx);
-                    expect(RasterImageData.stokes).toEqual(0);
-
-                    if ( idx === playFrames) {
-                        timeElapsed = new Date().getTime() - timer;
-                    }
-                    done();
-                }
-            );
             setTimeout( () => {
+                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                    RasterImageData => {
+                        expect(RasterImageData.fileId).toEqual(0);
+                        expect(RasterImageData.channel).toEqual(idx);
+                        expect(RasterImageData.stokes).toEqual(0);
+
+                        if ( idx === playFrames) {
+                            timeElapsed = new Date().getTime() - timer;
+                        }
+                        done();
+                    }
+                );
                 Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
                 {
                     fileId: 0, 
