@@ -18,41 +18,43 @@ describe("ANIMATOR_NAVIGATION tests", () => {
     let Connection: WebSocket;
 
     beforeAll( done => {
-        // Establish a websocket connection in the binary form: arraybuffer 
         Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
-        // While open a Websocket
-        Connection.onopen = () => {
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
-                                expect(FileListResponseBase.success).toBe(true);
-                                baseDirectory = FileListResponseBase.directory;
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
-                            {
-                                directory: expectBasePath
-                            }
-                        );
-                    }
-                );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-                done();
-            }            
-        };
+        Connection.onopen = OnOpen;
+
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            Event1(this);
+        }
+        function Event1 (connection: WebSocket) {
+            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                RegisterViewerAck => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    Event2(connection);
+                }
+            );
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234"
+                }
+            );
+        }
+        function Event2 (connection: WebSocket) {
+            Utility.getEvent(connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                FileListResponseBase => {
+                    expect(FileListResponseBase.success).toBe(true);
+                    baseDirectory = FileListResponseBase.directory;
+                    done();
+                }
+            );
+            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectBasePath
+                }
+            );
+        }
     }, connectionTimeout);
 
     describe(`read the files`, () => {
@@ -65,41 +67,48 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                 
                 test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
                 done => {
-                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                        OpenFileAck => {
-                            expect(OpenFileAck.success).toBe(true);
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                RasterImageData => {
-                                    expect(RasterImageData.fileId).toEqual(fileId);
-                                    done();
-                                }
-                            );
-                            Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                                {
-                                    fileId, 
-                                    imageBounds: {
-                                        xMin: imageBounds.xMin, 
-                                        xMax: imageBounds.xMax, 
-                                        yMin: imageBounds.yMin, 
-                                        yMax: imageBounds.yMax,
-                                    }, 
-                                    mip, 
-                                    compressionType: CARTA.CompressionType.NONE,
-                                    compressionQuality: 0, 
-                                    numSubsets: 0,
-                                }
-                            );
-                        }
-                    );
-                    Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                        {
-                            directory: baseDirectory + "/" + testSubdirectoryName, 
-                            file: testFileName, 
-                            hdu, 
-                            fileId, 
-                            renderMode: CARTA.RenderMode.RASTER,
-                        }
-                    );
+                    Event1(Connection);
+
+                    function Event1 (connection: WebSocket) {
+                        Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                            OpenFileAck => {
+                                expect(OpenFileAck.success).toBe(true);
+                                Event2(Connection);
+                            }
+                        );
+                        Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                            {
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
+                                file: testFileName, 
+                                hdu, 
+                                fileId, 
+                                renderMode: CARTA.RenderMode.RASTER,
+                            }
+                        );
+                    }
+                    function Event2 (connection: WebSocket) {
+                        Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            RasterImageData => {
+                                expect(RasterImageData.fileId).toEqual(fileId);
+                                done();
+                            }
+                        );
+                        Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                            {
+                                fileId, 
+                                imageBounds: {
+                                    xMin: imageBounds.xMin, 
+                                    xMax: imageBounds.xMax, 
+                                    yMin: imageBounds.yMin, 
+                                    yMax: imageBounds.yMax,
+                                }, 
+                                mip, 
+                                compressionType: CARTA.CompressionType.NONE,
+                                compressionQuality: 0, 
+                                numSubsets: 0,
+                            }
+                        );
+                    }
                 }, openFileTimeout);
                 
             }
@@ -157,41 +166,43 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
     let Connection: WebSocket;
 
     beforeAll( done => {
-        // Establish a websocket connection in the binary form: arraybuffer 
         Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
-        // While open a Websocket
-        Connection.onopen = () => {
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
-                                expect(FileListResponseBase.success).toBe(true);
-                                baseDirectory = FileListResponseBase.directory;
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
-                            {
-                                directory: expectBasePath
-                            }
-                        );
-                    }
-                );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-                done();
-            }            
-        };
+        Connection.onopen = OnOpen;
+
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            Event1(this);
+        }
+        function Event1 (connection: WebSocket) {
+            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                RegisterViewerAck => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    Event2(connection);
+                }
+            );
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234"
+                }
+            );
+        }
+        function Event2 (connection: WebSocket) {
+            Utility.getEvent(connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                FileListResponseBase => {
+                    expect(FileListResponseBase.success).toBe(true);
+                    baseDirectory = FileListResponseBase.directory;
+                    done();
+                }
+            );
+            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectBasePath
+                }
+            );
+        }
     }, connectionTimeout);
 
     describe(`read the files`, () => {
@@ -204,41 +215,48 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                 
                 test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
                 done => { 
-                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                        (OpenFileAck: CARTA.OpenFileAck) => {
-                            expect(OpenFileAck.success).toBe(true);
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                (RasterImageData: CARTA.RasterImageData) => {
-                                    expect(RasterImageData.fileId).toEqual(fileId);
-                                    done();
-                                }
-                            );
-                            Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                                {
-                                    fileId, 
-                                    imageBounds: {
-                                        xMin: imageBounds.xMin, 
-                                        xMax: imageBounds.xMax, 
-                                        yMin: imageBounds.yMin, 
-                                        yMax: imageBounds.yMax,
-                                    }, 
-                                    mip, 
-                                    compressionType: CARTA.CompressionType.NONE,
-                                    compressionQuality: 0, 
-                                    numSubsets: 0,
-                                }
-                            );
-                        }
-                    );
-                    Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                        {
-                            directory: baseDirectory + "/" + testSubdirectoryName, 
-                            file: testFileName, 
-                            hdu, 
-                            fileId, 
-                            renderMode: CARTA.RenderMode.RASTER,
-                        }
-                    );
+                    Event1(Connection);
+
+                    function Event1 (connection: WebSocket) {
+                        Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                            (OpenFileAck: CARTA.OpenFileAck) => {
+                                expect(OpenFileAck.success).toBe(true);
+                                Event2(connection);
+                            }
+                        );
+                        Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                            {
+                                directory: baseDirectory + "/" + testSubdirectoryName, 
+                                file: testFileName, 
+                                hdu, 
+                                fileId, 
+                                renderMode: CARTA.RenderMode.RASTER,
+                            }
+                        );
+                    }
+                    function Event2 (connection: WebSocket) {
+                        Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            (RasterImageData: CARTA.RasterImageData) => {
+                                expect(RasterImageData.fileId).toEqual(fileId);
+                                done();
+                            }
+                        );
+                        Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                            {
+                                fileId, 
+                                imageBounds: {
+                                    xMin: imageBounds.xMin, 
+                                    xMax: imageBounds.xMax, 
+                                    yMin: imageBounds.yMin, 
+                                    yMax: imageBounds.yMax,
+                                }, 
+                                mip, 
+                                compressionType: CARTA.CompressionType.NONE,
+                                compressionQuality: 0, 
+                                numSubsets: 0,
+                            }
+                        );
+                    }
                 }, openFileTimeout);
                                 
             }
