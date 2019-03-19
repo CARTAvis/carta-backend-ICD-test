@@ -44,7 +44,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
     test(`Preparing... dry run.`, 
     done => {
         let cartaBackend = child_process.exec(
-            `"./carta_backend" root=base base=${baseDirectory} port=1234 threads=4`,
+            `"./carta_backend" root=base base=${baseDirectory} port=5678 threads=4`,
             {
                 cwd: backendDirectory, 
                 timeout: 5000
@@ -61,33 +61,32 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
 
         setTimeout( () => {
 
-            let Connection = new WebSocket(`${serverURL}:1234`);
+            let Connection = new WebSocket(`${serverURL}:5678`);
             expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-            
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = () => {
-                expect(Connection.readyState).toBe(WebSocket.OPEN);
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {                            
+            Connection.binaryType = "arraybuffer";            
+            Connection.onopen = OnOpen;
+            Connection.onclose = () => {
+                cartaBackend.kill();
+            };
+            function OnOpen (this: WebSocket, ev: Event) {
+                expect(this.readyState).toBe(WebSocket.OPEN);
+                Event1(this);
+            }
+            function Event1 (connection: WebSocket) {
+                Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
-                        // console.log("test done");
                         
-                        Connection.close();
-                        expect(Connection.readyState).toBe(WebSocket.CLOSING);
+                        connection.close();
                     }
                 );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                     {
                         sessionId: "", 
                         apiKey: "1234"
                     }
                 );
-            };
-            
-            Connection.onclose = () => {
-                expect(Connection.readyState).toBe(WebSocket.CLOSED);
-                cartaBackend.kill();
-            };  
+            }     
                 
         }, 100);
 
@@ -115,7 +114,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                 }
                             );
                             cartaBackend.on("error", error => {
-                                console.log(`error: \n ${error}`);
+                                console.error(`error: \n ${error}`);
                             });
                             cartaBackend.stdout.on("data", data => {
                                 if (logMessage) {
@@ -126,53 +125,58 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                             let timer: number = 0;        
                             let timeElapsed: number = 0;
 
+                            let Connection: WebSocket[] = new Array(testUserNumber);
                             setTimeout(() => {
-                                let Connection: WebSocket[] = new Array(testUserNumber);
                                 for ( let index = 0; index < testUserNumber; index++) {
                                     Connection[index] = new WebSocket(`${serverURL}:${port}`);
                                     expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
+                                    Connection[index].binaryType = "arraybuffer";         
+                                    Connection[index].onopen = OnOpen;
                                 }
                                 
-                                Connection.map( connection => {
-                                    connection.binaryType = "arraybuffer";
-                                    connection.onopen = () => {
-                                        expect(connection.readyState).toBe(WebSocket.OPEN);
-                                        Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                            RegisterViewerAck => {
-                                                expect(RegisterViewerAck.success).toBe(true);
-                                                Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                                    OpenFileAck => {
-                                                        if (!OpenFileAck.success) {
-                                                            console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
-                                                        }
-                                                        expect(OpenFileAck.success).toBe(true);                                                                     
-                                                        timeElapsed += new Date().getTime() - timer;
+                                function OnOpen (this: WebSocket, ev: Event) {
+                                    expect(this.readyState).toBe(WebSocket.OPEN);
+                                    Event1(this);
+                                }
+                                function Event1 (connection: WebSocket) {
+                                    Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                        RegisterViewerAck => {
+                                            expect(RegisterViewerAck.success).toBe(true);
+                                            Event2(connection)   ;   
+                                        }
+                                    );                                        
+                                    Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                        {
+                                            sessionId: "", 
+                                            apiKey: "1234"
+                                        }
+                                    );                                    
+                                }
+                                function Event2 (connection: WebSocket) {
+                                    Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                        OpenFileAck => {
+                                            if (!OpenFileAck.success) {
+                                                console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
+                                            }
+                                            expect(OpenFileAck.success).toBe(true);                                                                     
+                                            timeElapsed += new Date().getTime() - timer;
 
-                                                        connection.close();
-                                                        expect(connection.readyState).toBe(WebSocket.CLOSING);
-                                                    }
-                                                );
-                                                Utility.sleep(eventWait);
-                                                Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
-                                                    {
-                                                        directory: testDirectory, 
-                                                        file: Utility.arrayNext(imageFiles, state).next(), 
-                                                        hdu: "0", 
-                                                        fileId: 0, 
-                                                        renderMode: CARTA.RenderMode.RASTER,
-                                                    }
-                                                ); 
-                                                timer = new Date().getTime();        
-                                            }
-                                        );                                        
-                                        Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                            {
-                                                sessionId: "", 
-                                                apiKey: "1234"
-                                            }
-                                        );
-                                    };
-                                });
+                                            connection.close();
+                                            expect(connection.readyState).toBe(WebSocket.CLOSING);
+                                        }
+                                    );
+                                    Utility.sleep(eventWait);
+                                    Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                                        {
+                                            directory: testDirectory, 
+                                            file: Utility.arrayNext(imageFiles, state).next(), 
+                                            hdu: "0", 
+                                            fileId: 0, 
+                                            renderMode: CARTA.RenderMode.RASTER,
+                                        }
+                                    ); 
+                                    timer = new Date().getTime(); 
+                                }
 
                                 let promiseSet: Promise<any>[] = new Array(testUserNumber);
                                 Connection.map( (connection, index) => {

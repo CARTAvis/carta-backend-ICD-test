@@ -51,7 +51,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
             }
         );
         cartaBackend.on("error", error => {
-            console.log(`error: ${error}`);
+            console.error(`error: ${error}`);
         });
         cartaBackend.stdout.on("data", data => {
             if (logMessage) {
@@ -61,26 +61,31 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
         
         setTimeout(() => {
             let Connection = new WebSocket(`${serverURL}:5678`);
-            Connection.binaryType = "arraybuffer";
-
-            Connection.onopen = () => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
+            Connection.binaryType = "arraybuffer";            
+            Connection.onopen = OnOpen;
+            Connection.onclose = () => {
+                cartaBackend.kill();
+            };
+            function OnOpen (this: WebSocket, ev: Event) {
+                expect(this.readyState).toBe(WebSocket.OPEN);
+                Event1(this);
+            }
+            function Event1 (connection: WebSocket) {
+                Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         
-                        Connection.close();
+                        connection.close();
                     }
                 );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                     {
                         sessionId: "", 
                         apiKey: "1234"
                     }
                 );
-            };
-            Connection.onclose = () => {
-                cartaBackend.kill();
-            };
+            }            
         }, 300);
 
         cartaBackend.on("close", () => {
@@ -99,7 +104,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                         test(`open "${Utility.arrayNext(imageFiles, state).next()}" on backend with thread number = ${threadNumber}.`, 
                         done => {
                             
-                            port += threadNumber;
+                            port ++;
                             let cartaBackend = child_process.exec(
                                 `./carta_backend root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
                                 {
@@ -108,7 +113,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 }
                             );
                             cartaBackend.on("error", error => {
-                                console.log(`error: \n ${error}`);
+                                console.error(`error: \n ${error}`);
                             });
                             cartaBackend.stdout.on("data", data => {
                                 if (logMessage) {
@@ -119,47 +124,56 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             let timer: number = 0;        
                             let timeElapsed: number = 0;
                             
-                            setTimeout(async () => {
-                                let Connection = await new WebSocket(`${serverURL}:${port}`);
+                            setTimeout(() => {
+                                let Connection = new WebSocket(`${serverURL}:${port}`);
+                                expect(Connection.readyState).toBe(WebSocket.CONNECTING);
                                 Connection.binaryType = "arraybuffer";
                                 
-                                Connection.onopen = () => {
-                                    Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                Connection.onopen = OnOpen;
+
+                                function OnOpen (this: WebSocket, ev: Event) {
+                                    expect(this.readyState).toBe(WebSocket.OPEN);
+                                    Event1(this);
+                                }
+                                function Event1 (connection: WebSocket) {
+                                    Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                                         RegisterViewerAck => {
                                             expect(RegisterViewerAck.success).toBe(true);
-                                            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                                (OpenFileAck: CARTA.OpenFileAck) => {
-                                                    if (!OpenFileAck.success) {
-                                                        console.log(OpenFileAck.message);
-                                                    }
-                                                    expect(OpenFileAck.success).toBe(true);
-                                                    timeElapsed = new Date().getTime() - timer;
-                                                    // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
-                                                    
-                                                    Connection.close();
-                                                }
-                                            );
-                                            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                                                {
-                                                    directory: testDirectory, 
-                                                    file: Utility.arrayNext(imageFiles, state).current(), 
-                                                    hdu: "0", 
-                                                    fileId: 0, 
-                                                    renderMode: CARTA.RenderMode.RASTER,
-                                                }
-                                            );
-                                            timer = new Date().getTime();          
+                                            Event2(connection)       ;  
                                         }
                                     );
 
-                                    Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                    Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                         {
                                             sessionId: "", 
                                             apiKey: "1234"
                                         }
                                     );
-                                };
-                                
+                                }
+                                function Event2 (connection: WebSocket) {
+                                    Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                        (OpenFileAck: CARTA.OpenFileAck) => {
+                                            if (!OpenFileAck.success) {
+                                                console.error(OpenFileAck.message);
+                                            }
+                                            expect(OpenFileAck.success).toBe(true);
+                                            timeElapsed = new Date().getTime() - timer;
+                                            // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
+                                            
+                                            connection.close();
+                                        }
+                                    );
+                                    Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                                        {
+                                            directory: testDirectory, 
+                                            file: Utility.arrayNext(imageFiles, state).current(), 
+                                            hdu: "0", 
+                                            fileId: 0, 
+                                            renderMode: CARTA.RenderMode.RASTER,
+                                        }
+                                    );
+                                    timer = new Date().getTime(); 
+                                }
                                 Connection.onclose =  () => {
                                     setTimeout( async () => {
                                         let usage: {
