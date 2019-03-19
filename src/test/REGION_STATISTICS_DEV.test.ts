@@ -1,14 +1,11 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let mouseEventTimeout = config.timeout.mouseEvent;
-
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
 
 let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
@@ -17,82 +14,84 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
     let Connection: WebSocket;
 
     beforeAll( done => {
-        // Establish a websocket connection in the binary form: arraybuffer 
         Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
-        // While open a Websocket
-        Connection.onopen = () => {
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
-                                expect(FileListResponseBase.success).toBe(true);
-                                baseDirectory = FileListResponseBase.directory;
-                                
-                                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                    OpenFileAck => {
-                                        expect(OpenFileAck.success).toBe(true);
+        Connection.onopen = OnOpen;
 
-                                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                            RasterImageData => {
-                                                expect(RasterImageData.imageData.length).toBeGreaterThan(1);
-                                                
-                                                done();
-                                        });  
-                                        
-                                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
-                                            {
-                                                fileId: 0, 
-                                                imageBounds: {
-                                                    xMin: 0, xMax: 1920, 
-                                                    yMin: 0, yMax: 1920
-                                                }, 
-                                                mip: 4, 
-                                                compressionType: CARTA.CompressionType.ZFP, 
-                                                compressionQuality: 11, 
-                                                numSubsets: 4,
-                                            }
-                                        );
-                                    }  
-                                );
-                                Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                                    {
-                                        directory: baseDirectory + "/" + testSubdirectoryName, 
-                                        file: testFileName, 
-                                        hdu: "0", 
-                                        fileId: 0, 
-                                        renderMode: CARTA.RenderMode.RASTER,
-                                    }
-                                );
-
-                            }
-                        );      
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
-                            {
-                                directory: expectBasePath
-                            }
-                        );        
-                    }
-                );
-                
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234",
-                    }
-                );
-
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-                done();
-            }
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            Event1(this);
+        }
+        function Event1 (connection: WebSocket) {        
+            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                RegisterViewerAck => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    Event2(connection);
+                }
+            );
             
-        };
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234",
+                }
+            );
+        } 
+        function Event2 (connection: WebSocket) {
+            Utility.getEvent(connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                FileListResponseBase => {
+                    expect(FileListResponseBase.success).toBe(true);
+                    baseDirectory = FileListResponseBase.directory;
+                    Event3(connection);
+                }
+            );      
+            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectBasePath
+                }
+            );        
+        }
+        function Event3 (connection: WebSocket) {
+            Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                OpenFileAck => {
+                    expect(OpenFileAck.success).toBe(true);
+                    Event4(connection);
+                }  
+            );
+            Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                {
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
+                    file: testFileName, 
+                    hdu: "0", 
+                    fileId: 0, 
+                    renderMode: CARTA.RenderMode.RASTER,
+                }
+            );
+        }
+        function Event4 (connection: WebSocket) {
+            Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                RasterImageData => {
+                    expect(RasterImageData.imageData.length).toBeGreaterThan(1);                    
+                    done();
+                }
+            );  
+            
+            Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
+                {
+                    fileId: 0, 
+                    imageBounds: {
+                        xMin: 0, xMax: 1920, 
+                        yMin: 0, yMax: 1920
+                    }, 
+                    mip: 4, 
+                    compressionType: CARTA.CompressionType.ZFP, 
+                    compressionQuality: 11, 
+                    numSubsets: 4,
+                }
+            );
+        } 
+
     }, connectionTimeout);
 
     // test(`Test beforeAll().`,()=>{});
