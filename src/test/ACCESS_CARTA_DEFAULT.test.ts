@@ -1,14 +1,8 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
-
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let testEventName = "REGISTER_VIEWER";
-let testReturnName = "REGISTER_VIEWER_ACK";
 
 describe("Websocket tests", () => {
     let testRemoteWebsocketSite = "wss://echo.websocket.org site";
@@ -26,117 +20,109 @@ describe("Websocket tests", () => {
 
     test(`establish a connection to "${testServerUrl}".`, 
     done => {
-        // Construct a Websocket
-        let Connection = new WebSocket(testServerUrl);
 
-        // While open a Websocket
-        Connection.onopen = () => {
-            Connection.close();
-            done();     // Return to this test
-        };
+        let Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
+        
+        Connection.onopen = OnOpen;
+        Connection.onclose = OnClose;
+
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            
+            this.close();
+            expect(this.readyState).toBe(WebSocket.CLOSING);
+        }
+        function OnClose (this: WebSocket, ev: CloseEvent) {
+            expect(this.readyState).toBe(WebSocket.CLOSED);
+            done();
+        }
+
     }, connectTimeout);
 });
 
 describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () => {
-    test(`send EventName: "${testEventName}" to CARTA "${testServerUrl}" without session_id & api_key.`, 
-    done => {
-        // Construct a Websocket
+    test(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" without session_id & api_key.`, 
+    done => {        
+
         let Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
+        Connection.onopen = OnOpen;
 
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        done();
-                    }
-                );
-
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: ""
-                    }
-                );
-
-            } else {
-                console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
-            }
-
-        };
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            Event1(this);
+        }
+        function Event1 (connection: WebSocket) {
+            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    done();
+                }
+            );
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: ""
+                }
+            );
+        }
 
     }, connectTimeout);
 
-    test(`send EventName: "${testEventName}" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
+    test(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
     done => {
-        // Construct a Websocket
         let Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
+        Connection.onopen = OnOpen;
 
-        // While open a Websocket
-        Connection.onopen = () => {
-            
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        done();
-                    }
-                );
-
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-
-            } else {
-                console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
-            }
-
-        };
+        function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            Event1(this);
+        }
+        function Event1 (connection: WebSocket) {
+            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    done();
+                }
+            );
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234"
+                }
+            );
+        }
         
     }, connectTimeout);
 
-    describe(`receive EventName: "${testReturnName}" tests on CARTA "${testServerUrl}"`, 
+    describe(`receive EventName: "REGISTER_VIEWER_ACK" tests on CARTA "${testServerUrl}"`, 
     () => {
 
         let Connection: WebSocket;
         
         beforeEach( done => {
-            // Construct a Websocket
             Connection = new WebSocket(testServerUrl);
+            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
             Connection.binaryType = "arraybuffer";
-    
-            // While open a Websocket
-            Connection.onopen = () => {
-                
-                // Checkout if Websocket server is ready
-                if (Connection.readyState === WebSocket.OPEN) {
-                    //                    
-                } else {
-                    console.log(`"${testServerUrl}" can not open a connection. @${new Date()}`);
-                }
+            Connection.onopen = OnOpen;
+
+            function OnOpen (this: WebSocket, ev: Event) {
+                expect(this.readyState).toBe(WebSocket.OPEN);
                 done();
-            };
+            }
         }, connectTimeout);
     
-        test(`assert the received EventName is "${testReturnName}" within ${connectTimeout} ms.`, 
+        test(`assert the received EventName is "REGISTER_VIEWER_ACK" within ${connectTimeout} ms.`, 
         done => {
-            // While receive a message from Websocket server
             Connection.onmessage = (event: MessageEvent) => {
                 expect(event.data.byteLength).toBeGreaterThan(40);
                 
                 const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                expect(eventName).toBe(testReturnName);
+                expect(eventName).toBe("REGISTER_VIEWER_ACK");
 
                 done();
             };
@@ -148,13 +134,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
         }, connectTimeout);
     
-        test(`assert the "${testReturnName}.session_id" is not None.`, 
-        done => {
-            
+        test(`assert the "REGISTER_VIEWER_ACK.session_id" is not None.`, 
+        done => {            
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 RegisterViewerAck => {
                     expect(RegisterViewerAck.sessionId).toBeDefined();
-                    console.log(`registered session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
+                    console.log(`Registered session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
 
                     done();
                 }
@@ -167,7 +152,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
         }, connectTimeout);
     
-        test(`assert the "${testReturnName}.success" is true.`, 
+        test(`assert the "REGISTER_VIEWER_ACK.success" is true.`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 RegisterViewerAck => {
@@ -183,7 +168,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
         }, connectTimeout);
     
-        test(`assert the "${testReturnName}.session_type" is "CARTA.SessionType.NEW".`, 
+        test(`assert the "REGISTER_VIEWER_ACK.session_type" is "CARTA.SessionType.NEW".`, 
         done => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 RegisterViewerAck => {
@@ -199,9 +184,9 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             );
         }, connectTimeout);
 
-        afterEach( done => {
+        afterEach( done => {  
+            Connection.onclose = () => done();
             Connection.close();
-            done();
         }, connectTimeout);
     
     });
