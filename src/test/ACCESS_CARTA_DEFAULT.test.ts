@@ -48,27 +48,27 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         let Connection = new WebSocket(testServerUrl);
         expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-
-        function OnOpen (this: WebSocket, ev: Event) {
+        Connection.onopen = OnOpen;        
+        
+        async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            Event1(this);
-        }
-        function Event1 (connection: WebSocket) {
-            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
                     sessionId: "", 
                     apiKey: ""
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        resolve();
+                    }
+                );
+            });
+            await this.close();
+            done();
         }
-
     }, connectTimeout);
 
     test(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with no session_id & api_key "1234".`, 
@@ -78,23 +78,30 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
 
-        function OnOpen (this: WebSocket, ev: Event) {
+        async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            Event1(this);
+            await EventRegisterViewerAck(this)
+                .then( () => {
+                    this.close();
+                })
+                .then(done);
         }
-        function Event1 (connection: WebSocket) {
-            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                {
-                    sessionId: "", 
-                    apiKey: "1234"
-                }
-            );
+        async function EventRegisterViewerAck (connection: WebSocket) {
+            return new Promise( resolve => {
+                Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        resolve();
+                    }
+                );
+                Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    {
+                        sessionId: "", 
+                        apiKey: "1234"
+                    }
+                );
+            });
+            
         }
         
     }, connectTimeout);
