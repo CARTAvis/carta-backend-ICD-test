@@ -164,14 +164,14 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                                     console.error(OpenFileAck.message);
                                                 }
                                                 expect(OpenFileAck.success).toBe(true);
-                                                timeElapsed = new Date().getTime() - timer;
-                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
                                                 
+                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
                                                 
                                                 resolve();
                                             }
                                         );
                                     });
+                                    timeElapsed = await new Date().getTime() - timer;
                                     await this.close();
                                 }
                                 
