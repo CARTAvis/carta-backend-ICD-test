@@ -129,12 +129,12 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
     done => {
 
         Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-            SpectralProfileData => {
+            (SpectralProfileData: CARTA.SpectralProfileData) => {
                 expect(SpectralProfileData.fileId).toEqual(0);
                 expect(SpectralProfileData.regionId).toEqual(1);
                 expect(SpectralProfileData.stokes).toEqual(0);
 
-                expect(SpectralProfileData.profiles[218]).toEqual(3.506743836071e-03);
+                expect(SpectralProfileData.profiles.find(f => f.coordinate === "z").vals[218]).toEqual(1.5046331100165844e-03);
                 
                 done();
             }
