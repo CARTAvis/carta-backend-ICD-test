@@ -134,7 +134,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                 expect(SpectralProfileData.regionId).toEqual(1);
                 expect(SpectralProfileData.stokes).toEqual(0);
 
-                expect(SpectralProfileData.profiles.find(f => f.coordinate === "z").vals[218]).toEqual(1.5046331100165844e-03);
+                expect(SpectralProfileData.profiles.find(f => f.coordinate === "z").vals[218]).toBeCloseTo(1.5046331100165844e-03, 8);
                 
                 done();
             }

@@ -101,7 +101,7 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
         Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
             SetRegionAck => {
                 expect(SetRegionAck.success).toBe(true);
-                expect(SetRegionAck.regionId).toEqual(0);
+                expect(SetRegionAck.regionId).toEqual(1);
                 
                 done();
             }
@@ -122,8 +122,7 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                 ],
                 rotation: 0,
             }
-        );
-
+        );        
     }, mouseEventTimeout);
 
     test(`Assert region stastics.`, 
@@ -150,7 +149,7 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
 
         Utility.setEvent(Connection, "SET_STATS_REQUIREMENTS", CARTA.SetStatsRequirements, 
             {
-                fileId: 0, regionId: 0, 
+                fileId: 0, regionId: 1, 
                 stats: [
                     CARTA.StatsType.Sum, CARTA.StatsType.FluxDensity, 
                     CARTA.StatsType.Mean, CARTA.StatsType.RMS, CARTA.StatsType.Sigma, 
