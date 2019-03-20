@@ -67,25 +67,25 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
             Connection.onclose = () => {
                 cartaBackend.kill();
             };
-            function OnOpen (this: WebSocket, ev: Event) {
+            async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
-                Event1(this);
-            }
-            function Event1 (connection: WebSocket) {
-                Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        
-                        connection.close();
-                    }
-                );
-                Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                     {
                         sessionId: "", 
                         apiKey: "1234"
                     }
                 );
-            }            
+                await new Promise( resolve => { 
+                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                        RegisterViewerAck => {
+                            expect(RegisterViewerAck.success).toBe(true);
+                            
+                            resolve();           
+                        }
+                    );
+                });
+                await this.close();
+            } 
         }, 300);
 
         cartaBackend.on("close", () => {
@@ -131,39 +131,23 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 
                                 Connection.onopen = OnOpen;
 
-                                function OnOpen (this: WebSocket, ev: Event) {
+                                async function OnOpen (this: WebSocket, ev: Event) {
                                     expect(this.readyState).toBe(WebSocket.OPEN);
-                                    Event1(this);
-                                }
-                                function Event1 (connection: WebSocket) {
-                                    Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                        RegisterViewerAck => {
-                                            expect(RegisterViewerAck.success).toBe(true);
-                                            Event2(connection)       ;  
-                                        }
-                                    );
-
-                                    Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                                         {
                                             sessionId: "", 
                                             apiKey: "1234"
                                         }
                                     );
-                                }
-                                function Event2 (connection: WebSocket) {
-                                    Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                        (OpenFileAck: CARTA.OpenFileAck) => {
-                                            if (!OpenFileAck.success) {
-                                                console.error(OpenFileAck.message);
+                                    await new Promise( resolve => { 
+                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                            RegisterViewerAck => {
+                                                expect(RegisterViewerAck.success).toBe(true);
+                                                resolve();           
                                             }
-                                            expect(OpenFileAck.success).toBe(true);
-                                            timeElapsed = new Date().getTime() - timer;
-                                            // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
-                                            
-                                            connection.close();
-                                        }
-                                    );
-                                    Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+                                        );
+                                    });
+                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
                                         {
                                             directory: testDirectory, 
                                             file: Utility.arrayNext(imageFiles, state).current(), 
@@ -172,8 +156,25 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                             renderMode: CARTA.RenderMode.RASTER,
                                         }
                                     );
-                                    timer = new Date().getTime(); 
+                                    timer = await new Date().getTime(); 
+                                    await new Promise( resolve => {
+                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                            (OpenFileAck: CARTA.OpenFileAck) => {
+                                                if (!OpenFileAck.success) {
+                                                    console.error(OpenFileAck.message);
+                                                }
+                                                expect(OpenFileAck.success).toBe(true);
+                                                timeElapsed = new Date().getTime() - timer;
+                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
+                                                
+                                                
+                                                resolve();
+                                            }
+                                        );
+                                    });
+                                    await this.close();
                                 }
+                                
                                 Connection.onclose =  () => {
                                     setTimeout( async () => {
                                         let usage: {
