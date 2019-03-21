@@ -19,47 +19,37 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
 
-        function OnOpen (this: WebSocket, ev: Event) {
+        async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            Event1(this);
-        }
-        function Event1 (connection: WebSocket) {        
-            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    Event2(connection);
-                }
-            );
-            
-            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
                     sessionId: "", 
-                    apiKey: "1234",
+                    apiKey: "1234"
                 }
             );
-        } 
-        function Event2 (connection: WebSocket) {
-            Utility.getEvent(connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponseBase => {
-                    expect(FileListResponseBase.success).toBe(true);
-                    baseDirectory = FileListResponseBase.directory;
-                    Event3(connection);
-                }
-            );      
-            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await new Promise( resolve => { 
+                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        resolve();           
+                    }
+                );
+            });
+            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
-            );        
-        }
-        function Event3 (connection: WebSocket) {
-            Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                OpenFileAck => {
-                    expect(OpenFileAck.success).toBe(true);
-                    Event4(connection);
-                }  
             );
-            Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
+            await new Promise( resolve => {
+                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                        FileListResponseBase => {
+                        expect(FileListResponseBase.success).toBe(true);
+                        baseDirectory = FileListResponseBase.directory;
+                        resolve();
+                    }
+                );                
+            });
+            await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -68,16 +58,15 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
-        }
-        function Event4 (connection: WebSocket) {
-            Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                RasterImageData => {
-                    expect(RasterImageData.imageData.length).toBeGreaterThan(1);                    
-                    done();
-                }
-            );  
-            
-            Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView,
+            await new Promise( resolve => {
+                Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    OpenFileAck => {
+                        expect(OpenFileAck.success).toBe(true);
+                        resolve();
+                    }
+                );                
+            });
+            await Utility.setEvent(this, "SET_IMAGE_VIEW", CARTA.SetImageView, 
                 {
                     fileId: 0, 
                     imageBounds: {
@@ -85,29 +74,28 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                         yMin: 0, yMax: 1920
                     }, 
                     mip: 4, 
-                    compressionType: CARTA.CompressionType.ZFP, 
+                    compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 11, 
                     numSubsets: 4,
                 }
             );
-        } 
-
+            await new Promise( resolve => {
+                Utility.getEvent(this, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                    RasterImageData => {
+                        expect(RasterImageData.fileId).toEqual(0);
+                        resolve();
+                    }
+                );                
+            });
+            done();
+        }
     }, connectionTimeout);
 
     // test(`Test beforeAll().`,()=>{});
 
     test(`Test to set region.`, 
-    done => {
-        Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
-            SetRegionAck => {
-                expect(SetRegionAck.success).toBe(true);
-                expect(SetRegionAck.regionId).toEqual(1);
-                
-                done();
-            }
-        );  
-
-        Utility.setEvent(Connection, "SET_REGION", CARTA.SetRegion, 
+    async done => {
+        await Utility.setEvent(Connection, "SET_REGION", CARTA.SetRegion, 
             {
                 fileId: 0, 
                 regionId: -1, 
@@ -118,36 +106,26 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                 stokes: [],
                 controlPoints: [
                     {x: 1000, y: 1300}, 
-                    {x: 200, y: 300}
+                    {x: 300, y: 200}
                 ],
                 rotation: 0,
             }
         );        
+        await new Promise( resolve => {
+            Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
+                SetRegionAck => {
+                    expect(SetRegionAck.success).toBe(true);
+                    expect(SetRegionAck.regionId).toEqual(1);
+                    resolve();
+                }
+            );  
+        });
+        done();
     }, mouseEventTimeout);
 
     test(`Assert region stastics.`, 
-    done => {
-
-        Utility.getEvent(Connection, "REGION_STATS_DATA", CARTA.RegionStatsData, 
-            RegionStatsData => {
-                expect(RegionStatsData.fileId).toEqual(0);
-                expect(RegionStatsData.regionId).toEqual(0);
-                expect(RegionStatsData.channel).toEqual(0);
-                expect(RegionStatsData.stokes).toEqual(0);
-
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Max)).toEqual(9.904252E-3);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Min)).toEqual(-3.641330E-3);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Sum)).toEqual(2.443106);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Mean)).toEqual(4.038126E-5);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.RMS)).toEqual(9.254825E-4);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Sigma)).toEqual(9.246087E-4);
-                expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.FluxDensity)).toEqual(3.049256E-2);
-
-                done();
-            }
-        ); 
-
-        Utility.setEvent(Connection, "SET_STATS_REQUIREMENTS", CARTA.SetStatsRequirements, 
+    async done => {
+        await Utility.setEvent(Connection, "SET_STATS_REQUIREMENTS", CARTA.SetStatsRequirements, 
             {
                 fileId: 0, regionId: 1, 
                 stats: [
@@ -156,8 +134,28 @@ describe("REGION_STATISTICS_DEV: Temporary test case of region statistics to ass
                     CARTA.StatsType.Min, CARTA.StatsType.Max
                 ]
             }
-        );
-        
+        );               
+        await new Promise( resolve => {
+            Utility.getEvent(Connection, "REGION_STATS_DATA", CARTA.RegionStatsData, 
+                RegionStatsData => {
+                    expect(RegionStatsData.fileId).toEqual(0);
+                    expect(RegionStatsData.regionId).toEqual(1);
+                    expect(RegionStatsData.channel).toEqual(0);
+                    expect(RegionStatsData.stokes).toEqual(0);
+
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Max)).toBeCloseTo(9.904252E-3, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Min)).toBeCloseTo(-3.641330E-3, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Sum)).toBeCloseTo(2.443106, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Mean)).toBeCloseTo(4.038126E-5, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.RMS)).toBeCloseTo(9.254825E-4, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.Sigma)).toBeCloseTo(9.246087E-4, 6);
+                    expect(RegionStatsData.statistics.find( f => f.statsType === CARTA.StatsType.FluxDensity)).toBeCloseTo(3.049256E-2, 6);
+
+                    resolve();
+                }
+            ); 
+        }); 
+        done();
     }, mouseEventTimeout);
 
     afterAll( done => {
