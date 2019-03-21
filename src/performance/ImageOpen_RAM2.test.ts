@@ -23,7 +23,7 @@ let testImageFiles = [
     // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
     fileName.imageFiles8fits,
-    fileName.imageFiles16fits,
+    // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
@@ -50,7 +50,7 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                 testThreadNumber.map(
                     (threadNumber: number) => {
 
-                        test(`Open image as thread# = ${testUserNumber * threadNumber}.`, 
+                        test(`Open image ${imageFiles[0].slice(14)} as thread# = ${testUserNumber * threadNumber}.`, 
                         done => {
                             port ++;
                             let cartaBackend = child_process.exec(
@@ -77,48 +77,54 @@ describe(`Image open performance: change thread number per user, ${testUserNumbe
                                 for ( let index = 0; index < testUserNumber; index++) {
                                     Connection.push(new WebSocket(`${serverURL}:${port}`));
                                     expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
+                                    Connection[index].binaryType = "arraybuffer";                   
+                                    Connection[index].onopen = OnOpen;
                                 }
                                 
-                                Connection.map( connection => {
-                                    connection.binaryType = "arraybuffer";
-                                    connection.onopen = () => {
-                                        expect(connection.readyState).toBe(WebSocket.OPEN);
-                                        Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                async function OnOpen (this: WebSocket, ev: Event) {
+                                    expect(this.readyState).toBe(WebSocket.OPEN);
+                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                        {
+                                            sessionId: "", 
+                                            apiKey: "1234"
+                                        }
+                                    );
+                                    await new Promise( resolve => { 
+                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                                             RegisterViewerAck => {
                                                 expect(RegisterViewerAck.success).toBe(true);
-                                                Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                                    OpenFileAck => {
-                                                        if (!OpenFileAck.success) {
-                                                            console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
-                                                        }
-                                                        expect(OpenFileAck.success).toBe(true);
-                                                        timeElapsed += new Date().getTime() - timer;
-                                                                                                
-                                                        connection.close();
-                                                        expect(connection.readyState).toBe(WebSocket.CLOSING);
-                                                    }
-                                                );
-                                                Utility.sleep(eventWait);
-                                                Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
-                                                    {
-                                                        directory: testDirectory, 
-                                                        file: Utility.arrayNext(imageFiles, state).next(), 
-                                                        hdu: "0", 
-                                                        fileId: 0, 
-                                                        renderMode: CARTA.RenderMode.RASTER,
-                                                    }
-                                                ); 
-                                                timer = new Date().getTime();        
+                                                resolve();           
                                             }
                                         );
-                                        Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                            {
-                                                sessionId: "", 
-                                                apiKey: "1234"
+                                    });
+                                    await Utility.sleep(eventWait);
+                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
+                                        {
+                                            directory: testDirectory, 
+                                            file: Utility.arrayNext(imageFiles, state).next(), 
+                                            hdu: "0", 
+                                            fileId: 0, 
+                                            renderMode: CARTA.RenderMode.RASTER,
+                                        }
+                                    );
+                                    timer = await new Date().getTime(); 
+                                    await new Promise( resolve => {
+                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                            (OpenFileAck: CARTA.OpenFileAck) => {
+                                                if (!OpenFileAck.success) {
+                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                                }
+                                                expect(OpenFileAck.success).toBe(true);
+                                                
+                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
+                                                
+                                                resolve();
                                             }
                                         );
-                                    };
-                                });
+                                    });
+                                    timeElapsed += await new Date().getTime() - timer;
+                                    await this.close();
+                                }  
 
                                 let promiseSet: Promise<any>[] = new Array(testUserNumber);
                                 Connection.map( (connection, index) => {
