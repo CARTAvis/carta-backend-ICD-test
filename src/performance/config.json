@@ -3,7 +3,7 @@
     "port": 55555,
     "timeout": {
         "connection": 2000,
-        "openFile": 8000,
+        "openFile": 12000,
         "readFile": 15000
     },
     "wait": {
