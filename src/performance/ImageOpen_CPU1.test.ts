@@ -78,8 +78,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                 await new Promise( resolve => { 
                     Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                         RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);
-                            
+                            expect(RegisterViewerAck.success).toBe(true);                            
                             resolve();           
                         }
                     );
@@ -127,8 +126,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             setTimeout(() => {
                                 let Connection = new WebSocket(`${serverURL}:${port}`);
                                 expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-                                Connection.binaryType = "arraybuffer";
-                                
+                                Connection.binaryType = "arraybuffer";                                
                                 Connection.onopen = OnOpen;
 
                                 async function OnOpen (this: WebSocket, ev: Event) {
@@ -161,7 +159,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                         Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                             (OpenFileAck: CARTA.OpenFileAck) => {
                                                 if (!OpenFileAck.success) {
-                                                    console.error(OpenFileAck.message);
+                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
                                                 }
                                                 expect(OpenFileAck.success).toBe(true);
                                                 
