@@ -21,9 +21,9 @@ let logMessage = config.log;
 let state = {index: -1};
 
 let testImageFiles = [
-    fileName.imageFiles2fits,
-    fileName.imageFiles4fits,
-    // fileName.imageFiles8fits,
+    // fileName.imageFiles2fits,
+    // fileName.imageFiles4fits,
+    fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
@@ -53,7 +53,7 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
             }
         );
         cartaBackend.on("error", error => {
-            console.log(`error: ${error}`);
+            console.error(`error: ${error}`);
         });
         cartaBackend.stdout.on("data", data => {
             if (logMessage) {
@@ -62,41 +62,35 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
         });
 
         setTimeout( () => {
-
             let Connection = new WebSocket(`${serverURL}:1234`);
             expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-            
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = () => {
-                expect(Connection.readyState).toBe(WebSocket.OPEN);
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {                            
-                        expect(RegisterViewerAck.success).toBe(true);
-                        // console.log("test done");
-                        
-                        Connection.close();
-                        expect(Connection.readyState).toBe(WebSocket.CLOSING);
-                    }
-                );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            Connection.binaryType = "arraybuffer";            
+            Connection.onopen = OnOpen;
+            Connection.onclose = () => {
+                cartaBackend.kill();
+            };
+            async function OnOpen (this: WebSocket, ev: Event) {
+                expect(this.readyState).toBe(WebSocket.OPEN);
+                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                     {
                         sessionId: "", 
                         apiKey: "1234"
                     }
                 );
-            };
-            
-            Connection.onclose = () => {
-                expect(Connection.readyState).toBe(WebSocket.CLOSED);
-                cartaBackend.kill();
-            };  
-                
-        }, 100);
-
+                await new Promise( resolve => { 
+                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                        RegisterViewerAck => {
+                            expect(RegisterViewerAck.success).toBe(true);                            
+                            resolve();           
+                        }
+                    );
+                });
+                await this.close();
+            } 
+        }, 300);
         cartaBackend.on("close", () => {
             done();
-        });
-        
+        });        
     }, connectTimeout);
     
     testImageFiles.map(
@@ -106,7 +100,7 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
                 testUserNumber.map(
                     (userNumber: number) => {
                         
-                        test(`${userNumber} users set cursor randomly ${setCursorRepeat} times on image on 1 backend.`, 
+                        test(`${userNumber} users set cursor randomly ${setCursorRepeat} times on image ${imageFiles[0].slice(14)}.`, 
                         done => {
                             port ++;
                             let cartaBackend = child_process.exec(
@@ -117,7 +111,7 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
                                 }
                             );
                             cartaBackend.on("error", error => {
-                                console.log(`error: \n ${error}`);
+                                console.error(`error: \n ${error}`);
                             });
                             cartaBackend.stdout.on("data", data => {
                                 if (logMessage) {
@@ -133,94 +127,103 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
                                 for ( let index = 0; index < userNumber; index++) {
                                     Connection[index] = new WebSocket(`${serverURL}:${port}`);
                                     expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
+                                    Connection[index].binaryType = "arraybuffer";                   
+                                    Connection[index].onopen = OnOpen;
                                 }
                                 
-                                Connection.map( connection => {
-                                    connection.binaryType = "arraybuffer";
-                                    connection.onopen = () => {
-                                        expect(connection.readyState).toBe(WebSocket.OPEN);
-                                        Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                async function OnOpen (this: WebSocket, ev: Event) {
+                                    expect(this.readyState).toBe(WebSocket.OPEN);
+                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                        {
+                                            sessionId: "", 
+                                            apiKey: "1234"
+                                        }
+                                    );
+                                    await new Promise( resolve => { 
+                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                                             RegisterViewerAck => {
                                                 expect(RegisterViewerAck.success).toBe(true);
-                                                Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                                    OpenFileAck => {
-                                                        if (!OpenFileAck.success) {
-                                                            console.error(Utility.arrayNext(imageFiles, state).current() + " : " + OpenFileAck.message);
-                                                        }
-                                                        expect(OpenFileAck.success).toBe(true);
-                                                        Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                                            RasterImageData => {
-                                                                expect(RasterImageData.imageData.length).toBeGreaterThan(0);
-                                                                let randPoint = {
-                                                                    x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
-                                                                    y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)};
-                                                                
-                                                                timer = new Date().getTime();
-                                                                for ( let index = 1; index <= setCursorRepeat; index++) {
-                                                                    Utility.getEvent(connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
-                                                                        SpatialProfileData => {
-                                                                            expect(SpatialProfileData.profiles.length).not.toEqual(0);
-
-                                                                            if (index === setCursorRepeat) {                                                        
-                                                                                timeElapsed += (new Date().getTime() - timer) / setCursorRepeat - cursorWait;
-                                                                                connection.close();                                                                                
-                                                                                expect(connection.readyState).toBe(WebSocket.CLOSING); 
-                                                                            }
-                                                                            
-                                                                        }
-                                                                    );
-                                                                    Utility.sleep(cursorWait);
-                                                                    Utility.setEvent(connection, "SET_CURSOR", CARTA.SetCursor, 
-                                                                        {
-                                                                            fileId: 0, 
-                                                                            point: randPoint,
-                                                                        }
-                                                                    );
-                                                                }
-                                                            }
-                                                        );
-                                                        Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                                                            {
-                                                                fileId: 0, 
-                                                                imageBounds: {
-                                                                    xMin: 0, xMax: OpenFileAck.fileInfoExtended.width, 
-                                                                    yMin: 0, yMax: OpenFileAck.fileInfoExtended.height,
-                                                                }, 
-                                                                mip: 64, 
-                                                                compressionType: CARTA.CompressionType.ZFP, 
-                                                                compressionQuality: 11, 
-                                                                numSubsets: 4,
-                                                            }
-                                                        );
-                                                        Utility.setEvent(connection, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
-                                                            {
-                                                                fileId: 0, 
-                                                                regionId: 0, 
-                                                                spatialProfiles: ["x", "y"],
-                                                            }
-                                                        );
-                                                    }
-                                                );
-                                                Utility.sleep(eventWait);
-                                                Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
-                                                    {
-                                                        directory: testDirectory, 
-                                                        file: Utility.arrayNext(imageFiles, state).next(), 
-                                                        hdu: "0", 
-                                                        fileId: 0, 
-                                                        renderMode: CARTA.RenderMode.RASTER,
-                                                    }
-                                                );         
-                                            }
-                                        );                                        
-                                        Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                            {
-                                                sessionId: "", 
-                                                apiKey: "1234"
+                                                resolve();           
                                             }
                                         );
-                                    };
-                                });
+                                    });
+                                    await Utility.sleep(eventWait);
+                                    let OpenFileAckTemp: CARTA.OpenFileAck;
+                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
+                                        {
+                                            directory: testDirectory, 
+                                            file: Utility.arrayNext(imageFiles, state).next(), 
+                                            hdu: "0", 
+                                            fileId: 0, 
+                                            renderMode: CARTA.RenderMode.RASTER,
+                                        }
+                                    );
+                                    await new Promise( resolve => {
+                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                            (OpenFileAck: CARTA.OpenFileAck) => {
+                                                if (!OpenFileAck.success) {
+                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                                }
+                                                expect(OpenFileAck.success).toBe(true);
+                                                OpenFileAckTemp = OpenFileAck;                                            
+                                                resolve();
+                                            }
+                                        );
+                                    });
+                                    await Utility.setEvent(this, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                                        {
+                                            fileId: 0, 
+                                            imageBounds: {
+                                                xMin: 0, xMax: OpenFileAckTemp.fileInfoExtended.width, 
+                                                yMin: 0, yMax: OpenFileAckTemp.fileInfoExtended.height,
+                                            }, 
+                                            mip: 64, 
+                                            compressionType: CARTA.CompressionType.ZFP, 
+                                            compressionQuality: 11, 
+                                            numSubsets: 4,
+                                        }
+                                    );
+                                    await Utility.setEvent(this, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+                                        {
+                                            fileId: 0, 
+                                            regionId: 0, 
+                                            spatialProfiles: ["x", "y"],
+                                        }
+                                    );
+                                    let RasterImageDataTemp: CARTA.RasterImageData;  
+                                    await new Promise( resolve => {
+                                        Utility.getEvent(this, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                            RasterImageData => {
+                                                expect(RasterImageData.imageData.length).toBeGreaterThan(0);
+                                                RasterImageDataTemp = RasterImageData;
+                                                resolve();
+                                            }
+                                        );
+                                    });                                    
+                                    timer = await new Date().getTime();
+                                    for ( let index = 1; index <= setCursorRepeat; index++) {
+                                        await Utility.sleep(cursorWait);
+                                        await Utility.setEvent(this, "SET_CURSOR", CARTA.SetCursor, 
+                                            {
+                                                fileId: 0, 
+                                                point: {
+                                                    x: Math.floor(Math.random() * RasterImageDataTemp.imageBounds.xMax), 
+                                                    y: Math.floor(Math.random() * RasterImageDataTemp.imageBounds.yMax)
+                                                },
+                                            }
+                                        );
+                                        await new Promise( resolve => {
+                                            Utility.getEvent(this, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                                                SpatialProfileData => {
+                                                    expect(SpatialProfileData.profiles.length).not.toEqual(0);
+                                                    resolve();
+                                                }
+                                            );
+                                        });
+                                    }
+                                    timeElapsed = (await new Date().getTime() - timer) / setCursorRepeat - cursorWait;
+                                    await this.close();
+                                }
 
                                 let promiseSet: Promise<any>[] = new Array(userNumber);
                                 Connection.map( (connection, index) => {
