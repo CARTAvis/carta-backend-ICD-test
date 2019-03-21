@@ -1,17 +1,14 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let expectRootPath = config.path.root;
 let connectionTimeout = config.timeout.connection;
 let concurrentTimeout = config.timeout.concurrent;
-
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+let testNumber = config.repeat.concurrent;
 
 let testFileName = "aJ.fits";
-let testNumber = 10;
 let Connection: WebSocket[] = new Array(testNumber);
 
 describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file list at root path from multiple concurrent users.", () => {    
@@ -22,32 +19,27 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         for (let idx = 0; idx < testNumber; idx++) {
             Connection[idx] = new WebSocket(testServerUrl);
             Connection[idx].binaryType = "arraybuffer";
-            promiseConn[idx] = new Promise( (resolve, reject) => {
-                Connection[idx].onopen = () => {
-                    // console.log(promiseConn);
-                    // Checkout if Websocket server is ready
-                    if (Connection[idx].readyState === WebSocket.OPEN) {
+            promiseConn[idx] = new Promise( (resolved, reject) => {
+                Connection[idx].onopen = async () => {
+                    expect(Connection[idx].readyState).toBe(WebSocket.OPEN);
+                    await Utility.setEvent(Connection[idx], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                        {
+                            sessionId: "", 
+                            apiKey: "1234"
+                        }
+                    );
+                    await new Promise( resolve => {
                         Utility.getEvent(Connection[idx], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                            RegisterViewerAck => {
+                            (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                                 expect(RegisterViewerAck.success).toBe(true);
                                 resolve();
                             }
                         );
-                        Utility.setEvent(Connection[idx], "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                            {
-                                sessionId: "", 
-                                apiKey: "1234"
-                            }
-                        );
-                    } else {
-                        console.log(`connection #${idx + 1} can not open. @${new Date()}`);
-                        reject();
-                    }
-                        
+                    });
+                    resolved();
                 };
             });
-        }
-        
+        }        
         Promise.all(promiseConn).then( () => done() );
     }, concurrentTimeout);
 
@@ -73,50 +65,50 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         }
         Promise.all(promiseConnection).then( () => done() );
         
-        Connection.forEach( (value, index, array) => {
-            Utility.setEvent(value, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+        for (let connection of Connection) {
+            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
                     directory: expectRootPath
                 }
             );  
-        });  
+        }  
         
     }, concurrentTimeout);
     
     test(`assert every FILE_LIST_RESPONSE.success to be True.`, 
     () => {
-        fileListResponse.forEach( (item, index, array) => {
-            expect(item.success).toBe(true);
-        });        
+        for (let response of fileListResponse) {
+            expect(response.success).toBe(true);
+        }       
     });
 
     test(`assert every FILE_LIST_RESPONSE.parent is None.`, 
     () => {
-        fileListResponse.forEach( (item, index, array) => {
-            expect(item.parent).toBe("");
-        });
+        for (let response of fileListResponse) {
+            expect(response.parent).toBe("");
+        }   
     });
 
     test(`assert every FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, 
     () => {
-        fileListResponse.forEach( (item, index, array) => {
-            expect(item.directory).toBe(expectRootPath);
-        });
+        for (let response of fileListResponse) {
+            expect(response.directory).toBe(expectRootPath);
+        }
     });
 
     test.skip(`assert "${testFileName}" in every FILE_LIST_RESPONSE.files[].`, 
     () => {
-        fileListResponse.forEach( (item, index, array) => {
-            // console.log(item);
-            expect(item.files.find(f => f.name === testFileName)).toBeDefined();            
-        });
+        for (let response of fileListResponse) {
+            // console.log(response);
+            expect(response.files.find(f => f.name === testFileName)).toBeDefined();            
+        }
     });
 
     test.skip(`assert “${testSubdirectoryName}” in every FILE_LIST_RESPONSE.subdirectories[].`, 
     () => {
-        fileListResponse.forEach( (item, index, array) => {
-            expect(item.subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
-        });
+        for (let response of fileListResponse) {
+            expect(response.subdirectories.find(f => f === testSubdirectoryName)).toBeDefined();
+        }
     });
 
     test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, 
@@ -132,9 +124,9 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
     });
 
     afterAll( () => {
-        Connection.forEach( (item, index, array) => {
-            item.close();
-        });
+        for (let connection of Connection) {
+            connection.close();
+        }
     });
     
 });
