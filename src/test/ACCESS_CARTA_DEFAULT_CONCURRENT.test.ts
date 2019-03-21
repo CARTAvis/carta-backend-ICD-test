@@ -1,14 +1,11 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectionTimeout = config.timeout.connection;
 let concurrentTimeout = config.timeout.concurrent;
+let testNumber = config.repeat.concurrent;
 
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
-let testNumber = 10;
 let Connection: WebSocket[] = Array(testNumber);
 
 describe("Access Websocket concurrent test", () => {
@@ -20,14 +17,13 @@ describe("Access Websocket concurrent test", () => {
         promiseSet.forEach( (item, index, array) => {
             array[index] = new Promise( (resolve, reject) => {
                 Connection[index] = new WebSocket(testServerUrl);
-                Connection[index].onopen = () => {
-                    if (Connection[index].readyState === WebSocket.OPEN) {
-                        resolve();
-                    } else {
-                        console.log(`connection #${index + 1} can not open. @${new Date()}`);
-                        reject();
-                    }
-                };
+                expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
+                Connection[index].onopen = OnOpen;
+
+                function OnOpen (this: WebSocket, ev: Event) {
+                    expect(this.readyState).toBe(WebSocket.OPEN);
+                    resolve();
+                }
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
@@ -45,10 +41,11 @@ describe("Access Websocket concurrent test", () => {
         
         promiseSet.forEach( (item, index, array) => {
             array[index] = new Promise( (resolve, reject) => {
-                Connection[index].onclose = () => {
-                    expect(Connection[index].readyState).toBe(WebSocket.CLOSED);
+                Connection[index].onclose = OnClose;
+                function OnClose (this: WebSocket, ev: CloseEvent) {
+                    expect(this.readyState).toBe(WebSocket.CLOSED);
                     resolve();
-                };
+                }
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
@@ -76,14 +73,13 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
             array[index] = new Promise( (resolve, reject) => {
                 Connection[index] = new WebSocket(testServerUrl);
                 Connection[index].binaryType = "arraybuffer";
-                Connection[index].onopen = () => {
-                    if (Connection[index].readyState === WebSocket.OPEN) {
-                        resolve();
-                    } else {
-                        console.log(`connection #${index + 1} can not open. @${new Date()}`);
-                        reject();
-                    }
-                };
+                expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
+                Connection[index].onopen = OnOpen;
+
+                function OnOpen (this: WebSocket, ev: Event) {
+                    expect(this.readyState).toBe(WebSocket.OPEN);
+                    resolve();
+                }
                 let failTimer = setTimeout(() => {
                     clearTimeout(failTimer);
                     reject();
@@ -119,15 +115,14 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
 
         Promise.all(promiseSet).then( () => done() );
 
-        Connection.forEach( (item, index, array) => {
-            Utility.setEvent(item, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+        for (let connection of Connection) {
+            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
                     sessionId: "", 
                     apiKey: "1234"
                 }
             );
-        });
-
+        }        
     }, concurrentTimeout);
         
     test(`assert every REGISTER_VIEWER_ACK.success to be True.`, 
@@ -161,6 +156,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
     afterAll( () => {
         Connection.forEach( (item, index, array) => {
             item.close();
+            expect(item.readyState).toBe(WebSocket.CLOSED);
         });
     });
 
