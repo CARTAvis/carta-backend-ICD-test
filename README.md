@@ -27,7 +27,8 @@ One can execute some similar tests once, such as
 
 ### Test them all
 We do not recomment to do it because the Jest has no guarantee of process in order. The current release of backend still has some issues while running all tests concurrently.
-* It is easy to run all test by `$ npm test`.
+* It is easy to run all tests by `$ npm test`.
+* `$ npm test src/test` to run the tests inside folder concurrently.
 
 ## Log message
 It is fine to only log a test by `$ npm test src/test/ACCESS_CARTA_DEFAULT.test.ts >> message.txt` as well. Log message is a supplement of testing process, for example `registered session ID is 51551146021 @Tue Feb 26 2019 09:53:41 GMT+0800 (Taipei Standard Time)` tells about the current running ID.
