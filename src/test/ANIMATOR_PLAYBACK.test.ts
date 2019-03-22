@@ -11,7 +11,7 @@ let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 let playFrames = 150; // image
 
-describe("ANIMATOR_PLAYBACK tests", () => {   
+describe("ANIMATOR_PLAYBACK test: Testing if full resolution cursor xy profiles are delivered correctly", () => {   
     let Connection: WebSocket;
 
     beforeAll( done => {
