@@ -19,69 +19,66 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
 
-        function OnOpen (this: WebSocket, ev: Event) {
+        async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            Event1(this);
-        }
-        function Event1 (connection: WebSocket) {
-            Utility.getEvent(connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    Event2(connection);
-                }
-            );
-            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
                     sessionId: "", 
                     apiKey: "1234"
                 }
             );
-        }
-        function Event2 (connection: WebSocket) {
-            Utility.getEvent(connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponseBase => {
-                    expect(FileListResponseBase.success).toBe(true);
-                    baseDirectory = FileListResponseBase.directory;
-                    done();
-                }
-            );
-            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await new Promise( resolve => { 
+                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    RegisterViewerAck => {
+                        expect(RegisterViewerAck.success).toBe(true);
+                        resolve();           
+                    }
+                );
+            });
+            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                        FileListResponseBase => {
+                        expect(FileListResponseBase.success).toBe(true);
+                        baseDirectory = FileListResponseBase.directory;
+                        resolve();
+                    }
+                );                
+            });
+            done();
         }
     }, connectionTimeout);
-    // test.only(``,() => {});
-    describe(`test the file "${testFileName}"`, 
+    
+    describe(`test the file "${testFileName}" to`, 
     () => {
         
         test(`assert the file "${testFileName}" info be able to read.`, 
-        done => {            
-            Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
-                FileInfoResponse => {
-                    expect(FileInfoResponse.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+        async done => {
+            await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
                     hdu: "0",
                 }
-            );
+            ); 
+            await new Promise( resolve => {           
+                Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                    FileInfoResponse => {
+                        expect(FileInfoResponse.success).toBe(true);
+                        resolve();
+                    }
+                );
+            });
+            done();
         }, connectionTimeout); // test
 
         test(`assert the file "${testFileName}" be able to open.`, 
-        done => {
-            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                OpenFileAck => {
-                    expect(OpenFileAck.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+        async done => {
+            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -90,65 +87,20 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    OpenFileAck => {
+                        expect(OpenFileAck.success).toBe(true);
+                        resolve();
+                    }
+                );                
+            });
+            done();
         }, connectionTimeout); // test
 
         test(`assert the file "${testFileName}" image be able to read.`, 
-        done => {       
-            Event1(Connection);
-            function Event1 (connection: WebSocket) {     
-                Utility.getEvent(connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                    OpenFileAck => {
-                        expect(OpenFileAck.success).toBe(true);
-                        Event2(connection, OpenFileAck);                        
-                    }
-                );
-                Utility.setEvent(connection, "OPEN_FILE", CARTA.OpenFile, 
-                    {
-                        directory: baseDirectory + "/" + testSubdirectoryName, 
-                        file: testFileName, 
-                        hdu: "0", 
-                        fileId: 0, 
-                        renderMode: CARTA.RenderMode.RASTER,
-                    }
-                );
-            }
-            function Event2 (connection: WebSocket, OpenFileAck: CARTA.OpenFileAck) {
-                Utility.getEvent(connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                    RasterImageData => {
-                        expect(RasterImageData.imageData.length).toBeGreaterThan(0);
-                        done();
-                    }
-                );
-                Utility.setEvent(connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                    {
-                        fileId: 0, 
-                        imageBounds: {
-                            xMin: 0, xMax: OpenFileAck.fileInfoExtended.width, 
-                            yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
-                        }, 
-                        mip: 3, 
-                        compressionType: CARTA.CompressionType.ZFP, 
-                        compressionQuality: 11, 
-                        numSubsets: 4,
-                    }
-                );
-            } 
-        }, connectionTimeout); // test
-    }); // describe
-
-    describe(`open the file "${testFileName} and ...`, 
-    () => {
-        let OpenFileAckTemp: CARTA.OpenFileAck;
-        beforeEach( 
-        done => {
-            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                OpenFileAck => {
-                    expect(OpenFileAck.success).toBe(true);
-                    OpenFileAckTemp = OpenFileAck;
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+        async done => {
+            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -157,6 +109,65 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
+            let OpenFileAckTemp: CARTA.OpenFileAck;
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    OpenFileAck => {
+                        expect(OpenFileAck.success).toBe(true);
+                        OpenFileAckTemp = OpenFileAck;
+                        resolve();
+                    }
+                );                
+            });
+            await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                {
+                    fileId: 0, 
+                    imageBounds: {
+                        xMin: 0, xMax: OpenFileAckTemp.fileInfoExtended.width, 
+                        yMin: 0, yMax: OpenFileAckTemp.fileInfoExtended.height
+                    }, 
+                    mip: 3, 
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11, 
+                    numSubsets: 4,
+                }
+            );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                    RasterImageData => {
+                        expect(RasterImageData.fileId).toEqual(0);
+                        resolve();
+                    }
+                );                
+            });
+            done(); 
+        }, connectionTimeout); // test
+    }); // describe
+
+    describe(`open the file "${testFileName}" to`, 
+    () => {
+        let OpenFileAckTemp: CARTA.OpenFileAck;
+        beforeEach( 
+        async done => {
+            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                {
+                    directory: baseDirectory + "/" + testSubdirectoryName, 
+                    file: testFileName, 
+                    hdu: "0", 
+                    fileId: 0, 
+                    renderMode: CARTA.RenderMode.RASTER,
+                }
+            );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    OpenFileAck => {
+                        expect(OpenFileAck.success).toBe(true);
+                        OpenFileAckTemp = OpenFileAck;
+                        resolve();
+                    }
+                );                
+            });
+            done();
         }, connectionTimeout);       
         
         test(`assert the returned message.`, 
@@ -194,17 +205,11 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
     });    
 
-    describe(`open the file "${testFileName} and read image data ...`, 
+    describe(`read the file "${testFileName}" to`, 
     () => {
         beforeEach( 
-        done => {            
-            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                OpenFileAck => {
-                    expect(OpenFileAck.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+        async done => { 
+            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -213,6 +218,15 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    OpenFileAck => {
+                        expect(OpenFileAck.success).toBe(true);
+                        resolve();
+                    }
+                );                
+            });
+            done();
         }, connectionTimeout);
 
         describe(`test raster image data with extended info.`, () => {
@@ -229,22 +243,8 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                             {point: {x: number, y: number, xMax: number}, value: number}, {point: {x: number, y: number, xMax: number}, value: number}]) {
                     
                     test(`assert the file returns correct image info.`, 
-                    done => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                expect(RasterImageData.fileId).toEqual(fileId);
-                                expect(RasterImageData.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
-                                expect(RasterImageData.compressionType).toEqual(compressionType);
-                                if (RasterImageData.compressionType !== CARTA.CompressionType.NONE) {
-                                    expect(RasterImageData.compressionQuality).toEqual(compressionQuality);                                        
-                                }
-                                expect(RasterImageData.mip).toEqual(mip);
-                                expect(RasterImageData.channel).toEqual(channel);
-                                expect(RasterImageData.stokes).toEqual(stokes);
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    async done => {
+                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -254,26 +254,28 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                                 numSubsets,
                             }
                         );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                RasterImageData => {
+                                    expect(RasterImageData.fileId).toEqual(fileId);
+                                    expect(RasterImageData.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
+                                    expect(RasterImageData.compressionType).toEqual(compressionType);
+                                    if (RasterImageData.compressionType !== CARTA.CompressionType.NONE) {
+                                        expect(RasterImageData.compressionQuality).toEqual(compressionQuality);                                        
+                                    }
+                                    expect(RasterImageData.mip).toEqual(mip);
+                                    expect(RasterImageData.channel).toEqual(channel);
+                                    expect(RasterImageData.stokes).toEqual(stokes);
+                                    resolve();
+                                }
+                            );                            
+                        });
+                        done(); 
                     }, connectionTimeout);
 
                     test(`assert channel histogram data.`, 
-                    done => {                        
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                let channelHistogram = RasterImageData.channelHistogramData.histograms[0];
-                                expect(channelHistogram.numBins).toEqual(numBins);
-                                expect(channelHistogram.bins.length).toEqual(binsLength);
-                                expect(channelHistogram.binWidth).toBeCloseTo(binWidth, 12);
-                                expect(channelHistogram.firstBinCenter).toBeCloseTo(firstBinCenter, 9);
-                                expect(channelHistogram.bins[binsValue.idx]).toEqual(binsValue.value);
-
-                                let HistogramSum = 0;
-                                channelHistogram.bins.forEach((x) => HistogramSum += x );
-                                expect(HistogramSum).toEqual(channelHistogramSum);
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    async done => {
+                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -282,23 +284,30 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                                 compressionQuality, 
                                 numSubsets,
                             }
-                        );                                       
+                        );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                RasterImageData => {
+                                    let channelHistogram = RasterImageData.channelHistogramData.histograms[0];
+                                    expect(channelHistogram.numBins).toEqual(numBins);
+                                    expect(channelHistogram.bins.length).toEqual(binsLength);
+                                    expect(channelHistogram.binWidth).toBeCloseTo(binWidth, 12);
+                                    expect(channelHistogram.firstBinCenter).toBeCloseTo(firstBinCenter, 9);
+                                    expect(channelHistogram.bins[binsValue.idx]).toEqual(binsValue.value);
+    
+                                    let HistogramSum = 0;
+                                    channelHistogram.bins.forEach((x) => HistogramSum += x );
+                                    expect(HistogramSum).toEqual(channelHistogramSum);
+                                    resolve();
+                                }
+                            );                            
+                        });
+                        done();                                        
                     }, connectionTimeout);
 
                     test(`assert nan_encodings is empty.`, 
-                    done => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                let nanEncodings = RasterImageData.nanEncodings;
-                                if (compressionType === CARTA.CompressionType.NONE) {
-                                    expect(nanEncodings.length).toEqual(0);
-                                } else {
-                                    expect(nanEncodings.length).toBeGreaterThan(0);
-                                } 
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    async done => {
+                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -307,29 +316,26 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                                 compressionQuality, 
                                 numSubsets,
                             }
-                        );                                                            
+                        );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                RasterImageData => {
+                                    let nanEncodings = RasterImageData.nanEncodings;
+                                    if (compressionType === CARTA.CompressionType.NONE) {
+                                        expect(nanEncodings.length).toEqual(0);
+                                    } else {
+                                        expect(nanEncodings.length).toBeGreaterThan(0);
+                                    } 
+                                    resolve();
+                                }
+                            );                            
+                        });
+                        done();                                                            
                     } , connectionTimeout);
 
                     test(`assert data value at position (${assertPoint1.point.x}, ${assertPoint1.point.y}) & (${assertPoint2.point.x}, ${assertPoint2.point.y}).`, 
-                    done => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                let imageData = RasterImageData.imageData;
-                                let imageDataSum = 0;
-                                imageData.forEach((x) => imageDataSum += x.length );
-                                expect(imageDataSum).toEqual(imageDataLength);
-
-                                if (compressionType === CARTA.CompressionType.NONE) {
-                                    let movingIndex = 4 * ( assertPoint1.point.y * assertPoint1.point.xMax + assertPoint1.point.x );
-                                    expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint1.value, 8);
-                                    
-                                    movingIndex = 4 * ( assertPoint2.point.y * assertPoint2.point.xMax + assertPoint2.point.x );
-                                    expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint2.value, 8);
-                                }
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    async done => {
+                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -338,7 +344,27 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                                 compressionQuality, 
                                 numSubsets,
                             }
-                        );                                            
+                        );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                RasterImageData => {
+                                    let imageData = RasterImageData.imageData;
+                                    let imageDataSum = 0;
+                                    imageData.forEach((x) => imageDataSum += x.length );
+                                    expect(imageDataSum).toEqual(imageDataLength);
+    
+                                    if (compressionType === CARTA.CompressionType.NONE) {
+                                        let movingIndex = 4 * ( assertPoint1.point.y * assertPoint1.point.xMax + assertPoint1.point.x );
+                                        expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint1.value, 8);
+                                        
+                                        movingIndex = 4 * ( assertPoint2.point.y * assertPoint2.point.xMax + assertPoint2.point.x );
+                                        expect(Buffer.from(imageData[0].slice(movingIndex, movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint2.value, 8);
+                                    }
+                                    resolve();
+                                }
+                            );                            
+                        });
+                        done();                                            
                     }, connectionTimeout);
 
                 } // function([ ])
