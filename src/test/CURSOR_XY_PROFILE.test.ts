@@ -12,7 +12,7 @@ let baseDirectory: string;
 describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles are delivered correctly", () => {   
     let Connection: WebSocket;    
 
-    beforeEach( done => {
+    beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
         expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
@@ -53,7 +53,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
     }, connectionTimeout);
 
     describe(`open the file "${testFileName}" to`, () => {
-        beforeEach( async () => {
+        beforeAll( async () => {
             await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
@@ -204,7 +204,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
 
     });
 
-    afterEach( () => {
+    afterAll( () => {
         Connection.close();
     });
 });

@@ -12,7 +12,7 @@ let baseDirectory: string;
 describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is delivered correctly", () => {   
     let Connection: WebSocket;
 
-    beforeEach( done => {
+    beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
         expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
@@ -54,7 +54,7 @@ describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is 
 
     describe(`open the file "${testFileName} to `, 
     () => {
-        beforeEach( async () => {
+        beforeAll( async () => {
             await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
@@ -229,7 +229,7 @@ describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is 
 
     });
 
-    afterEach( () => {
+    afterAll( () => {
         Connection.close();
     });
 });
