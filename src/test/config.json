@@ -12,6 +12,7 @@
         "readFile": 3000,
         "playImages": 20000,
         "concurrent": 4000,
+        "messageEvent": 500,
         "mouseEvent": 1000
     },
     "repeat": {

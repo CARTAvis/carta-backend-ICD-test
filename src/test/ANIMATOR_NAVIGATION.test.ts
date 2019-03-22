@@ -1,4 +1,5 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
@@ -6,15 +7,12 @@ let expectBasePath = config.path.base;
 let connectionTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
-
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+let messageReturnTimeout = config.timeout.messageEvent;
 
 let baseDirectory: string;
-let messageReturnTimeout = 200;
 
-describe("ANIMATOR_NAVIGATION tests", () => {   
+describe("ANIMATOR_NAVIGATION test: Testing using animator to see different frames of images", 
+() => {   
     let Connection: WebSocket;
 
     beforeAll( done => {
@@ -57,16 +55,17 @@ describe("ANIMATOR_NAVIGATION tests", () => {
         }        
     }, connectionTimeout);
 
-    describe(`read the files`, () => {
+    describe(`read the files`, 
+    () => {
         [
-         ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
-         ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
+            ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
+            ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
         ].map(
             function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
                       [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
                 
                 test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
-                async done => {
+                async () => {
                     await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
                             directory: baseDirectory + "/" + testSubdirectoryName, 
@@ -108,14 +107,13 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                             }
                         );                        
                     });
-                    done();
                 }, openFileTimeout);                
             }
         );
-    }); // describe
+    });
 
     test(`assert image channel to be 0 on file ID 0.`, 
-    async done => {
+    async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
                 fileId: 0, 
@@ -135,11 +133,10 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                 }
             );
         });
-        done();
-    }, readFileTimeout); // test
+    }, readFileTimeout);
 
     test(`assert image channel to be 100 on file ID 1.`, 
-    async done => {
+    async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
                 fileId: 1, 
@@ -158,16 +155,16 @@ describe("ANIMATOR_NAVIGATION tests", () => {
                 }
             );
         });
-        done();
-    }, readFileTimeout); // test
+    }, readFileTimeout);
 
-    afterAll( done => {
-        Connection.close();
-        done();
+    afterAll( async () => {
+        await Connection.close();
+        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
     });
 });
 
-describe("ANIMATOR_NAVIGATION_ERROR tests", () => {   
+describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator", 
+() => {   
     let Connection: WebSocket;
 
     beforeAll( done => {
@@ -210,16 +207,17 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         }
     }, connectionTimeout);
 
-    describe(`read the files`, () => {
+    describe(`read the files`, 
+    () => {
         [
-         ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
-         ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
+            ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
+            ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
         ].map(
             function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
                       [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
                 
                 test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
-                async done => { 
+                async () => { 
                     await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
                             directory: baseDirectory + "/" + testSubdirectoryName, 
@@ -261,15 +259,14 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                             }
                         );                        
                     });
-                    done();
                 }, openFileTimeout);
                                 
             }
         );
-    }); // describe
+    });
 
     test(`assert not returns (image channel: 1000 & stokes: 3 on file ID 0).`, 
-    async done => {
+    async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
                 fileId: 0, 
@@ -284,18 +281,15 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
                     return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
-                }; // onmessage "RASTER_IMAGE_DATA"
-
+                }; 
                 expect(Connection.readyState).toBe(WebSocket.OPEN);
-
                 resolve();
             }, messageReturnTimeout);
-        });        
-        done();
-    }, readFileTimeout); // test
+        });
+    }, readFileTimeout);
 
     test(`assert not returns (image channel: 3000 & stokes: 1 on file ID 1).`, 
-    async done => { 
+    async () => { 
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
                 fileId: 1, 
@@ -305,23 +299,20 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         );
         await new Promise( resolve => {
             setTimeout( () => {
-                expect.assertions(2); 
-                // While receive a message
+                expect.assertions(2);
+                
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
                     return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
-                }; // onmessage "RASTER_IMAGE_DATA"
-
+                };
                 expect(Connection.readyState).toBe(WebSocket.OPEN);
-
                 resolve();
             }, messageReturnTimeout);
         });
-        done();
-    }, readFileTimeout); // test
+    }, readFileTimeout); 
 
     test(`assert not returns (image channel: 0 & stokes: 0 on file ID 2).`, 
-    async done => {
+    async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
                 fileId: 2, 
@@ -332,23 +323,19 @@ describe("ANIMATOR_NAVIGATION_ERROR tests", () => {
         await new Promise( resolve => {
             setTimeout( () => { 
                 expect.assertions(2);
-                // While receive a message
+                
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
                     return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
-                }; // onmessage "RASTER_IMAGE_DATA"
-
-                expect(Connection.readyState).toBe(1);
-
-                done();
+                };
+                expect(Connection.readyState).toBe(WebSocket.OPEN);
+                resolve();
             }, messageReturnTimeout);
         });
-        
-        done();
-    }, readFileTimeout); // test
+    }, readFileTimeout); 
 
-    afterAll( done => {
-        Connection.close();
-        done();
+    afterAll( async () => {
+        await Connection.close();
+        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
     });
 });
