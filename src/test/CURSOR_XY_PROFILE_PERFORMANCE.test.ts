@@ -1,5 +1,6 @@
 import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";import config from "./config.json";
+import * as Utility from "./testUtilityFunction";
+import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let expectBasePath = config.path.base;
