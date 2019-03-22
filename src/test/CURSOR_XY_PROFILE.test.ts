@@ -52,8 +52,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
         }
     }, connectionTimeout);
 
-    describe(`open the file "${testFileName}" to`, 
-    () => {
+    describe(`open the file "${testFileName}" to`, () => {
         beforeEach( async () => {
             await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                 {
@@ -64,10 +63,12 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
+            let OpenFileAckTemp: CARTA.OpenFileAck; 
             await new Promise( resolve => {
                 Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
+                        OpenFileAckTemp = OpenFileAck;
                         resolve();
                     }
                 );                
@@ -76,8 +77,8 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                 {
                     fileId: 0, 
                     imageBounds: {
-                        xMin: 0, xMax: 100, 
-                        yMin: 0, yMax: 100,
+                        xMin: 0, xMax: OpenFileAckTemp.fileInfoExtended.width, 
+                        yMin: 0, yMax: OpenFileAckTemp.fileInfoExtended.height
                     }, 
                     mip: 1, 
                     compressionType: CARTA.CompressionType.ZFP, 
