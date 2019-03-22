@@ -9,7 +9,7 @@ let connectionTimeout = config.timeout.connection;
 let testFileName = "qa_xyProfiler.fits";
 let baseDirectory: string;
 
-describe("CURSOR_XY_PROFILE tests", () => {   
+describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles are delivered correctly", () => {   
     let Connection: WebSocket;    
 
     beforeEach( done => {
