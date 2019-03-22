@@ -5,12 +5,11 @@ let testServerUrl = config.serverURL;
 let testSubdirectoryName = config.path.QA;
 let expectBasePath = config.path.base;
 let readFileTimeout = config.timeout.readFile;
-let playTimeout = 20000; // ms
+let playTimeout = config.timeout.playImages;
 
 let baseDirectory: string;
 let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
 let playFrames = 150; // image
-let playPeriod = 1; // ms
 
 describe("ANIMATOR_PLAYBACK tests", () => {   
     let Connection: WebSocket;
@@ -88,53 +87,52 @@ describe("ANIMATOR_PLAYBACK tests", () => {
                         expect(RasterImageData.fileId).toEqual(0);
                         resolve();
                     }
-                );
-                
+                );                
             });
             done();
         }
     }, readFileTimeout);
     
-    let timer: number = 0;
-    timer = new Date().getTime();
-    let timeElapsed: number = 0;
-    for (let idx = 1; idx < playFrames + 1; idx++) {
-        test(`assert image${idx} to play.`,
-        done => {
-            setTimeout( () => {
+    let timer: number;
+    let timeElapsed: number;
+    test(`play ${playFrames} images.`,
+    async () => {
+        timer = await new Date().getTime();
+        for (let idx = 1; idx < playFrames + 1; idx++) {
+            await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels,  
+                {
+                    fileId: 0, 
+                    channel: idx, 
+                    stokes: 0,
+                }
+            );
+            await new Promise( (resolve, reject) => {
                 Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.fileId).toEqual(0);
                         expect(RasterImageData.channel).toEqual(idx);
                         expect(RasterImageData.stokes).toEqual(0);
-
-                        if ( idx === playFrames) {
-                            timeElapsed = new Date().getTime() - timer;
-                        }
-                        done();
+                        resolve();
                     }
                 );
-                Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
-                {
-                    fileId: 0, 
-                    channel: idx, 
-                    stokes: 0,
-                });
-            }, playPeriod);
-
-        }, readFileTimeout); // test
-    
-    }
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, readFileTimeout);                
+            });
+        }
+        timeElapsed = await new Date().getTime() - timer;
+    }, playTimeout); // test
 
     test(`assert playing time within ${playTimeout} ms.`,
     () => {
         expect(timeElapsed).toBeLessThan(playTimeout);
         expect(timeElapsed).not.toEqual(0);
-        console.log(`FPS = ${(timeElapsed ? playFrames * 1000 / timeElapsed : 0)} Hz. @${new Date()}`);
-    }); // test    
+        console.log(`FPS = ${(timeElapsed ? playFrames * 1000 / timeElapsed : 0)}Hz. @${new Date()}`);
+    });   
 
-    afterAll( done => {
-        Connection.close();
-        done();
+    afterAll( async () => {
+        await Connection.close();
+        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
     });
 });

@@ -10,6 +10,7 @@
         "connection": 1000,
         "openFile": 3000,
         "readFile": 3000,
+        "playImages": 20000,
         "concurrent": 4000,
         "mouseEvent": 1000
     },
