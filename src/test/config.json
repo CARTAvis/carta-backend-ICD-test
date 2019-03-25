@@ -13,6 +13,7 @@
         "readLargeImage": 18000,
         "playImages": 20000,
         "cubeHistogram": 30000,
+        "cancel": 10000,
         "concurrent": 4000,
         "messageEvent": 500,
         "mouseEvent": 1000
