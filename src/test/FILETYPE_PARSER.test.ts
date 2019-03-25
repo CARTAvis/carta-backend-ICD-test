@@ -1,4 +1,5 @@
-/// Manual
+import {CARTA} from "carta-protobuf";
+import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let expectRootPath = config.path.root;
@@ -6,118 +7,121 @@ let expectBasePath = config.path.base;
 let testSubdirectoryName = config.path.QA;
 let connectionTimeout = config.timeout.connection;
 
-/// ICD defined
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
-
 describe("FILETYPE_PARSER test: Testing if all supported image types can be detected and displayed in the file list", 
-() => {   
-    // Establish a websocket connection in the transfer form of binary: arraybuffer 
+() => {
     let Connection: WebSocket;
 
     beforeEach( done => {
         Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
-        // While open a Websocket
-        Connection.onopen = () => {
-            // Checkout if Websocket server is ready
-            if (Connection.readyState === WebSocket.OPEN) {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+        Connection.onopen = OnOpen;
+        async function OnOpen (this: WebSocket, ev: Event) {
+            expect(this.readyState).toBe(WebSocket.OPEN);
+            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                {
+                    sessionId: "", 
+                    apiKey: "1234"
+                }
+            );
+            await new Promise( resolve => { 
+                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
-                        done();
+                        resolve();           
                     }
                 );
-                Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-            } else {
-                console.log(`Can not open a connection. @${new Date()}`);
-            }
+            });
             done();
-        };
+        }
     }, connectionTimeout);
     
     let baseDirectory: string;
-    test(`assert the base path.`, 
-    done => {
-        
-        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-            FileListResponseBase => {                
-                baseDirectory = FileListResponseBase.directory;    
-                done();
-            }
-        );
-        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
-            {
-                directory: expectBasePath
-            }
-        );
-    }, connectionTimeout);
+    test(`assert the base path.`,      
+        async () => {
+            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                {
+                    directory: expectBasePath
+                }
+            );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    FileListResponse => {
+                        expect(FileListResponse.success).toBe(true);
+                        baseDirectory = FileListResponse.directory;
+                        resolve();
+                    }
+                );                
+            });
+        }, connectionTimeout);
 
     describe(`send EventName: "FILE_LIST_REQUEST" to CARTA ${testServerUrl}`, 
     () => {
         test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectionTimeout} ms.`, 
-        done => {
-            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponse => {
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+        async () => {
+            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: baseDirectory + "/" + testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    FileListResponse => {
+                        resolve();
+                    }
+                );                
+            });
         }, connectionTimeout);
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
-        done => {
-            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponse => {
-                    expect(FileListResponse.success).toBe(true);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+        async () => {
+            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: baseDirectory + "/" + testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    (FileListResponse: CARTA.FileListResponse) => {
+                        expect(FileListResponse.success).toBe(true);
+                        resolve();
+                    }
+                );                
+            });
         }, connectionTimeout);         
 
         test(`assert the "FILE_LIST_RESPONSE.parent" is "$BASE".`, 
-        done => {
-            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponse => {
-                    expect(FileListResponse.parent).toBe(baseDirectory);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+        async () => {
+            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: baseDirectory + "/" + testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    (FileListResponse: CARTA.FileListResponse) => {
+                        expect(FileListResponse.parent).toBe(baseDirectory);
+                        resolve();
+                    }
+                );                
+            });
         }, connectionTimeout);
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is the path "$BASE/${testSubdirectoryName}".`, 
-        done => {
-            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                FileListResponse => {
-                    expect(FileListResponse.directory).toBe(baseDirectory === expectRootPath ? testSubdirectoryName : baseDirectory + "/" + testSubdirectoryName);
-                    // console.log(FileListResponse.directory);
-                    done();
-                }
-            );
-            Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+        async () => {
+            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                 {
-                    directory: baseDirectory + "/" + testSubdirectoryName
+                    directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
+            await new Promise( resolve => {
+                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    (FileListResponse: CARTA.FileListResponse) => {
+                        expect(FileListResponse.directory).toBe(baseDirectory === expectRootPath ? testSubdirectoryName : baseDirectory + "/" + testSubdirectoryName);
+                        resolve();
+                    }
+                );                
+            });
         }, connectionTimeout);
 
         describe(`test the file is existent`, () => {
@@ -132,24 +136,26 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                          [string, CARTA.FileType, number, string[]]) {
     
                     test(`assert the file "${file}" exists, image type is ${CARTA.FileType[type]}, size = ${size}, HDU = [${hdu}].`, 
-                    done => {
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
-
-                                let fileInfo = FileListResponse.files.find(f => f.name === file);
-                                expect(fileInfo).toBeDefined();
-                                expect(fileInfo.type).toBe(type);
-                                expect(fileInfo.size.toNumber()).toBe(size);
-                                expect(fileInfo.HDUList).toEqual(hdu);
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                    async () => {
+                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: baseDirectory + "/" + testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                                (FileListResponse: CARTA.FileListResponse) => {
+                                    expect(FileListResponse.success).toBe(true);
+    
+                                    let fileInfo = FileListResponse.files.find(f => f.name === file);
+                                    expect(fileInfo).toBeDefined();
+                                    expect(fileInfo.type).toBe(type);
+                                    expect(fileInfo.size.toNumber()).toBe(size);
+                                    expect(fileInfo.HDUList).toEqual(hdu);
+                                    resolve();
+                                }
+                            );                
+                        });
                     }, connectionTimeout);
 
                 }
@@ -164,20 +170,22 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             ].map(
                 function([file]: [string]) {
                     test(`assert the file "${file}" does not exist.`, 
-                    done => {
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
-                                let fileInfo = FileListResponse.files.find(f => f.name === file);
-                                expect(fileInfo).toBeUndefined();
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                    async () => {
+                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: baseDirectory + "/" + testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                                (FileListResponse: CARTA.FileListResponse) => {
+                                    expect(FileListResponse.success).toBe(true);
+                                    let fileInfo = FileListResponse.files.find(f => f.name === file);
+                                    expect(fileInfo).toBeUndefined();
+                                    resolve();
+                                }
+                            );                
+                        });
                     }, connectionTimeout);
                 }
             );
@@ -190,20 +198,22 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
             ].map(
                 ([folder]) => {
                     test(`assert the folder "${folder}" exists.`, 
-                    done => {
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponse => {
-                                expect(FileListResponse.success).toBe(true);
-                                let folderInfo = FileListResponse.subdirectories.find(f => f === folder);
-                                expect(folderInfo).toBeDefined();
-                                done();
-                            }
-                        );
-                        Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                    async () => {
+                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                             {
-                                directory: baseDirectory + "/" + testSubdirectoryName
+                                directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
+                        await new Promise( resolve => {
+                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                                (FileListResponse: CARTA.FileListResponse) => {
+                                    expect(FileListResponse.success).toBe(true);
+                                    let folderInfo = FileListResponse.subdirectories.find(f => f === folder);
+                                    expect(folderInfo).toBeDefined();
+                                    resolve();
+                                }
+                            );                
+                        });
                     }, connectionTimeout);
                 }
             );
@@ -211,8 +221,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
 
     });
 
-    afterEach( done => {
+    afterEach( () => {
         Connection.close();
-        done();
     });
 });
