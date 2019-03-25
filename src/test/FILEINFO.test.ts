@@ -22,7 +22,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
             await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
                 {
                     sessionId: "", 
-                    apiKey: "1234"
+                    apiKey: "1234",
                 }
             );
             await new Promise( resolve => { 
@@ -48,12 +48,12 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 async () => {
                     await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                         {
-                            directory: dir
+                            directory: dir,
                         }
                     );
                     await new Promise( resolve => {
                         Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                                FileListResponseBase => {
+                            FileListResponseBase => {
                                 expect(FileListResponseBase.success).toBe(true);
                                 resolve();
                             }
@@ -71,12 +71,12 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
             async () => {
                 await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                     {
-                        directory: expectBasePath
+                        directory: expectBasePath,
                     }
                 );
                 await new Promise( resolve => {
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
+                        FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             baseDirectory = FileListResponseBase.directory;
                             resolve();
@@ -85,12 +85,12 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 });
                 await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
                     {
-                        directory: baseDirectory
+                        directory: baseDirectory,
                     }
                 );
                 await new Promise( resolve => {
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
+                        FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             resolve();
                         }
@@ -254,7 +254,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                 );
                 await new Promise( resolve => {
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
+                        FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             baseDirectory = FileListResponseBase.directory;
                             resolve();
@@ -268,7 +268,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                 );
                 await new Promise( resolve => {
                     Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
-                            FileListResponseBase => {
+                        FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             resolve();
                         }
