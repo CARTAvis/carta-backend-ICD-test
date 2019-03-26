@@ -21,6 +21,7 @@
     "repeat": {
         "concurrent": 10,
         "cursor": 10,
+        "image": 10,
         "animation": 100
     }
 }
