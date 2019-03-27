@@ -11,20 +11,22 @@ let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
-let openFileTimeout = config.timeout.openFile;
-let execWait = config.wait.exec;
+let openFileTimeout = 4000;
 let psWait = config.wait.ps;
+let reconnectWait = config.wait.reconnect;
 let logMessage = config.log;
 let state = {index: -1};
 
 let testImageFiles = [
-    // fileName.imageFiles2fits,
+    fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
-    fileName.imageFiles8fits,
+    // fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
+
+    // fileName.imageFiles4image,
 ];
 let testThreadNumber: number[] = [
     64,
@@ -41,56 +43,53 @@ let testThreadNumber: number[] = [
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
     
     test(`Preparing... dry run.`, 
-    done => {
-        
-        let cartaBackend = child_process.exec(
-            `./carta_backend root=base base=${baseDirectory} port=5678 threads=4`,
+    async () => {
+        let cartaBackend = await child_process.exec(
+            `./carta_backend root=base base=${baseDirectory} port=5678 threads=5`,
             {
                 cwd: backendDirectory, 
-                timeout: 5000
+                timeout: connectTimeout
             }
         );
         cartaBackend.on("error", error => {
-            console.error(`error: ${error}`);
+            console.error(error);
         });
         cartaBackend.stdout.on("data", data => {
             if (logMessage) {
                 console.log(data);
             }            
-        });      
+        });              
         
-        setTimeout(() => {
-            let Connection = new WebSocket(`${serverURL}:5678`);
-            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-            Connection.binaryType = "arraybuffer";            
-            Connection.onopen = OnOpen;
-            Connection.onclose = () => {
-                cartaBackend.kill();
-            };
-            async function OnOpen (this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-                await new Promise( resolve => { 
-                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                        RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);                            
-                            resolve();           
-                        }
-                    );
-                });
-                await this.close();
-            } 
-        }, 300);
+        let Connection = await new WebSocket(`${serverURL}:5678`);
 
-        cartaBackend.on("close", () => {
-            done();
+        await new Promise( async resolve => {
+            while (Connection.readyState !== WebSocket.OPEN) {
+                await Connection.close();
+                Connection = await new WebSocket(`${serverURL}:5678`);
+                await new Promise( time => setTimeout(time, reconnectWait));
+            }
+            Connection.binaryType = "arraybuffer";
+            resolve();
         });
 
+        await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            {
+                sessionId: "", 
+                apiKey: "1234"
+            }
+        );
+        await new Promise( resolve => { 
+            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                RegisterViewerAck => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    // console.log("done");
+                    resolve();           
+                }
+            );
+        });
+        await Connection.close();
+        
+        await cartaBackend.kill();
     }, connectTimeout);
 
     testImageFiles.map(
@@ -100,12 +99,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
             describe(`Change the number of thread: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
-                        test(`open "${Utility.arrayNext(imageFiles, state).next()}" on backend with thread number = ${threadNumber}.`, 
-                        done => {
+                        test(`open image "${Utility.arrayNext(imageFiles, state).next()}" on backend with thread number = ${threadNumber}.`, 
+                        async () => {
                             
-                            port ++;
-                            let cartaBackend = child_process.exec(
-                                `./carta_backend root=base base=${baseDirectory} port=${port} threads=${threadNumber}`,
+                            // port += 10;
+                            let cartaBackend = await child_process.execFile(
+                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber}`],
                                 {
                                     cwd: backendDirectory, 
                                     timeout: openFileTimeout
@@ -120,91 +119,87 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 }
                             });
                             
-                            let timer: number = 0;        
-                            let timeElapsed: number = 0;
-                            
-                            setTimeout(() => {
-                                let Connection = new WebSocket(`${serverURL}:${port}`);
-                                expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-                                Connection.binaryType = "arraybuffer";                                
-                                Connection.onopen = OnOpen;
-
-                                async function OnOpen (this: WebSocket, ev: Event) {
-                                    expect(this.readyState).toBe(WebSocket.OPEN);
-                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                        {
-                                            sessionId: "", 
-                                            apiKey: "1234"
-                                        }
-                                    );
-                                    await new Promise( resolve => { 
-                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                            RegisterViewerAck => {
-                                                expect(RegisterViewerAck.success).toBe(true);
-                                                resolve();           
-                                            }
-                                        );
-                                    });
-                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
-                                        {
-                                            directory: testDirectory, 
-                                            file: Utility.arrayNext(imageFiles, state).current(), 
-                                            hdu: "0", 
-                                            fileId: 0, 
-                                            renderMode: CARTA.RenderMode.RASTER,
-                                        }
-                                    );
-                                    timer = await new Date().getTime(); 
-                                    await new Promise( resolve => {
-                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                            (OpenFileAck: CARTA.OpenFileAck) => {
-                                                if (!OpenFileAck.success) {
-                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
-                                                }
-                                                expect(OpenFileAck.success).toBe(true);
-                                                
-                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
-                                                
-                                                resolve();
-                                            }
-                                        );
-                                    });
-                                    timeElapsed = await new Date().getTime() - timer;
-                                    await this.close();
+                            let Connection = await new WebSocket(`${serverURL}:${port}`);
+                            await new Promise( async resolve => {
+                                while (Connection.readyState !== WebSocket.OPEN) {
+                                    await Connection.close();
+                                    Connection = await new WebSocket(`${serverURL}:${port}`);
+                                    await new Promise( time => setTimeout(time, reconnectWait));
                                 }
-                                
-                                Connection.onclose =  () => {
-                                    setTimeout( async () => {
-                                        let usage: {
-                                            cpu: number,
-                                            memory: number,
-                                            ppid: number,
-                                            pid: number,
-                                            ctime: number,
-                                            elapsed: number,
-                                            timestamp: number,
-                                        } = await pidusage(cartaBackend.pid);
+                                Connection.binaryType = "arraybuffer";
+                                resolve();
+                            });
+                             
+                            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                {
+                                    sessionId: "", 
+                                    apiKey: "1234"
+                                }
+                            );
+                            await new Promise( resolve => { 
+                                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                    RegisterViewerAck => {
+                                        expect(RegisterViewerAck.success).toBe(true);
+                                        resolve();           
+                                    }
+                                );
+                            });
+                            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                                {
+                                    directory: testDirectory, 
+                                    file: Utility.arrayNext(imageFiles, state).current(), 
+                                    hdu: "0", 
+                                    fileId: 0, 
+                                    renderMode: CARTA.RenderMode.RASTER,
+                                }
+                            );
+                            let timer = await new Date().getTime(); 
+                            await new Promise( resolve => {
+                                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                    (OpenFileAck: CARTA.OpenFileAck) => {
+                                        if (!OpenFileAck.success) {
+                                            console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                        }
+                                        expect(OpenFileAck.success).toBe(true);                                            
+                                        resolve();
+                                    }
+                                );
+                            });
+                            let timeElapsed = await new Date().getTime() - timer;
 
-                                        timeEpoch.push({
-                                            time: timeElapsed, 
-                                            thread: threadNumber, 
-                                            CPUusage: usage.cpu,
-                                            RAM: usage.memory
-                                        });
+                            await Connection.close();
+                            
+                            await new Promise( resolve => 
+                                setTimeout(resolve, psWait)
+                            );
 
-                                        cartaBackend.kill();
-                                    }, psWait);
-                                };
-                                
-                            }, execWait);
+                            let usage: {
+                                cpu: number,
+                                memory: number,
+                                ppid: number,
+                                pid: number,
+                                ctime: number,
+                                elapsed: number,
+                                timestamp: number,
+                            } = await pidusage(cartaBackend.pid);
 
-                            cartaBackend.on("close", () => {
-                                if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
-                                    console.log(`Backend testing outcome:\n${timeEpoch
-                                        .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
-                                } 
-                                
-                                done();
+                            timeEpoch.push({
+                                time: timeElapsed, 
+                                thread: threadNumber, 
+                                CPUusage: usage.cpu,
+                                RAM: usage.memory
+                            });
+                            
+                            await cartaBackend.kill();
+
+                            await new Promise( resolve => {
+                                cartaBackend.on("close", () => {
+                                    if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
+                                        console.log(`Backend testing outcome:\n${timeEpoch
+                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
+                                    }                                 
+                                    resolve();
+                                });
                             });
                             
                         }, openFileTimeout);

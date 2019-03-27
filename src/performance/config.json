@@ -1,6 +1,6 @@
 {    
     "serverURL": "ws://127.0.0.1",
-    "port": 55555,
+    "port": 62000,
     "timeout": {
         "connection": 2000,
         "openFile": 12000,
@@ -8,7 +8,8 @@
     },
     "wait": {
         "exec": 500,
-        "ps": 500,
+        "ps": 1000,
+        "reconnect": 30,
         "event": 35,
         "cursor": 35
     },
