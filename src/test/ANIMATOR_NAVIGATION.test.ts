@@ -54,63 +54,60 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             done();
         }        
     }, connectionTimeout);
-
-    describe(`read the files`, 
-    () => {
-        [
-            ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
-            ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
-        ].map(
-            function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
-                      [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
-                
-                test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
-                async () => {
-                    await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                        {
-                            directory: baseDirectory + "/" + testSubdirectoryName, 
-                            file: testFileName, 
-                            hdu, 
-                            fileId, 
-                            renderMode: CARTA.RenderMode.RASTER,
+    
+    [
+        ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
+        ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
+    ].map(
+        function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
+                    [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
+            
+            test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
+            async () => {
+                await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                    {
+                        directory: baseDirectory + "/" + testSubdirectoryName, 
+                        file: testFileName, 
+                        hdu, 
+                        fileId, 
+                        renderMode: CARTA.RenderMode.RASTER,
+                    }
+                );
+                await new Promise( resolve => {
+                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                        OpenFileAck => {
+                            expect(OpenFileAck.success).toBe(true);
+                            resolve();
                         }
                     );
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            OpenFileAck => {
-                                expect(OpenFileAck.success).toBe(true);
-                                resolve();
-                            }
-                        );
-                        
-                    });
-                    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                        {
-                            fileId, 
-                            imageBounds: {
-                                xMin: imageBounds.xMin, 
-                                xMax: imageBounds.xMax, 
-                                yMin: imageBounds.yMin, 
-                                yMax: imageBounds.yMax,
-                            }, 
-                            mip, 
-                            compressionType: CARTA.CompressionType.NONE,
-                            compressionQuality: 0, 
-                            numSubsets: 0,
+                    
+                });
+                await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    {
+                        fileId, 
+                        imageBounds: {
+                            xMin: imageBounds.xMin, 
+                            xMax: imageBounds.xMax, 
+                            yMin: imageBounds.yMin, 
+                            yMax: imageBounds.yMax,
+                        }, 
+                        mip, 
+                        compressionType: CARTA.CompressionType.NONE,
+                        compressionQuality: 0, 
+                        numSubsets: 0,
+                    }
+                );
+                await new Promise( resolve => {
+                    Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                        RasterImageData => {
+                            expect(RasterImageData.fileId).toEqual(fileId);
+                            resolve();
                         }
-                    );
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                expect(RasterImageData.fileId).toEqual(fileId);
-                                resolve();
-                            }
-                        );                        
-                    });
-                }, openFileTimeout);                
-            }
-        );
-    });
+                    );                        
+                });
+            }, openFileTimeout);                
+        }
+    );
 
     test(`assert image channel to be 0 on file ID 0.`, 
     async () => {
@@ -206,64 +203,61 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
             done();
         }
     }, connectionTimeout);
-
-    describe(`read the files`, 
-    () => {
-        [
-            ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
-            ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
-        ].map(
-            function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
-                      [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
-                
-                test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
-                async () => { 
-                    await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
-                        {
-                            directory: baseDirectory + "/" + testSubdirectoryName, 
-                            file: testFileName, 
-                            hdu, 
-                            fileId, 
-                            renderMode: CARTA.RenderMode.RASTER,
+    
+    [
+        ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
+        ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
+    ].map(
+        function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
+                    [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
+            
+            test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
+            async () => { 
+                await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                    {
+                        directory: baseDirectory + "/" + testSubdirectoryName, 
+                        file: testFileName, 
+                        hdu, 
+                        fileId, 
+                        renderMode: CARTA.RenderMode.RASTER,
+                    }
+                );
+                await new Promise( resolve => {
+                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                        OpenFileAck => {
+                            expect(OpenFileAck.success).toBe(true);
+                            resolve();
                         }
                     );
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                            OpenFileAck => {
-                                expect(OpenFileAck.success).toBe(true);
-                                resolve();
-                            }
-                        );
-                        
-                    });
-                    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                        {
-                            fileId, 
-                            imageBounds: {
-                                xMin: imageBounds.xMin, 
-                                xMax: imageBounds.xMax, 
-                                yMin: imageBounds.yMin, 
-                                yMax: imageBounds.yMax,
-                            }, 
-                            mip, 
-                            compressionType: CARTA.CompressionType.NONE,
-                            compressionQuality: 0, 
-                            numSubsets: 0,
+                    
+                });
+                await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    {
+                        fileId, 
+                        imageBounds: {
+                            xMin: imageBounds.xMin, 
+                            xMax: imageBounds.xMax, 
+                            yMin: imageBounds.yMin, 
+                            yMax: imageBounds.yMax,
+                        }, 
+                        mip, 
+                        compressionType: CARTA.CompressionType.NONE,
+                        compressionQuality: 0, 
+                        numSubsets: 0,
+                    }
+                );
+                await new Promise( resolve => {
+                    Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                        RasterImageData => {
+                            expect(RasterImageData.fileId).toEqual(fileId);
+                            resolve();
                         }
-                    );
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                            RasterImageData => {
-                                expect(RasterImageData.fileId).toEqual(fileId);
-                                resolve();
-                            }
-                        );                        
-                    });
-                }, openFileTimeout);
-                                
-            }
-        );
-    });
+                    );                        
+                });
+            }, openFileTimeout);
+                            
+        }
+    );
 
     test(`assert not returns (image channel: 1000 & stokes: 3 on file ID 0).`, 
     async () => {
