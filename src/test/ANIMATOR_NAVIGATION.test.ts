@@ -154,9 +154,8 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
         });
     }, readFileTimeout);
 
-    afterAll( async () => {
-        await Connection.close();
-        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
+    afterAll( () => {
+        Connection.close();
     });
 });
 
@@ -268,19 +267,15 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 3,
             }
         );
-        await new Promise( (resolve, reject) => {
-            setTimeout( () => {
-                Connection.onmessage = (messageEvent: MessageEvent) => {
-                    let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    if (eventName === "RASTER_IMAGE_DATA") {
-                        reject();
-                    }
-                };
-            }, messageReturnTimeout);
-            let failTimer = setTimeout(() => {
-                clearTimeout(failTimer);
+        await new Promise( resolve => {
+            Connection.onmessage = (messageEvent: MessageEvent) => {
+                let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
+                expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
+            };
+            let Timer = setTimeout(() => {
+                clearTimeout(Timer);
                 resolve();
-            }, messageReturnTimeout);
+            }, messageReturnTimeout);      
         });
     }, readFileTimeout);
 
@@ -293,19 +288,15 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 1,
             }
         );
-        await new Promise( (resolve, reject) => {
-            setTimeout( () => {
-                Connection.onmessage = (messageEvent: MessageEvent) => {
-                    let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    if (eventName === "RASTER_IMAGE_DATA") {
-                        reject();
-                    }
-                };
-            }, messageReturnTimeout);
-            let failTimer = setTimeout(() => {
-                clearTimeout(failTimer);
+        await new Promise( resolve => {
+            Connection.onmessage = (messageEvent: MessageEvent) => {
+                let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
+                expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
+            };
+            let Timer = setTimeout(() => {
+                clearTimeout(Timer);
                 resolve();
-            }, messageReturnTimeout);
+            }, messageReturnTimeout);      
         });
     }, readFileTimeout); 
 
@@ -318,24 +309,19 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 0,
             }
         );
-        await new Promise( (resolve, reject) => {
-            setTimeout( () => {
-                Connection.onmessage = (messageEvent: MessageEvent) => {
-                    let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    if (eventName === "RASTER_IMAGE_DATA") {
-                        reject();
-                    }
-                };
-            }, messageReturnTimeout);
-            let failTimer = setTimeout(() => {
-                clearTimeout(failTimer);
+        await new Promise( resolve => {
+            Connection.onmessage = (messageEvent: MessageEvent) => {
+                let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
+                expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
+            };
+            let Timer = setTimeout(() => {
+                clearTimeout(Timer);
                 resolve();
-            }, messageReturnTimeout);
+            }, messageReturnTimeout);      
         });
     }, readFileTimeout); 
 
-    afterAll( async () => {
-        await Connection.close();
-        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
+    afterAll( () => {
+        Connection.close();
     });
 });
