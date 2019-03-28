@@ -259,7 +259,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
         }
     );
 
-    test(`assert not returns (image channel: 1000 & stokes: 3 on file ID 0).`, 
+    test(`assert no returning message (image channel: 1000 & stokes: 3 on file ID 0).`, 
     async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
@@ -268,21 +268,23 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 3,
             }
         );
-        await new Promise( resolve => {
-            setTimeout( () => { 
-                expect.assertions(1);
-                
+        await new Promise( (resolve, reject) => {
+            setTimeout( () => {
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
-                }; 
-                expect(Connection.readyState).toBe(WebSocket.OPEN);
+                    if (eventName === "RASTER_IMAGE_DATA") {
+                        reject();
+                    }
+                };
+            }, messageReturnTimeout);
+            let failTimer = setTimeout(() => {
+                clearTimeout(failTimer);
                 resolve();
             }, messageReturnTimeout);
         });
     }, readFileTimeout);
 
-    test(`assert not returns (image channel: 3000 & stokes: 1 on file ID 1).`, 
+    test(`assert no returning message (image channel: 3000 & stokes: 1 on file ID 1).`, 
     async () => { 
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
@@ -291,21 +293,23 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 1,
             }
         );
-        await new Promise( resolve => {
+        await new Promise( (resolve, reject) => {
             setTimeout( () => {
-                expect.assertions(2);
-                
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
+                    if (eventName === "RASTER_IMAGE_DATA") {
+                        reject();
+                    }
                 };
-                expect(Connection.readyState).toBe(WebSocket.OPEN);
+            }, messageReturnTimeout);
+            let failTimer = setTimeout(() => {
+                clearTimeout(failTimer);
                 resolve();
             }, messageReturnTimeout);
         });
     }, readFileTimeout); 
 
-    test(`assert not returns (image channel: 0 & stokes: 0 on file ID 2).`, 
+    test(`assert no returning message (image channel: 0 & stokes: 0 on file ID 2).`, 
     async () => {
         await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
             {
@@ -314,15 +318,17 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                 stokes: 0,
             }
         );
-        await new Promise( resolve => {
-            setTimeout( () => { 
-                expect.assertions(2);
-                
+        await new Promise( (resolve, reject) => {
+            setTimeout( () => {
                 Connection.onmessage = (messageEvent: MessageEvent) => {
                     let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                    return expect(eventName).not.toEqual("RASTER_IMAGE_DATA");
+                    if (eventName === "RASTER_IMAGE_DATA") {
+                        reject();
+                    }
                 };
-                expect(Connection.readyState).toBe(WebSocket.OPEN);
+            }, messageReturnTimeout);
+            let failTimer = setTimeout(() => {
+                clearTimeout(failTimer);
                 resolve();
             }, messageReturnTimeout);
         });
