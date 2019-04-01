@@ -11,7 +11,7 @@ let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
-let openFileTimeout = 4000;
+let openFileTimeout = config.timeout.openFile;
 let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let logMessage = config.log;
@@ -153,7 +153,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                     renderMode: CARTA.RenderMode.RASTER,
                                 }
                             );
-                            let timer = await new Date().getTime(); 
+                            let timer = await performance.now(); 
                             await new Promise( resolve => {
                                 Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                     (OpenFileAck: CARTA.OpenFileAck) => {
@@ -165,7 +165,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                     }
                                 );
                             });
-                            let timeElapsed = await new Date().getTime() - timer;
+                            let timeElapsed = await performance.now() - timer;
 
                             await Connection.close();
                             
@@ -182,13 +182,13 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 elapsed: number,
                                 timestamp: number,
                             } = await pidusage(cartaBackend.pid);
-
+                            
                             timeEpoch.push({
                                 time: timeElapsed, 
                                 thread: threadNumber, 
                                 CPUusage: usage.cpu,
                                 RAM: usage.memory
-                            });
+                            });               
                             
                             await cartaBackend.kill();
 

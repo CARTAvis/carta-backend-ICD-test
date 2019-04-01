@@ -81,7 +81,6 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
             Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
                 RegisterViewerAck => {
                     expect(RegisterViewerAck.success).toBe(true);
-                    // console.log("done");
                     resolve();           
                 }
             );
@@ -171,7 +170,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                                     renderMode: CARTA.RenderMode.RASTER,
                                                 }
                                             );
-                                            let timer: number = await new Date().getTime(); 
+                                            let timer: number = await performance.now(); 
                                             await new Promise( resolve => {
                                                 Utility.getEvent(Connection[index], "OPEN_FILE_ACK", CARTA.OpenFileAck, 
                                                     (OpenFileAck: CARTA.OpenFileAck) => {
@@ -183,7 +182,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                                     }
                                                 );
                                             });
-                                            timeElapsed.push(await new Date().getTime() - timer);
+                                            timeElapsed.push(await performance.now() - timer);
                                             resolveSet();
                                         }
                                     ));
