@@ -12,8 +12,8 @@ let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
-let execWait = config.wait.exec;
 let psWait = config.wait.ps;
+let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
 let state = {index: -1};
@@ -42,16 +42,16 @@ let testUserNumber: number[] = [
 describe("Image open performance: 1 thread per user on 1 backend.", () => {    
    
     test(`Preparing... dry run.`, 
-    done => {
-        let cartaBackend = child_process.exec(
-            `"./carta_backend" root=base base=${baseDirectory} port=5678 threads=4`,
+    async () => {
+        let cartaBackend = await child_process.execFile(
+            `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=5678`, `threads=5`],
             {
                 cwd: backendDirectory, 
-                timeout: 5000
+                timeout: connectTimeout
             }
         );
         cartaBackend.on("error", error => {
-            console.error(`error: ${error}`);
+            console.error(error);
         });
         cartaBackend.stdout.on("data", data => {
             if (logMessage) {
@@ -59,52 +59,49 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
             }            
         });
 
-        setTimeout( () => {
-            let Connection = new WebSocket(`${serverURL}:5678`);
-            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-            Connection.binaryType = "arraybuffer";            
-            Connection.onopen = OnOpen;
-            Connection.onclose = () => {
-                cartaBackend.kill();
-            };
-            async function OnOpen (this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-                await new Promise( resolve => { 
-                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                        RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);                            
-                            resolve();           
-                        }
-                    );
-                });
-                await this.close();
-            } 
-        }, 300);
+        let Connection = await new WebSocket(`${serverURL}:5678`);
 
-        cartaBackend.on("close", () => {
-            done();
+        await new Promise( async resolve => {
+            while (Connection.readyState !== WebSocket.OPEN) {
+                await Connection.close();
+                Connection = await new WebSocket(`${serverURL}:5678`);
+                await new Promise( time => setTimeout(time, reconnectWait));
+            }    
+            Connection.binaryType = "arraybuffer";
+            resolve();
         });
+
+        await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            {
+                sessionId: "", 
+                apiKey: "1234"
+            }
+        );
+        await new Promise( resolve => { 
+            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                RegisterViewerAck => {
+                    expect(RegisterViewerAck.success).toBe(true);
+                    // console.log("done");
+                    resolve();           
+                }
+            );
+        });
+        await Connection.close();
         
+        await cartaBackend.kill();        
     }, connectTimeout);
     
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
-            describe(`Change the number of user, open image on 1 backend`, () => {
+            describe(`Change the number of user, who opens image on 1 backend`, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
                         
                         test(`${userNumber} users open image ${imageFiles[0].slice(14)}.`, 
-                        done => {
-                            port ++;
-                            let cartaBackend = child_process.exec(
-                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${userNumber}`,
+                        async () => {
+                            let cartaBackend = await child_process.execFile(
+                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber}`],
                                 {
                                     cwd: backendDirectory, 
                                     timeout: openFileTimeout
@@ -118,107 +115,127 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                     console.log(data);
                                 }
                             });
+
+                            let timeElapsed: number[] = [];
                             
-                            let timer: number = 0;        
-                            let timeElapsed: number = 0;
+                            let Connection: WebSocket[] = new Array(userNumber);
                             
-                            let Connection: WebSocket[] = new Array(userNumber);                            
-                            setTimeout( () => {
+                            let promiseSet: Promise<any>[] = [];
+                            await new Promise( resolveStep => {
                                 for ( let index = 0; index < userNumber; index++) {
-                                    Connection[index] = new WebSocket(`${serverURL}:${port}`);
-                                    expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
-                                    Connection[index].binaryType = "arraybuffer";                   
-                                    Connection[index].onopen = OnOpen;
-                                }
-                                async function OnOpen (this: WebSocket, ev: Event) {
-                                    expect(this.readyState).toBe(WebSocket.OPEN);
-                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                        {
-                                            sessionId: "", 
-                                            apiKey: "1234"
-                                        }
-                                    );
-                                    await new Promise( resolve => { 
-                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                            RegisterViewerAck => {
-                                                expect(RegisterViewerAck.success).toBe(true);
-                                                resolve();           
-                                            }
-                                        );
-                                    });
-                                    await Utility.sleep(eventWait);
-                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
-                                        {
-                                            directory: testDirectory, 
-                                            file: Utility.arrayNext(imageFiles, state).next(), 
-                                            hdu: "0", 
-                                            fileId: 0, 
-                                            renderMode: CARTA.RenderMode.RASTER,
-                                        }
-                                    );
-                                    timer = await new Date().getTime(); 
-                                    await new Promise( resolve => {
-                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                            (OpenFileAck: CARTA.OpenFileAck) => {
-                                                if (!OpenFileAck.success) {
-                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                    promiseSet.push( 
+                                        new Promise( async resolveSet => {
+                                            Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                            await new Promise( async resolve => {
+                                                while (Connection[index].readyState !== WebSocket.OPEN) {
+                                                    await Connection[index].close();
+                                                    Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                                    Connection[index].binaryType = "arraybuffer";
+                                                    await new Promise( time => setTimeout(time, reconnectWait));
                                                 }
-                                                expect(OpenFileAck.success).toBe(true);
-                                                
-                                                // console.log(`As thread number = ${threadNumber}. Elasped time = ${timeElapsed}ms`);
-                                                
                                                 resolve();
-                                            }
-                                        );
-                                    });
-                                    timeElapsed += await new Date().getTime() - timer;
-                                    await this.close();
-                                }                                
-
-                                let promiseSet: Promise<any>[] = new Array(userNumber);
-                                Connection.map( (connection, index) => {
-                                    promiseSet[index] = new Promise(
-                                        (resolve, reject) => {
-                                            connection.onclose = () => {
-                                                expect(connection.readyState).toBe(WebSocket.CLOSED);
-                                                resolve();
-                                            };                                
+                                            });
+                                            await Utility.setEvent(Connection[index], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                                {
+                                                    sessionId: "", 
+                                                    apiKey: "1234"
+                                                }
+                                            );
+                                            await new Promise( resolve => { 
+                                                Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                                    RegisterViewerAck => {
+                                                        expect(RegisterViewerAck.success).toBe(true);
+                                                        resolve();           
+                                                    }
+                                                );
+                                            });
+                                            resolveSet();
+                                        }                                       
+                                    ));
+                                }
+                                resolveStep();
+                            });
+                            await Promise.all(promiseSet);
+                            
+                            await new Promise( async resolveStep => {
+                                for ( let index = 0; index < userNumber; index++) { 
+                                    await new Promise( time => setTimeout(time, eventWait));
+                                    promiseSet.push( 
+                                        new Promise( async resolveSet => {                                       
+                                            await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
+                                                {
+                                                    directory: testDirectory, 
+                                                    file: Utility.arrayNext(imageFiles, state).next(), 
+                                                    hdu: "0", 
+                                                    fileId: 0, 
+                                                    renderMode: CARTA.RenderMode.RASTER,
+                                                }
+                                            );
+                                            let timer: number = await new Date().getTime(); 
+                                            await new Promise( resolve => {
+                                                Utility.getEvent(Connection[index], "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                                    (OpenFileAck: CARTA.OpenFileAck) => {
+                                                        if (!OpenFileAck.success) {
+                                                            console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                                        }
+                                                        expect(OpenFileAck.success).toBe(true);                                            
+                                                        resolve();
+                                                    }
+                                                );
+                                            });
+                                            timeElapsed.push(await new Date().getTime() - timer);
+                                            resolveSet();
                                         }
+                                    ));
+                                }
+                                resolveStep();
+                            });
+                            await Promise.all(promiseSet);
+                            
+                            await new Promise( resolveStep => {
+                                for ( let index = 0; index < userNumber; index++) {
+                                    promiseSet.push( 
+                                        new Promise( resolve => {                                        
+                                            Connection[index].close(); 
+                                            Connection[index].onclose = () => {
+                                                resolve();
+                                            }; 
+                                        })                                        
                                     );
-                                });   
-                                
-                                Promise.all(promiseSet).then(() => {
-                                    setTimeout( async () => {                                
-                                        let usage: {
-                                            cpu: number,
-                                            memory: number,
-                                            ppid: number,
-                                            pid: number,
-                                            ctime: number,
-                                            elapsed: number,
-                                            timestamp: number,
-                                        } = await pidusage(cartaBackend.pid);
-                                    
-                                        timeEpoch.push({
-                                            time: timeElapsed, 
-                                            thread: userNumber, 
-                                            CPUusage: usage.cpu,
-                                            RAM: usage.memory
-                                        });
-                                    
-                                        await cartaBackend.kill(); 
-                                    }, psWait); // Wait for ps                               
-                                });                            
-                                                                   
-                            }, execWait); // Wait for backend ready
+                                }
+                                resolveStep();
+                            });
+                            await Promise.all(promiseSet);                            
 
-                            cartaBackend.on("close", () => {
-                                if (userNumber === testUserNumber[testUserNumber.length - 1]) {
-                                    console.log(`Backend testing outcome:\n${timeEpoch
-                                        .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
-                                }                      
-                                
-                                done();
+                            await new Promise( resolve => setTimeout(resolve, psWait));
+                                                        
+                            let usage: {
+                                cpu: number,
+                                memory: number,
+                                ppid: number,
+                                pid: number,
+                                ctime: number,
+                                elapsed: number,
+                                timestamp: number,
+                            } = await pidusage(cartaBackend.pid);
+                                                            
+                            await timeEpoch.push({
+                                time: timeElapsed.reduce((a, b) => a + b), 
+                                thread: userNumber, 
+                                CPUusage: usage.cpu,
+                                RAM: usage.memory
+                            });
+                        
+                            await cartaBackend.kill();
+
+                            await new Promise( resolve => {
+                                cartaBackend.on("close", () => {
+                                    if (userNumber === testUserNumber[testUserNumber.length - 1]) {
+                                        console.log(`Backend testing outcome:\n${timeEpoch
+                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
+                                    }
+                                    resolve();
+                                });
                             });
 
                         }, openFileTimeout);
