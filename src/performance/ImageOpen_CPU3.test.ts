@@ -6,7 +6,7 @@ import config from "./config.json";
 let pidusage = require("pidusage");
 
 let serverURL = config.serverURL;
-let port = config.port + 3000;
+let port = config.port;
 let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
@@ -99,8 +99,8 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                         
                         test(`${threadNumber} threads per user open image ${imageFiles[0].slice(14)}.`, 
                         async () => {
-                            let cartaBackend = child_process.exec(
-                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${threadNumber * testUserNumber}`,
+                            let cartaBackend = child_process.execFile(
+                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber * testUserNumber}`],
                                 {
                                     cwd: backendDirectory, 
                                     timeout: openFileTimeout
