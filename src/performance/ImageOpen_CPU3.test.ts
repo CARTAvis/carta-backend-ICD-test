@@ -115,46 +115,36 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                 }
                             });
 
-                            let timeElapsed: number[] = [];
-
                             let Connection: WebSocket[] = new Array(testUserNumber);
                             let promiseSet: Promise<any>[] = [];
-                            await new Promise( resolveStep => {
-                                for ( let index = 0; index < testUserNumber; index++) {
-                                    promiseSet.push( 
-                                        new Promise( async resolveSet => {
-                                            Connection[index] = await new WebSocket(`${serverURL}:${port}`);
-                                            await new Promise( async resolve => {
-                                                while (Connection[index].readyState !== WebSocket.OPEN) {
-                                                    await Connection[index].close();
-                                                    Connection[index] = await new WebSocket(`${serverURL}:${port}`);
-                                                    Connection[index].binaryType = "arraybuffer";
-                                                    await new Promise( time => setTimeout(time, reconnectWait));
-                                                }
-                                                resolve();
-                                            });
-                                            await Utility.setEvent(Connection[index], "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                                {
-                                                    sessionId: "", 
-                                                    apiKey: "1234"
-                                                }
-                                            );
-                                            await new Promise( resolve => { 
-                                                Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                                    RegisterViewerAck => {
-                                                        expect(RegisterViewerAck.success).toBe(true);
-                                                        resolve();           
-                                                    }
-                                                );
-                                            });
-                                            resolveSet();
-                                        }                                       
-                                    ));
-                                }
-                                resolveStep();
-                            });
-                            await Promise.all(promiseSet);
+                            for ( let index = 0; index < testUserNumber; index++) {
+                                Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                await new Promise( async resolve => {
+                                    while (Connection[index].readyState !== WebSocket.OPEN) {
+                                        await Connection[index].close();
+                                        Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                        Connection[index].binaryType = "arraybuffer";
+                                        await new Promise( time => setTimeout(time, reconnectWait));
+                                    }
+                                    resolve();
+                                });
+                                await Utility.setEvent(Connection[index], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                    {
+                                        sessionId: "", 
+                                        apiKey: "1234"
+                                    }
+                                );
+                                await new Promise( resolve => { 
+                                    Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                        RegisterViewerAck => {
+                                            expect(RegisterViewerAck.success).toBe(true);
+                                            resolve();           
+                                        }
+                                    );
+                                });
+                            }
                             
+                            let timeElapsed: number[] = [];
                             await new Promise( async resolveStep => {
                                 for ( let index = 0; index < testUserNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
@@ -190,20 +180,9 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                             });
                             await Promise.all(promiseSet);
                             
-                            await new Promise( resolveStep => {
-                                for ( let index = 0; index < testUserNumber; index++) {
-                                    promiseSet.push( 
-                                        new Promise( resolve => {                                        
-                                            Connection[index].close(); 
-                                            Connection[index].onclose = () => {
-                                                resolve();
-                                            }; 
-                                        })                                        
-                                    );
-                                }
-                                resolveStep();
-                            });
-                            await Promise.all(promiseSet);                            
+                            for ( let index = 0; index < testUserNumber; index++) {                  
+                                await Connection[index].close();
+                            }                          
 
                             await new Promise( resolve => setTimeout(resolve, psWait));
                                                         

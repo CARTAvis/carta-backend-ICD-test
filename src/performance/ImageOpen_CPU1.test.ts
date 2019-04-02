@@ -100,9 +100,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                     (threadNumber: number) => {
                         let imageFileNext = imageFilesGenerator.next().value;
                         test(`open image "${imageFileNext}" on backend with thread number = ${threadNumber}.`, 
-                        async () => {
-                            
-                            // port += 10;
+                        async () => {                            
                             let cartaBackend = await child_process.execFile(
                                 `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber}`],
                                 {
