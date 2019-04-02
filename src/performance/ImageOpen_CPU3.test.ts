@@ -116,7 +116,6 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                             });
 
                             let Connection: WebSocket[] = new Array(testUserNumber);
-                            let promiseSet: Promise<any>[] = [];
                             for ( let index = 0; index < testUserNumber; index++) {
                                 Connection[index] = await new WebSocket(`${serverURL}:${port}`);
                                 await new Promise( async resolve => {
@@ -143,7 +142,8 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                     );
                                 });
                             }
-                            
+                                                        
+                            let promiseSet: Promise<any>[] = [];
                             let timeElapsed: number[] = [];
                             await new Promise( async resolveStep => {
                                 for ( let index = 0; index < testUserNumber; index++) { 
