@@ -15,7 +15,6 @@ let openFileTimeout = config.timeout.openFile;
 let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let logMessage = config.log;
-let state = {index: -1};
 
 let testImageFiles = [
     fileName.imageFiles2fits,
@@ -95,11 +94,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
     testImageFiles.map(
         (imageFiles: string[]) => {
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
-
+            let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of thread: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
-                        test(`open image "${Utility.arrayNext(imageFiles, state).next()}" on backend with thread number = ${threadNumber}.`, 
+                        let imageFileNext = imageFilesGenerator.next().value;
+                        test(`open image "${imageFileNext}" on backend with thread number = ${threadNumber}.`, 
                         async () => {
                             
                             // port += 10;
@@ -147,7 +147,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                                 {
                                     directory: testDirectory, 
-                                    file: Utility.arrayNext(imageFiles, state).current(), 
+                                    file: imageFileNext, 
                                     hdu: "0", 
                                     fileId: 0, 
                                     renderMode: CARTA.RenderMode.RASTER,

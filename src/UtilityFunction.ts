@@ -65,3 +65,15 @@ export function arrayNext (arr: any, state: {index: number}) {
     arr.current = () =>  arr[state.index];
     return arr;
 }
+/// Loop array item to generate
+export function* arrayGeneratorLoop (array: any[]) {
+    let index: number = -1;
+    while (index < array.length) {
+        if (index === array.length - 1) {
+            index = 0;
+        } else {
+            index++;
+        }
+        yield array[index];
+    }
+}

@@ -16,7 +16,6 @@ let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
-let state = {index: -1};
 
 let testImageFiles = [
     fileName.imageFiles2fits,
@@ -93,10 +92,10 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+            let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of user, who opens image on 1 backend`, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
-                        
                         test(`${userNumber} users open image ${imageFiles[0].slice(14)}.`, 
                         async () => {
                             let cartaBackend = await child_process.execFile(
@@ -160,11 +159,11 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                 for ( let index = 0; index < userNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
                                     promiseSet.push( 
-                                        new Promise( async resolveSet => {                                       
+                                        new Promise( async resolveSet => {                                      
                                             await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
                                                 {
                                                     directory: testDirectory, 
-                                                    file: Utility.arrayNext(imageFiles, state).next(), 
+                                                    file: imageFilesGenerator.next().value, 
                                                     hdu: "0", 
                                                     fileId: 0, 
                                                     renderMode: CARTA.RenderMode.RASTER,

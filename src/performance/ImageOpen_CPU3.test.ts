@@ -16,7 +16,6 @@ let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
-let state = {index: -1};
 
 let testUserNumber = 8;
 let testImageFiles = [
@@ -93,6 +92,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+            let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of thread, 8 users open image on 1 backend: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
@@ -163,7 +163,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                             await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
                                                 {
                                                     directory: testDirectory, 
-                                                    file: Utility.arrayNext(imageFiles, state).next(), 
+                                                    file: imageFilesGenerator.next().value, 
                                                     hdu: "0", 
                                                     fileId: 0, 
                                                     renderMode: CARTA.RenderMode.RASTER,
