@@ -12,7 +12,6 @@ let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
-let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
@@ -182,9 +181,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                             for ( let index = 0; index < userNumber; index++) {                                    
                                 await Connection[index].close();
                             }                         
-
-                            await new Promise( resolve => setTimeout(resolve, psWait));
-                                                        
+                           
                             let usage: {
                                 cpu: number,
                                 memory: number,

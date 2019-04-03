@@ -12,7 +12,6 @@ let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;    
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
-let psWait = config.wait.ps;
 let reconnectWait = config.wait.reconnect;
 let logMessage = config.log;
 
@@ -165,11 +164,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             });
                             let timeElapsed = await performance.now() - timer;
 
-                            await Connection.close();
-                            
-                            await new Promise( resolve => 
-                                setTimeout(resolve, psWait)
-                            );
+                            await Connection.close();                            
 
                             let usage: {
                                 cpu: number,
