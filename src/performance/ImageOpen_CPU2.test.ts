@@ -39,55 +39,6 @@ let testUserNumber: number[] = [
 
 describe("Image open performance: 1 thread per user on 1 backend.", () => {    
    
-    test(`Preparing... dry run.`, 
-    async () => {
-        let cartaBackend = await child_process.execFile(
-            `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=5678`, `threads=5`],
-            {
-                cwd: backendDirectory, 
-                timeout: connectTimeout
-            }
-        );
-        cartaBackend.on("error", error => {
-            console.error(error);
-        });
-        cartaBackend.stdout.on("data", data => {
-            if (logMessage) {
-                console.log(data);
-            }            
-        });
-
-        let Connection = await new WebSocket(`${serverURL}:5678`);
-
-        await new Promise( async resolve => {
-            while (Connection.readyState !== WebSocket.OPEN) {
-                await Connection.close();
-                Connection = await new WebSocket(`${serverURL}:5678`);
-                await new Promise( time => setTimeout(time, reconnectWait));
-            }    
-            Connection.binaryType = "arraybuffer";
-            resolve();
-        });
-
-        await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-            {
-                sessionId: "", 
-                apiKey: "1234"
-            }
-        );
-        await new Promise( resolve => { 
-            Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    resolve();           
-                }
-            );
-        });
-        await Connection.close();
-        
-        await cartaBackend.kill();        
-    }, connectTimeout);
-    
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
