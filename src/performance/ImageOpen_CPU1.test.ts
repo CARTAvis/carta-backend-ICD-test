@@ -139,7 +139,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 cartaBackend.on("close", () => {
                                     if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
                                         console.log(`Backend testing outcome:\n${timeEpoch
-                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}ms & RAM = ${e.RAM}bytes as thread# = ${e.thread}`).join(` \n`)}`);
+                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toFixed(4)}ms & RAM = ${e.RAM}bytes as thread# = ${e.thread}`).join(` \n`)}`);
                                     }                                 
                                     resolve();
                                 });
