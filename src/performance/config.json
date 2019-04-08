@@ -14,7 +14,8 @@
         "cursor": 35
     },
     "repeat": {
-        "cursor": 10
+        "cursor": 10,
+        "event": 20
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
