@@ -58,6 +58,7 @@ describe("OPEN_IMAGE_MULTIFRAME test: Testing the case of opening multiple image
             ["HH211_IQU_zoom_4ch.image.pbcor",             0,       "",        {xMin: 0, xMax:   251, yMin: 0, yMax:   251},  1],
             ["S255_IR_sci.spw25.cube.I.pbcor.fits",        1,      "0",        {xMin: 0, xMax:  1920, yMin: 0, yMax:  1920},  4],
             ["G34mm1_lsb_all.uv.part1.line.natwt.sml",     2,       "",        {xMin: 0, xMax:   129, yMin: 0, yMax:   129},  1],
+            ["orion_12co_hera.hdf5",                       3,       "",        {xMin: 0, xMax:   688, yMin: 0, yMax:   575},  1],
         ].map(
             function ([testFileName,    fileId,     hdu,    imageBounds,                                              mip]: 
                       [string,          number,     string, {xMin: number, xMax: number, yMin: number, yMax: number}, number]) {
