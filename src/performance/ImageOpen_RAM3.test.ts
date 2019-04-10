@@ -4,7 +4,7 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
-let pidusage = require("pidusage");
+let nodeusage = require("usage");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -17,9 +17,9 @@ let eventWait = config.wait.event;
 let logMessage = config.log;
 
 let testImageFiles = [
-    fileName.imageFiles2fits,
+    // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
-    // fileName.imageFiles8fits,
+    fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
@@ -139,21 +139,19 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                 await Connection[index].close();
                             }                          
                                                         
-                            let usage: {
-                                cpu: number,
-                                memory: number,
-                                ppid: number,
-                                pid: number,
-                                ctime: number,
-                                elapsed: number,
-                                timestamp: number,
-                            } = await pidusage(cartaBackend.pid);
-                                                            
-                            await timeEpoch.push({
-                                time: timeElapsed.reduce((a, b) => a + b), 
-                                thread: userNumber, 
-                                CPUusage: usage.ctime,
-                                RAM: usage.memory
+                            await new Promise( resolve => {
+                                nodeusage.lookup(
+                                    cartaBackend.pid, 
+                                    (err, result) => {                                        
+                                        timeEpoch.push({
+                                            time: timeElapsed.reduce((a, b) => a + b),
+                                            thread: userNumber, 
+                                            CPUusage: result.cpu,
+                                            RAM: result.memory / 1024,
+                                        });
+                                        resolve();
+                                    }
+                                );
                             });
                         
                             await cartaBackend.kill();
@@ -162,7 +160,7 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                 cartaBackend.on("close", () => {
                                     if (userNumber === testUserNumber[testUserNumber.length - 1]) {
                                         console.log(`Backend testing outcome:\n${timeEpoch
-                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toFixed(5)}ms & RAM = ${e.RAM}bytes as thread# = ${e.thread}`).join(` \n`)}`);
+                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
                                     }
                                     resolve();
                                 });

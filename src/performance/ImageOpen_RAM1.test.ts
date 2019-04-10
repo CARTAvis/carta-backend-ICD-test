@@ -3,7 +3,7 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
-let pidusage = require("pidusage");
+let nodeusage = require("usage");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -12,6 +12,7 @@ let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;
 let openFileTimeout = config.timeout.openFile;
 let reconnectWait = config.wait.reconnect;
+let repeatEvent = config.repeat.event;
 let logMessage = config.log;
 
 let threadNumber = 16;
@@ -68,6 +69,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                             }
                         );
                     });
+                    
                     await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
                         {
                             directory: testDirectory, 
@@ -93,30 +95,29 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                     
                     await Connection.close();                            
 
-                    let usage: {
-                        cpu: number,
-                        memory: number,
-                        ppid: number,
-                        pid: number,
-                        ctime: number,
-                        elapsed: number,
-                        timestamp: number,
-                    } = await pidusage(cartaBackend.pid);
-                    
-                    timeEpoch.push({
-                        time: timeElapsed, 
-                        thread: threadNumber, 
-                        CPUusage: usage.ctime,
-                        RAM: usage.memory,
-                        fileName: imageFileNext
-                    });               
+                    await new Promise( resolve => {
+                        nodeusage.lookup(
+                            cartaBackend.pid, 
+                            (err, result) => {                                        
+                                timeEpoch.push({
+                                    time: timeElapsed, 
+                                    thread: threadNumber, 
+                                    CPUusage: result.cpu,
+                                    RAM: result.memory / 1024,
+                                    fileName: imageFileNext
+                                });
+                                resolve();
+                            }
+                        );
+                    });            
                     
                     await cartaBackend.kill();
+
                     await new Promise( resolve => {
                         cartaBackend.on("close", () => {
                             if (imageFile === imageFiles[imageFiles.length - 1]) {
                                 console.log(`Backend testing outcome:\n${timeEpoch
-                                    .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toFixed(5)}ms & RAM = ${e.RAM}bytes as file: ${e.fileName}`).join(` \n`)}`);
+                                    .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as file: ${e.fileName}`).join(` \n`)}`);
                             }
                             resolve();
                         });
