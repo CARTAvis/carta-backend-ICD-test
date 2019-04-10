@@ -51,7 +51,7 @@ describe(`Image open performance: change thread number per user, ${userNumber} u
                     (threadNumber: number) => {                
                         let imageFileNext = imageFilesGenerator.next().value;
                         test(`Should open image ${imageFiles[0].slice(14)} as thread# = ${userNumber * threadNumber}.`, 
-                        async () => {
+                        async done => {
                             let cartaBackend = child_process.execFile(
                                 `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber * threadNumber}`],
                                 {
@@ -153,6 +153,8 @@ describe(`Image open performance: change thread number per user, ${userNumber} u
                             });
 
                             await cartaBackend.kill();
+
+                            cartaBackend.on("close", () => done());
 
                         }, openFileTimeout);
                     }

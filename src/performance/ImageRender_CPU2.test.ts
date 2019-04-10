@@ -46,7 +46,7 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                 testUserNumber.map(
                     (userNumber: number) => {
                         test(`${userNumber} users open image ${imageFiles[0].slice(14)}.`, 
-                        async () => {
+                        async done => {
                             let cartaBackend = await child_process.execFile(
                                 `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber}`],
                                 {
@@ -171,6 +171,8 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                             });
 
                             await cartaBackend.kill();
+
+                            cartaBackend.on("close", () => done());
 
                         }, openFileTimeout);
                     }

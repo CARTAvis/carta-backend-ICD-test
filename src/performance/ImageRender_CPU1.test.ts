@@ -49,7 +49,7 @@ describe("Image render performance: 1 user on 1 backend change thread number", (
                     (threadNumber: number) => {
                         let imageFileNext = imageFilesGenerator.next().value;
                         test(`render image "${imageFileNext}" on backend with thread number = ${threadNumber}.`, 
-                        async () => {                            
+                        async done => {                            
                             let cartaBackend = await child_process.execFile(
                                 `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber}`],
                                 {
@@ -159,6 +159,8 @@ describe("Image render performance: 1 user on 1 backend change thread number", (
                             });              
                             
                             await cartaBackend.kill();
+
+                            cartaBackend.on("close", () => done());
 
                         }, openFileTimeout);
                     }

@@ -26,7 +26,7 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
             (imageFile: string) => {                
                 let imageFileNext = imageFilesGenerator.next().value;
                 test(`should open "${imageFile}" on backend.`, 
-                async () => {
+                async done => {
                     let cartaBackend = child_process.execFile(
                         `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber}`],
                         {
@@ -111,6 +111,8 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                     });            
                     
                     await cartaBackend.kill();
+                    
+                    cartaBackend.on("close", () => done());
 
                 }, openFileTimeout);
             }
