@@ -3,22 +3,16 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
-let pidusage = require("pidusage");
+let nodeusage = require("usage");
 
 let serverURL = config.serverURL;
-let port = config.port + 2000;
+let port = config.port;
 let backendDirectory = config.path.backend;
 let baseDirectory = config.path.base;
-let testDirectory = config.path.performance;    
-let connectTimeout = config.timeout.connection;
-let readFileTimeout = config.timeout.readFile;
-let execWait = config.wait.exec;
-let psWait = config.wait.ps;
-let cursorWait = config.wait.cursor;
-let setCursorRepeat = config.repeat.cursor;
-let eventWait = config.wait.event;
+let testDirectory = config.path.performance;
+let openFileTimeout = config.timeout.openFile;
+let reconnectWait = config.wait.reconnect;
 let logMessage = config.log;
-let state = {index: -1};
 
 let testImageFiles = [
     // fileName.imageFiles2fits,
@@ -43,71 +37,20 @@ let testUserNumber: number[] = [
 
 describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {    
    
-    test(`Preparing... dry run.`, 
-    done => {
-        let cartaBackend = child_process.exec(
-            `"./carta_backend" root=base base=${baseDirectory} port=1234 threads=4`,
-            {
-                cwd: backendDirectory, 
-                timeout: 5000
-            }
-        );
-        cartaBackend.on("error", error => {
-            console.error(`error: ${error}`);
-        });
-        cartaBackend.stdout.on("data", data => {
-            if (logMessage) {
-                console.log(data);
-            }            
-        });
-
-        setTimeout( () => {
-            let Connection = new WebSocket(`${serverURL}:1234`);
-            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
-            Connection.binaryType = "arraybuffer";            
-            Connection.onopen = OnOpen;
-            Connection.onclose = () => {
-                cartaBackend.kill();
-            };
-            async function OnOpen (this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                    {
-                        sessionId: "", 
-                        apiKey: "1234"
-                    }
-                );
-                await new Promise( resolve => { 
-                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                        RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);                            
-                            resolve();           
-                        }
-                    );
-                });
-                await this.close();
-            } 
-        }, 300);
-        cartaBackend.on("close", () => {
-            done();
-        });        
-    }, connectTimeout);
-    
+    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => { 
-            let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
-            describe(`Change the number of user: `, () => {
+            let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
+            describe(`Change the number of user, who opens image on 1 backend`, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
-                        
-                        test(`${userNumber} users set cursor randomly ${setCursorRepeat} times on image ${imageFiles[0].slice(14)}.`, 
-                        done => {
-                            port ++;
-                            let cartaBackend = child_process.exec(
-                                `"./carta_backend" root=base base=${baseDirectory} port=${port} threads=${userNumber}`,
+                        test(`${userNumber} users set cursor to image ${imageFiles[0].slice(14)}.`, 
+                        async () => {
+                            let cartaBackend = await child_process.execFile(
+                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber}`],
                                 {
                                     cwd: backendDirectory, 
-                                    timeout: readFileTimeout
+                                    timeout: openFileTimeout
                                 }
                             );
                             cartaBackend.on("error", error => {
@@ -119,162 +62,149 @@ describe("Spatial profile performance: 1 thread per user on 1 backend.", () => {
                                 }
                             });
                             
-                            let timer: number = 0;        
-                            let timeElapsed: number = 0;
-
-                            setTimeout(() => {
-                                let Connection: WebSocket[] = new Array(userNumber);
+                            let Connection: WebSocket[] = new Array(userNumber);
+                            let RasterImageDataTemp: CARTA.RasterImageData[] = [];
+                            for ( let index = 0; index < userNumber; index++) {
+                                Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                await new Promise( async resolve => {
+                                    while (Connection[index].readyState !== WebSocket.OPEN) {
+                                        await Connection[index].close();
+                                        Connection[index] = await new WebSocket(`${serverURL}:${port}`);
+                                        Connection[index].binaryType = "arraybuffer";
+                                        await new Promise( time => setTimeout(time, reconnectWait));
+                                    }
+                                    resolve();
+                                });
+                                await Utility.setEvent(Connection[index], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                                    {
+                                        sessionId: "", 
+                                        apiKey: "1234"
+                                    }
+                                );
+                                await new Promise( resolve => { 
+                                    Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                                        RegisterViewerAck => {
+                                            expect(RegisterViewerAck.success).toBe(true);
+                                            resolve();           
+                                        }
+                                    );
+                                });
+                                await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
+                                    {
+                                        directory: testDirectory, 
+                                        file: imageFilesGenerator.next().value,
+                                        hdu: "0", 
+                                        fileId: 0, 
+                                        renderMode: CARTA.RenderMode.RASTER,
+                                    }
+                                );
+                                let OpenFileAckTemp: CARTA.OpenFileAck;
+                                await new Promise( resolve => {
+                                    Utility.getEvent(Connection[index], "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                                        (OpenFileAck: CARTA.OpenFileAck) => {
+                                            if (!OpenFileAck.success) {
+                                                console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
+                                            }
+                                            OpenFileAckTemp = OpenFileAck;
+                                            expect(OpenFileAck.success).toBe(true);                                            
+                                            resolve();
+                                        }
+                                    );
+                                });                                
+                                await Utility.setEvent(Connection[index], "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                                    {
+                                        fileId: 0, 
+                                        imageBounds: {
+                                            xMin: 0, xMax: OpenFileAckTemp.fileInfoExtended.width, 
+                                            yMin: 0, yMax: OpenFileAckTemp.fileInfoExtended.height,
+                                        }, 
+                                        mip: 64, 
+                                        compressionType: CARTA.CompressionType.ZFP, 
+                                        compressionQuality: 11, 
+                                        numSubsets: 4,
+                                    }
+                                );
+                                await Utility.setEvent(Connection[index], "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+                                    {
+                                        fileId: 0, 
+                                        regionId: 0, 
+                                        spatialProfiles: ["x", "y"],
+                                    }
+                                );  
+                                await new Promise( resolve => {
+                                    Utility.getEvent(Connection[index], "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                                        RasterImageData => {
+                                            expect(RasterImageData.imageData.length).toBeGreaterThan(0);
+                                            RasterImageDataTemp.push(RasterImageData);
+                                            resolve();
+                                        }
+                                    );
+                                });
+                            }
+                                                        
+                            let promiseSet: Promise<any>[] = [];
+                            let timeElapsed: number[] = [];
+                            await new Promise( async resolveStep => {
                                 for ( let index = 0; index < userNumber; index++) {
-                                    Connection[index] = new WebSocket(`${serverURL}:${port}`);
-                                    expect(Connection[index].readyState).toBe(WebSocket.CONNECTING);
-                                    Connection[index].binaryType = "arraybuffer";                   
-                                    Connection[index].onopen = OnOpen;
-                                }
-                                
-                                async function OnOpen (this: WebSocket, ev: Event) {
-                                    expect(this.readyState).toBe(WebSocket.OPEN);
-                                    await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                        {
-                                            sessionId: "", 
-                                            apiKey: "1234"
-                                        }
-                                    );
-                                    await new Promise( resolve => { 
-                                        Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                            RegisterViewerAck => {
-                                                expect(RegisterViewerAck.success).toBe(true);
-                                                resolve();           
-                                            }
-                                        );
-                                    });
-                                    await Utility.sleep(eventWait);
-                                    let OpenFileAckTemp: CARTA.OpenFileAck;
-                                    await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
-                                        {
-                                            directory: testDirectory, 
-                                            file: Utility.arrayNext(imageFiles, state).next(), 
-                                            hdu: "0", 
-                                            fileId: 0, 
-                                            renderMode: CARTA.RenderMode.RASTER,
-                                        }
-                                    );
-                                    await new Promise( resolve => {
-                                        Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                            (OpenFileAck: CARTA.OpenFileAck) => {
-                                                if (!OpenFileAck.success) {
-                                                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
-                                                }
-                                                expect(OpenFileAck.success).toBe(true);
-                                                OpenFileAckTemp = OpenFileAck;                                            
-                                                resolve();
-                                            }
-                                        );
-                                    });
-                                    await Utility.setEvent(this, "SET_IMAGE_VIEW", CARTA.SetImageView, 
-                                        {
-                                            fileId: 0, 
-                                            imageBounds: {
-                                                xMin: 0, xMax: OpenFileAckTemp.fileInfoExtended.width, 
-                                                yMin: 0, yMax: OpenFileAckTemp.fileInfoExtended.height,
-                                            }, 
-                                            mip: 64, 
-                                            compressionType: CARTA.CompressionType.ZFP, 
-                                            compressionQuality: 11, 
-                                            numSubsets: 4,
-                                        }
-                                    );
-                                    await Utility.setEvent(this, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
-                                        {
-                                            fileId: 0, 
-                                            regionId: 0, 
-                                            spatialProfiles: ["x", "y"],
-                                        }
-                                    );
-                                    let RasterImageDataTemp: CARTA.RasterImageData;  
-                                    await new Promise( resolve => {
-                                        Utility.getEvent(this, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
-                                            RasterImageData => {
-                                                expect(RasterImageData.imageData.length).toBeGreaterThan(0);
-                                                RasterImageDataTemp = RasterImageData;
-                                                resolve();
-                                            }
-                                        );
-                                    });                                    
-                                    timer = await new Date().getTime();
-                                    for ( let index = 1; index <= setCursorRepeat; index++) {
-                                        await Utility.sleep(cursorWait);
-                                        await Utility.setEvent(this, "SET_CURSOR", CARTA.SetCursor, 
-                                            {
-                                                fileId: 0, 
-                                                point: {
-                                                    x: Math.floor(Math.random() * RasterImageDataTemp.imageBounds.xMax), 
-                                                    y: Math.floor(Math.random() * RasterImageDataTemp.imageBounds.yMax)
-                                                },
-                                            }
-                                        );
-                                        await new Promise( resolve => {
-                                            Utility.getEvent(this, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
-                                                SpatialProfileData => {
-                                                    expect(SpatialProfileData.profiles.length).not.toEqual(0);
-                                                    resolve();
+                                    promiseSet.push( 
+                                        new Promise( async resolveSet => {                                      
+                                            await Utility.setEvent(Connection[index], "SET_CURSOR", CARTA.SetCursor, 
+                                                {
+                                                    fileId: 0, 
+                                                    point: {
+                                                        x: Math.floor(Math.random() * RasterImageDataTemp[index].imageBounds.xMax), 
+                                                        y: Math.floor(Math.random() * RasterImageDataTemp[index].imageBounds.yMax)
+                                                    },
                                                 }
                                             );
-                                        });
-                                    }
-                                    timeElapsed = (await new Date().getTime() - timer) / setCursorRepeat - cursorWait;
-                                    await this.close();
-                                }
-
-                                let promiseSet: Promise<any>[] = new Array(userNumber);
-                                Connection.map( (connection, index) => {
-                                    promiseSet[index] = new Promise(
-                                        (resolve, reject) => {
-                                            connection.onclose = () => {
-                                                expect(connection.readyState).toBe(WebSocket.CLOSED);
-                                                resolve();
-                                            };                                
+                                            let timer = await performance.now();
+                                            await new Promise( resolve => {
+                                                Utility.getEvent(Connection[index], "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                                                    SpatialProfileData => {
+                                                        expect(SpatialProfileData.profiles.length).not.toEqual(0);
+                                                        resolve();
+                                                    }
+                                                );
+                                            });
+                                            timeElapsed.push(await performance.now() - timer);
+                                            resolveSet();
                                         }
-                                    );
-                                });   
-                                
-                                Promise.all(promiseSet).then(() => {
-                                    setTimeout( async () => {                                
-                                        let usage: {
-                                            cpu: number,
-                                            memory: number,
-                                            ppid: number,
-                                            pid: number,
-                                            ctime: number,
-                                            elapsed: number,
-                                            timestamp: number,
-                                        } = await pidusage(cartaBackend.pid);
-                                    
-                                        timeEpoch.push({
-                                            time: timeElapsed, 
-                                            thread: userNumber, 
-                                            CPUusage: usage.cpu,
-                                            RAM: usage.memory
-                                        });
-                                    
-                                        await cartaBackend.kill(); 
-                                    }, psWait); // Wait for ps                               
-                                });
-                                
-                            }, execWait); // Wait for backend ready
-
-                            cartaBackend.on("close", () => {
-                                if (userNumber === testUserNumber[testUserNumber.length - 1]) {
-                                    console.log(`Backend testing outcome:\n${timeEpoch
-                                        .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(4)}% & RAM = ${e.RAM} bytes as thread# = ${e.thread}`).join(` \n`)}`);
-                                }                      
-                                
-                                done();
+                                    ));
+                                }
+                                resolveStep();
                             });
+                            await Promise.all(promiseSet);
+                            
+                            for ( let index = 0; index < userNumber; index++) {                                    
+                                await Connection[index].close();
+                            }                         
+                           
+                            await new Promise( resolve => {
+                                nodeusage.lookup(
+                                    cartaBackend.pid, 
+                                    (err, result) => {                                        
+                                        timeEpoch.push({
+                                            time: timeElapsed.reduce((a, b) => a + b), 
+                                            thread: userNumber, 
+                                            CPUusage: result.cpu,
+                                            RAM: result.memory / 1024
+                                        });
+                                        resolve();
+                                    }
+                                );
+                            });
+                        
+                            await cartaBackend.kill();
 
-                        }, readFileTimeout);
+                        }, openFileTimeout);
                     }
                 );
             });
         }
     );
+
+    afterAll( () => {
+        console.log(`Backend testing outcome:\n${timeEpoch
+            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
+    });
 });    
