@@ -40,9 +40,9 @@ let testThreadNumber: number[] = [
 
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
     
+    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
-            let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of thread: `, () => {
                 testThreadNumber.map(
@@ -127,7 +127,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
                                             thread: threadNumber, 
                                             CPUusage: result.cpu,
-                                            RAM: result.memory
+                                            RAM: result.memory / 1024
                                         });
                                         resolve();
                                     }
@@ -136,20 +136,15 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             
                             await cartaBackend.kill();
 
-                            await new Promise( resolve => {
-                                cartaBackend.on("close", () => {
-                                    if (threadNumber === testThreadNumber[testThreadNumber.length - 1]) {
-                                        console.log(`Backend testing outcome:\n${timeEpoch
-                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}bytes as thread# = ${e.thread}`).join(` \n`)}`);
-                                    }                                 
-                                    resolve();
-                                });
-                            });
-                            
                         }, openFileTimeout);
                     }
                 );
             });
         }
     );
+
+    afterAll( () => {
+        console.log(`Backend testing outcome:\n${timeEpoch
+            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
+    });
 });    

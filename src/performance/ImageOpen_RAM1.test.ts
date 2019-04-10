@@ -12,7 +12,6 @@ let baseDirectory = config.path.base;
 let testDirectory = config.path.performance;
 let openFileTimeout = config.timeout.openFile;
 let reconnectWait = config.wait.reconnect;
-let repeatEvent = config.repeat.event;
 let logMessage = config.log;
 
 let threadNumber = 16;
@@ -113,19 +112,13 @@ describe("Image open performance:  1 user on 1 backend change image size", () =>
                     
                     await cartaBackend.kill();
 
-                    await new Promise( resolve => {
-                        cartaBackend.on("close", () => {
-                            if (imageFile === imageFiles[imageFiles.length - 1]) {
-                                console.log(`Backend testing outcome:\n${timeEpoch
-                                    .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as file: ${e.fileName}`).join(` \n`)}`);
-                            }
-                            resolve();
-                        });
-                    });
-                    
                 }, openFileTimeout);
             }
         );
     });
     
+    afterAll( () => {
+        console.log(`Backend testing outcome:\n${timeEpoch
+            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as file: ${e.fileName}`).join(` \n`)}`);
+    });
 });    

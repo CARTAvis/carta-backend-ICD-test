@@ -44,9 +44,9 @@ let testUserNumber: number[] = [
 
 describe(`Image open performance: change users number, 1 thread per user on 1 backend.`, () => {    
 
+    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
-            let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of user, users open image on 1 backend: `, () => {
                 testUserNumber.map(
@@ -156,20 +156,15 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                         
                             await cartaBackend.kill();
 
-                            await new Promise( resolve => {
-                                cartaBackend.on("close", () => {
-                                    if (userNumber === testUserNumber[testUserNumber.length - 1]) {
-                                        console.log(`Backend testing outcome:\n${timeEpoch
-                                            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
-                                    }
-                                    resolve();
-                                });
-                            });
-
                         }, openFileTimeout);
                     }
                 );
             });
         }
     );
+    
+    afterAll( () => {
+        console.log(`Backend testing outcome:\n${timeEpoch
+            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
+    });
 });    
