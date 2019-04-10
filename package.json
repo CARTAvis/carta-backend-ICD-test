@@ -14,7 +14,6 @@
         "lodash": "^4.17.11",
         "mobx": "^5.6.0",
         "mobx-react": "^5.3.6",
-        "pidusage": "^2.0.17",
         "raw-loader": "^0.5.1",
         "react": "^16.7.0",
         "react-chartjs-2": "^2.7.4",
@@ -27,7 +26,8 @@
         "react-scroll-to-bottom": "^1.2.0",
         "react-transition-group": "^2.5.1",
         "rxjs": "^6.3.3",
-        "source-map-explorer": "^1.6.0"
+        "source-map-explorer": "^1.6.0",
+        "usage": "^0.7.1"
     },
     "scripts": {
         "git-info": "echo export default {logMessage: \\\"$(git log -1 --oneline)\\\"}\\;  > src/static/gitInfo.ts",
