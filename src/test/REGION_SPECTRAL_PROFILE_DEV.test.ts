@@ -98,10 +98,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                 fileId: 0, 
                 regionId: -1, 
                 regionName: "a box",
-                regionType: CARTA.RegionType.RECTANGLE, 
-                channelMin: -1, 
-                channelMax: -1, 
-                stokes: [],
+                regionType: CARTA.RegionType.RECTANGLE,
                 controlPoints: [
                     {x: 1000, y: 1300}, 
                     {x: 300, y: 200}
