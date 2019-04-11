@@ -111,6 +111,7 @@ describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is 
                 function([fileId, point, regionID, stokes, progress, coordinate, profileLen, assertPoint]: 
                         [number, {x: number, y: number}, number, number, number, string, number, {idx: number, value: number}]) {
                     
+                    let SpectralProfileDataTemp: CARTA.SpectralProfileData;
                     test(`assert the fileId "${fileId}" returns within ${connectionTimeout}ms, as point {${point.x}, ${point.y}}.`, 
                     async () => {
                         await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
@@ -122,6 +123,7 @@ describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is 
                         await new Promise( resolve => {
                             Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
                                 SpectralProfileData => {
+                                    SpectralProfileDataTemp = SpectralProfileData;
                                     resolve();
                                 }
                             );
@@ -129,98 +131,37 @@ describe("CURSOR_Z_PROFILE test: Testing if full resolution cursor z profile is 
                     }, connectionTimeout);
 
                     test(`assert the fileId "${fileId}" returns: fileId = ${fileId}, as point {${point.x}, ${point.y}}.`, 
-                    async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                            {
-                                fileId, 
-                                point,
-                            }
-                        );    
-                        await new Promise( resolve => {
-                            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                                SpectralProfileData => {
-                                    expect(SpectralProfileData.fileId).toEqual(fileId);
-                                    resolve();
-                                }
-                            );
-                        });                            
+                    () => {
+                        expect(SpectralProfileDataTemp.fileId).toEqual(fileId);
                     }, connectionTimeout);
 
                     test(`assert the fileId "${fileId}" returns: regionId = ${regionID},  as point {${point.x}, ${point.y}}.`, 
-                    async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                            {
-                                fileId, 
-                                point,
-                            }
-                        );    
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                                SpectralProfileData => {
-                                    expect(SpectralProfileData.regionId).toEqual(regionID);
-                                    resolve();
-                                }
-                            );
-                        });                         
+                    () => {
+                        expect(SpectralProfileDataTemp.regionId).toEqual(regionID);
+                        
                     } , connectionTimeout);
 
                     test(`assert the fileId "${fileId}" returns: stokes = ${stokes}, as point {${point.x}, ${point.y}}.`, 
-                    async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                            {
-                                fileId, 
-                                point,
-                            }
-                        );    
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                                SpectralProfileData => {
-                                    expect(SpectralProfileData.stokes).toEqual(stokes);
-                                    resolve();
-                                }
-                            );
-                        });                         
+                    () => {
+                        expect(SpectralProfileDataTemp.stokes).toEqual(stokes);
+                        
                     } , connectionTimeout);
 
                     test(`assert the fileId "${fileId}" returns: progress = ${progress},  as point {${point.x}, ${point.y}}.`, 
-                    async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                            {
-                                fileId, 
-                                point,
-                            }
-                        );    
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                                SpectralProfileData => {
-                                    expect(SpectralProfileData.progress).toEqual(progress);
-                                    resolve();
-                                }
-                            );
-                        });                         
+                    () => {
+                        expect(SpectralProfileDataTemp.progress).toEqual(progress);
+
                     } , connectionTimeout);
 
                     test(`assert the fileId "${fileId}" returns: 
                         coordinate = "${coordinate}", length = "${profileLen}", 
                         vals[${assertPoint.idx}] = "${assertPoint.value}" as point {${point.x}, ${point.y}}.`, 
-                    async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
-                            {
-                                fileId, 
-                                point,
-                            }
-                        );    
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
-                                SpectralProfileData => {                                    
-                                    let spectralProfileDataMessageProfile = 
-                                        SpectralProfileData.profiles.find(f => f.coordinate === coordinate).vals;
-                                    expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
-                                    expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
-                                    resolve();
-                                }
-                            );
-                        });                         
+                    () => {
+                        let spectralProfileDataMessageProfile = 
+                            SpectralProfileDataTemp.profiles.find(f => f.coordinate === coordinate).vals;
+                        expect(spectralProfileDataMessageProfile.length).toEqual(profileLen);
+                        expect(spectralProfileDataMessageProfile[assertPoint.idx]).toBeCloseTo(assertPoint.value, 8);
+                                      
                     } , connectionTimeout);
 
                 } // function([ ])
