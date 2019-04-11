@@ -24,6 +24,28 @@ let testImageFiles = [
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
     // fileName.imageFiles128fits,
+    // fileName.imageFiles256fits,
+    // fileName.imageFiles512fits,
+
+    // fileName.imageFiles2image,
+    // fileName.imageFiles4image,
+    // fileName.imageFiles8image,
+    // fileName.imageFiles16image,
+    // fileName.imageFiles32image,
+    // fileName.imageFiles64image,
+    // fileName.imageFiles128image,
+    // fileName.imageFiles256image,
+    // fileName.imageFiles512image,
+
+    // fileName.imageFiles2hdf5,
+    // fileName.imageFiles4hdf5,
+    // fileName.imageFiles8hdf5,
+    // fileName.imageFiles16hdf5,
+    // fileName.imageFiles32hdf5,
+    // fileName.imageFiles64hdf5,
+    // fileName.imageFiles128hdf5,
+    // fileName.imageFiles256hdf5,
+    // fileName.imageFiles512hdf5,
 ];
 
 let testThreadNumber: number[] = [    
