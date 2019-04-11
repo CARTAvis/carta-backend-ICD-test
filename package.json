@@ -1,6 +1,6 @@
 {
     "name": "carta-backend-test",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "private": true,
     "homepage": "",
     "dependencies": {
@@ -38,7 +38,7 @@
         "start": "npm run git-info; npm-run-all -p watch-css start-js",
         "build-js": "react-scripts-ts build",
         "build": "npm run git-info; npm-run-all build-wrappers build-protobuf build-css build-js",
-        "test": "react-scripts-ts test --env=jsdom --maxWorkers=1 --no-cache --watchAll",
+        "test": "react-scripts-ts test --env=jsdom --maxWorkers=1 --verbose --no-cache --watchAll",
         "eject": "react-scripts-ts eject"
     },
     "devDependencies": {
