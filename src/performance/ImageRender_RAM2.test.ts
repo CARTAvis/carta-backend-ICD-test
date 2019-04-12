@@ -14,6 +14,7 @@ let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
 
+let userNumber = 8;
 let testImageFiles = [
     // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
@@ -46,75 +47,76 @@ let testImageFiles = [
     // fileName.imageFiles512hdf5,
 ];
 
-let testUserNumber: number[] = [    
-    24,
-    22,
-    20,
-    18,
-    16,
-    14,
-    12,
-    10,
+let testThreadNumber: number[] = [    
     8,
+    7,
     6,
+    5,
     4,
+    3,
+    2,
+    1,
 ];
 
-describe(`Image open performance: change users number, 1 thread per user on 1 backend.`, () => {    
+describe(`Image render performance: change thread number per user, ${userNumber} users on 1 backend.`, () => {    
 
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of user, users open image on 1 backend: `, () => {
-                testUserNumber.map(
-                    (userNumber: number) => {
-                        let imageFileNext = imageFilesGenerator.next().value;
-                        test(`Should open image ${imageFiles[0].slice(14)} by ${userNumber} users.`, 
-                        async done => {
+            describe(`Change the number of thread, ${userNumber} users open image on 1 backend: `, () => {
+                testThreadNumber.map(
+                    (threadNumber: number) => {
+                        test(`Should render image ${imageFiles[0].slice(14)} as thread# = ${userNumber * threadNumber}.`, 
+                        async done => {                            
                             let cartaBackend = await SocketOperation.CartaBackend(
-                                baseDirectory, port, userNumber, backendDirectory, openFileTimeout, logMessage);
+                                baseDirectory, port, userNumber * threadNumber, backendDirectory, openFileTimeout, logMessage);
 
                             let Connection: WebSocket[] = new Array(userNumber);
                             for ( let index = 0; index < userNumber; index++) {
                                 Connection[index] = await SocketOperation.SocketClient(serverURL, port, reconnectWait);                        
                                 await SocketOperation.RegisterViewer(Connection[index]);
                             }
-                                                        
+                            
                             let promiseSet: Promise<any>[] = [];
                             let timeElapsed: number[] = [];
-                            await new Promise( async resolveStep => {
+                            await new Promise( async user => {
                                 for ( let index = 0; index < userNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
                                     promiseSet.push( 
-                                        new Promise( async resolveSet => {
-                                            await SocketOperation.OpenFile(
+                                        new Promise( async action => {
+                                            let OpenFileAckTemp = 
+                                                await SocketOperation.OpenFile(
+                                                    Connection[index], 
+                                                    testDirectory, 
+                                                    imageFilesGenerator.next().value,
+                                                );
+                                            await SocketOperation.SetImageView(
                                                 Connection[index], 
-                                                testDirectory, 
-                                                imageFilesGenerator.next().value,
+                                                OpenFileAckTemp, 
                                                 async timer => {
                                                     timeElapsed.push(await performance.now() - timer);
-                                                } 
+                                                }
                                             );
-                                            resolveSet();
+                                            action();
                                         }
                                     ));
                                 }
-                                resolveStep();
+                                user();
                             });
                             await Promise.all(promiseSet);
                             
-                            for ( let index = 0; index < userNumber; index++) {                  
+                            for ( let index = 0; index < userNumber; index++) {                                    
                                 await Connection[index].close();
-                            }                          
-                                                        
+                            }
+                            
                             await new Promise( resolve => {
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
                                         timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b),
-                                            thread: userNumber, 
+                                            thread: threadNumber * userNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory / 1024,
                                         });
@@ -122,7 +124,7 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                     }
                                 );
                             });
-                        
+
                             await cartaBackend.kill();
 
                             cartaBackend.on("close", () => done());

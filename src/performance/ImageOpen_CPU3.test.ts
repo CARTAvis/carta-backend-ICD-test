@@ -66,8 +66,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
             describe(`Change the number of thread, 8 users open image on 1 backend: `, () => {
                 testThreadNumber.map(
-                    (threadNumber: number) => {                        
-                        let imageFileNext = imageFilesGenerator.next().value;
+                    (threadNumber: number) => {
                         test(`${threadNumber} threads per user open image ${imageFiles[0].slice(14)}.`, 
                         async done => {
                             let cartaBackend = await SocketOperation.CartaBackend(
@@ -89,7 +88,7 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                             await SocketOperation.OpenFile(
                                                 Connection[index], 
                                                 testDirectory, 
-                                                imageFileNext,
+                                                imageFilesGenerator.next().value,
                                                 async timer => {
                                                     timeElapsed.push(await performance.now() - timer);
                                                 } 

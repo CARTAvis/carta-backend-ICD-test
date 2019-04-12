@@ -60,7 +60,7 @@ let testUserNumber: number[] = [
     4,
 ];
 
-describe(`Image open performance: change users number, 1 thread per user on 1 backend.`, () => {    
+describe(`Image render performance: change users number, 1 thread per user on 1 backend.`, () => {    
 
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
@@ -69,8 +69,7 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
             describe(`Change the number of user, users open image on 1 backend: `, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
-                        let imageFileNext = imageFilesGenerator.next().value;
-                        test(`Should open image ${imageFiles[0].slice(14)} by ${userNumber} users.`, 
+                        test(`Should render image ${imageFiles[0].slice(14)} by ${userNumber} users.`, 
                         async done => {
                             let cartaBackend = await SocketOperation.CartaBackend(
                                 baseDirectory, port, userNumber, backendDirectory, openFileTimeout, logMessage);
@@ -83,24 +82,29 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                                         
                             let promiseSet: Promise<any>[] = [];
                             let timeElapsed: number[] = [];
-                            await new Promise( async resolveStep => {
+                            await new Promise( async user => {
                                 for ( let index = 0; index < userNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
                                     promiseSet.push( 
-                                        new Promise( async resolveSet => {
-                                            await SocketOperation.OpenFile(
+                                        new Promise( async action => {
+                                            let OpenFileAckTemp = 
+                                                await SocketOperation.OpenFile(
+                                                    Connection[index], 
+                                                    testDirectory, 
+                                                    imageFilesGenerator.next().value,
+                                                );
+                                            await SocketOperation.SetImageView(
                                                 Connection[index], 
-                                                testDirectory, 
-                                                imageFilesGenerator.next().value,
+                                                OpenFileAckTemp, 
                                                 async timer => {
                                                     timeElapsed.push(await performance.now() - timer);
-                                                } 
+                                                }
                                             );
-                                            resolveSet();
+                                            action();
                                         }
                                     ));
                                 }
-                                resolveStep();
+                                user();
                             });
                             await Promise.all(promiseSet);
                             

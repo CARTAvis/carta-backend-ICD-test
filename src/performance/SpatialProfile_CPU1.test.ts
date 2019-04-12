@@ -81,7 +81,7 @@ describe("Spatial profile performance: 1 user on 1 backend change thread number"
                                 await SocketOperation.OpenFile(
                                     Connection, 
                                     testDirectory, 
-                                    imageFilesGenerator.next().value,
+                                    imageFileNext,
                                 );
                             let RasterImageDataTemp =
                                 await SocketOperation.SetSpatialRequirements(
