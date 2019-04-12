@@ -1,8 +1,8 @@
-import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
+import * as SocketOperation from "./SocketOperation";
 let nodeusage = require("usage");
 
 let serverURL = config.serverURL;
@@ -69,48 +69,13 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                     (userNumber: number) => {
                         test(`${userNumber} users open image ${imageFiles[0].slice(14)}.`, 
                         async done => {
-                            let cartaBackend = await child_process.execFile(
-                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber}`],
-                                {
-                                    cwd: backendDirectory, 
-                                    timeout: openFileTimeout
-                                }
-                            );
-                            cartaBackend.on("error", error => {
-                                console.error(`error: \n ${error}`);
-                            });
-                            cartaBackend.stdout.on("data", data => {
-                                if (logMessage) {
-                                    console.log(data);
-                                }
-                            });
-                            
+                            let cartaBackend = await SocketOperation.CartaBackend(
+                                baseDirectory, port, userNumber, backendDirectory, openFileTimeout, logMessage);
+                                                        
                             let Connection: WebSocket[] = new Array(userNumber);
                             for ( let index = 0; index < userNumber; index++) {
-                                Connection[index] = await new WebSocket(`${serverURL}:${port}`);
-                                await new Promise( async resolve => {
-                                    while (Connection[index].readyState !== WebSocket.OPEN) {
-                                        await Connection[index].close();
-                                        Connection[index] = await new WebSocket(`${serverURL}:${port}`);
-                                        Connection[index].binaryType = "arraybuffer";
-                                        await new Promise( time => setTimeout(time, reconnectWait));
-                                    }
-                                    resolve();
-                                });
-                                await Utility.setEvent(Connection[index], "REGISTER_VIEWER", CARTA.RegisterViewer, 
-                                    {
-                                        sessionId: "", 
-                                        apiKey: "1234"
-                                    }
-                                );
-                                await new Promise( resolve => { 
-                                    Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
-                                        RegisterViewerAck => {
-                                            expect(RegisterViewerAck.success).toBe(true);
-                                            resolve();           
-                                        }
-                                    );
-                                });
+                                Connection[index] = await SocketOperation.SocketClient(serverURL, port, reconnectWait);                                
+                                await SocketOperation.RegisterViewer(Connection[index]);
                             }
                                                         
                             let promiseSet: Promise<any>[] = [];
@@ -119,29 +84,15 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                 for ( let index = 0; index < userNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
                                     promiseSet.push( 
-                                        new Promise( async resolveSet => {                                      
-                                            await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
-                                                {
-                                                    directory: testDirectory, 
-                                                    file: imageFilesGenerator.next().value, 
-                                                    hdu: "0", 
-                                                    fileId: 0, 
-                                                    renderMode: CARTA.RenderMode.RASTER,
-                                                }
+                                        new Promise( async resolveSet => {
+                                            await SocketOperation.OpenFile(
+                                                Connection[index], 
+                                                testDirectory, 
+                                                imageFilesGenerator.next().value,
+                                                async timer => {
+                                                    timeElapsed.push(await performance.now() - timer);
+                                                } 
                                             );
-                                            let timer: number = await performance.now(); 
-                                            await new Promise( resolve => {
-                                                Utility.getEvent(Connection[index], "OPEN_FILE_ACK", CARTA.OpenFileAck, 
-                                                    (OpenFileAck: CARTA.OpenFileAck) => {
-                                                        if (!OpenFileAck.success) {
-                                                            console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
-                                                        }
-                                                        expect(OpenFileAck.success).toBe(true);                                            
-                                                        resolve();
-                                                    }
-                                                );
-                                            });
-                                            timeElapsed.push(await performance.now() - timer);
                                             resolveSet();
                                         }
                                     ));
@@ -181,7 +132,6 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
     );
 
     afterAll( () => {
-        console.log(`Backend testing outcome:\n${timeEpoch
-            .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
+        SocketOperation.Outcome(timeEpoch);
     });
 });    
