@@ -15,6 +15,7 @@ let reconnectWait = config.wait.reconnect;
 let eventWait = config.wait.event;
 let logMessage = config.log;
 
+let testUserNumber = 8;
 let testImageFiles = [
     // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
@@ -47,30 +48,31 @@ let testImageFiles = [
     // fileName.imageFiles512hdf5,
 ];
 
-let testUserNumber: number[] = [
-    16,
-    14,
-    12,
-    10,
+let testThreadNumber: number[] = [    
     8,
+    7,
     6,
+    5,
     4,
+    3,
     2,
+    1,
 ];
 
-describe("Image render performance: 1 thread per user on 1 backend.", () => {    
-   
+describe("Image render performance: change thread number per user, 8 users on 1 backend.", () => {    
+    
     let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of user`, () => {
-                testUserNumber.map(
-                    (userNumber: number) => {
-                        test(`${userNumber} users render image ${imageFiles[0].slice(14)}.`, 
+            describe(`Change the number of thread, 8 users open image on 1 backend: `, () => {
+                testThreadNumber.map(
+                    (threadNumber: number) => {                        
+                        let imageFileNext = imageFilesGenerator.next().value;
+                        test(`${threadNumber} threads per user render image ${imageFiles[0].slice(14)}.`, 
                         async done => {
-                            let cartaBackend = await child_process.execFile(
-                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${userNumber}`],
+                            let cartaBackend = child_process.execFile(
+                                `./carta_backend`, [`root=base`, `base=${baseDirectory}`, `port=${port}`, `threads=${threadNumber * testUserNumber}`],
                                 {
                                     cwd: backendDirectory, 
                                     timeout: openFileTimeout
@@ -84,9 +86,9 @@ describe("Image render performance: 1 thread per user on 1 backend.", () => {
                                     console.log(data);
                                 }
                             });
-                            
-                            let Connection: WebSocket[] = new Array(userNumber);
-                            for ( let index = 0; index < userNumber; index++) {
+
+                            let Connection: WebSocket[] = new Array(testUserNumber);
+                            for ( let index = 0; index < testUserNumber; index++) {
                                 Connection[index] = await new WebSocket(`${serverURL}:${port}`);
                                 await new Promise( async resolve => {
                                     while (Connection[index].readyState !== WebSocket.OPEN) {
@@ -116,19 +118,19 @@ describe("Image render performance: 1 thread per user on 1 backend.", () => {
                             let promiseSet: Promise<any>[] = [];
                             let timeElapsed: number[] = [];
                             await new Promise( async resolveStep => {
-                                for ( let index = 0; index < userNumber; index++) { 
+                                for ( let index = 0; index < testUserNumber; index++) { 
                                     await new Promise( time => setTimeout(time, eventWait));
                                     promiseSet.push( 
-                                        new Promise( async resolveSet => {                                      
+                                        new Promise( async resolveSet => {                                       
                                             await Utility.setEvent(Connection[index], "OPEN_FILE", CARTA.OpenFile, 
                                                 {
                                                     directory: testDirectory, 
-                                                    file: imageFilesGenerator.next().value, 
+                                                    file: imageFileNext, 
                                                     hdu: "0", 
                                                     fileId: 0, 
                                                     renderMode: CARTA.RenderMode.RASTER,
                                                 }
-                                            );
+                                            );                                            
                                             let OpenFileAckTemp: CARTA.OpenFileAck;
                                             await new Promise( resolve => {
                                                 Utility.getEvent(Connection[index], "OPEN_FILE_ACK", CARTA.OpenFileAck, 
@@ -173,17 +175,17 @@ describe("Image render performance: 1 thread per user on 1 backend.", () => {
                             });
                             await Promise.all(promiseSet);
                             
-                            for ( let index = 0; index < userNumber; index++) {                                    
+                            for ( let index = 0; index < testUserNumber; index++) {                  
                                 await Connection[index].close();
-                            }                         
-                           
+                            }                          
+                                                        
                             await new Promise( resolve => {
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
                                         timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
-                                            thread: userNumber, 
+                                            thread: threadNumber * testUserNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory / 1024
                                         });
@@ -191,7 +193,7 @@ describe("Image render performance: 1 thread per user on 1 backend.", () => {
                                     }
                                 );
                             });
-
+                        
                             await cartaBackend.kill();
 
                             cartaBackend.on("close", () => done());
