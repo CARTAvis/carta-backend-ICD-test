@@ -161,3 +161,78 @@ SetImageView(
     });
     return RasterImageDataTemp;
 }
+/// Send CARTA.SetImageView & CARTA.SetSpatialRequirements then get CARTA.RasterImageData
+export async function 
+SetSpatialRequirements(
+    Connection: WebSocket,
+    OpenFileAck: CARTA.OpenFileAck,
+    CallbackFunc: (timer: number) => Promise<void> = undefined,
+) {
+    let RasterImageDataTemp: CARTA.RasterImageData;
+    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+        {
+            fileId: 0, 
+            imageBounds: {
+                xMin: 0, xMax: OpenFileAck.fileInfoExtended.width, 
+                yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
+            }, 
+            mip: 16, 
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11, 
+            numSubsets: 4,
+        }
+    );
+    await Utility.setEvent(Connection, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+        {
+            fileId: 0, 
+            regionId: 0, 
+            spatialProfiles: ["x", "y"],
+        }
+    );
+    let timer = await performance.now();
+    await new Promise( resolve => {
+        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+            async (RasterImageData: CARTA.RasterImageData) => {
+                expect(RasterImageData.fileId).toEqual(0);
+                RasterImageDataTemp = RasterImageData;
+                if (CallbackFunc) {
+                    await CallbackFunc(timer);
+                }
+                resolve();
+            }
+        );
+    });
+    return RasterImageDataTemp;
+}
+/// Send CARTA.SetCursor then get CARTA.SpatialProfileData
+export async function 
+CursorSpatialProfileData(
+    Connection: WebSocket,
+    RasterImageData: CARTA.RasterImageData,
+    CallbackFunc: (timer: number) => Promise<void> = undefined,
+) {
+    let SpatialProfileDataTemp: CARTA.SpatialProfileData;
+    await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+        {
+            fileId: 0, 
+            point: {
+                x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax), 
+                y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)
+            },
+        }
+    );
+    let timer = await performance.now();
+    await new Promise( resolve => {
+        Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+            async (SpatialProfileData: CARTA.SpatialProfileData) => {
+                expect(SpatialProfileData.profiles.length).not.toEqual(0);
+                SpatialProfileDataTemp = SpatialProfileData;
+                if (CallbackFunc) {
+                    await CallbackFunc(timer);
+                }
+                resolve();
+            }
+        );
+    });
+    return SpatialProfileDataTemp;
+}
