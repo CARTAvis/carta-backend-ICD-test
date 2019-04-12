@@ -1,4 +1,3 @@
-import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import fileName from "./file.json";
 import config from "./config.json";
