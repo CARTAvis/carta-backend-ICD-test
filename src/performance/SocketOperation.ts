@@ -115,6 +115,7 @@ OpenFile(
                     console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
                 }
                 expect(OpenFileAck.success).toBe(true);
+                OpenFileAckTemp = OpenFileAck;
                 if (CallbackFunc) {
                     await CallbackFunc(timer);
                 }
@@ -123,4 +124,40 @@ OpenFile(
         );
     });
     return OpenFileAckTemp;
+}
+/// Send CARTA.SetImageView then get CARTA.RasterImageData
+export async function 
+SetImageView(
+    Connection: WebSocket,
+    OpenFileAck: CARTA.OpenFileAck,
+    CallbackFunc: (timer: number) => Promise<void> = undefined,
+) {
+    let RasterImageDataTemp: CARTA.RasterImageData;
+    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+        {
+            fileId: 0, 
+            imageBounds: {
+                xMin: 0, xMax: OpenFileAck.fileInfoExtended.width, 
+                yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
+            }, 
+            mip: 16, 
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11, 
+            numSubsets: 4,
+        }
+    );
+    let timer = await performance.now();
+    await new Promise( resolve => {
+        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+            async (RasterImageData: CARTA.RasterImageData) => {
+                expect(RasterImageData.fileId).toEqual(0);
+                RasterImageDataTemp = RasterImageData;
+                if (CallbackFunc) {
+                    await CallbackFunc(timer);
+                }
+                resolve();
+            }
+        );
+    });
+    return RasterImageDataTemp;
 }
