@@ -42,25 +42,23 @@ describe("Basic test: ", () => {
 
 describe(`node-usage test`, () => {
     test(`should read CPU usage`, 
-    () => {
+    done => {
         nodeusage.lookup(
             process.pid, 
             (err, result) => {
-                return () => {
-                    expect(result.cpu).toBeGreaterThan(0);
-                };
+                expect(result.cpu).toBeGreaterThan(0);
+                done();
             }
         );
     });
     
     test(`should read RAM usage`, 
-    () => {
+    done => {
         nodeusage.lookup(
             process.pid, 
             (err, result) => {
-                return () => {
-                    expect(result.memory).toBeGreaterThan(0);
-                };
+                expect(result.memory).toBeGreaterThan(0);
+                done();
             }
         );
     });
