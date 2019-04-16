@@ -3,7 +3,6 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 import config from "./config.json";
 import * as SocketOperation from "./SocketOperation";
-let nodeusage = require("usage");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -40,13 +39,14 @@ describe("Basic test: ", () => {
 
 });
 
+let nodeusage = require("usage");
 describe(`node-usage test`, () => {
     test(`should read CPU usage`, 
     done => {
         nodeusage.lookup(
             process.pid, 
-            (err, result) => {
-                expect(result.cpu).toBeGreaterThan(0);
+            (err, info) => {
+                expect(info.cpu).toBeGreaterThan(0);
                 done();
             }
         );
@@ -56,11 +56,25 @@ describe(`node-usage test`, () => {
     done => {
         nodeusage.lookup(
             process.pid, 
-            (err, result) => {
-                expect(result.memory).toBeGreaterThan(0);
+            (err, info) => {
+                expect(info.memory).toBeGreaterThan(0);
                 done();
             }
         );
     });
+
+});
+
+let proc = require("procfs-stats");
+describe(`procfs-stats test`, () => {
+    test(`should read IO usage`, 
+    done => {
+        let procinfo = proc(process.pid);
+        procinfo.io((err, io) => {
+            // console.log("my process has done this much io \n", io);
+            expect(parseInt(io.rchar)).toBeGreaterThan(0);
+            done();
+        });
+    });    
 
 });

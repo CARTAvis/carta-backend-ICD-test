@@ -1,7 +1,6 @@
 import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
-let nodeusage = require("usage");
 
 /// Log result
 export async function
@@ -17,6 +16,13 @@ OutcomeWithFile(
 ) {
     console.log(`Backend testing outcome:\n${timeEpoch
         .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as file: ${e.fileName}`).join(` \n`)}`);
+}
+export async function
+OutcomeWithDiskIO(
+    timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number, fileName: string, Disk: number}[],
+) {
+    console.log(`Backend testing outcome:\n${timeEpoch
+        .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM / 1024}kB & Disk read = ${(e.Disk / 1024).toFixed(0)}kB as file: ${e.fileName}`).join(` \n`)}`);
 }
 /// Create a new carta_backend service
 export async function 
