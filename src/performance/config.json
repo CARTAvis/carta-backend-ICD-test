@@ -1,10 +1,10 @@
 {    
     "serverURL": "ws://127.0.0.1",
-    "port": 62000,
+    "port": 7001,
     "timeout": {
         "connection": 2000,
-        "openFile": 12000,
-        "readFile": 15000
+        "openFile": 20000,
+        "readFile": 40000
     },
     "wait": {
         "exec": 500,
@@ -14,8 +14,8 @@
         "cursor": 35
     },
     "repeat": {
-        "cursor": 10,
-        "event": 20
+        "cursor": 20,
+        "event": 10
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
