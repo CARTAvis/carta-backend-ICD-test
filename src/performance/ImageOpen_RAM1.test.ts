@@ -18,14 +18,17 @@ let imageFilesGroup = [
     fileName.imageFilesAfits,
     // fileName.imageFilesBfits,
     // fileName.imageFilesCfits,
+    // fileName.imageFilesDfits,
 
     // fileName.imageFilesAimage,
     // fileName.imageFilesBimage,
     // fileName.imageFilesCimage,
+    // fileName.imageFilesDimage,
 
     // fileName.imageFilesAhdf5,
     // fileName.imageFilesBhdf5,
     // fileName.imageFilesChdf5,
+    // fileName.imageFilesDhdf5,
 ];
 
 describe("Image open performance:  1 user on 1 backend change image size", () => {    

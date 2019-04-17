@@ -16,8 +16,8 @@ let logMessage = config.log;
 
 let testUserNumber = 8;
 let testImageFiles = [
-    // fileName.imageFiles2fits,
-    // fileName.imageFiles4fits,
+    fileName.imageFiles2fits,
+    fileName.imageFiles4fits,
     fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
@@ -60,11 +60,12 @@ let testThreadNumber: number[] = [
 
 describe("Image open performance: change thread number per user, 8 users on 1 backend.", () => {    
     
-    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+    let reports: SocketOperation.Report[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of thread, 8 users open image on 1 backend: `, () => {
+            reports.push({file: imageFiles[0].slice(14), timeEpoch: []});
+            describe(`Change the number of thread, 8 users open file ${imageFiles[0].slice(14)} on 1 backend: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
                         test(`${threadNumber} threads per user open image ${imageFiles[0].slice(14)}.`, 
@@ -109,11 +110,13 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
-                                        timeEpoch.push({
+                                        reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
                                             thread: threadNumber * testUserNumber, 
                                             CPUusage: result.cpu,
-                                            RAM: result.memory / 1024
+                                            RAM: result.memory / 1024,
+                                            fileName: "", 
+                                            Disk: 0,
                                         });
                                         resolve();
                                     }
@@ -132,6 +135,8 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
     );
     
     afterAll( () => {
-        SocketOperation.Outcome(timeEpoch);
+        reports.forEach( report => {
+            SocketOperation.Report(report);
+        });
     });
 });    

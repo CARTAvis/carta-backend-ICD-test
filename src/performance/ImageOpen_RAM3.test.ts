@@ -17,13 +17,13 @@ let logMessage = config.log;
 let testImageFiles = [
     // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
-    fileName.imageFiles8fits,
+    // fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
-    // fileName.imageFiles128fits,
-    // fileName.imageFiles256fits,
-    // fileName.imageFiles512fits,
+    fileName.imageFiles128fits,
+    fileName.imageFiles256fits,
+    fileName.imageFiles512fits,
 
     // fileName.imageFiles2image,
     // fileName.imageFiles4image,
@@ -62,11 +62,12 @@ let testUserNumber: number[] = [
 
 describe(`Image open performance: change users number, 1 thread per user on 1 backend.`, () => {    
 
-    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+    let reports: SocketOperation.Report[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of user, users open image on 1 backend: `, () => {
+            reports.push({file: imageFiles[0].slice(14), timeEpoch: []});
+            describe(`Change the number of user, users open file ${imageFiles[0].slice(14)} on 1 backend: `, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
                         let imageFileNext = imageFilesGenerator.next().value;
@@ -112,11 +113,13 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
-                                        timeEpoch.push({
+                                        reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b),
                                             thread: userNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory / 1024,
+                                            fileName: imageFileNext, 
+                                            Disk: 0,
                                         });
                                         resolve();
                                     }
@@ -135,6 +138,8 @@ describe(`Image open performance: change users number, 1 thread per user on 1 ba
     );
     
     afterAll( () => {
-        SocketOperation.Outcome(timeEpoch);
+        reports.forEach( report => {
+            SocketOperation.Report(report);
+        });
     });
 });    

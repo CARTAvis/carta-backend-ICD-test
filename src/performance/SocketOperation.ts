@@ -3,6 +3,18 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
 
 /// Log result
+export interface Report {
+    file: string;
+    timeEpoch: TimeEpoch[];
+}
+export interface TimeEpoch {
+    time: number; 
+    thread: number; 
+    CPUusage: number; 
+    RAM: number; 
+    fileName: string; 
+    Disk: number;
+}
 export async function
 Outcome(
     timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[],
@@ -23,6 +35,13 @@ OutcomeWithDiskIO(
 ) {
     console.log(`Backend testing outcome:\n${timeEpoch
         .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM / 1024}kB & Disk read = ${(e.Disk / 1024).toFixed(0)}kB as file: ${e.fileName}`).join(` \n`)}`);
+}
+export async function
+Report(
+    report: Report,
+) {
+    console.log(`Backend testing outcome on ${report.file}:\n${report.timeEpoch
+        .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
 }
 /// Create a new carta_backend service
 export async function 

@@ -18,13 +18,13 @@ let userNumber = 8;
 let testImageFiles = [
     // fileName.imageFiles2fits,
     // fileName.imageFiles4fits,
-    fileName.imageFiles8fits,
+    // fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
     // fileName.imageFiles64fits,
-    // fileName.imageFiles128fits,
-    // fileName.imageFiles256fits,
-    // fileName.imageFiles512fits,
+    fileName.imageFiles128fits,
+    fileName.imageFiles256fits,
+    fileName.imageFiles512fits,
 
     // fileName.imageFiles2image,
     // fileName.imageFiles4image,
@@ -60,11 +60,12 @@ let testThreadNumber: number[] = [
 
 describe(`Image open performance: change thread number per user, ${userNumber} users on 1 backend.`, () => {    
 
-    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+    let reports: SocketOperation.Report[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of thread, ${userNumber} users open image on 1 backend: `, () => {
+            reports.push({file: imageFiles[0].slice(14), timeEpoch: []});
+            describe(`Change the number of thread, ${userNumber} users open file ${imageFiles[0].slice(14)} on 1 backend: `, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
                         test(`Should open image ${imageFiles[0].slice(14)} as thread# = ${userNumber * threadNumber}.`, 
@@ -109,11 +110,13 @@ describe(`Image open performance: change thread number per user, ${userNumber} u
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
-                                        timeEpoch.push({
+                                        reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b),
                                             thread: threadNumber * userNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory / 1024,
+                                            fileName: "", 
+                                            Disk: 0,
                                         });
                                         resolve();
                                     }
@@ -132,6 +135,8 @@ describe(`Image open performance: change thread number per user, ${userNumber} u
     );
     
     afterAll( () => {
-        SocketOperation.Outcome(timeEpoch);
+        reports.forEach( report => {
+            SocketOperation.Report(report);
+        });
     });
 });    

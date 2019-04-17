@@ -15,8 +15,8 @@ let eventWait = config.wait.event;
 let logMessage = config.log;
 
 let testImageFiles = [
-    // fileName.imageFiles2fits,
-    // fileName.imageFiles4fits,
+    fileName.imageFiles2fits,
+    fileName.imageFiles4fits,
     fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
@@ -59,11 +59,12 @@ let testUserNumber: number[] = [
 
 describe("Image open performance: 1 thread per user on 1 backend.", () => {    
    
-    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+    let reports: SocketOperation.Report[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => { 
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of user, who opens image on 1 backend`, () => {
+            reports.push({file: imageFiles[0].slice(14), timeEpoch: []});
+            describe(`Change the number of user, who opens file ${imageFiles[0].slice(14)} on 1 backend`, () => {
                 testUserNumber.map(
                     (userNumber: number) => {
                         test(`${userNumber} users open image ${imageFiles[0].slice(14)}.`, 
@@ -108,11 +109,13 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
-                                        timeEpoch.push({
+                                        reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
                                             thread: userNumber, 
                                             CPUusage: result.cpu,
-                                            RAM: result.memory / 1024
+                                            RAM: result.memory / 1024,
+                                            fileName: "", 
+                                            Disk: 0,
                                         });
                                         resolve();
                                     }
@@ -131,6 +134,8 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
     );
 
     afterAll( () => {
-        SocketOperation.Outcome(timeEpoch);
+        reports.forEach( report => {
+            SocketOperation.Report(report);
+        });
     });
 });    

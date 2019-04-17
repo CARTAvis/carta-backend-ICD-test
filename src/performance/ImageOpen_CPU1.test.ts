@@ -15,8 +15,8 @@ let repeatEvent = config.repeat.event;
 let logMessage = config.log;
 
 let testImageFiles = [
-    // fileName.imageFiles2fits,
-    // fileName.imageFiles4fits,
+    fileName.imageFiles2fits,
+    fileName.imageFiles4fits,
     fileName.imageFiles8fits,
     // fileName.imageFiles16fits,
     // fileName.imageFiles32fits,
@@ -59,11 +59,12 @@ let testThreadNumber: number[] = [
 
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
     
-    let timeEpoch: {time: number, thread: number, CPUusage: number, RAM: number}[] = [];
+    let reports: SocketOperation.Report[] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
-            describe(`Change the number of thread: `, () => {
+            reports.push({file: imageFiles[0].slice(14), timeEpoch: []});
+            describe(`Change the number of thread on file ${imageFiles[0].slice(14)}:`, () => {
                 testThreadNumber.map(
                     (threadNumber: number) => {
                         let imageFileNext = imageFilesGenerator.next().value;
@@ -94,11 +95,13 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
-                                        timeEpoch.push({
+                                        reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
                                             thread: threadNumber, 
                                             CPUusage: result.cpu,
-                                            RAM: result.memory / 1024
+                                            RAM: result.memory / 1024,
+                                            fileName: imageFileNext, 
+                                            Disk: 0,
                                         });
                                         resolve();
                                     }
@@ -117,6 +120,8 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
     );
 
     afterAll( () => {
-        SocketOperation.Outcome(timeEpoch);
+        reports.forEach( report => {
+            SocketOperation.Report(report);
+        });
     });
 });    
