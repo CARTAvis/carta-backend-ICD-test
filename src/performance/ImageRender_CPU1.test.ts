@@ -103,7 +103,7 @@ describe("Image render performance: 1 user on 1 backend change thread number", (
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
                                             thread: threadNumber, 
                                             CPUusage: result.cpu,
-                                            RAM: result.memory
+                                            RAM: result.memory / 1024
                                         });
                                         resolve();
                                     }
