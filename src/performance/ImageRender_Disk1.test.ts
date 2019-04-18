@@ -65,21 +65,23 @@ describe("Image render performance:  1 user on 1 backend change image size", () 
                             
                             await Connection.close();  
                             
-                            let ps = procfs(cartaBackend.pid);                          
-                            let diskR: number;
-                            await new Promise( resolve => {
-                                ps.io( (err, io) => {
-                                    diskR = io.read_bytes;
-                                    resolve();
+                            let diskR: number = 0;
+                            let usedThreadNumber: number = 0;
+                            if (procfs.works) {
+                                let ps = procfs(cartaBackend.pid);                          
+                                await new Promise( resolve => {
+                                    ps.io( (err, io) => {
+                                        diskR = io.read_bytes;
+                                        resolve();
+                                    });
                                 });
-                            });
-                            let usedThreadNumber: number;
-                            await new Promise( resolve => {
-                                ps.threads( (err, task) => {
-                                    usedThreadNumber = task.length;
-                                    resolve();
+                                await new Promise( resolve => {
+                                    ps.threads( (err, task) => {
+                                        usedThreadNumber = task.length;
+                                        resolve();
+                                    });
                                 });
-                            });
+                            }
                             await new Promise( resolve => {
                                 nodeusage.lookup(
                                     cartaBackend.pid, 

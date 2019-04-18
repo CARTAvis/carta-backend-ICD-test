@@ -108,11 +108,13 @@ describe("Image open performance: change thread number per user, 8 users on 1 ba
                             }                          
                                                         
                             await new Promise( resolve => {
-                                let ps = procfs(cartaBackend.pid);
-                                let usedThreadNumber: number;
-                                ps.threads( (err, task) => {
-                                    usedThreadNumber = task.length;
-                                });
+                                let usedThreadNumber: number = 0;
+                                if (procfs.works) {
+                                    let ps = procfs(cartaBackend.pid);
+                                    ps.threads( (err, task) => {
+                                        usedThreadNumber = task.length;
+                                    }); 
+                                }
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        

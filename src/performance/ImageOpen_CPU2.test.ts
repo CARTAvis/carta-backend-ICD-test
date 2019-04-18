@@ -107,11 +107,13 @@ describe("Image open performance: 1 thread per user on 1 backend.", () => {
                             }                         
                            
                             await new Promise( resolve => {
-                                let ps = procfs(cartaBackend.pid);
-                                let usedThreadNumber: number;
-                                ps.threads( (err, task) => {
-                                    usedThreadNumber = task.length;
-                                });
+                                let usedThreadNumber: number = 0;
+                                if (procfs.works) {
+                                    let ps = procfs(cartaBackend.pid);
+                                    ps.threads( (err, task) => {
+                                        usedThreadNumber = task.length;
+                                    }); 
+                                }
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
