@@ -64,11 +64,19 @@ describe("Image render performance:  1 user on 1 backend change image size", () 
                             );
                             
                             await Connection.close();  
-                                                      
+                            
+                            let ps = procfs(cartaBackend.pid);                          
                             let diskR: number;
                             await new Promise( resolve => {
-                                procfs(cartaBackend.pid).io( (err, io) => {
+                                ps.io( (err, io) => {
                                     diskR = io.read_bytes;
+                                    resolve();
+                                });
+                            });
+                            let usedThreadNumber: number;
+                            await new Promise( resolve => {
+                                ps.threads( (err, task) => {
+                                    usedThreadNumber = task.length;
                                     resolve();
                                 });
                             });
@@ -78,7 +86,7 @@ describe("Image render performance:  1 user on 1 backend change image size", () 
                                     (err, result) => {                                        
                                         timeEpoch.push({
                                             time: timeElapsed, 
-                                            thread: threadNumber, 
+                                            thread: usedThreadNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory,
                                             fileName: imageFileNext,

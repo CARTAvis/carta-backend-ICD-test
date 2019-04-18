@@ -68,12 +68,21 @@ describe(`node-usage test`, () => {
 let proc = require("procfs-stats");
 describe(`procfs-stats test`, () => {
     test(`should read IO usage`, 
-    done => {
+    async () => {
         let procinfo = proc(process.pid);
-        procinfo.io((err, io) => {
-            // console.log("my process has done this much io \n", io);
-            expect(parseInt(io.rchar)).toBeGreaterThan(0);
-            done();
+        await new Promise( resolve => {
+            procinfo.io((err, io) => {
+                // console.log(io);
+                expect(parseInt(io.rchar)).toBeGreaterThan(0);
+                resolve();
+            });
+        });
+        await new Promise( resolve => {
+            procinfo.threads( (err, task) => {
+                // console.log(task);
+                expect(parseInt(task.length)).toBeGreaterThan(0);
+                resolve();
+            });
         });
     });    
 

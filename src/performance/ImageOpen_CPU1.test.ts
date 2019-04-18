@@ -3,6 +3,7 @@ import fileName from "./file.json";
 import config from "./config.json";
 import * as SocketOperation from "./SocketOperation";
 let nodeusage = require("usage");
+let procfs = require("procfs-stats");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -89,15 +90,23 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 );
                             }
 
-                            await Connection.close();                            
-
+                            await Connection.close();
+                            
+                            let ps = procfs(cartaBackend.pid);
+                            let usedThreadNumber: number;
+                            await new Promise( resolve => {
+                                ps.threads( (err, task) => {
+                                    usedThreadNumber = task.length;
+                                    resolve();
+                                });
+                            });
                             await new Promise( resolve => {
                                 nodeusage.lookup(
                                     cartaBackend.pid, 
                                     (err, result) => {                                        
                                         reports[testImageFiles.indexOf(imageFiles)].timeEpoch.push({
                                             time: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length, 
-                                            thread: threadNumber, 
+                                            thread: usedThreadNumber, 
                                             CPUusage: result.cpu,
                                             RAM: result.memory / 1024,
                                             fileName: imageFileNext, 
