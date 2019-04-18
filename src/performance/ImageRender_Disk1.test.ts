@@ -68,7 +68,7 @@ describe("Image render performance:  1 user on 1 backend change image size", () 
                             let diskR: number;
                             await new Promise( resolve => {
                                 procfs(cartaBackend.pid).io( (err, io) => {
-                                    diskR = io.rchar;
+                                    diskR = io.read_bytes;
                                     resolve();
                                 });
                             });
