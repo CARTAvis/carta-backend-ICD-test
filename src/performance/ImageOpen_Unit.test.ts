@@ -61,7 +61,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 await SocketOperation.OpenFile(
                                     Connection, 
                                     testDirectory, 
-                                    imageFileNext,
+                                    imageFilesGenerator.next().value,
                                     async timer => {
                                         timeElapsed.push(await performance.now() - timer);
                                     } 
