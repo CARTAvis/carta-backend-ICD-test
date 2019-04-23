@@ -15,5 +15,5 @@
         3200,
         6400
     ],
-    "fileFormat": ["fit", "image", "hdf5"]
+    "fileFormat": ["fits", "image"]
 }
