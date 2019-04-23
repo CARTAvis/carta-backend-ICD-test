@@ -25,7 +25,7 @@ fileConfig.fileFormat.map(
                         return fileConfig.dataSource.map(
                             name => {
                                 return `cube_${name}/cube_${name}_` + 
-                                `${image.toLocaleString("en-US", {minimumIntegerDigits: 6, useGrouping: false})}` +
+                                `${image.toLocaleString("en-US", {minimumIntegerDigits: 5, useGrouping: false})}` +
                                 `_z00001.${format}`;
                             }
                         );
