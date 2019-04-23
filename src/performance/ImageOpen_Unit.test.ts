@@ -38,7 +38,7 @@ fileConfig.fileFormat.map(
 
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
     
-    let epoch: number[][] = [[]];
+    let epoch: number[][] = [];
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
