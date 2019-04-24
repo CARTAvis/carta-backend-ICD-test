@@ -1,8 +1,11 @@
 import * as Utility from "../UtilityFunction";
-import fileName from "./file.json";
 import config from "./config.json";
 import fileConfig from "./testFileConfig.json";
 import * as SocketOperation from "./SocketOperation";
+let nodeusage = require("usage");
+let procfs = require("procfs-stats");
+let fs = require("fs");
+let stream = fs.createWriteStream("report.txt");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -70,6 +73,41 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             epoch[testImageFiles.indexOf(imageFiles)]
                                 .push(timeElapsed.reduce((a, b) => a + b) / timeElapsed.length);
 
+                            let diskR: number = 0;
+                            let usedThreadNumber: number = 0;
+                            if (procfs.works) {
+                                let ps = procfs(cartaBackend.pid);                          
+                                await new Promise( resolve => {
+                                    ps.io( (err, io) => {
+                                        diskR = io.read_bytes;
+                                        resolve();
+                                    });
+                                });
+                                await new Promise( resolve => {
+                                    ps.threads( (err, task) => {
+                                        usedThreadNumber = task.length;
+                                        resolve();
+                                    });
+                                });
+                            }
+                            await new Promise( resolve => {
+                                nodeusage.lookup(
+                                    cartaBackend.pid, 
+                                    (err, info) => {
+                                        stream.once("open", fd => {
+                                            stream.write(`${imageFileNext}\t\t`);
+                                            stream.write(`${usedThreadNumber}\t\t`);
+                                            stream.write(`${timeElapsed}\t\t`);
+                                            stream.write(`${info.cpu}\t\t`);
+                                            stream.write(`${info.memory}\t\t`);
+                                            stream.write(`${diskR}\t\t`);
+                                            stream.write("\n");
+                                        });
+                                        resolve();
+                                    }
+                                );
+                            });
+
                             await Connection.close();
                             
                             await cartaBackend.kill();
@@ -85,5 +123,8 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
 
     afterAll( () => {
         console.log(epoch);
+        stream.once("open", fd => {            
+            stream.end();
+        });
     });
 });    
