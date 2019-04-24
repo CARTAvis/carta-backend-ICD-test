@@ -19,6 +19,7 @@
     },
     "path": {
         "backend": "/Users/zarda/GitHub/carta-backend-nrao/build",
+        "performanceTestResultDir": "/Users/zarda/GitHub/carta-backend-ICD-test/performance_result",
         "base": "$HOME/CARTA/Images",
         "performance": "set_QA_performance"
     },
