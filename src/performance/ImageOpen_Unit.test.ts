@@ -1,8 +1,8 @@
 import * as Utility from "../UtilityFunction";
-import fileName from "./file.json";
 import config from "./config.json";
 import fileConfig from "./testFileConfig.json";
 import * as SocketOperation from "./SocketOperation";
+import * as child_process from "child_process";
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -51,7 +51,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                         async done => {                            
                             let cartaBackend = await SocketOperation.CartaBackend(
                                 baseDirectory, port, threadNumber, backendDirectory, openFileTimeout, logMessage);
-                            
+
+                            const fileName = imageFilesGenerator.next().value;
+                            const psrecord = child_process.exec(`psrecord ${cartaBackend.pid} --interval 0.01 --plot ${fileName-threadNumber}.png`, {
+                                cwd: config.path.performanceTestResultDir
+                            });
+
                             let Connection = await SocketOperation.SocketClient(serverURL, port, reconnectWait);
                             
                             await SocketOperation.RegisterViewer(Connection);
@@ -61,7 +66,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 await SocketOperation.OpenFile(
                                     Connection, 
                                     testDirectory, 
-                                    imageFilesGenerator.next().value,
+                                    fileName,
                                     async timer => {
                                         timeElapsed.push(await performance.now() - timer);
                                     } 
@@ -76,6 +81,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
 
                             cartaBackend.on("close", () => done());
 
+                            await psrecord.kill('SIGINT');
                         }, openFileTimeout);
                     }
                 );
