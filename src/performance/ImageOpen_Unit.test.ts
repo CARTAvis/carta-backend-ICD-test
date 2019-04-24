@@ -6,7 +6,7 @@ import * as child_process from "child_process";
 let nodeusage = require("usage");
 let procfs = require("procfs-stats");
 let fs = require("fs");
-let stream = fs.createWriteStream("report.txt");
+let stream = fs.createWriteStream(`${config.path.performanceTestResultDir}/report.txt`);
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -117,9 +117,10 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             
                             await cartaBackend.kill();
 
+                            await psrecord.kill("SIGINT");
+
                             cartaBackend.on("close", () => done());
 
-                            await psrecord.kill('SIGINT');
                         }, openFileTimeout);
                     }
                 );
