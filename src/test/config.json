@@ -1,5 +1,7 @@
 {    
     "serverURL": "wss://carta.asiaa.sinica.edu.tw/socket",
+    "serverURL0": "ws://127.0.0.1:12345",
+    "serverURL1": "ws://carta.asiaa.sinica.edu.tw:4005",
     "path": {
         "root": ".",
         "base": "$BASE",
@@ -11,8 +13,8 @@
         "openFile": 3000,
         "readFile": 3000,
         "readLargeImage": 18000,
-        "playImages": 20000,
-        "cubeHistogram": 30000,
+        "playImages": 30000,
+        "cubeHistogram": 60000,
         "cancel": 10000,
         "concurrent": 4000,
         "messageEvent": 500,
