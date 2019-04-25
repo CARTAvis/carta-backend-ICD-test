@@ -1,0 +1,1 @@
+afterAll( async () => await process.exit());

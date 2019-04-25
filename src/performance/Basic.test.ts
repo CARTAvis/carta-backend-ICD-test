@@ -62,7 +62,6 @@ describe(`node-usage test`, () => {
             }
         );
     });
-
 });
 
 let proc = require("procfs-stats");
@@ -70,20 +69,21 @@ describe(`procfs-stats test`, () => {
     test(`should read IO usage`, 
     async () => {
         let procinfo = proc(process.pid);
-        await new Promise( resolve => {
-            procinfo.io((err, io) => {
-                // console.log(io);
-                expect(parseInt(io.rchar)).toBeGreaterThan(0);
-                resolve();
+        if (procinfo.works) {
+            await new Promise( resolve => {
+                procinfo.io((err, io) => {
+                    // console.log(io);
+                    expect(parseInt(io.rchar)).toBeGreaterThan(0);
+                    resolve();
+                });
             });
-        });
-        await new Promise( resolve => {
-            procinfo.threads( (err, task) => {
-                // console.log(task);
-                expect(parseInt(task.length)).toBeGreaterThan(0);
-                resolve();
+            await new Promise( resolve => {
+                procinfo.threads( (err, task) => {
+                    // console.log(task);
+                    expect(parseInt(task.length)).toBeGreaterThan(0);
+                    resolve();
+                });
             });
-        });
-    });    
-
+        }
+    });
 });
