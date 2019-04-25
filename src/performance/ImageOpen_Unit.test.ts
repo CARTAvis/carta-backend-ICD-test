@@ -56,7 +56,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             let cartaBackend = await SocketOperation.CartaBackend(
                                 baseDirectory, port, threadNumber, backendDirectory, openFileTimeout, logMessage);
 
-                            const psrecord = child_process.exec(`psrecord ${cartaBackend.pid} --interval 0.01 --plot ${imageFileNext}-${threadNumber}.png`, {
+                            const psrecord = child_process.exec(`psrecord ${cartaBackend.pid} --plot ${imageFileNext.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png`, {
                                 cwd: config.path.performanceTestResultDir
                             });
 
