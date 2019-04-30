@@ -2,7 +2,6 @@ import * as Utility from "../UtilityFunction";
 import config from "./config.json";
 import fileConfig from "./testFileConfig.json";
 import * as SocketOperation from "./SocketOperation";
-import * as child_process from "child_process";
 let nodeusage = require("usage");
 let procfs = require("procfs-stats");
 let fs = require("fs");
@@ -41,12 +40,8 @@ fileConfig.fileFormat.map(
     }
 ).reduce((acc, val) => acc.concat(val));
 
-fs.appendFileSync(reportFile, 
-    `ImageFile\t\t#ThreadSet\t\tTimeElapsed\t\tCPU\t\tRAM\t\tDisk\t\t#ThreadReal\n`
-    );
 describe("Image open performance: 1 user on 1 backend change thread number", () => {    
-    
-    let epoch: number[][] = [];
+    SocketOperation.WriteLebelTo(reportFile);
     testImageFiles.map(
         (imageFiles: string[]) => {
             let imageFilesGenerator = Utility.arrayGeneratorLoop(imageFiles);
@@ -56,16 +51,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                         let imageFileNext = imageFilesGenerator.next().value;
                         test(`open image "${imageFileNext}" on backend with thread number = ${threadNumber}.`, 
                         async done => {                            
-                            let cartaBackend = await SocketOperation.CartaBackend(
+                            const cartaBackend = await SocketOperation.CartaBackend(
                                 baseDirectory, port, threadNumber, backendDirectory, openFileTimeout, logMessage);
 
-                            const psrecord = child_process.exec(
-                                `psrecord ${cartaBackend.pid} --plot ${imageFileNext.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png`
-                                , {
-                                    cwd: saveDirectory
-                                }
-                            );
-
+                            const psrecord = await SocketOperation.Psrecord(
+                                cartaBackend.pid, saveDirectory, imageFileNext, threadNumber, openFileTimeout, logMessage);
+                            
                             let Connection = await SocketOperation.SocketClient(serverURL, port, reconnectWait);
                             
                             await SocketOperation.RegisterViewer(Connection);
@@ -82,41 +73,8 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 );
                             }
 
-                            let diskR: number = 0;
-                            let usedThreadNumber: number = 0;
-                            if (procfs.works) {
-                                let ps = procfs(cartaBackend.pid);                          
-                                await new Promise( resolve => {
-                                    ps.io( (err, io) => {
-                                        diskR = io.read_bytes;
-                                        resolve();
-                                    });
-                                });
-                                await new Promise( resolve => {
-                                    ps.threads( (err, task) => {
-                                        usedThreadNumber = task.length;
-                                        resolve();
-                                    });
-                                });
-                            }
-                            await new Promise( resolve => {
-                                nodeusage.lookup(
-                                    cartaBackend.pid, 
-                                    (err, info) => {
-                                        fs.appendFileSync(reportFile, 
-                                            `${imageFileNext.split("/")[1].slice(7)}\t\t` +
-                                            `${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t\t` +
-                                            `${(timeElapsed.reduce((a, b) => a + b) / timeElapsed.length).toFixed(6)}\t\t` +
-                                            `${info.cpu}\t\t` +
-                                            `${info.memory}\t\t` +
-                                            `${diskR}\t\t` +
-                                            `${usedThreadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t` +
-                                            "\n"
-                                        );
-                                        resolve();
-                                    }
-                                );
-                            });
+                            await SocketOperation.WriteReportTo(
+                                reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed);                            
 
                             await Connection.close();
                             

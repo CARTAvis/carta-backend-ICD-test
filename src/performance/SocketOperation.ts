@@ -1,6 +1,9 @@
 import * as child_process from "child_process";
 import {CARTA} from "carta-protobuf";
 import * as Utility from "../UtilityFunction";
+let nodeusage = require("usage");
+let procfs = require("procfs-stats");
+let fs = require("fs");
 
 /// Log result
 export interface Report {
@@ -43,11 +46,65 @@ Report(
     console.log(`Backend testing outcome on ${report.file}:\n${report.timeEpoch
         .map(e => `${e.time.toPrecision(5)}ms with CPU usage = ${e.CPUusage.toPrecision(5)}% & RAM = ${e.RAM}kB as thread# = ${e.thread}`).join(` \n`)}`);
 }
+/// Record label to file
+export async function
+WriteLebelTo(
+    reportFileName: string,
+) {
+    fs.appendFileSync(reportFileName, 
+        `ImageFile\t#ThreadSet\tTimeElapsed\tCPU\tRAM\tDisk\t#ThreadReal\n`
+        );
+}
+/// Record result to file
+export async function
+WriteReportTo(
+    reportFileName: string,
+    pid: number,
+    imageFile: string,
+    threadNumberSet: number,
+    timeElapsed: number[],
+) {
+    let diskR: number = 0;
+    let usedThreadNumber: number = 0;
+    if (procfs.works) {
+        let ps = procfs(pid);                          
+        await new Promise( resolve => {
+            ps.io( (err, io) => {
+                diskR = io.read_bytes;
+                resolve();
+            });
+        });
+        await new Promise( resolve => {
+            ps.threads( (err, task) => {
+                usedThreadNumber = task.length;
+                resolve();
+            });
+        });
+    }
+    await new Promise( resolve => {
+        nodeusage.lookup(
+            pid, 
+            (err, info) => {
+                fs.appendFileSync(reportFileName, 
+                    `${imageFile.split("/")[1].slice(7)}\t` +
+                    `${threadNumberSet.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t` +
+                    `${(timeElapsed.reduce((a, b) => a + b) / timeElapsed.length).toFixed(4)}\t` +
+                    `${info.cpu.toFixed(4)}\t` +
+                    `${info.memory}\t` +
+                    `${diskR}\t` +
+                    `${usedThreadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t` +
+                    "\n"
+                );
+                resolve();
+            }
+        );
+    });
+}
 /// Create a new carta_backend service
 export async function 
 CartaBackend(
     baseDirectory: string, 
-    port: number, 
+    port: number,
     threadNumber: number, 
     backendDirectory: string, 
     timeout: number,
@@ -69,6 +126,36 @@ CartaBackend(
         }
     });
     return cartaBackend;
+}
+/// Create a psrecord monitor
+export async function 
+Psrecord(
+    pid: number,
+    saveDirectory: string,
+    fileName: string,
+    threadNumber: number,
+    timeout: number,
+    logMessage: boolean
+) {
+    let psrecord = await child_process.execFile(
+        `psrecord`, [`${pid}`,
+        `--log ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.txt`,
+        `--plot ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png`,
+        `--interval 0.005`],
+        {
+            cwd: saveDirectory, 
+            timeout
+        }
+    );
+    psrecord.on("error", error => {
+        console.error(`error: \n ${error}`);
+    });
+    psrecord.stdout.on("data", data => {
+        if (logMessage) {
+            console.log(data);
+        }
+    });
+    return psrecord;
 }
 /// Create a new client connection
 export async function
