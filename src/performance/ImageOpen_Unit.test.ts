@@ -2,9 +2,7 @@ import * as Utility from "../UtilityFunction";
 import config from "./config.json";
 import fileConfig from "./testFileConfig.json";
 import * as SocketOperation from "./SocketOperation";
-let nodeusage = require("usage");
 let procfs = require("procfs-stats");
-let fs = require("fs");
 
 let serverURL = config.serverURL;
 let port = config.port;
@@ -55,12 +53,24 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 baseDirectory, port, threadNumber, backendDirectory, openFileTimeout, logMessage);
 
                             const psrecord = await SocketOperation.Psrecord(
-                                cartaBackend.pid, saveDirectory, imageFileNext, threadNumber, openFileTimeout, logMessage);
+                                cartaBackend.pid, saveDirectory, imageFileNext, threadNumber, openFileTimeout);
                             
                             let Connection = await SocketOperation.SocketClient(serverURL, port, reconnectWait);
                             
                             await SocketOperation.RegisterViewer(Connection);
 
+                            let cpuCount: {user: number, system: number, idle: number} = {user: 0, system: 0, idle: 0};
+                            if (procfs.works) {
+                                let ps = procfs(cartaBackend.pid);                          
+                                await new Promise( resolve => {
+                                    ps.cpu( (err, cpu) => {
+                                        cpuCount.user = cpu.user;
+                                        cpuCount.system = cpu.system;
+                                        cpuCount.idle = cpu.idle;
+                                        resolve();
+                                    });
+                                });
+                            }
                             let timeElapsed: number[] = [];
                             for (let idx = 0; idx < repeatEvent; idx++) {
                                 await SocketOperation.OpenFile(
@@ -69,12 +79,23 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                     imageFilesGenerator.next().value,
                                     async timer => {
                                         timeElapsed.push(await performance.now() - timer);
+                                        if (procfs.works) {
+                                            let ps = procfs(cartaBackend.pid);                          
+                                            await new Promise( resolve => {
+                                                ps.cpu( (err, cpu) => {
+                                                    cpuCount.user = cpu.user - cpuCount.user;
+                                                    cpuCount.system = cpu.system - cpuCount.system;
+                                                    cpuCount.idle = cpu.idle - cpuCount.idle;
+                                                    resolve();
+                                                });
+                                            });
+                                        }
                                     } 
                                 );
                             }
 
                             await SocketOperation.WriteReportTo(
-                                reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed);                            
+                                reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed, cpuCount);                            
 
                             await Connection.close();
                             

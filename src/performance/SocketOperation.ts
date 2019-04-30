@@ -63,6 +63,7 @@ WriteReportTo(
     imageFile: string,
     threadNumberSet: number,
     timeElapsed: number[],
+    cpuCount: {user: number, system: number, idle: number} = {user: 0, system: 0, idle: 0},
 ) {
     let diskR: number = 0;
     let usedThreadNumber: number = 0;
@@ -81,6 +82,7 @@ WriteReportTo(
             });
         });
     }
+    let cpuUsage = cpuCount.idle ? cpuCount.idle : (cpuCount.user / cpuCount.idle + cpuCount.user + cpuCount.idle);
     await new Promise( resolve => {
         nodeusage.lookup(
             pid, 
@@ -89,7 +91,7 @@ WriteReportTo(
                     `${imageFile.split("/")[1].slice(7)}\t` +
                     `${threadNumberSet.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t` +
                     `${(timeElapsed.reduce((a, b) => a + b) / timeElapsed.length).toFixed(4)}\t` +
-                    `${info.cpu.toFixed(4)}\t` +
+                    `${cpuUsage ? cpuUsage : info.cpu.toFixed(4)}\t` +
                     `${info.memory}\t` +
                     `${diskR}\t` +
                     `${usedThreadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}\t` +
@@ -135,26 +137,17 @@ Psrecord(
     fileName: string,
     threadNumber: number,
     timeout: number,
-    logMessage: boolean
 ) {
-    let psrecord = await child_process.execFile(
-        `psrecord`, [`${pid}`,
-        `--log ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.txt`,
-        `--plot ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png`,
-        `--interval 0.005`],
+    let psrecord = await child_process.exec(
+        `psrecord` + ` ${pid}` +
+        ` --log ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.txt` +
+        ` --plot ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png` +
+        ` --interval 0.005`],
         {
             cwd: saveDirectory, 
             timeout
         }
     );
-    psrecord.on("error", error => {
-        console.error(`error: \n ${error}`);
-    });
-    psrecord.stdout.on("data", data => {
-        if (logMessage) {
-            console.log(data);
-        }
-    });
     return psrecord;
 }
 /// Create a new client connection
