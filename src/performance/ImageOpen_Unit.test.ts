@@ -59,14 +59,13 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             
                             await SocketOperation.RegisterViewer(Connection);
 
-                            let cpuCount: {user: number, system: number, idle: number} = {user: 0, system: 0, idle: 0};
+                            let cpuCount: {user: number, total: number} = {user: 0, total: 0};
                             if (procfs.works) {
                                 let ps = procfs(cartaBackend.pid);                          
                                 await new Promise( resolve => {
-                                    ps.cpu( (err, cpu) => {
-                                        cpuCount.user = cpu.user;
-                                        cpuCount.system = cpu.system;
-                                        cpuCount.idle = cpu.idle;
+                                    ps.stat( (err, stat) => {
+                                        cpuCount.user = stat.utime;
+                                        cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime + stat.utime;
                                         resolve();
                                     });
                                 });
@@ -82,10 +81,9 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                         if (procfs.works) {
                                             let ps = procfs(cartaBackend.pid);                          
                                             await new Promise( resolve => {
-                                                ps.cpu( (err, cpu) => {
-                                                    cpuCount.user = cpu.user - cpuCount.user;
-                                                    cpuCount.system = cpu.system - cpuCount.system;
-                                                    cpuCount.idle = cpu.idle - cpuCount.idle;
+                                                ps.stat( (err, stat) => {
+                                                    cpuCount.user = stat.utime - cpuCount.user;
+                                                    cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime + stat.utime - cpuCount.total;
                                                     resolve();
                                                 });
                                             });

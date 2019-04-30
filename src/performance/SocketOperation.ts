@@ -63,7 +63,7 @@ WriteReportTo(
     imageFile: string,
     threadNumberSet: number,
     timeElapsed: number[],
-    cpuCount: {user: number, system: number, idle: number} = {user: 0, system: 0, idle: 0},
+    cpuCount: {user: number, total: number} = {user: 0, total: 0},
 ) {
     let diskR: number = 0;
     let usedThreadNumber: number = 0;
@@ -82,7 +82,7 @@ WriteReportTo(
             });
         });
     }
-    let cpuUsage = cpuCount.idle ? cpuCount.idle : (cpuCount.user / cpuCount.idle + cpuCount.user + cpuCount.idle);
+    let cpuUsage = cpuCount.user ? cpuCount.user : (cpuCount.user / cpuCount.total);
     await new Promise( resolve => {
         nodeusage.lookup(
             pid, 
