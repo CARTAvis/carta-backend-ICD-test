@@ -182,3 +182,6 @@ protobuf/build/*
 src/static/gitInfo.ts
 # NPM package lock (ignored while in active development)
 /package-lock.json
+
+# performance test result
+/performance_result

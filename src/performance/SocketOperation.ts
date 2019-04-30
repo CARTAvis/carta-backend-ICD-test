@@ -142,7 +142,7 @@ Psrecord(
         `psrecord` + ` ${pid}` +
         ` --log ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.txt` +
         ` --plot ${fileName.split("/")[1].slice(7)}-${threadNumber.toLocaleString("en-US", {minimumIntegerDigits: 2, useGrouping: false})}.png` +
-        ` --interval 0.005`],
+        ` --interval 0.005`,
         {
             cwd: saveDirectory, 
             timeout
