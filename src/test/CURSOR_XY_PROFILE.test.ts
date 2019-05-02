@@ -20,27 +20,27 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -54,7 +54,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
 
     describe(`open the file "${testFileName}" to`, () => {
         beforeAll( async () => {
-            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -65,7 +65,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
             );
             let OpenFileAckTemp: CARTA.OpenFileAck; 
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         OpenFileAckTemp = OpenFileAck;
@@ -73,7 +73,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                     }
                 );                
             });
-            await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+            await Utility.setEvent(Connection, CARTA.SetImageView, 
                 {
                     fileId: 0, 
                     imageBounds: {
@@ -86,7 +86,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                     numSubsets: 4
                 }
             );
-            await Utility.setEvent(Connection, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+            await Utility.setEvent(Connection, CARTA.SetSpatialRequirements, 
                 {
                     fileId: 0, 
                     regionId: 0, 
@@ -94,7 +94,7 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                Utility.getEvent(Connection, CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                         resolve();
@@ -120,14 +120,14 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                     
                     test(`assert the fileID "${fileId}" returns: Value=${value}, Profile length={${profileLen.x}, ${profileLen.y}}, Point={${assertPoint.x}, ${assertPoint.y}} as {${point.x}, ${point.y}}.`, 
                     async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                        await Utility.setEvent(Connection, CARTA.SetCursor, 
                             {
                                 fileId, 
                                 point,
                             }
                         );
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                            Utility.getEvent(Connection, CARTA.SpatialProfileData, 
                                 SpatialProfileData => {
                                     expect(SpatialProfileData.fileId).toEqual(fileId);
                                     expect(SpatialProfileData.value).toEqual(value);
@@ -162,14 +162,14 @@ describe("CURSOR_XY_PROFILE test: Testing if full resolution cursor xy profiles 
                     the #${oddPointX.idx + 1} value = ${oddPointX.value} with other values = ${oddPointX.others} on the profile_x & 
                     the #${oddPointY.idx + 1} value = ${oddPointY.value} with other values = ${oddPointY.others} on the profile_y as point {${point.x}, ${point.y}}.`, 
                     async () => {
-                        await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+                        await Utility.setEvent(Connection, CARTA.SetCursor, 
                             {
                                 fileId, 
                                 point,
                             }
                         ); 
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+                            Utility.getEvent(Connection, CARTA.SpatialProfileData, 
                                 SpatialProfileData => {
                                     // Assert profile x
                                     SpatialProfileData.profiles.find(f => f.coordinate === "x").values.forEach( 
