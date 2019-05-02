@@ -22,27 +22,27 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -50,7 +50,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     }
                 );                
             });
-            await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(this, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -60,7 +60,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(this, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         resolve();
@@ -68,7 +68,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 );
                 
             });
-            await Utility.setEvent(this, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+            await Utility.setEvent(this, CARTA.SetImageView, 
                 {
                     fileId: 0, 
                     imageBounds: {
@@ -82,7 +82,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                Utility.getEvent(this, CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.fileId).toEqual(0);
                         resolve();
@@ -99,7 +99,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     async () => {
         timer = await new Date().getTime();
         for (let idx = 1; idx < playFrames + 1; idx++) {
-            await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels,  
+            await Utility.setEvent(Connection, CARTA.SetImageChannels,  
                 {
                     fileId: 0, 
                     channel: idx, 
@@ -107,7 +107,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 }
             );
             await new Promise( (resolve, reject) => {
-                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                Utility.getEvent(Connection, CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.fileId).toEqual(0);
                         expect(RasterImageData.channel).toEqual(idx);

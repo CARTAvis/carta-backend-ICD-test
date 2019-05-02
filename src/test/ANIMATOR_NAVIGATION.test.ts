@@ -23,27 +23,27 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -64,7 +64,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             
             test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
             async () => {
-                await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                await Utility.setEvent(Connection, CARTA.OpenFile, 
                     {
                         directory: baseDirectory + "/" + testSubdirectoryName, 
                         file: testFileName, 
@@ -74,7 +74,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    Utility.getEvent(Connection, CARTA.OpenFileAck, 
                         OpenFileAck => {
                             expect(OpenFileAck.success).toBe(true);
                             resolve();
@@ -82,7 +82,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                     );
                     
                 });
-                await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                await Utility.setEvent(Connection, CARTA.SetImageView, 
                     {
                         fileId, 
                         imageBounds: {
@@ -98,7 +98,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                    Utility.getEvent(Connection, CARTA.RasterImageData, 
                         RasterImageData => {
                             expect(RasterImageData.fileId).toEqual(fileId);
                             resolve();
@@ -111,7 +111,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
 
     test(`assert image channel to be 0 on file ID 0.`, 
     async () => {
-        await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
+        await Utility.setEvent(Connection, CARTA.SetImageChannels, 
             {
                 fileId: 0, 
                 channel: 1, 
@@ -119,7 +119,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             }
         );
         await new Promise( resolve => {
-            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+            Utility.getEvent(Connection, CARTA.RasterImageData, 
                 RasterImageData => {
                     expect(RasterImageData.fileId).toEqual(0);
                     expect(RasterImageData.channel).toEqual(1);
@@ -134,14 +134,14 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
 
     test(`assert image channel to be 100 on file ID 1.`, 
     async () => {
-        await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
+        await Utility.setEvent(Connection, CARTA.SetImageChannels, 
             {
                 fileId: 1, 
                 channel: 100,
             }
         );
         await new Promise( resolve => {
-            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+            Utility.getEvent(Connection, CARTA.RasterImageData, 
                 RasterImageData => {
                     expect(RasterImageData.fileId).toEqual(1);
                     expect(RasterImageData.channel).toEqual(100);
@@ -171,27 +171,27 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -212,7 +212,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
             
             test(`assert file name ${testFileName} with file id: ${fileId} ready.`, 
             async () => { 
-                await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                await Utility.setEvent(Connection, CARTA.OpenFile, 
                     {
                         directory: baseDirectory + "/" + testSubdirectoryName, 
                         file: testFileName, 
@@ -222,7 +222,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                    Utility.getEvent(Connection, CARTA.OpenFileAck, 
                         OpenFileAck => {
                             expect(OpenFileAck.success).toBe(true);
                             resolve();
@@ -230,7 +230,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                     );
                     
                 });
-                await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                await Utility.setEvent(Connection, CARTA.SetImageView, 
                     {
                         fileId, 
                         imageBounds: {
@@ -246,7 +246,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                    Utility.getEvent(Connection, CARTA.RasterImageData, 
                         RasterImageData => {
                             expect(RasterImageData.fileId).toEqual(fileId);
                             resolve();
@@ -260,7 +260,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
 
     test(`assert no returning message (image channel: 1000 & stokes: 3 on file ID 0).`, 
     async () => {
-        await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
+        await Utility.setEvent(Connection, CARTA.SetImageChannels, 
             {
                 fileId: 0, 
                 channel: 100, 
@@ -281,7 +281,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
 
     test(`assert no returning message (image channel: 3000 & stokes: 1 on file ID 1).`, 
     async () => { 
-        await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
+        await Utility.setEvent(Connection, CARTA.SetImageChannels, 
             {
                 fileId: 1, 
                 channel: 3000, 
@@ -302,7 +302,7 @@ describe("ANIMATOR_NAVIGATION_ERROR test: Testing error handle of animator",
 
     test(`assert no returning message (image channel: 0 & stokes: 0 on file ID 2).`, 
     async () => {
-        await Utility.setEvent(Connection, "SET_IMAGE_CHANNELS", CARTA.SetImageChannels, 
+        await Utility.setEvent(Connection, CARTA.SetImageChannels, 
             {
                 fileId: 2, 
                 channel: 0, 
