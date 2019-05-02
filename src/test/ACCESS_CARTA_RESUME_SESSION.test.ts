@@ -6,7 +6,7 @@ let connectTimeout = config.timeout.connection;
 
 describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend with a wrong session id.", () => {
     
-    describe(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with session_id "an-unknown-session-id" & api_key "1234".`, 
+    describe(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with session_id = -1 & api_key = "1234".`, 
     () => {
         let Connection: WebSocket;
     
@@ -25,14 +25,14 @@ describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend w
     
         test(`assert the received EventName is "REGISTER_VIEWER_ACK" within ${connectTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: -1, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         resolve();
                     }
@@ -42,14 +42,14 @@ describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend w
                
         test(`assert the "REGISTER_VIEWER_ACK.success" is false.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: -1, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.success).toBe(false);
                         resolve();
@@ -60,14 +60,14 @@ describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend w
     
         test(`assert the "REGISTER_VIEWER_ACK.message" is not empty.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: -1, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.message).toBeDefined();
                         expect(RegisterViewerAck.message).not.toEqual("");
@@ -82,14 +82,14 @@ describe("ACCESS_CARTA_RESUME_SESSION test: Testing connections to the backend w
 
         test(`assert the "REGISTER_VIEWER_ACK.session_type" is 1.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "an-unknown-session-id", 
+                    sessionId: -1, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.sessionType).toEqual(1);
                         resolve();

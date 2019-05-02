@@ -99,7 +99,7 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
         
         promiseSet.forEach( (item, index, array) => {
             array[index] = new Promise( (resolve, reject) => {
-                Utility.getEvent(Connection[index], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection[index], CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         registerViewerAck[index] = RegisterViewerAck;
@@ -116,9 +116,9 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
         Promise.all(promiseSet).then( () => done() );
 
         for (let connection of Connection) {
-            Utility.setEvent(connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            Utility.setEvent(connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
