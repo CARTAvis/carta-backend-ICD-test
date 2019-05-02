@@ -1,5 +1,36 @@
+import {CARTA} from "carta-protobuf";
 /// Toollet functions
-
+const IcdVersion = 2;
+export const EventType = {
+    RegisterViewer: 1,
+    FileListRequest: 2,
+    FileInfoRequest: 3,
+    OpenFile: 4,
+    SetImageView: 5,
+    SetImageChannels: 6,
+    SetCursor: 7,
+    SetSpatialRequirements: 8,
+    SetHistogramRequirements: 9,
+    SetStatsRequirements: 10,
+    SetRegion: 11,
+    RemoveRegion: 12,
+    CloseFile: 13,
+    SetSpectralRequirements: 14,
+    StartAnimation: 15,
+    StartAnimationAck: 16,
+    StopAnimation: 17,
+    RegisterViewerAck: 18,
+    FileListResponse: 19,
+    FileInfoResponse: 20,
+    OpenFileAck: 21,
+    SetRegionAck: 22,
+    RegionHistogramData: 23,
+    RasterImageData: 24,
+    SpatialProfileData: 25,
+    SpectralProfileData: 26,
+    RegionStatsData: 27,
+    ErrorData: 28,
+};
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
     const bytes = new Uint8Array(padLength);
@@ -20,38 +51,43 @@ export function getEventName(byteArray: Uint8Array): String {
     }
     return String.fromCharCode.apply(null, byteArray);
 }
-/// Temporary cease the process
-export function sleep(miliseconds: number) {
-    var currentTime = new Date().getTime();
- 
-    while (currentTime + miliseconds >= new Date().getTime()) {
-        // Dry run
-    }
- }
 /// Send websocket message
 export function setEvent(
-    connection: WebSocket, eventName: string, 
-    eventType: any, eventMessage: any) {
+    connection: WebSocket, 
+    cartaType: any, eventMessage: any) {
 
-    let message = eventType.create(eventMessage);
-    let payload = eventType.encode(message).finish();
-    let eventData = new Uint8Array(32 + 4 + payload.byteLength);
+    let message = cartaType.create(eventMessage);
+    let payload = cartaType.encode(message).finish();
+    let eventData = new Uint8Array(8 + payload.byteLength);
+    const eventHeader16 = new Uint16Array(eventData.buffer, 0, 2);
+    const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
+    eventHeader16[0] = EventType[cartaType.name];
+    eventHeader16[1] = IcdVersion;
+    eventHeader32[0] = 0; // eventCounter;
 
-    eventData.set(stringToUint8Array(eventName, 32));
-    eventData.set(new Uint8Array(new Uint32Array([1]).buffer), 32);
-    eventData.set(payload, 36);
+    eventData.set(payload, 8);
 
     connection.send(eventData);
 } 
 /// Get websocket message
 export function getEvent(
-    connection: WebSocket, eventName: string, 
-    eventType: any, toDo: (DataMessage: any) => void) {
+    connection: WebSocket, 
+    cartaType: any, toDo: (DataMessage: any) => void) {
         
     connection.onmessage = (messageEvent: MessageEvent) => {
-        if (eventName === getEventName(new Uint8Array(messageEvent.data, 0, 32))) {
-            let eventData = new Uint8Array(messageEvent.data, 36);
-            let DataMessage = eventType.decode(eventData);
+        const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+        const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+        const eventData = new Uint8Array(messageEvent.data, 8);
+
+        const eventType = eventHeader16[0];
+        const eventIcdVersion = eventHeader16[1];
+        const eventId = eventHeader32[0];
+
+        // if (eventIcdVersion !== IcdVersion) {
+        //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+        // }
+        if (EventType[cartaType.name] === eventType) {
+            let DataMessage = cartaType.decode(eventData);
             toDo(DataMessage);
         }
     };

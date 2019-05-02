@@ -50,16 +50,16 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;        
         
-        async function OnOpen (this: WebSocket, ev: Event) {
+        async function OnOpen(this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: ""
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();
@@ -78,16 +78,16 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
 
-        async function OnOpen (this: WebSocket, ev: Event) {
+        async function OnOpen(this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();
@@ -110,7 +110,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             Connection.binaryType = "arraybuffer";
             Connection.onopen = OnOpen;
 
-            function OnOpen (this: WebSocket, ev: Event) {
+            function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 done();
             }
@@ -118,18 +118,18 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
     
         test(`assert the received EventName is "REGISTER_VIEWER_ACK" within ${connectTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "",
+                    sessionId: 0,
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
                 Connection.onmessage = (event: MessageEvent) => {
-                    expect(event.data.byteLength).toBeGreaterThan(40);
-                    
-                    const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    expect(eventName).toBe("REGISTER_VIEWER_ACK");
+                    const eventHeader16 = new Uint16Array(event.data, 0, 2);
+                    const eventType = eventHeader16[0];
+                    expect(event.data.byteLength).toBeGreaterThan(0);
+                    expect(eventType).toEqual(Utility.EventType.RegisterViewerAck);
 
                     resolve();
                 };
@@ -138,14 +138,14 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
     
         test(`assert the "REGISTER_VIEWER_ACK.session_id" is not None.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "",
+                    sessionId: 0,
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {            
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.sessionId).toBeDefined();
                         console.log(`Registered session ID is ${RegisterViewerAck.sessionId} @${new Date()}`);
@@ -158,14 +158,14 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
     
         test(`assert the "REGISTER_VIEWER_ACK.success" is true.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "",
+                    sessionId: 0,
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();
@@ -176,14 +176,14 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
     
         test(`assert the "REGISTER_VIEWER_ACK.session_type" is "CARTA.SessionType.NEW".`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "",
+                    sessionId: 0,
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.sessionType).toBe(CARTA.SessionType.NEW);
                         resolve();
