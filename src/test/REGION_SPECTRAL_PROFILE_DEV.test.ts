@@ -21,27 +21,27 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -49,7 +49,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                     }
                 );                
             });
-            await Utility.setEvent(this, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(this, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -59,14 +59,14 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(this, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         resolve();
                     }
                 );                
             });
-            await Utility.setEvent(this, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+            await Utility.setEvent(this, CARTA.SetImageView, 
                 {
                     fileId: 0, 
                     imageBounds: {
@@ -80,7 +80,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                Utility.getEvent(this, CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.fileId).toEqual(0);
                         resolve();
@@ -93,7 +93,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
 
     test(`Test to set a region.`, 
     async done => {
-        await Utility.setEvent(Connection, "SET_REGION", CARTA.SetRegion, 
+        await Utility.setEvent(Connection, CARTA.SetRegion, 
             {
                 fileId: 0, 
                 regionId: -1, 
@@ -107,7 +107,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
             }
         );
         await new Promise( resolve => {
-            Utility.getEvent(Connection, "SET_REGION_ACK", CARTA.SetRegionAck, 
+            Utility.getEvent(Connection, CARTA.SetRegionAck, 
                 SetRegionAck => {
                     expect(SetRegionAck.success).toBe(true);
                     expect(SetRegionAck.regionId).toEqual(1);
@@ -121,7 +121,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
 
     test(`Assert region spectral profile.`, 
     async done => {
-        await Utility.setEvent(Connection, "SET_SPECTRAL_REQUIREMENTS", CARTA.SetSpectralRequirements, 
+        await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
             {
                 fileId: 0, 
                 regionId: 1, 
@@ -132,7 +132,7 @@ describe("REGION_SPECTRAL_PROFILE_DEV: Temporary test case of region spectral pr
             }
         );
         await new Promise( resolve => {
-            Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
+            Utility.getEvent(Connection, CARTA.SpectralProfileData, 
                 (SpectralProfileData: CARTA.SpectralProfileData) => {
                     expect(SpectralProfileData.fileId).toEqual(0);
                     expect(SpectralProfileData.regionId).toEqual(1);

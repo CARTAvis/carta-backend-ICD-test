@@ -21,27 +21,27 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -58,7 +58,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         
         test(`assert the file "${testFileName}" info be able to read.`, 
         async done => {
-            await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+            await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -66,7 +66,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 }
             ); 
             await new Promise( resolve => {           
-                Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                Utility.getEvent(Connection, CARTA.FileInfoResponse, 
                     FileInfoResponse => {
                         expect(FileInfoResponse.success).toBe(true);
                         resolve();
@@ -78,7 +78,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
         test(`assert the file "${testFileName}" be able to open.`, 
         async done => {
-            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -88,7 +88,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         resolve();
@@ -100,7 +100,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
         test(`assert the file "${testFileName}" image be able to read.`, 
         async done => {
-            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -111,7 +111,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             );
             let OpenFileAckTemp: CARTA.OpenFileAck;
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         OpenFileAckTemp = OpenFileAck;
@@ -119,7 +119,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     }
                 );                
             });
-            await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+            await Utility.setEvent(Connection, CARTA.SetImageView, 
                 {
                     fileId: 0, 
                     imageBounds: {
@@ -133,7 +133,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                Utility.getEvent(Connection, CARTA.RasterImageData, 
                     RasterImageData => {
                         expect(RasterImageData.fileId).toEqual(0);
                         resolve();
@@ -149,7 +149,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         let OpenFileAckTemp: CARTA.OpenFileAck;
         beforeEach( 
         async done => {
-            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -159,7 +159,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         OpenFileAckTemp = OpenFileAck;
@@ -209,7 +209,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
     () => {
         beforeEach( 
         async done => { 
-            await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+            await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName, 
                     file: testFileName, 
@@ -219,7 +219,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     OpenFileAck => {
                         expect(OpenFileAck.success).toBe(true);
                         resolve();
@@ -244,7 +244,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                     
                     test(`assert the file returns correct image info.`, 
                     async done => {
-                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        await Utility.setEvent(Connection, CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -255,7 +255,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            Utility.getEvent(Connection, CARTA.RasterImageData, 
                                 RasterImageData => {
                                     expect(RasterImageData.fileId).toEqual(fileId);
                                     expect(RasterImageData.imageBounds).toEqual({xMax: imageBounds.xMax, yMax: imageBounds.yMax});
@@ -275,7 +275,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
                     test(`assert channel histogram data.`, 
                     async done => {
-                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        await Utility.setEvent(Connection, CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -286,7 +286,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            Utility.getEvent(Connection, CARTA.RasterImageData, 
                                 RasterImageData => {
                                     let channelHistogram = RasterImageData.channelHistogramData.histograms[0];
                                     expect(channelHistogram.numBins).toEqual(numBins);
@@ -307,7 +307,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
                     test(`assert nan_encodings is empty.`, 
                     async done => {
-                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        await Utility.setEvent(Connection, CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -318,7 +318,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            Utility.getEvent(Connection, CARTA.RasterImageData, 
                                 RasterImageData => {
                                     let nanEncodings = RasterImageData.nanEncodings;
                                     if (compressionType === CARTA.CompressionType.NONE) {
@@ -335,7 +335,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
 
                     test(`assert data value at position (${assertPoint1.point.x}, ${assertPoint1.point.y}) & (${assertPoint2.point.x}, ${assertPoint2.point.y}).`, 
                     async done => {
-                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        await Utility.setEvent(Connection, CARTA.SetImageView, 
                             {
                                 fileId, 
                                 imageBounds, 
@@ -346,7 +346,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            Utility.getEvent(Connection, CARTA.RasterImageData, 
                                 RasterImageData => {
                                     let imageData = RasterImageData.imageData;
                                     let imageDataSum = 0;

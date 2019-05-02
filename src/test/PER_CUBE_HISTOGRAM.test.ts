@@ -22,27 +22,27 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -64,7 +64,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 
                 test(`assert file "${testFileName}" to be ready.`, 
                 async () => {
-                    await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                    await Utility.setEvent(Connection, CARTA.OpenFile, 
                         {
                             directory: baseDirectory + "/" + testSubdirectoryName, 
                             file: testFileName, 
@@ -74,7 +74,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                         }
                     );
                     await new Promise( resolve => {
-                        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                        Utility.getEvent(Connection, CARTA.OpenFileAck, 
                             OpenFileAck => {
                                 expect(OpenFileAck.success).toBe(true);
                                 resolve();
@@ -82,7 +82,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                         );
                         
                     });
-                    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                    await Utility.setEvent(Connection, CARTA.SetImageView, 
                         {
                             fileId, 
                             imageBounds: {
@@ -96,7 +96,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                         }
                     );
                     await new Promise( resolve => {
-                        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                        Utility.getEvent(Connection, CARTA.RasterImageData, 
                             RasterImageData => {
                                 expect(RasterImageData.fileId).toEqual(fileId);
                                 resolve();
@@ -108,7 +108,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 let regionHistogramProgress: number;
                 test(`assert the first REGION_HISTOGRAM_DATA arrives.`, 
                 async () => {
-                    await Utility.setEvent(Connection, "SET_HISTOGRAM_REQUIREMENTS", CARTA.SetHistogramRequirements, 
+                    await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, 
                         {
                             fileId, 
                             regionId: -2, 
@@ -116,7 +116,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                         }
                     );
                     await new Promise( resolve => { 
-                        Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                             RegionHistogramData => {
                                 regionHistogramProgress = RegionHistogramData.progress;
                                 console.log(`Region Histogram Progress = ${regionHistogramProgress}`);                                
@@ -131,7 +131,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 test(`assert the second REGION_HISTOGRAM_DATA arrives.`, 
                 async () => {
                     await new Promise( resolve => {                        
-                        Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                             RegionHistogramData => {
                                 expect(RegionHistogramData.progress).toBeGreaterThan(regionHistogramProgress);
                                 regionHistogramProgress = RegionHistogramData.progress;
@@ -147,7 +147,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     expect(regionHistogramProgress).toBeLessThan(1.0);
                     while (regionHistogramProgress < 0.5) {
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                            Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                                 (RegionHistogramData: CARTA.RegionHistogramData) => {
                                     regionHistogramProgress = RegionHistogramData.progress;
                                     console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
@@ -158,7 +158,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     }
                     if (regionHistogramProgress < 1.0) {
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                            Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                                 (RegionHistogramData: CARTA.RegionHistogramData) => {
                                     regionHistogramProgress = RegionHistogramData.progress;
                                     console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
@@ -180,7 +180,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     expect(regionHistogramProgress).not.toEqual(1.0);
                     while (regionHistogramProgress < 1.0) {
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "REGION_HISTOGRAM_DATA", CARTA.RegionHistogramData, 
+                            Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                                 (RegionHistogramData: CARTA.RegionHistogramData) => {
                                     regionHistogramProgress = RegionHistogramData.progress;
                                     console.log(`Region Histogram Progress = ${regionHistogramProgress}`);

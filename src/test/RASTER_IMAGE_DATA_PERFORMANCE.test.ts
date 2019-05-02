@@ -21,27 +21,27 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generat
 
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
                     }
                 );
             });
-            await Utility.setEvent(this, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(this, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(this, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(this, CARTA.FileListResponse, 
                         FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -65,8 +65,8 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generat
                 [2,    "cluster_00512.fits",       {xMin: 0, xMax:   512, yMin: 0, yMax:   512},    2, CARTA.CompressionType.ZFP, 11, 4], 
                 [3,    "cluster_01024.fits",       {xMin: 0, xMax:  1024, yMin: 0, yMax:  1024},    3, CARTA.CompressionType.ZFP, 11, 4],
                 [4,    "cluster_02048.fits",       {xMin: 0, xMax:  2048, yMin: 0, yMax:  2048},    6, CARTA.CompressionType.ZFP, 11, 4],
-                [5,    "cluster_04096.fits",       {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096},   12, CARTA.CompressionType.ZFP, 11, 4],  
-                [6,    "cluster_08192.fits",       {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192},   23, CARTA.CompressionType.ZFP, 11, 4],
+                // [5,    "cluster_04096.fits",       {xMin: 0, xMax:  4096, yMin: 0, yMax:  4096},   12, CARTA.CompressionType.ZFP, 11, 4],  
+                // [6,    "cluster_08192.fits",       {xMin: 0, xMax:  8192, yMin: 0, yMax:  8192},   23, CARTA.CompressionType.ZFP, 11, 4],
                 // [7,    "cluster_16384.fits",       {xMin: 0, xMax: 16384, yMin: 0, yMax: 16384},   46, CARTA.CompressionType.ZFP, 11, 4],
                 // [8,    "cluster_32768.fits",       {xMin: 0, xMax: 32768, yMin: 0, yMax: 32768},   92, CARTA.CompressionType.ZFP, 11, 4],
                 // [9,    "hugeGaussian10k.fits",     {xMin: 0, xMax: 10000, yMin: 0, yMax: 10000},   28, CARTA.CompressionType.ZFP, 11, 4],
@@ -89,7 +89,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generat
                     let timer: number;
                     test(`assert image be read at round ${idx + 1} on the file "${testFileName}".`, 
                     async () => {
-                        await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+                        await Utility.setEvent(Connection, CARTA.OpenFile, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: testFileName, 
@@ -99,14 +99,14 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generat
                             }
                         );
                         await new Promise( resolve => { 
-                            Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+                            Utility.getEvent(Connection, CARTA.OpenFileAck, 
                                 OpenFileAck => {
                                     expect(OpenFileAck.success).toBe(true);
                                     resolve();
                                 }
                             );
                         });
-                        await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+                        await Utility.setEvent(Connection, CARTA.SetImageView, 
                             {
                                 fileId: 0, 
                                 imageBounds: {
@@ -121,7 +121,7 @@ describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generat
                         );
                         timer = await new Date().getTime();
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+                            Utility.getEvent(Connection, CARTA.RasterImageData, 
                                 RasterImageData => {
                                     expect(RasterImageData.imageData.length).toBeGreaterThan(0);
                                     resolve();

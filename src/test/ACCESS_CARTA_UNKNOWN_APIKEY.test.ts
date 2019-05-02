@@ -6,7 +6,7 @@ let connectTimeout = config.timeout.connection;
 
 describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
     
-    describe(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with session_id "" & api_key "5678".`, 
+    describe(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with session_id = 0 & api_key = "5678".`, 
     () => {
         let Connection: WebSocket;
     
@@ -25,18 +25,18 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
     
         test(`assert the received EventName is "REGISTER_VIEWER_ACK" within ${connectTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "5678"
                 }
             );
             await new Promise( resolve => {
                 Connection.onmessage = (event: MessageEvent) => {
-                    expect(event.data.byteLength).toBeGreaterThan(40);
-                    
-                    const eventName = Utility.getEventName(new Uint8Array(event.data, 0, 32));
-                    expect(eventName).toBe("REGISTER_VIEWER_ACK");
+                    const eventHeader16 = new Uint16Array(event.data, 0, 2);
+                    const eventType = eventHeader16[0];
+                    expect(event.data.byteLength).toBeGreaterThan(0);
+                    expect(eventType).toEqual(Utility.EventType.RegisterViewerAck);
     
                     resolve();
                 };
@@ -45,14 +45,14 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
                
         test(`assert the "REGISTER_VIEWER_ACK.success" is true.`,
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "5678"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();
@@ -63,14 +63,14 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
     
         test(`assert the "REGISTER_VIEWER_ACK.message" is empty.`,
         async () => {
-            await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "5678"
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
                     (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                         expect(RegisterViewerAck.message).toBeDefined();
                         expect(RegisterViewerAck.message).toEqual("");

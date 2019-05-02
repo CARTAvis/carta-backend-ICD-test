@@ -24,14 +24,14 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                await Utility.setEvent(this, CARTA.RegisterViewer, 
                     {
-                        sessionId: "", 
+                        sessionId: 0, 
                         apiKey: "1234",
                     }
                 );
                 await new Promise( resolve => { 
-                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
                         RegisterViewerAck => {
                             expect(RegisterViewerAck.success).toBe(true);
                             resolve();           
@@ -44,13 +44,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
     
         test(`assert the "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectRootPath,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         resolve();
                     }
@@ -60,13 +60,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectRootPath,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.success).toBe(true);
                         resolve();
@@ -77,13 +77,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
 
         test(`assert the "FILE_LIST_RESPONSE.parent" is "" .`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectRootPath,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.parent).toBe("");
                         resolve();
@@ -94,13 +94,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is root path "${expectRootPath}".`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectRootPath,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.directory).toBe(expectRootPath);
                         resolve();
@@ -111,13 +111,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
 
         test(`assert the base path.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponseBase => {
                         expect(FileListResponseBase.success).toBe(true);
                         baseDirectory = FileListResponseBase.directory;
@@ -129,13 +129,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
 
         test(`assert the file "${testFileName}" exists.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         let fileInfo = FileListResponse.files.find(f => f.name === testFileName);
                         expect(fileInfo).toBeDefined();
@@ -148,13 +148,13 @@ describe("GET_FILELIST_ROOTPATH tests: Testing generation of a file list at root
     
         test(`assert the subdirectory "${testSubdirectoryName}" exists.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         let folderInfo = FileListResponse.subdirectories.find(f => f === testSubdirectoryName);
                         expect(folderInfo).toBeDefined();
@@ -184,14 +184,14 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                await Utility.setEvent(this, CARTA.RegisterViewer, 
                     {
-                        sessionId: "", 
+                        sessionId: 0, 
                         apiKey: "1234",
                     }
                 );
                 await new Promise( resolve => { 
-                    Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
                         RegisterViewerAck => {
                             expect(RegisterViewerAck.success).toBe(true);
                             resolve();           
@@ -204,13 +204,13 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
     
         test(`assert the "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: "/unknown/path",
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         resolve();
                     }
@@ -220,13 +220,13 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
     
         test(`assert the "FILE_LIST_RESPONSE.success" is false.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: "/unknown/path",
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.success).toBe(false);
                         resolve();
@@ -237,13 +237,13 @@ describe("GET_FILELIST_UNKNOWNPATH tests: Testing error handle of file list gene
 
         test(`assert the "FILE_LIST_RESPONSE.message" is not empty.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: "/unknown/path",
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.message).toBeDefined();
                         expect(FileListResponse.message).not.toEqual("");
