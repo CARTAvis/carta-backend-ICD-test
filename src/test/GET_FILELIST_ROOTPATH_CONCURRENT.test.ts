@@ -22,14 +22,14 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
             promiseConn[idx] = new Promise( (resolved, reject) => {
                 Connection[idx].onopen = async () => {
                     expect(Connection[idx].readyState).toBe(WebSocket.OPEN);
-                    await Utility.setEvent(Connection[idx], "REGISTER_VIEWER", CARTA.RegisterViewer, 
+                    await Utility.setEvent(Connection[idx], CARTA.RegisterViewer, 
                         {
-                            sessionId: "", 
+                            sessionId: 0, 
                             apiKey: "1234"
                         }
                     );
                     await new Promise( resolve => {
-                        Utility.getEvent(Connection[idx], "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                        Utility.getEvent(Connection[idx], CARTA.RegisterViewerAck, 
                             (RegisterViewerAck: CARTA.RegisterViewerAck) => {
                                 expect(RegisterViewerAck.success).toBe(true);
                                 resolve();
@@ -50,7 +50,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         let promiseConnection: Promise<void>[] = new Array(testNumber);
         for (let idx = 0; idx < testNumber; idx++) {
             promiseConnection[idx] = new Promise( (resolve, reject) => {
-                Utility.getEvent(Connection[idx], "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection[idx], CARTA.FileListResponse, 
                     FileListResponse => {
                         expect(FileListResponse.success).toBe(true);
                         fileListResponse[idx] = FileListResponse;
@@ -66,7 +66,7 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         Promise.all(promiseConnection).then( () => done() );
         
         for (let connection of Connection) {
-            Utility.setEvent(connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            Utility.setEvent(connection, CARTA.FileListRequest, 
                 {
                     directory: expectRootPath
                 }

@@ -18,14 +18,14 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         Connection.onopen = OnOpen;
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
@@ -39,13 +39,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
     let baseDirectory: string;
     test(`assert the base path.`,      
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: expectBasePath
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         expect(FileListResponse.success).toBe(true);
                         baseDirectory = FileListResponse.directory;
@@ -59,13 +59,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
     () => {
         test(`assert the received EventName is "FILE_LIST_RESPONSE" within ${connectionTimeout} ms.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     FileListResponse => {
                         resolve();
                     }
@@ -75,13 +75,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
     
         test(`assert the "FILE_LIST_RESPONSE.success" is true.`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.success).toBe(true);
                         resolve();
@@ -92,13 +92,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
 
         test(`assert the "FILE_LIST_RESPONSE.parent" is "$BASE".`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.parent).toBe(baseDirectory);
                         resolve();
@@ -109,13 +109,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
 
         test(`assert the "FILE_LIST_RESPONSE.directory" is the path "$BASE/${testSubdirectoryName}".`, 
         async () => {
-            await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+            await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
                     directory: baseDirectory + "/" + testSubdirectoryName,
                 }
             );
             await new Promise( resolve => {
-                Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                Utility.getEvent(Connection, CARTA.FileListResponse, 
                     (FileListResponse: CARTA.FileListResponse) => {
                         expect(FileListResponse.directory).toBe(baseDirectory === expectRootPath ? testSubdirectoryName : baseDirectory + "/" + testSubdirectoryName);
                         resolve();
@@ -137,13 +137,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
     
                     test(`assert the file "${file}" exists, image type is ${CARTA.FileType[type]}, size = ${size}, HDU = [${hdu}].`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileListRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            Utility.getEvent(Connection, CARTA.FileListResponse, 
                                 (FileListResponse: CARTA.FileListResponse) => {
                                     expect(FileListResponse.success).toBe(true);
     
@@ -171,13 +171,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                 function([file]: [string]) {
                     test(`assert the file "${file}" does not exist.`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileListRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            Utility.getEvent(Connection, CARTA.FileListResponse, 
                                 (FileListResponse: CARTA.FileListResponse) => {
                                     expect(FileListResponse.success).toBe(true);
                                     let fileInfo = FileListResponse.files.find(f => f.name === file);
@@ -199,13 +199,13 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                 ([folder]) => {
                     test(`assert the folder "${folder}" exists.`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileListRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName,
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                            Utility.getEvent(Connection, CARTA.FileListResponse, 
                                 (FileListResponse: CARTA.FileListResponse) => {
                                     expect(FileListResponse.success).toBe(true);
                                     let folderInfo = FileListResponse.subdirectories.find(f => f === folder);

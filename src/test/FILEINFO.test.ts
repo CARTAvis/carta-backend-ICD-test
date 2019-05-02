@@ -19,14 +19,14 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
         Connection.onopen = OnOpen;
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234",
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
@@ -46,13 +46,13 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
             ([dir]) => {
                 test(`open the directory "${dir}".`, 
                 async () => {
-                    await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                    await Utility.setEvent(Connection, CARTA.FileListRequest, 
                         {
                             directory: dir,
                         }
                     );
                     await new Promise( resolve => {
-                        Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                        Utility.getEvent(Connection, CARTA.FileListResponse, 
                             FileListResponseBase => {
                                 expect(FileListResponseBase.success).toBe(true);
                                 resolve();
@@ -69,13 +69,13 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
         let baseDirectory: string; 
         beforeEach( 
             async () => {
-                await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                await Utility.setEvent(Connection, CARTA.FileListRequest, 
                     {
                         directory: expectBasePath,
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    Utility.getEvent(Connection, CARTA.FileListResponse, 
                         FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             baseDirectory = FileListResponseBase.directory;
@@ -83,13 +83,13 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                         }
                     );                
                 });
-                await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                await Utility.setEvent(Connection, CARTA.FileListRequest, 
                     {
                         directory: baseDirectory,
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    Utility.getEvent(Connection, CARTA.FileListResponse, 
                         FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             resolve();
@@ -110,7 +110,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                          [string,   string, number,     CARTA.FileType, number[],   number]) {
                     test(`assert the info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
@@ -118,7 +118,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            Utility.getEvent(Connection, CARTA.FileInfoResponse, 
                                 (FileInfoResponse: CARTA.FileInfoResponse) => {
                                     expect(FileInfoResponse.success).toBe(true);
                                     expect(FileInfoResponse.fileInfo.HDUList.find( f => f === hdu)).toEqual(hdu);
@@ -133,7 +133,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
                     test(`assert the extended info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
@@ -141,7 +141,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            Utility.getEvent(Connection, CARTA.FileInfoResponse, 
                                 (FileInfoResponse: CARTA.FileInfoResponse) => {                                    
                                     expect(FileInfoResponse.fileInfoExtended.dimensions).toEqual(NAXIS);
                                     expect(FileInfoResponse.fileInfoExtended.width).toEqual(shape[0]);
@@ -168,7 +168,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
                     test(`assert the header info of ${CARTA.FileType[fileType]} file "${fileName}".`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
@@ -176,7 +176,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                             }
                         );
                         await new Promise( resolve => {
-                            Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            Utility.getEvent(Connection, CARTA.FileInfoResponse, 
                                 (FileInfoResponse: CARTA.FileInfoResponse) => {                                    
                                     const fileInfoExtHeaderNAXIS = 
                                         FileInfoResponse.fileInfoExtended.headerEntries.find( f => f.name === "NAXIS").value;
@@ -224,14 +224,14 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
         Connection.onopen = OnOpen;
         async function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+            await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
-                    sessionId: "", 
+                    sessionId: 0, 
                     apiKey: "1234"
                 }
             );
             await new Promise( resolve => { 
-                Utility.getEvent(this, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+                Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
                         resolve();           
@@ -247,13 +247,13 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
         let baseDirectory: string; 
         beforeEach(
             async () => {
-                await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                await Utility.setEvent(Connection, CARTA.FileListRequest, 
                     {
                         directory: expectBasePath
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    Utility.getEvent(Connection, CARTA.FileListResponse, 
                         FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             baseDirectory = FileListResponseBase.directory;
@@ -261,13 +261,13 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                         }
                     );                
                 });
-                await Utility.setEvent(Connection, "FILE_LIST_REQUEST", CARTA.FileListRequest, 
+                await Utility.setEvent(Connection, CARTA.FileListRequest, 
                     {
                         directory: baseDirectory
                     }
                 );
                 await new Promise( resolve => {
-                    Utility.getEvent(Connection, "FILE_LIST_RESPONSE", CARTA.FileListResponse, 
+                    Utility.getEvent(Connection, CARTA.FileListResponse, 
                         FileListResponseBase => {
                             expect(FileListResponseBase.success).toBe(true);
                             resolve();
@@ -284,7 +284,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                 function([fileName]: [string]) {
                     test(`assert the file "${fileName}" is non-existent.`, 
                     async () => {
-                        await Utility.setEvent(Connection, "FILE_INFO_REQUEST", CARTA.FileInfoRequest, 
+                        await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                             {
                                 directory: baseDirectory + "/" + testSubdirectoryName, 
                                 file: fileName, 
@@ -292,7 +292,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                             }
                         );
                         await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, "FILE_INFO_RESPONSE", CARTA.FileInfoResponse, 
+                            Utility.getEvent(Connection, CARTA.FileInfoResponse, 
                                 (FileInfoResponse: CARTA.FileInfoResponse) => {
                                     expect(FileInfoResponse.success).toBe(false);
                                     expect(FileInfoResponse.message).toBeDefined();
