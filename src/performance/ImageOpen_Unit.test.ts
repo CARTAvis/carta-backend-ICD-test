@@ -60,6 +60,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             await SocketOperation.RegisterViewer(Connection);
 
                             let cpuCount: {user: number, total: number} = {user: 0, total: 0};
+                            let cpuCounts: {user: number[], total: number[]};
                             if (procfs.works) {
                                 let ps = procfs(cartaBackend.pid);                          
                                 await new Promise( resolve => {
@@ -82,8 +83,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                             let ps = procfs(cartaBackend.pid);                          
                                             await new Promise( resolve => {
                                                 ps.stat( (err, stat) => {
-                                                    cpuCount.user = stat.utime - cpuCount.user;
-                                                    cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime + stat.utime - cpuCount.total;
+                                                    let userTemp = stat.utime;
+                                                    let totalTemp = stat.utime + stat.stime + stat.cutime + stat.cstime + stat.utime;
+                                                    cpuCounts.user.push(userTemp - cpuCount.user);
+                                                    cpuCounts.total.push(totalTemp - cpuCount.total);
+                                                    cpuCount.user = userTemp;
+                                                    cpuCount.total = totalTemp;
                                                     resolve();
                                                 });
                                             });
@@ -93,7 +98,11 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             }
 
                             await SocketOperation.WriteReportTo(
-                                reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed, cpuCount);                            
+                                reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed, 
+                                {
+                                    user: cpuCounts.user.reduce((a, b) => a + b) / cpuCounts.user.length, 
+                                    total: cpuCounts.total.reduce((a, b) => a + b) / cpuCounts.total.length
+                                });                            
 
                             await Connection.close();
                             
