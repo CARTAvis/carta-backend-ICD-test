@@ -66,7 +66,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                 await new Promise( resolve => {
                                     ps.stat( (err, stat) => {
                                         cpuCount.user = stat.utime;
-                                        cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime + stat.utime;
+                                        cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime;
                                         resolve();
                                     });
                                 });
