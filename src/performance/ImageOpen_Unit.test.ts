@@ -60,7 +60,7 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             await SocketOperation.RegisterViewer(Connection);
 
                             let cpuCount: {user: number, total: number} = {user: 0, total: 0};
-                            let cpuCounts: {user: number[], total: number[]};
+                            let cpuCounts: {user: number[], total: number[]} = {user: [], total: []};
                             if (procfs.works) {
                                 let ps = procfs(cartaBackend.pid);                          
                                 await new Promise( resolve => {
