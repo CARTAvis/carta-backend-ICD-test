@@ -82,7 +82,7 @@ WriteReportTo(
             });
         });
     }
-    let cpuUsage = cpuCount.total ? (100 * cpuCount.user / cpuCount.total) : 0;
+    let cpuUsage = cpuCount.total ? (100 * cpuCount.user / cpuCount.total).toFixed(4) : 0;
     await new Promise( resolve => {
         nodeusage.lookup(
             pid, 

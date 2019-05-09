@@ -60,13 +60,12 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             await SocketOperation.RegisterViewer(Connection);
 
                             let cpuCount: {user: number, total: number} = {user: 0, total: 0};
-                            let cpuCounts: {user: number[], total: number[]} = {user: [], total: []};
-                            if (procfs.works) {
+                            let cpuCounts: {user: number[]} = {user: []};
+                            if (procfs) {
                                 let ps = procfs(cartaBackend.pid);                          
                                 await new Promise( resolve => {
                                     ps.stat( (err, stat) => {
-                                        cpuCount.user = stat.utime;
-                                        cpuCount.total = stat.utime + stat.stime + stat.cutime + stat.cstime;
+                                        cpuCount.user = parseInt(stat.utime) + parseInt(stat.stime) + parseInt(stat.cutime) + parseInt(stat.cstime);
                                         resolve();
                                     });
                                 });
@@ -79,16 +78,14 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                                     imageFilesGenerator.next().value,
                                     async timer => {
                                         timeElapsed.push(await performance.now() - timer);
-                                        if (procfs.works) {
+                                        
+                                        if (procfs) {
                                             let ps = procfs(cartaBackend.pid);                          
                                             await new Promise( resolve => {
                                                 ps.stat( (err, stat) => {
-                                                    let userTemp = stat.utime;
-                                                    let totalTemp = stat.utime + stat.stime + stat.cutime + stat.cstime;
+                                                    let userTemp = parseInt(stat.utime) + parseInt(stat.stime) + parseInt(stat.cutime) + parseInt(stat.cstime);
                                                     cpuCounts.user.push(userTemp - cpuCount.user);
-                                                    cpuCounts.total.push(totalTemp - cpuCount.total);
                                                     cpuCount.user = userTemp;
-                                                    cpuCount.total = totalTemp;
                                                     resolve();
                                                 });
                                             });
@@ -100,8 +97,8 @@ describe("Image open performance: 1 user on 1 backend change thread number", () 
                             await SocketOperation.WriteReportTo(
                                 reportFile, cartaBackend.pid, imageFileNext, threadNumber, timeElapsed, 
                                 {
-                                    user: cpuCounts.user.reduce((a, b) => a + b) / cpuCounts.user.length, 
-                                    total: cpuCounts.total.reduce((a, b) => a + b) / cpuCounts.total.length
+                                    user: 10 * cpuCounts.user.reduce((a, b) => a + b) / cpuCounts.user.length, 
+                                    total: timeElapsed.reduce((a, b) => a + b) / timeElapsed.length
                                 });                            
 
                             await Connection.close();
