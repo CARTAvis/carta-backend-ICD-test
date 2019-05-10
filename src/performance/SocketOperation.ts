@@ -82,7 +82,7 @@ WriteReportTo(
             });
         });
     }
-    let cpuUsage = cpuCount.user ? cpuCount.user : (cpuCount.user / cpuCount.total);
+    let cpuUsage = cpuCount.total ? (100 * cpuCount.user / cpuCount.total).toFixed(4) : 0;
     await new Promise( resolve => {
         nodeusage.lookup(
             pid, 
@@ -175,14 +175,14 @@ RegisterViewer(
     CallbackFunc: () => Promise<void> = undefined,
 ) {
     let RegisterViewerAckTemp: CARTA.RegisterViewerAck;
-    await Utility.setEvent(Connection, "REGISTER_VIEWER", CARTA.RegisterViewer, 
+    await Utility.setEvent(Connection, CARTA.RegisterViewer, 
         {
-            sessionId: "", 
+            sessionId: 0, 
             apiKey: "1234"
         }
     );
     await new Promise( resolve => { 
-        Utility.getEvent(Connection, "REGISTER_VIEWER_ACK", CARTA.RegisterViewerAck, 
+        Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
             async RegisterViewerAck => {
                 expect(RegisterViewerAck.success).toBe(true);
                 if (CallbackFunc) {
@@ -203,7 +203,7 @@ OpenFile(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let OpenFileAckTemp: CARTA.OpenFileAck;
-    await Utility.setEvent(Connection, "OPEN_FILE", CARTA.OpenFile, 
+    await Utility.setEvent(Connection, CARTA.OpenFile, 
         {
             directory, 
             file,
@@ -214,7 +214,7 @@ OpenFile(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "OPEN_FILE_ACK", CARTA.OpenFileAck, 
+        Utility.getEvent(Connection, CARTA.OpenFileAck, 
             async (OpenFileAck: CARTA.OpenFileAck) => {
                 if (!OpenFileAck.success) {
                     console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
@@ -238,7 +238,7 @@ SetImageView(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+    await Utility.setEvent(Connection, CARTA.SetImageView, 
         {
             fileId: 0, 
             imageBounds: {
@@ -253,7 +253,7 @@ SetImageView(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+        Utility.getEvent(Connection, CARTA.RasterImageData, 
             async (RasterImageData: CARTA.RasterImageData) => {
                 expect(RasterImageData.fileId).toEqual(0);
                 RasterImageDataTemp = RasterImageData;
@@ -274,7 +274,7 @@ SetSpatialRequirements(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+    await Utility.setEvent(Connection, CARTA.SetImageView, 
         {
             fileId: 0, 
             imageBounds: {
@@ -287,7 +287,7 @@ SetSpatialRequirements(
             numSubsets: 4,
         }
     );
-    await Utility.setEvent(Connection, "SET_SPATIAL_REQUIREMENTS", CARTA.SetSpatialRequirements, 
+    await Utility.setEvent(Connection, CARTA.SetSpatialRequirements, 
         {
             fileId: 0, 
             regionId: 0, 
@@ -296,7 +296,7 @@ SetSpatialRequirements(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+        Utility.getEvent(Connection, CARTA.RasterImageData, 
             async (RasterImageData: CARTA.RasterImageData) => {
                 expect(RasterImageData.fileId).toEqual(0);
                 RasterImageDataTemp = RasterImageData;
@@ -317,7 +317,7 @@ CursorSpatialProfileData(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let SpatialProfileDataTemp: CARTA.SpatialProfileData;
-    await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+    await Utility.setEvent(Connection, CARTA.SetCursor, 
         {
             fileId: 0, 
             point: {
@@ -328,7 +328,7 @@ CursorSpatialProfileData(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "SPATIAL_PROFILE_DATA", CARTA.SpatialProfileData, 
+        Utility.getEvent(Connection, CARTA.SpatialProfileData, 
             async (SpatialProfileData: CARTA.SpatialProfileData) => {
                 expect(SpatialProfileData.profiles.length).not.toEqual(0);
                 SpatialProfileDataTemp = SpatialProfileData;
@@ -349,7 +349,7 @@ SetSpectralRequirements(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, "SET_IMAGE_VIEW", CARTA.SetImageView, 
+    await Utility.setEvent(Connection, CARTA.SetImageView, 
         {
             fileId: 0, 
             imageBounds: {
@@ -362,7 +362,7 @@ SetSpectralRequirements(
             numSubsets: 4,
         }
     );
-    await Utility.setEvent(Connection, "SET_SPECTRAL_REQUIREMENTS", CARTA.SetSpectralRequirements, 
+    await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
         {
             fileId: 0, 
             regionId: 0, 
@@ -371,7 +371,7 @@ SetSpectralRequirements(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "RASTER_IMAGE_DATA", CARTA.RasterImageData, 
+        Utility.getEvent(Connection, CARTA.RasterImageData, 
             async (RasterImageData: CARTA.RasterImageData) => {
                 expect(RasterImageData.fileId).toEqual(0);
                 RasterImageDataTemp = RasterImageData;
@@ -392,7 +392,7 @@ CursorSpectralProfileData(
     CallbackFunc: (timer: number) => Promise<void> = undefined,
 ) {
     let SpectralProfileDataTemp: CARTA.SpectralProfileData;
-    await Utility.setEvent(Connection, "SET_CURSOR", CARTA.SetCursor, 
+    await Utility.setEvent(Connection, CARTA.SetCursor, 
         {
             fileId: 0, 
             point: {
@@ -403,7 +403,7 @@ CursorSpectralProfileData(
     );
     let timer = await performance.now();
     await new Promise( resolve => {
-        Utility.getEvent(Connection, "SPECTRAL_PROFILE_DATA", CARTA.SpectralProfileData, 
+        Utility.getEvent(Connection, CARTA.SpectralProfileData, 
             async (SpectralProfileData: CARTA.SpectralProfileData) => {
                 expect(SpectralProfileData.profiles.length).not.toEqual(0);
                 SpectralProfileDataTemp = SpectralProfileData;
