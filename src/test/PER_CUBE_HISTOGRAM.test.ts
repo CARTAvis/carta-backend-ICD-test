@@ -165,7 +165,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                                     expect(RegionHistogramData.histograms[0].binWidth).toEqual(0.7235205769538879);
                                     expect(RegionHistogramData.histograms[0].bins.length).toEqual(2775);
                                     expect(RegionHistogramData.histograms[0].channel).toEqual(-2);
-                                    expect(RegionHistogramData.histograms[0].firstBinCenter).toEqual(-1773.299860805273);
+                                    expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(-1773.299860805273, 3);
                                     expect(RegionHistogramData.histograms[0].numBins).toEqual(2775); 
                                     expect(RegionHistogramData.regionId).toEqual(-2);
                                     resolve();
@@ -189,7 +189,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                                         expect(RegionHistogramData.histograms[0].bins.length).toEqual(2775);
                                         expect(RegionHistogramData.histograms[0].bins[2500]).toEqual(9359604);
                                         expect(RegionHistogramData.histograms[0].channel).toEqual(-2);
-                                        expect(RegionHistogramData.histograms[0].firstBinCenter).toEqual(-1773.299860805273);
+                                        expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(-1773.299860805273, 3);
                                         expect(RegionHistogramData.histograms[0].numBins).toEqual(2775); 
                                         expect(RegionHistogramData.regionId).toEqual(-2);
                                     }
