@@ -8,7 +8,7 @@ let connectionTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
 let cubeHistogramTimeout = config.timeout.cubeHistogram;
-let messageReturnTimeout = config.timeout.readLargeImage;
+let messageReturnTimeout = config.timeout.readFile;
 let cancelTimeout = config.timeout.cancel;
 
 let baseDirectory: string;
@@ -147,11 +147,7 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                 test(`assert no more REGION_HISTOGRAM_DATA returns.`, 
                 async () => {
                     /// After 10 seconds, the request of the per-cube histogram is cancelled.
-                    await new Promise( resolve => {
-                        setTimeout(() => {
-                            resolve();
-                        }, cancelTimeout);
-                    });
+                    await new Promise( end => setTimeout(() => end(), cancelTimeout));
                     await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, 
                         {
                             fileId, 
@@ -159,15 +155,15 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                             histograms: [],
                         }
                     );
-                    await new Promise( (resolve, reject) => {                        
-                        Connection.onmessage = (messageEvent: MessageEvent) => {
-                            let eventName = Utility.getEventName(new Uint8Array(messageEvent.data, 0, 32));
-                            expect(eventName).not.toEqual("REGION_HISTOGRAM_DATA");
-                            resolve();
-                        };
+                    await new Promise( (resolve, reject) => {
+                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
+                            RegionHistogramData => {
+                                reject();
+                            }
+                        );
                         let failTimer = setTimeout(() => {
                             clearTimeout(failTimer);
-                            reject();
+                            resolve();
                         }, messageReturnTimeout);
                     });
                 }, readFileTimeout + messageReturnTimeout + cancelTimeout);
@@ -175,11 +171,7 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                 test(`assert a renew REGION_HISTOGRAM_DATA as the progress be 1.0 .`, 
                 async () => {
                     /// Then request to get the per-cube histogram again in 2 seconds.
-                    await new Promise( resolve => {
-                        setTimeout(() => {
-                            resolve();
-                        }, 2000);
-                    });
+                    await new Promise( end => setTimeout(() => end(), 2000));
                     await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, 
                         {
                             fileId, 
@@ -198,7 +190,7 @@ describe("PER_CUBE_HISTOGRAM_CANCEL tests: Testing the cancellation capability o
                                         expect(RegionHistogramData.histograms[0].bins.length).toEqual(2775);
                                         expect(RegionHistogramData.histograms[0].bins[2500]).toEqual(9359604);
                                         expect(RegionHistogramData.histograms[0].channel).toEqual(-2);
-                                        expect(RegionHistogramData.histograms[0].firstBinCenter).toEqual(-1773.299860805273);
+                                        expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(-1773.299860805273, 3);
                                         expect(RegionHistogramData.histograms[0].numBins).toEqual(2775); 
                                         expect(RegionHistogramData.regionId).toEqual(-2);
                                     }
