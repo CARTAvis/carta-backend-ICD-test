@@ -1,6 +1,6 @@
 import {CARTA} from "carta-protobuf";
 /// Toollet functions
-const IcdVersion = 2;
+const IcdVersion = 3;
 export const EventType = {
     RegisterViewer: 1,
     FileListRequest: 2,
