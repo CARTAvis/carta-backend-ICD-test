@@ -34,6 +34,7 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
                         }
                     );
                 });
+                this.close();
                 done();
             }
         }, connectTimeout);
