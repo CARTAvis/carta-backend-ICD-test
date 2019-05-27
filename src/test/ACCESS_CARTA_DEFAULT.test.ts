@@ -34,7 +34,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend",
                         }
                     );
                 });
-                this.close();
+                await this.close();
                 done();
             }
         }, connectTimeout);
