@@ -39,17 +39,17 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
             }
         }, connectTimeout);
 
-        test(`"REGISTER_VIEWER_ACK".success = False`, 
+        test(`REGISTER_VIEWER_ACK.success = False`, 
         () => {
             expect(RegisterViewerAckTemp.success).toBe(false);
         });
 
-        test(`"REGISTER_VIEWER_ACK".session_type = "CARTA.SessionType.NEW"`, 
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, 
         () => {
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.RESUMED);
         });
 
-        test(`"REGISTER_VIEWER_ACK".message is not “”`, 
+        test(`REGISTER_VIEWER_ACK.message is not “”`, 
         () => {
             expect(RegisterViewerAckTemp.message).toBeDefined();
             expect(RegisterViewerAckTemp.message).not.toEqual("");

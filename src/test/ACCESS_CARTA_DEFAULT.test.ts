@@ -39,23 +39,23 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend",
             }
         }, connectTimeout);
 
-        test(`"REGISTER_VIEWER_ACK".success = True`, 
+        test(`REGISTER_VIEWER_ACK.success = True`, 
         () => {
             expect(RegisterViewerAckTemp.success).toBe(true);
         });
 
-        test(`"REGISTER_VIEWER_ACK".session_id is not None`, 
+        test(`REGISTER_VIEWER_ACK.session_id is not None`, 
         () => {
             expect(RegisterViewerAckTemp.sessionId).toBeDefined();
             console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
         });
 
-        test(`"REGISTER_VIEWER_ACK".session_type = "CARTA.SessionType.NEW"`, 
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, 
         () => {
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 
-        test(`"REGISTER_VIEWER_ACK".message is “”`, 
+        test(`REGISTER_VIEWER_ACK.message is “”`, 
         () => {
             expect(RegisterViewerAckTemp.message).toBe("");
         });
