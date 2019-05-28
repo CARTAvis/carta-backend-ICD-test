@@ -4,14 +4,11 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
 
-describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend with an unknown API key",
-() => {
+describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend with an unknown API key", () => {
     let Connection: WebSocket;
-    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=0 & api_key="1234"`,
-    () => {
+    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=0 & api_key="1234"`, () => {
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
-        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, 
-        done => {        
+        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, done => {        
             // Connect to "testServerUrl"
             Connection = new WebSocket(testServerUrl);
             expect(Connection.readyState).toBe(WebSocket.CONNECTING);
@@ -40,24 +37,20 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend 
             }
         }, connectTimeout);
 
-        test(`REGISTER_VIEWER_ACK.success = True`, 
-        () => {
+        test("REGISTER_VIEWER_ACK.success = True", () => {
             expect(RegisterViewerAckTemp.success).toBe(true);
         });
 
-        test(`REGISTER_VIEWER_ACK.session_id is not None`, 
-        () => {
+        test("REGISTER_VIEWER_ACK.session_id is not None", () => {
             expect(RegisterViewerAckTemp.sessionId).toBeDefined();
             console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
         });
 
-        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, 
-        () => {
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, () => {
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 
-        test(`REGISTER_VIEWER_ACK.message is “”`, 
-        () => {
+        test("REGISTER_VIEWER_ACK.message is empty", () => {
             expect(RegisterViewerAckTemp.message).toBe("");
         });
 

@@ -18,8 +18,7 @@ describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", 
         };
     }, connectTimeout);
 
-    test(`should connect to "${testServerUrl}".`, 
-    done => {
+    test(`should connect to "${testServerUrl}".`, done => {
 
         let Connection = new WebSocket(testServerUrl);
         expect(Connection.readyState).toBe(WebSocket.CONNECTING);
