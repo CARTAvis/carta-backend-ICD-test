@@ -4,89 +4,63 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
 
-describe("ACCESS_CARTA_UNKNOWN_APIKEY tests", () => {
-    
-    describe(`send EventName: "REGISTER_VIEWER" to CARTA "${testServerUrl}" with session_id = 0 & api_key = "5678".`, 
+describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend with an unknown API key",
+() => {
+    let Connection: WebSocket;
+    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=0 & api_key="1234"`,
     () => {
-        let Connection: WebSocket;
-    
-        beforeEach( done => {
+        let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
+        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, 
+        done => {        
+            // Connect to "testServerUrl"
             Connection = new WebSocket(testServerUrl);
             expect(Connection.readyState).toBe(WebSocket.CONNECTING);
+
             Connection.binaryType = "arraybuffer";
-    
-            Connection.onopen = OnOpen;
-    
-            function OnOpen (this: WebSocket, ev: Event) {
+            Connection.onopen = OnOpen;        
+            
+            async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
+                await Utility.setEvent(this, CARTA.RegisterViewer,
+                    {
+                        sessionId: 0, 
+                        apiKey: "1234",
+                    }
+                );
+                await new Promise( resolve => {
+                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
+                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                            RegisterViewerAckTemp = RegisterViewerAck;
+                            resolve();
+                        }
+                    );
+                });
+                await this.close();
                 done();
             }
         }, connectTimeout);
-    
-        test(`assert the received EventName is "REGISTER_VIEWER_ACK" within ${connectTimeout} ms.`, 
-        async () => {
-            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "5678"
-                }
-            );
-            await new Promise( resolve => {
-                Connection.onmessage = (event: MessageEvent) => {
-                    const eventHeader16 = new Uint16Array(event.data, 0, 2);
-                    const eventType = eventHeader16[0];
-                    expect(event.data.byteLength).toBeGreaterThan(0);
-                    expect(eventType).toEqual(Utility.EventType.RegisterViewerAck);
-    
-                    resolve();
-                };
-            });
-        }, connectTimeout);
-               
-        test(`assert the "REGISTER_VIEWER_ACK.success" is true.`,
-        async () => {
-            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "5678"
-                }
-            );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();
-                    }
-                );
-            });
-        }, connectTimeout);
-    
-        test(`assert the "REGISTER_VIEWER_ACK.message" is empty.`,
-        async () => {
-            await Utility.setEvent(Connection, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "5678"
-                }
-            );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                        expect(RegisterViewerAck.message).toBeDefined();
-                        expect(RegisterViewerAck.message).toEqual("");
-                        if ( RegisterViewerAck.message !== "" ) {
-                            console.log(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAck.message}" @${new Date()}`);
-                        }
-                        resolve();
-                    }
-                );
-            });
-        }, connectTimeout);
 
-        afterEach( async () => {
-            await Connection.close();
-            await expect(Connection.readyState).toBe(WebSocket.CLOSING);
-        }, connectTimeout);   
-    
+        test(`REGISTER_VIEWER_ACK.success = True`, 
+        () => {
+            expect(RegisterViewerAckTemp.success).toBe(true);
+        });
+
+        test(`REGISTER_VIEWER_ACK.session_id is not None`, 
+        () => {
+            expect(RegisterViewerAckTemp.sessionId).toBeDefined();
+            console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
+        });
+
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, 
+        () => {
+            expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
+        });
+
+        test(`REGISTER_VIEWER_ACK.message is “”`, 
+        () => {
+            expect(RegisterViewerAckTemp.message).toBe("");
+        });
+
     });
+
 });
