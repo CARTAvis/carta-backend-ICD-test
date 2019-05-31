@@ -2,7 +2,6 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let expectBasePath = config.path.base;
 let testSubdirectoryName = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
