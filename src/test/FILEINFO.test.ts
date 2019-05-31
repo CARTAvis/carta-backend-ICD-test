@@ -733,7 +733,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             describe(`query the info of file : ${item.fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
-                test(`FILE_INFO_RESPONSE should arrives within ${openFileTimeout} ms".`, async () => {
+                test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                     await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                         {
                             directory: testSubdirectoryName, 
@@ -870,7 +870,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
 
             describe(`query the info of file : ${fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
-                test(`FILE_INFO_RESPONSE should arrives within ${openFileTimeout} ms".`, async () => {
+                test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                     await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
                         {
                             directory: testSubdirectoryName, 
