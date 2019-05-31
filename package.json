@@ -6,19 +6,19 @@
     "dependencies": {
         "procfs-stats": "^1.0.2",
         "raw-loader": "^0.5.1",
-        "react-scripts-ts": "^2.17.0",
+        "react-scripts": "^3.0.1",
         "rxjs": "^6.3.3",
         "usage": "^0.7.1"
     },
     "scripts": {
         "git-info": "echo export default {logMessage: \\\"$(git log -1 --oneline)\\\"}\\;  > src/static/gitInfo.ts",
-        "test": "react-scripts-ts test --env=jsdom --maxWorkers=1 --verbose --no-cache --forceExit"
+        "test": "react-scripts test --env=jsdom --maxWorkers=1 --verbose --no-cache --forceExit"
     },
     "devDependencies": {
-        "@types/jest": "^23.3.12",
-        "@types/node": "^10.12.18",
+        "@types/jest": "^23.3.14",
+        "@types/node": "^10.14.8",
         "protobufjs": "^6.8.8",
-        "typescript": "^3.2.2",
+        "typescript": "^3.5.1",
         "worker-loader": "^2.0.0"
     }
 }
