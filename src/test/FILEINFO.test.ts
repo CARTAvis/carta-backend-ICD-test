@@ -137,7 +137,7 @@ let imageAssertItems: ImageAssertItem[] = [
             { name: "Pixel unit", value: "Jy/beam" },
             { name: "Pixel increment", value: "-0.40\", 0.40\"" },
             { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" } ],
-        headerEntries: [ 
+        headerEntries: [
             { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
             { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
             { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
@@ -496,16 +496,9 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                     expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual([""]);
                 });
 
-                // test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                //     // console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries);
-                //     item.computerEntries.map( (entry) => {
-                //         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
-                //     });
-                // });
-
                 item.computerEntries.map( (entry) => {
                     test(`FILE_INFO_RESPONSE.file_info_extended.computed_entries.${entry.name} = ${entry.value}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended.computedEntries.find( f => f.name === entry.name).value).toEqual(entry.value);
+                        expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                     });
                 });
                 
