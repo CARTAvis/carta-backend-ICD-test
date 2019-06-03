@@ -5,9 +5,7 @@
     "homepage": "",
     "dependencies": {
         "procfs-stats": "^1.0.2",
-        "raw-loader": "^0.5.1",
         "react-scripts": "^3.0.1",
-        "rxjs": "^6.3.3",
         "usage": "^0.7.1"
     },
     "scripts": {
@@ -18,7 +16,6 @@
         "@types/jest": "^23.3.14",
         "@types/node": "^10.14.8",
         "protobufjs": "^6.8.8",
-        "typescript": "^3.5.1",
-        "worker-loader": "^2.0.0"
+        "typescript": "^3.5.1"
     }
 }
