@@ -496,10 +496,16 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                     expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual([""]);
                 });
 
-                test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                    // console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries);
-                    item.computerEntries.map( (entry) => {
-                        expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
+                // test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
+                //     // console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries);
+                //     item.computerEntries.map( (entry) => {
+                //         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
+                //     });
+                // });
+
+                item.computerEntries.map( (entry) => {
+                    test(`FILE_INFO_RESPONSE.file_info_extended.computed_entries.${entry.name} = ${entry.value}`, () => {
+                        expect(FileInfoResponseTemp.fileInfoExtended.computedEntries.find( f => f.name === entry.name).value).toEqual(entry.value);
                     });
                 });
                 
