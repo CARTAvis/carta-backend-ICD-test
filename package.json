@@ -1,15 +1,13 @@
 {
-    "name": "carta-backend-test",
+    "name": "carta-backend-ICD-test",
     "version": "0.6.0",
     "private": true,
-    "homepage": "",
     "dependencies": {
         "procfs-stats": "^1.0.2",
         "react-scripts": "^3.0.1",
         "usage": "^0.7.1"
     },
     "scripts": {
-        "git-info": "echo export default {logMessage: \\\"$(git log -1 --oneline)\\\"}\\;  > src/static/gitInfo.ts",
         "test": "react-scripts test --env=jsdom --maxWorkers=1 --verbose --no-cache --forceExit"
     },
     "devDependencies": {
