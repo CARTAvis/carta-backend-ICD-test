@@ -8,7 +8,8 @@
         "performance": "set_QA_performance"
     },
     "timeout": {
-        "connection": 1000,
+        "connection": 200,
+        "listFile": 500,
         "openFile": 3000,
         "readFile": 3000,
         "readLargeImage": 18000,
