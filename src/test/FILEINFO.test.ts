@@ -14,7 +14,7 @@ interface ImageAssertItem {
     fileType: CARTA.FileType;
     shape: number[];
     NAXIS: number;
-    computerEntries: CARTA.IHeaderEntry[];
+    computedEntries: CARTA.IHeaderEntry[];
     headerEntries: CARTA.IHeaderEntry[];
 }
 let imageAssertItems: ImageAssertItem[] = [
@@ -24,7 +24,7 @@ let imageAssertItems: ImageAssertItem[] = [
         fileSize: 51393600, 
         fileType: CARTA.FileType.FITS, 
         shape: [640, 800, 25, 1], NAXIS: 4, 
-        computerEntries: [ 
+        computedEntries: [ 
             { name: "Name", value: "M17_SWex.fits" },
             { name: "Shape", value: "[640, 800, 25, 1]" },
             {
@@ -111,7 +111,7 @@ let imageAssertItems: ImageAssertItem[] = [
         fileSize: 53009869, 
         fileType: CARTA.FileType.CASA, 
         shape: [640, 800, 25, 1], NAXIS: 4, 
-        computerEntries: [ 
+        computedEntries: [ 
             { name: "Name", value: "M17_SWex.image" },
             { name: "Shape", value: "[640, 800, 25, 1]" },
             {
@@ -190,7 +190,7 @@ let imageAssertItems: ImageAssertItem[] = [
         fileSize: 112823720, 
         fileType: CARTA.FileType.HDF5, 
         shape: [640, 800, 25, 1], NAXIS: 4, 
-        computerEntries: [ 
+        computedEntries: [ 
             { name: "Name", value: "M17_SWex.hdf5" },
             { name: "Shape", value: "[640, 800, 25, 1]" },
             {
@@ -250,7 +250,7 @@ let imageAssertItems: ImageAssertItem[] = [
         fileSize: 52993642, 
         fileType: CARTA.FileType.MIRIAD, 
         shape: [640, 800, 25, 1], NAXIS: 4, 
-        computerEntries: [ 
+        computedEntries: [ 
             { name: "Name", value: "M17_SWex.miriad" },
             { name: "Shape", value: "[640, 800, 25, 1]" },
             {
@@ -329,7 +329,7 @@ let imageAssertItems: ImageAssertItem[] = [
         fileSize: 17591040, 
         fileType: CARTA.FileType.FITS, 
         shape: [830, 870, 1, 1], NAXIS: 2, 
-        computerEntries: [ 
+        computedEntries: [ 
             { name: "Name", value: "spire500_ext.fits" },
             { name: "Shape", value: "[830, 870]" },
             { name: "Coordinate type", value: "RA---TAN, DEC--TAN" },
@@ -496,15 +496,14 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                     expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual([""]);
                 });
 
-                item.computerEntries.map( (entry) => {
-                    test(`FILE_INFO_RESPONSE.file_info_extended.computed_entries.${entry.name} = ${entry.value}`, () => {
+                test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
+                    item.computedEntries.map( (entry: CARTA.IHeaderEntry) => {
                         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                     });
                 });
                 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries);
-                    item.headerEntries.map( (entry) => {
+                    item.headerEntries.map( (entry: CARTA.IHeaderEntry) => {
                         expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                     });
                 });
