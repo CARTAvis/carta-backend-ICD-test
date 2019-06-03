@@ -545,8 +545,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
         }
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectoryName}" folder`, 
-    () => {
+    describe(`Go to "${testSubdirectoryName}" folder`, () => {
         beforeAll( async () => {
             await Utility.setEvent(Connection, CARTA.FileListRequest, 
                 {
@@ -563,10 +562,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
             });
         }, listFileTimeout);
         
-        [
-            ["no_such_file.image"],
-            ["broken_header.miriad"],
-        ].map( function([fileName]: [string]) {
+        [ "no_such_file.image", "broken_header.miriad"].map( function(fileName: string) {
 
             describe(`query the info of file : ${fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
