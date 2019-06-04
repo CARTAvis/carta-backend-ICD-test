@@ -43,7 +43,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                     }
                 );
             });
-            done();   
+            await done();   
         }
     }, connectTimeout);
 
@@ -64,9 +64,9 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                     await Utility.setEvent(Connection, CARTA.OpenFile, 
                         {
                             directory: testSubdirectoryName, 
-                            fileName, 
-                            hdu, 
-                            fileId, 
+                            file: fileName, 
+                            hdu: hdu, 
+                            fileId: fileId, 
                             renderMode: CARTA.RenderMode.RASTER,
                         }
                     );
@@ -96,9 +96,9 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 test(`RASTER_IMAGE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Utility.setEvent(Connection, CARTA.SetImageView, 
                         {
-                            fileId, 
-                            imageBounds, 
-                            mip, 
+                            fileId: fileId, 
+                            imageBounds: imageBounds, 
+                            mip: mip, 
                             compressionType: CARTA.CompressionType.NONE,
                             compressionQuality: 0, 
                             numSubsets: 0,
