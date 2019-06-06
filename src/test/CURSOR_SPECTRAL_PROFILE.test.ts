@@ -83,6 +83,64 @@ let assertItems: AssertItem[] = [
         errorPoint: [],
         precisionDigits: 4,
     },
+    {
+        fileName: "HH211_IQU.fits",
+        hdu: "0",
+        fileId: 0,
+        renderMode: CARTA.RenderMode.RASTER,
+        imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
+        mip: 2,
+        compressionType: CARTA.CompressionType.ZFP,
+        compressionQuality: 11,
+        numSubsets: 4,
+        regionId: 0,
+        stokes: 0,
+        progress: 1,
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        assertProfile: [
+            {
+                point: {x: 1006, y: 478},
+                profileLen: {z: 5}, 
+                oddPoint: {
+                    z: [
+                        {idx: 0, value: NaN},
+                        {idx: 2, value:  -1.186280068476e-03},
+                    ],
+                },
+            },
+        ],
+        errorPoint: [],
+        precisionDigits: 4,
+    },
+    {
+        fileName: "HH211_IQU.hdf5",
+        hdu: "0",
+        fileId: 0,
+        renderMode: CARTA.RenderMode.RASTER,
+        imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
+        mip: 2,
+        compressionType: CARTA.CompressionType.ZFP,
+        compressionQuality: 11,
+        numSubsets: 4,
+        regionId: 0,
+        stokes: 0,
+        progress: 1,
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        assertProfile: [
+            {
+                point: {x: 1006, y: 478},
+                profileLen: {z: 5}, 
+                oddPoint: {
+                    z: [
+                        {idx: 0, value: NaN},
+                        {idx: 2, value:  -1.186280068476e-03},
+                    ],
+                },
+            },
+        ],
+        errorPoint: [],
+        precisionDigits: 4,
+    },
 ]
 
 describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial profiles are delivered correctly", () => {   
