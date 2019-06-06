@@ -18,7 +18,16 @@ interface AssertItem {
     numSubsets: number;
     regionId: number;
     spatialProfiles: string[];
-    assertProfile: {point: {x: number, y: number}, assertPoint: {x: number, y: number}, profileLen: {x: number, y: number}, value: number, oddPoint: {x: {idx: number, value: number, others: number}, y: {idx: number, value: number, others: number}}}[];
+    assertProfile: {
+        point: {x: number, y: number}, 
+        assertPoint: {x: number, y: number}, 
+        profileLen: {x: number, y: number}, 
+        value: number, 
+        oddPoint: {
+            x: {idx: number, value: number, others: number}, 
+            y: {idx: number, value: number, others: number},
+        }
+    }[];
     errorPoint: {point: {x: number, y: number}}[];
 }
 let assertItem: AssertItem = {
