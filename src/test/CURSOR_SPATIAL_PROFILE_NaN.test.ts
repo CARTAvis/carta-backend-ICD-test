@@ -181,9 +181,13 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                     expect(SpatialProfileDataTemp.y).toEqual(item.assertPoint.y);
                 });
 
-                test(`Assert value of profile_x : ${item.oddPoint.x.one.map( f => ` #${f.idx} = ${f.value.toFixed(assertItem.precisionDigits)}`)} ${isNaN(item.oddPoint.x.others)?"other values = NaN":isNull(item.oddPoint.x.others)?"":"other values = " + item.oddPoint.x.others}`, () => {
+                test(`Assert value of profile_x : ${item.oddPoint.x.one.map( f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(item.oddPoint.x.others)?"other values = NaN":isNull(item.oddPoint.x.others)?"":"other values = " + item.oddPoint.x.others}`, () => {
                     item.oddPoint.x.one.map( f => {
-                        expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values[f.idx]).toEqual(f.value);
+                        if (isNaN(f.value)) {
+                            expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values[f.idx]).toEqual(NaN);
+                        } else {                            
+                            expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
+                        }
                     });
                     if (item.oddPoint.x.others !== null) {
                         SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map( (value, index) => {
@@ -194,9 +198,13 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                     }
                 });
 
-                test(`Assert value of profile_y : ${item.oddPoint.y.one.map( f => ` #${f.idx} = ${f.value.toFixed(assertItem.precisionDigits)}`)} ${isNaN(item.oddPoint.x.others)?"other values = NaN":isNull(item.oddPoint.x.others)?"":"other values = " + item.oddPoint.x.others}`, () => {
+                test(`Assert value of profile_y : ${item.oddPoint.y.one.map( f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(item.oddPoint.x.others)?"other values = NaN":isNull(item.oddPoint.x.others)?"":"other values = " + item.oddPoint.x.others}`, () => {
                     item.oddPoint.y.one.map( f => {
-                        expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values[f.idx]).toEqual(f.value);
+                        if (isNaN(f.value)) {
+                            expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values[f.idx]).toEqual(NaN);
+                        } else {                            
+                            expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
+                        }
                     });
                     if (item.oddPoint.y.others !== null) {
                         SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map( (value, index) => {
