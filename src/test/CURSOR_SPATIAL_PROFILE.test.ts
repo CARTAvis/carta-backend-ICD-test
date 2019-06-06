@@ -18,8 +18,8 @@ interface AssertItem {
     numSubsets: number;
     regionId: number;
     spatialProfiles: string[];
-    assertProfile: {fileId: number, point: {x: number, y: number}, assertPoint: {x: number, y: number}, profileLen: {x: number, y: number}, value: number, oddPoint: {x: {idx: number, value: number, others: number}, y: {idx: number, value: number, others: number}}}[];
-    errorPoint: {fileId: number, point: {x: number, y: number}}[];
+    assertProfile: {point: {x: number, y: number}, assertPoint: {x: number, y: number}, profileLen: {x: number, y: number}, value: number, oddPoint: {x: {idx: number, value: number, others: number}, y: {idx: number, value: number, others: number}}}[];
+    errorPoint: {point: {x: number, y: number}}[];
 }
 let assertItem: AssertItem = {
     fileName: "qa_xyProfiler.fits",
@@ -34,18 +34,18 @@ let assertItem: AssertItem = {
     regionId: 0,
     spatialProfiles: ["x", "y"],
     assertProfile: [
-        {fileId: 0, point: {x: 50.00, y: 50.00}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 49.50, y: 49.50}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 49.50, y: 50.49}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 50.49, y: 49.50}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 50.49, y: 50.49}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
-        {fileId: 0, point: {x:  0.00, y:  0.00}, assertPoint: {x:  0.00, y:  0.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx:  0, value: 1, others: 0}, y: {idx:  0, value: 1, others: 0}}},
-        {fileId: 0, point: {x:  0.00, y: 99.00}, assertPoint: {x:  0.00, y: 99.00}, profileLen: {x: 100, y: 100}, value: 0, oddPoint: {x: {idx: 99, value: 1, others: 0}, y: {idx:  0, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 99.00, y:  0.00}, assertPoint: {x: 99.00, y:  0.00}, profileLen: {x: 100, y: 100}, value: 0, oddPoint: {x: {idx:  0, value: 1, others: 0}, y: {idx: 99, value: 1, others: 0}}},
-        {fileId: 0, point: {x: 99.00, y: 99.00}, assertPoint: {x: 99.00, y: 99.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 99, value: 1, others: 0}, y: {idx: 99, value: 1, others: 0}}},
+        {point: {x: 50.00, y: 50.00}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
+        {point: {x: 49.50, y: 49.50}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
+        {point: {x: 49.50, y: 50.49}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
+        {point: {x: 50.49, y: 49.50}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
+        {point: {x: 50.49, y: 50.49}, assertPoint: {x: 50.00, y: 50.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 50, value: 1, others: 0}, y: {idx: 50, value: 1, others: 0}}},
+        {point: {x:  0.00, y:  0.00}, assertPoint: {x:  0.00, y:  0.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx:  0, value: 1, others: 0}, y: {idx:  0, value: 1, others: 0}}},
+        {point: {x:  0.00, y: 99.00}, assertPoint: {x:  0.00, y: 99.00}, profileLen: {x: 100, y: 100}, value: 0, oddPoint: {x: {idx: 99, value: 1, others: 0}, y: {idx:  0, value: 1, others: 0}}},
+        {point: {x: 99.00, y:  0.00}, assertPoint: {x: 99.00, y:  0.00}, profileLen: {x: 100, y: 100}, value: 0, oddPoint: {x: {idx:  0, value: 1, others: 0}, y: {idx: 99, value: 1, others: 0}}},
+        {point: {x: 99.00, y: 99.00}, assertPoint: {x: 99.00, y: 99.00}, profileLen: {x: 100, y: 100}, value: 1, oddPoint: {x: {idx: 99, value: 1, others: 0}, y: {idx: 99, value: 1, others: 0}}},
     ],
     errorPoint: [
-        {fileId: 0, point: {x: 200.00, y: 200.00}},
+        {point: {x: 200.00, y: 200.00}},
     ],
 }
 
@@ -133,7 +133,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                         await Utility.setEvent(Connection, CARTA.SetCursor, 
                             {
-                                fileId: item.fileId, 
+                                fileId: assertItem.fileId, 
                                 point: item.point,
                             }
                         );
@@ -189,7 +189,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                 test(`SPATIAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
                     await Utility.setEvent(Connection, CARTA.SetCursor, 
                         {
-                            fileId: item.fileId, 
+                            fileId: assertItem.fileId, 
                             point: item.point,
                         }
                     );
