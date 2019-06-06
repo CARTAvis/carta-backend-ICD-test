@@ -161,7 +161,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.length).toEqual(item.profileLen.y);
                     });
 
-                    test(`the #${item.oddPoint.x.idx + 1} value = ${item.oddPoint.x.value} with other values = ${item.oddPoint.x.others} on the profile_x`, () => {
+                    test(`The #${item.oddPoint.x.idx + 1} value = ${item.oddPoint.x.value} and other values = ${item.oddPoint.x.others} on the profile_x`, () => {
                         SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map( (value, index) => {
                             if (index === item.oddPoint.x.idx) {
                                 expect(value).toEqual(item.oddPoint.x.value);
@@ -171,7 +171,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         });
                     });
 
-                    test(`the #${item.oddPoint.y.idx + 1} value = ${item.oddPoint.y.value} with other values = ${item.oddPoint.y.others} on the profile_y`, () => {
+                    test(`The #${item.oddPoint.y.idx + 1} value = ${item.oddPoint.y.value} and other values = ${item.oddPoint.y.others} on the profile_y`, () => {
                         SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map( (value, index) => {
                             if (index === item.oddPoint.y.idx) {
                                 expect(value).toEqual(item.oddPoint.y.value);
