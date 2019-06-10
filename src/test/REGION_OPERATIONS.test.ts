@@ -9,7 +9,7 @@ let returnTimeout = config.timeout.messageEvent;
 interface Region {
         regionId: number;
         regionType: CARTA.RegionType;
-        controlPoint: CARTA.IPoint[];
+        controlPoints: CARTA.IPoint[];
         rotation: number;
         regionName: string;
         assertRegionId: number;    
@@ -20,7 +20,7 @@ interface ImageAssertItem {
     hdu: string;
     imageDataInfo: {
         compressionQuality: number;
-        imageBounds: {xMin: number, xMax: number, yMin: number, yMax: number};
+        imageBounds: CARTA.IImageBounds;
         compressionType: CARTA.CompressionType;
         mip: number;
         numSubsets: number;
@@ -42,7 +42,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 197.0, y: 489.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: 197.0, y: 489.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -50,7 +50,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint:  [{x: 306.0, y: 670.0}, {x: 20.0, y: 48.0}],
+            controlPoints:  [{x: 306.0, y: 670.0}, {x: 20.0, y: 48.0}],
             rotation: 27.0,
             regionName: "",
             assertRegionId: 2,
@@ -58,7 +58,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.ELLIPSE,
-            controlPoint: [{x: 551.0, y: 330.0}, {x: 30.0, y: 15.0}],
+            controlPoints: [{x: 551.0, y: 330.0}, {x: 30.0, y: 15.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 3,
@@ -66,7 +66,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 580.0, y: 240.0}, {x: 35.0, y: 35.0}],
+            controlPoints: [{x: 580.0, y: 240.0}, {x: 35.0, y: 35.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 4,
@@ -74,7 +74,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint:  [{x: 552.0, y: 184.0}, {x: 350.0, y: 18.0}],
+            controlPoints:  [{x: 552.0, y: 184.0}, {x: 350.0, y: 18.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 5,
@@ -82,7 +82,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint:   [{x: 635.0, y: 128.0}, {x: 25.0, y: 48.0}],
+            controlPoints:   [{x: 635.0, y: 128.0}, {x: 25.0, y: 48.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 6,
@@ -90,7 +90,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: -1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 694.0, y: 80.0}, {x: 25.0, y: 33.0}],
+            controlPoints: [{x: 694.0, y: 80.0}, {x: 25.0, y: 33.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 7,
@@ -98,7 +98,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: 1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 84.0, y: 491.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: 84.0, y: 491.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -106,7 +106,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: 1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 43.0, y: 491.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: 43.0, y: 491.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -114,7 +114,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: 1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: -1.0, y: 491.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: -1.0, y: 491.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -122,7 +122,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: 1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: -14.0, y: 491.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: -14.0, y: 491.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -130,7 +130,7 @@ let imageAssertItem: ImageAssertItem = {
         {
             regionId: 1,
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoint: [{x: 197.0, y: 489.0}, {x: 10.0, y: 10.0}],
+            controlPoints: [{x: 197.0, y: 489.0}, {x: 10.0, y: 10.0}],
             rotation: 0.0,
             regionName: "",
             assertRegionId: 1,
@@ -210,7 +210,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
 
         imageAssertItem.regionGroup.map( function( region: Region) {
 
-            describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${region.assertRegionId} on ${JSON.stringify(region.controlPoint)}`, () => {
+            describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${region.assertRegionId} on ${JSON.stringify(region.controlPoints)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Utility.setEvent(Connection, CARTA.SetRegion, region);
@@ -245,7 +245,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                     }
                 );
             });
-            
+
             test(`should not return within ${returnTimeout} ms`, async () => {
                 await new Promise( (resolve, reject) => {
                     Connection.onmessage = () => {
@@ -261,14 +261,16 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
             describe("Modify region #3", () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetRegion, {
-                        fileId: 0,
-                        regionId: 3,
-                        regionName: "",
-                        regionType: CARTA.RegionType.ELLIPSE,
-                        controlPoint: [{x: 551.0, y: 330.0}, {x: 30.0, y: 15.0}],
-                        rotation: 30.0,
-                    });
+                    await Utility.setEvent(Connection, CARTA.SetRegion, 
+                        {
+                            fileId: 0,
+                            regionId: 3,
+                            regionName: "",
+                            regionType: CARTA.RegionType.ELLIPSE,
+                            controlPoint: [{x: 551.0, y: 330.0}, {x: 30.0, y: 15.0}],
+                            rotation: 30.0,
+                        }
+                    );
                     await new Promise( resolve => {
                         Utility.getEvent(Connection, CARTA.SetRegionAck, 
                             (SetRegionAck: CARTA.SetRegionAck) => {
