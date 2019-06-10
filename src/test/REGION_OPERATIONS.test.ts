@@ -5,6 +5,7 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
+let returnTimeout = config.timeout.messageEvent;
 interface Region {
         regionId: number;
         regionType: CARTA.RegionType;
@@ -156,7 +157,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                 Utility.getEvent(this, CARTA.RegisterViewerAck, 
                     RegisterViewerAck => {
                         expect(RegisterViewerAck.success).toBe(true);
-                        resolve();           
+                        resolve();
                     }
                 );
             });
@@ -166,7 +167,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
     
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set image view`, () => {
 
-        beforeAll( async () => {            
+        beforeAll( async () => {
             await Utility.setEvent(Connection, CARTA.CloseFile, 
                 {
                     fileId: -1,
@@ -184,7 +185,6 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
             await new Promise( resolve => {           
                 Utility.getEvent(Connection, CARTA.OpenFileAck, 
                     (OpenFileAck: CARTA.OpenFileAck) => {
-                        expect(OpenFileAck.success).toBe(true);
                         resolve();
                     }
                 );
@@ -195,15 +195,16 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                     imageBounds: imageAssertItem.imageDataInfo.imageBounds, 
                     mip: imageAssertItem.imageDataInfo.mip, 
                     compressionType: imageAssertItem.imageDataInfo.compressionType,
+                    compressionQuality: imageAssertItem.imageDataInfo.compressionQuality,
+                    numSubsets: imageAssertItem.imageDataInfo.numSubsets,
                 }
             );
             await new Promise( resolve => {
                 Utility.getEvent(Connection, CARTA.RasterImageData, 
                     (RasterImageData: CARTA.RasterImageData) => {
-                        expect(RasterImageData.fileId).toEqual(imageAssertItem.fileId);
                         resolve();
                     }
-                );                            
+                );
             });
         });
 
@@ -212,23 +213,14 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
             describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${region.assertRegionId} on ${JSON.stringify(region.controlPoint)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetRegion, 
-                        {
-                            fileId: imageAssertItem.fileId,
-                            regionId: region.regionId,
-                            regionName: region.regionName,
-                            regionType: region.regionType,
-                            controlPoint: region.controlPoint,
-                            rotation: region.rotation,
-                        }
-                    );
+                    await Utility.setEvent(Connection, CARTA.SetRegion, region);
                     await new Promise( resolve => {
                         Utility.getEvent(Connection, CARTA.SetRegionAck, 
                             (SetRegionAck: CARTA.SetRegionAck) => {
                                 SetRegionAckTemp = SetRegionAck;
                                 resolve();
                             }
-                        );                            
+                        );
                     });
                 }, regionTimeout);
 
@@ -242,6 +234,56 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
 
             });
 
+        });
+
+        describe("Remove region #3", () => {
+
+            beforeAll( async () => {
+                await Utility.setEvent(Connection, CARTA.RemoveRegion, 
+                    {
+                        regionId: 3,
+                    }
+                );
+            });
+            
+            test(`should not return within ${returnTimeout} ms`, async () => {
+                await new Promise( (resolve, reject) => {
+                    Connection.onmessage = () => {
+                        reject();
+                    }
+                    let failTimer = setTimeout(() => {
+                        clearTimeout(failTimer);
+                        resolve();
+                    }, returnTimeout);
+                });
+            });
+
+            describe("Modify region #3", () => {
+                let SetRegionAckTemp: CARTA.SetRegionAck;
+                test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
+                    await Utility.setEvent(Connection, CARTA.SetRegion, {
+                        fileId: 0,
+                        regionId: 3,
+                        regionName: "",
+                        regionType: CARTA.RegionType.ELLIPSE,
+                        controlPoint: [{x: 551.0, y: 330.0}, {x: 30.0, y: 15.0}],
+                        rotation: 30.0,
+                    });
+                    await new Promise( resolve => {
+                        Utility.getEvent(Connection, CARTA.SetRegionAck, 
+                            (SetRegionAck: CARTA.SetRegionAck) => {
+                                SetRegionAckTemp = SetRegionAck;
+                                resolve();
+                            }
+                        );
+                    });
+                }, regionTimeout);
+
+                test("SET_REGION_ACK.success = false", () => {
+                    expect(SetRegionAckTemp.success).toBe(false);
+                });
+
+            });
         });
     }); 
 
