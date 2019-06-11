@@ -18,7 +18,8 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 1000
+        "mouseEvent": 1000,
+        "region": 500
     },
     "repeat": {
         "concurrent": 10,
