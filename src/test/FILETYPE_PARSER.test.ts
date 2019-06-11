@@ -68,7 +68,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                 ["M17_SWex.fits", CARTA.FileType.FITS, 51393600, ["0"]],
                 ["M17_SWex.miriad", CARTA.FileType.MIRIAD, 52993642, [""]],
                 ["M17_SWex.hdf5", CARTA.FileType.HDF5, 112823720, ["0"]],
-                ["spire500_ext.fits", CARTA.FileType.FITS, 17591040,  ["0", "1", "2", "3", "4", "5", "6", "7"]],
+                ["spire500_ext.fits", CARTA.FileType.FITS, 17591040, ["1 ExtName: image ", "6 ExtName: error ", "7 ExtName: coverage"]],
             ].map(
                 function([file, type, size, hdu]: [string, CARTA.FileType, number, string[]]) {
                     test(`file "${file}" should exist, image type be ${CARTA.FileType[type]}, size = ${size}, HDU = [${hdu}].`, () => {
