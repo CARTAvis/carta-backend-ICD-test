@@ -325,7 +325,7 @@ let imageAssertItems: ImageAssertItem[] = [
     },
     {
         fileName: "spire500_ext.fits", 
-        hdu: "0", HDUList: ["0", "1", "2", "3", "4", "5", "6", "7"], 
+        hdu: "0", HDUList: ["1 ExtName: image ", "6 ExtName: error ", "7 ExtName: coverage"], 
         fileSize: 17591040, 
         fileType: CARTA.FileType.FITS, 
         shape: [830, 870, 1, 1], NAXIS: 2, 
