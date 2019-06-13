@@ -223,6 +223,13 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         }
                     );
                 });
+                await Utility.setEvent(Connection, CARTA.SetCursor, // For getting a SpectralProfileData after changing channel# or stokes#
+                    {
+                        fileId: imageAssertItem.fileId,
+                        point: {x: 0, y:0},
+                        spectralProfiles: [],
+                    }
+                );
                 await Utility.setEvent(Connection, CARTA.SetImageView, 
                     {
                         fileId: imageAssertItem.fileId, 
@@ -231,13 +238,6 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         compressionType: imageAssertItem.imageDataInfo.compressionType,
                         compressionQuality: imageAssertItem.imageDataInfo.compressionQuality,
                         numSubsets: imageAssertItem.imageDataInfo.numSubsets,
-                    }
-                );
-                await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
-                    {
-                        fileId: imageAssertItem.fileId,
-                        regionId: 0,
-                        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Mean]}],
                     }
                 );
                 await new Promise( resolve => {
@@ -287,9 +287,25 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                                         stokes: profile.stokes,
                                     }
                                 );
+                                // await new Promise( resolve => {
+                                //     Connection.onmessage = (messageEvent: MessageEvent) => {
+                                //         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                                //         const eventType = eventHeader16[0];
+                                //         console.log(CARTA.EventType[eventType]);
+                                //         resolve();
+                                //     };
+                                // });                                
                                 await new Promise( resolve => {
                                     Utility.getEvent(Connection, CARTA.RasterImageData, 
                                         (RasterImageData: CARTA.RasterImageData) => {
+                                            resolve();
+                                        }
+                                    );
+                                });
+                                await new Promise( resolve => {
+                                    Utility.getEvent(Connection, CARTA.SpectralProfileData, 
+                                        (SpectralProfileData: CARTA.SpectralProfileData) => {
+                                            SpectralProfileDataTemp = SpectralProfileData;
                                             resolve();
                                         }
                                     );
@@ -301,22 +317,23 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                                         }
                                     );
                                 });
-                            }
-                            await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
-                                {
-                                    fileId: imageAssertItem.fileId,
-                                    regionId: region.assert.regionId,
-                                    spectralProfiles: [profile],
-                                }
-                            );
-                            await new Promise( resolve => {
-                                Utility.getEvent(Connection, CARTA.SpectralProfileData, 
-                                    (SpectralProfileData: CARTA.SpectralProfileData) => {
-                                        SpectralProfileDataTemp = SpectralProfileData;
-                                        resolve();
+                            } else {
+                                await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
+                                    {
+                                        fileId: imageAssertItem.fileId,
+                                        regionId: region.assert.regionId,
+                                        spectralProfiles: [profile],
                                     }
                                 );
-                            });
+                                await new Promise( resolve => {
+                                    Utility.getEvent(Connection, CARTA.SpectralProfileData, 
+                                        (SpectralProfileData: CARTA.SpectralProfileData) => {
+                                            SpectralProfileDataTemp = SpectralProfileData;
+                                            resolve();
+                                        }
+                                    );
+                                });
+                            }
                         }, regionTimeout);
                         
                         test(`SPECTRAL_PROFILE_DATA.region_id = ${region.assert.regionId}`, () => {
