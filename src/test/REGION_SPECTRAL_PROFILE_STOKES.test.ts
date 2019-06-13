@@ -223,13 +223,6 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         }
                     );
                 });
-                await Utility.setEvent(Connection, CARTA.SetCursor, // For getting a SpectralProfileData after changing channel# or stokes#
-                    {
-                        fileId: imageAssertItem.fileId,
-                        point: {x: 0, y:0},
-                        spectralProfiles: [],
-                    }
-                );
                 await Utility.setEvent(Connection, CARTA.SetImageView, 
                     {
                         fileId: imageAssertItem.fileId, 
@@ -247,6 +240,13 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         }
                     );
                 });
+                await Utility.setEvent(Connection, CARTA.SetCursor, // For getting a SpectralProfileData after changing channel# or stokes#
+                    {
+                        fileId: imageAssertItem.fileId,
+                        point: {x: 0, y:0},
+                        spectralProfiles: [],
+                    }
+                );
             });
 
             imageAssertItem.regionGroup.map( (region: Region) => {
