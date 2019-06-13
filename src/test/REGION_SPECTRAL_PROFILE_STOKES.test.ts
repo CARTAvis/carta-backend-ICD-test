@@ -326,6 +326,12 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         test(`SPECTRAL_PROFILE_DATA.progress = ${region.assert.progress}`, () => {
                             expect(SpectralProfileDataTemp.progress).toEqual(region.assert.progress);
                         });
+                        
+                        if (isNumber(profile.stokes)) {
+                            test(`SPECTRAL_PROFILE_DATA.stokes = ${profile.stokes}`, () => {
+                                expect(SpectralProfileDataTemp.stokes).toEqual(profile.stokes);
+                            });
+                        }
 
                         test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
                             let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
