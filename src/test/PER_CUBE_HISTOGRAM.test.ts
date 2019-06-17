@@ -6,8 +6,33 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let cubeHistogramTimeout = config.timeout.cubeHistogram;
-
-let imageAssertItems = [
+interface AssertItem {
+    fileId: number;
+    fileName: string;
+    hdu: string;
+    imageDataInfo: {
+        compressionQuality: number,
+        imageBounds: {xMin: number, xMax: number, yMin: number, yMax: number},
+        compressionType: CARTA.CompressionType,
+        mip: number,
+        numSubsets: number,
+    };
+    histogram: {
+        fileId: number,
+        regionId: number,
+        histograms: {channel: number, numBins: number}[],
+    };
+    assertHistogram: {
+        regionId: number,
+        binWidth: number,
+        lengthOfHistogramBins: number,
+        channel: number,
+        firstBinCenter: number,
+        numberBins: number,
+        binValues?: {index: number, value: number}[],
+    };
+}
+let imageAssertItems: AssertItem[] = [
     {
         fileId: 0,
         fileName: "supermosaic.10.hdf5",
@@ -87,7 +112,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
         }
     }, connectTimeout);
 
-    imageAssertItems.map( imageAssertItem => {
+    imageAssertItems.map( (imageAssertItem: AssertItem) => {
 
         describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set image view`, () => {
 
