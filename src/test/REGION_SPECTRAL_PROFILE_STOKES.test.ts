@@ -286,15 +286,7 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                                         channel: profile.channel,
                                         stokes: profile.stokes,
                                     }
-                                );
-                                // await new Promise( resolve => {
-                                //     Connection.onmessage = (messageEvent: MessageEvent) => {
-                                //         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
-                                //         const eventType = eventHeader16[0];
-                                //         console.log(CARTA.EventType[eventType]);
-                                //         resolve();
-                                //     };
-                                // });                                
+                                );                               
                                 await new Promise( resolve => {
                                     Utility.getEvent(Connection, CARTA.RasterImageData, 
                                         (RasterImageData: CARTA.RasterImageData) => {
