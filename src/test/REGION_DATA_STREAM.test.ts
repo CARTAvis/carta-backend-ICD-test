@@ -25,24 +25,17 @@ interface Region {
     stats: Stats;
 }
 interface ImageAssertItem {
-    fileId: number;
     fileName: string;
     hdu: string;
-    imageDataInfo: {
-        compressionQuality: number;
-        imageBounds: CARTA.IImageBounds;
-        compressionType: CARTA.CompressionType;
-        mip: number;
-        numSubsets: number;
-    }
+    imageDataInfo: CARTA.ISetImageView;
     precisionDigits: number;
     region: Region;
 }
 let imageAssertItem: ImageAssertItem = {
-    fileId: 0,
     fileName: "M17_SWex.image",
     hdu: "",
     imageDataInfo: {
+        fileId: 0,
         compressionQuality: 11,
         imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
         compressionType: CARTA.CompressionType.ZFP,
@@ -107,59 +100,28 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set region`, () => {
 
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, 
-                {
-                    fileId: -1,
-                }
-            );
+            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1});
             await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectory, 
                     file: imageAssertItem.fileName,
-                    fileId: imageAssertItem.fileId,
+                    fileId: imageAssertItem.imageDataInfo.fileId,
                     hdu: imageAssertItem.hdu,
                     renderMode: CARTA.RenderMode.RASTER,
                 }
-            ); 
-            await new Promise( resolve => {           
-                Utility.getEvent(Connection, CARTA.OpenFileAck, 
-                    (OpenFileAck: CARTA.OpenFileAck) => {
-                        resolve();
-                    }
-                );
-            });
-            await Utility.setEvent(Connection, CARTA.SetImageView, 
-                {
-                    fileId: imageAssertItem.fileId, 
-                    imageBounds: imageAssertItem.imageDataInfo.imageBounds, 
-                    mip: imageAssertItem.imageDataInfo.mip, 
-                    compressionType: imageAssertItem.imageDataInfo.compressionType,
-                    compressionQuality: imageAssertItem.imageDataInfo.compressionQuality,
-                    numSubsets: imageAssertItem.imageDataInfo.numSubsets,
-                }
             );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RasterImageData, 
-                    (RasterImageData: CARTA.RasterImageData) => {
-                        resolve();
-                    }
-                );
-            });
+            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
+            await Utility.setEvent(Connection, CARTA.SetImageView, imageAssertItem.imageDataInfo);
+            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
             await Utility.setEvent(Connection, CARTA.SetRegion, imageAssertItem.region);
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.SetRegionAck, 
-                    (SetRegionAck: CARTA.SetRegionAck) => {
-                        resolve();
-                    }
-                );
-            });
+            await new Promise( resolve => Utility.getEvent(Connection, CARTA.SetRegionAck, resolve));
         });
             
         describe(`SET SPECTRAL REQUIREMENTS`, () => {
             test(`SPECTRAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
                 await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
                     {
-                        fileId: imageAssertItem.fileId,
+                        fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
                         spectralProfiles: [
                             {
@@ -169,13 +131,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         ],
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.SpectralProfileData, 
-                        (SpectralProfileData: CARTA.SpectralProfileData) => {
-                            resolve();
-                        }
-                    );
-                });
+                await new Promise( resolve => Utility.getEvent(Connection, CARTA.SpectralProfileData, resolve));
             }, regionTimeout);
 
         });
@@ -184,18 +140,12 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             test(`REGION_STATS_DATA should arrive within ${regionTimeout} ms`, async () => {
                 await Utility.setEvent(Connection, CARTA.SetStatsRequirements, 
                     {
-                        fileId: imageAssertItem.fileId,
+                        fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
                         stats: imageAssertItem.region.stats.statsTypes,
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.RegionStatsData, 
-                        (RegionStatsData: CARTA.RegionStatsData) => {
-                            resolve();
-                        }
-                    );
-                });
+                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionStatsData, resolve));
             }, regionTimeout);
 
         });
@@ -204,18 +154,12 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
                 await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, 
                     {
-                        fileId: imageAssertItem.fileId,
+                        fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
                         histograms: [{channel: -1, numBins: -1},],
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                        (RegionHistogramData: CARTA.RegionHistogramData) => {
-                            resolve();
-                        }
-                    );
-                });
+                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionHistogramData, resolve));
             }, regionTimeout);
 
         });
@@ -225,7 +169,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             let SpectralProfileDataTemp: CARTA.SpectralProfileData;
             let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             let RegionStatsDataTemp: CARTA.RegionStatsData;
-            test(`SET_REGION_ACK, SPECTRAL_PROFILE_DATA, REGION_HISTOGRAM_DATA, & REGION_STATS_DATA should arrive within ${readFileTimeout} ms`, async () => {
+            test(`SET_REGION_ACK, SPECTRAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${readFileTimeout} ms`, async () => {
                 await Utility.setEvent(Connection, CARTA.SetRegion, 
                     {
                         fileId: imageAssertItem.region.fileId,
@@ -302,8 +246,6 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
         });
 
     });
-
-
 
     afterAll( () => {
         Connection.close();
