@@ -68,11 +68,13 @@ export function setEvent(
     eventData.set(payload, 8);
 
     connection.send(eventData);
-} 
+}
 /// Get websocket message
 export function getEvent(
     connection: WebSocket, 
-    cartaType: any, toDo: (DataMessage: any) => void) {
+    cartaType: any, 
+    toDo: (DataMessage: any) => void,
+) {
         
     connection.onmessage = (messageEvent: MessageEvent) => {
         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
@@ -89,6 +91,58 @@ export function getEvent(
         if (EventType[cartaType.name] === eventType) {
             let DataMessage = cartaType.decode(eventData);
             toDo(DataMessage);
+        }
+    };
+}
+/// Get CARTA stream
+export function getStream(
+    connection: WebSocket,
+    totalCount: number,
+    resolve: () => void,
+    RasterImageData?: (DataMessage: any) => void,
+    SpatialProfileData?: (DataMessage: any) => void,
+    RegionStatsData?: (DataMessage: any) => void,
+    RegionHistogramData?: (DataMessage: any) => void,
+    SpectralProfileData?: (DataMessage: any) => void,
+) {
+    let count: number = 0;
+    connection.onmessage = (messageEvent: MessageEvent) => {
+        const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+        const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+        const eventData = new Uint8Array(messageEvent.data, 8);
+
+        const eventType = eventHeader16[0];
+        const eventIcdVersion = eventHeader16[1];
+        const eventId = eventHeader32[0];
+
+        if (eventIcdVersion !== IcdVersion) {
+            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+        }
+        
+        switch (eventType) {
+            case EventType["RasterImageData"]:
+                RasterImageData(CARTA.RasterImageData.decode(eventData));
+                count++;
+                break;
+            case EventType["SpatialProfileData"]:
+                SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
+                count++;
+                break;
+            case EventType["RegionStatsData"]:
+                RegionStatsData(CARTA.RegionStatsData.decode(eventData));
+                count++;
+                break;
+            case EventType["RegionHistogramData"]:
+                RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                count++;
+                break;
+            case EventType["SpectralProfileData"]:
+                SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
+                count++;
+                break;
+        }
+        if (count === totalCount) {
+            resolve();
         }
     };
 }
