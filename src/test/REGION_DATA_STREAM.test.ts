@@ -145,13 +145,6 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                     }
                 );
             });
-            // await Utility.setEvent(Connection, CARTA.SetCursor, // For getting a SpectralProfileData after changing channel# or stokes#
-            //     {
-            //         fileId: imageAssertItem.fileId,
-            //         point: {x: 0, y:0},
-            //         spectralProfiles: [],
-            //     }
-            // );
             await Utility.setEvent(Connection, CARTA.SetRegion, imageAssertItem.region);
             await new Promise( resolve => {
                 Utility.getEvent(Connection, CARTA.SetRegionAck, 
