@@ -27,7 +27,7 @@ interface Region {
 }
 interface ImageAssertItem {
     fileId: number;
-    fileName: string;
+    file: string;
     hdu: string;
     imageDataInfo: {
         compressionQuality: number;
@@ -41,7 +41,7 @@ interface ImageAssertItem {
 }
 let imageAssertItem: ImageAssertItem = {
     fileId: 0,
-    fileName: "M17_SWex.image",
+    file: "M17_SWex.image",
     hdu: "",
     imageDataInfo: {
         compressionQuality: 11,
@@ -66,10 +66,10 @@ let imageAssertItem: ImageAssertItem = {
                 {
                     coordinate: "z",
                     lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
                     doubleVals: [{index: 10, value: 0.0577611}],
-                    vals: [],
+                    vals: [{index: 10, value: 0.057761108378569286}],
                 },
                 {
                     coordinate: "z",
@@ -135,10 +135,10 @@ let imageAssertItem: ImageAssertItem = {
                 {
                     coordinate: "z",
                     lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
                     doubleVals: [{index: 10, value: -0.02103055}],
-                    vals: [],
+                    vals: [{index: 10, value: -0.02103055}],
                 },
                 {
                     coordinate: "z",
@@ -204,10 +204,10 @@ let imageAssertItem: ImageAssertItem = {
                 {
                     coordinate: "z",
                     lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Mean],
                     doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    vals: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
@@ -273,10 +273,10 @@ let imageAssertItem: ImageAssertItem = {
                 {
                     coordinate: "z",
                     lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
                     doubleVals: [{index: 10, value: 0.01143213}],
-                    vals: [],
+                    vals: [{index: 10, value: 0.01143213}],
                 },
                 {
                     coordinate: "z",
@@ -342,10 +342,10 @@ let imageAssertItem: ImageAssertItem = {
                 {
                     coordinate: "z",
                     lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Mean],
                     doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    vals: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
@@ -427,7 +427,7 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
         }
     }, connectTimeout);
     
-    describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set image view`, () => {
+    describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file}" to set image view`, () => {
 
         beforeAll( async () => {
             await Utility.setEvent(Connection, CARTA.CloseFile, 
@@ -438,19 +438,13 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
             await Utility.setEvent(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectory, 
-                    file: imageAssertItem.fileName,
+                    file: imageAssertItem.file,
                     fileId: imageAssertItem.fileId,
                     hdu: imageAssertItem.hdu,
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             ); 
-            await new Promise( resolve => {           
-                Utility.getEvent(Connection, CARTA.OpenFileAck, 
-                    (OpenFileAck: CARTA.OpenFileAck) => {
-                        resolve();
-                    }
-                );
-            });
+            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
             await Utility.setEvent(Connection, CARTA.SetImageView, 
                 {
                     fileId: imageAssertItem.fileId, 
@@ -461,13 +455,7 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                     numSubsets: imageAssertItem.imageDataInfo.numSubsets,
                 }
             );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RasterImageData, 
-                    (RasterImageData: CARTA.RasterImageData) => {
-                        resolve();
-                    }
-                );
-            });
+            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
         });
 
         imageAssertItem.regionGroup.map( function( region: Region) {
@@ -537,6 +525,16 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                             expect(_meanProfile.doubleVals[doubleVal.index]).toBeCloseTo(doubleVal.value, imageAssertItem.precisionDigits);
                         }
                     });
+                    if (_assertValue.lengthOfVals > 0) {
+                        expect(_meanProfile.vals.length).toEqual(_assertValue.lengthOfVals);
+                        _assertValue.vals.map( val => {
+                            if (isNaN(val.value)) {
+                                expect(isNaN(_meanProfile.vals[val.index])).toBe(true);
+                            } else {
+                                expect(_meanProfile.vals[val.index]).toBeCloseTo(val.value, imageAssertItem.precisionDigits);
+                            }
+                        });
+                    }
                 });
 
                 test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
