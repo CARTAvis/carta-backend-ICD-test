@@ -135,19 +135,20 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
                 await Utility.setEvent(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
                 await new Promise( (resolve, reject) => 
                     Utility.getStream(Connection, 4, resolve,
-                        RasterImageData => {
-                            RasterImageDataTemp = RasterImageData;
+                        {
+                            RasterImageData: RasterImageData => {
+                                RasterImageDataTemp = RasterImageData;
+                            },
+                            SpatialProfileData: SpatialProfileData => {
+                                SpatialProfileDataTemp = SpatialProfileData;
+                            },
+                            RegionHistogramData: RegionHistogramData => {
+                                RegionHistogramDataTemp = RegionHistogramData;
+                            },
+                            RegionStatsData: RegionStatsData => {
+                                RegionStatsDataTemp = RegionStatsData;
+                            },
                         },
-                        SpatialProfileData => {
-                            SpatialProfileDataTemp = SpatialProfileData;
-                        },
-                        RegionStatsData => {
-                            RegionStatsDataTemp = RegionStatsData;
-                        },
-                        RegionHistogramData => {
-                            RegionHistogramDataTemp = RegionHistogramData;
-                        },
-                        SpectralProfileData => {},
                     )
                 );
             }, changeChannelTimeout);

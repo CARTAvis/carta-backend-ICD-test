@@ -99,13 +99,18 @@ export function getStream(
     connection: WebSocket,
     totalCount: number,
     resolve: () => void,
-    RasterImageData?: (DataMessage: any) => void,
-    SpatialProfileData?: (DataMessage: any) => void,
-    RegionStatsData?: (DataMessage: any) => void,
-    RegionHistogramData?: (DataMessage: any) => void,
-    SpectralProfileData?: (DataMessage: any) => void,
+    toDo: {
+        RasterImageData?: (DataMessage: any) => void,
+        SpatialProfileData?: (DataMessage: any) => void,
+        RegionStatsData?: (DataMessage: any) => void,
+        RegionHistogramData?: (DataMessage: any) => void,
+        SpectralProfileData?: (DataMessage: any) => void,
+    },
 ) {
-    let count: number = 0;
+    if (totalCount <= 0) {
+        resolve();
+    }
+    let _count: number = 0;
     connection.onmessage = (messageEvent: MessageEvent) => {
         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
         const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -121,27 +126,23 @@ export function getStream(
         
         switch (eventType) {
             case EventType["RasterImageData"]:
-                RasterImageData(CARTA.RasterImageData.decode(eventData));
-                count++;
+                toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
                 break;
             case EventType["SpatialProfileData"]:
-                SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
-                count++;
+                toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
                 break;
             case EventType["RegionStatsData"]:
-                RegionStatsData(CARTA.RegionStatsData.decode(eventData));
-                count++;
+                toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
                 break;
             case EventType["RegionHistogramData"]:
-                RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
-                count++;
+                toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
                 break;
             case EventType["SpectralProfileData"]:
-                SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
-                count++;
+                toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
                 break;
         }
-        if (count === totalCount) {
+        _count++;
+        if (_count === totalCount) {
             resolve();
         }
     };
