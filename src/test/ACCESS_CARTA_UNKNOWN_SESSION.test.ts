@@ -3,9 +3,17 @@ import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
-
+interface AssertItem {
+    register: CARTA.IRegisterViewer;
+}
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 9999,
+        apiKey: "",
+    },
+}
 describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend with an unknown session id", () => {
-    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=9999 & api_key=""`, () => {
+    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
         test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, done => {        
             // Connect to "testServerUrl"
@@ -17,20 +25,12 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
             
             async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, CARTA.RegisterViewer,
-                    {
-                        sessionId: 9999, 
-                        apiKey: "",
+                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, 
+                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                        RegisterViewerAckTemp = RegisterViewerAck;
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                        (RegisterViewerAck: CARTA.RegisterViewerAck) => {
-                            RegisterViewerAckTemp = RegisterViewerAck;
-                            resolve();
-                        }
-                    );
-                });
                 await this.close();
                 done();
             }
