@@ -4,6 +4,7 @@
     "path": {
         "root": ".",
         "base": "$BASE",
+        "directory": "public",
         "QA": "public/set_QA",
         "performance": "set_QA_performance"
     },
