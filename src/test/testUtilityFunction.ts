@@ -1,5 +1,4 @@
 import {CARTA} from "carta-protobuf";
-import { resolve } from "url";
 /// Toollet functions
 const IcdVersion = 3;
 export const EventType = {
@@ -97,8 +96,10 @@ export async function setEventAsync(
 /// Get websocket message
 export function getEvent(
     connection: WebSocket, 
-    cartaType: any, toDo: (DataMessage: any) => void) {
-        
+    cartaType: any, 
+    toDo: (DataMessage: any) => void,
+) {
+
     connection.onmessage = (messageEvent: MessageEvent) => {
         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
         const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
