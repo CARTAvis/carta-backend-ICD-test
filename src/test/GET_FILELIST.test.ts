@@ -76,7 +76,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                     expect(FileListResponseTemp.directory).toEqual(assertItem.fileListResponseGroup[index].directory);
                 });
 
-                if(typeof assertItem.fileListResponseGroup[index].files !== "undefined") {
+                if(assertItem.fileListResponseGroup[index].files !== undefined) {
                     test(`FILE_LIST_RESPONSE.files[] should contain ${JSON.stringify(assertItem.fileListResponseGroup[index].files.map(f => f.name))}`, () => {
                         assertItem.fileListResponseGroup[index].files.map( file => {
                             expect(FileListResponseTemp.files.find(f => f.name === file.name)).toBeDefined();
