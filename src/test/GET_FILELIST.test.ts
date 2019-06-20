@@ -68,11 +68,11 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                     expect(FileListResponseTemp.success).toBe(assertItem.fileListResponseGroup[index].success);
                 });
 
-                test(`FILE_LIST_RESPONSE.parent is ${assertItem.fileListResponseGroup[index].parent}`, () => {
+                test(`FILE_LIST_RESPONSE.parent is "${assertItem.fileListResponseGroup[index].parent}"`, () => {
                     expect(FileListResponseTemp.parent).toEqual(assertItem.fileListResponseGroup[index].parent);
                 });
 
-                test(`FILE_LIST_RESPONSE.directory = ${assertItem.fileListResponseGroup[index].directory}`, () => {
+                test(`FILE_LIST_RESPONSE.directory = "${assertItem.fileListResponseGroup[index].directory}"`, () => {
                     expect(FileListResponseTemp.directory).toEqual(assertItem.fileListResponseGroup[index].directory);
                 });
 
@@ -84,7 +84,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                     });
                 }
 
-                test(`FILE_LIST_RESPONSE.subdirectories should contain ${assertItem.fileListResponseGroup[index].subdirectories}`, () => {
+                test(`FILE_LIST_RESPONSE.subdirectories should contain "${assertItem.fileListResponseGroup[index].subdirectories}"`, () => {
                     assertItem.fileListResponseGroup[index].subdirectories.map( dir => {
                         expect(FileListResponseTemp.subdirectories).toContainEqual(dir);
                     });
