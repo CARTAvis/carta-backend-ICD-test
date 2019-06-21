@@ -325,7 +325,7 @@ let imageAssertItems: ImageAssertItem[] = [
     },
     {
         fileName: "spire500_ext.fits", 
-        hdu: "0", HDUList: ["1 ExtName: image ", "6 ExtName: error ", "7 ExtName: coverage"], 
+        hdu: "0", HDUList: ["1 ExtName: image", "6 ExtName: error", "7 ExtName: coverage"], 
         fileSize: 17591040, 
         fileType: CARTA.FileType.FITS, 
         shape: [830, 870, 1, 1], NAXIS: 2, 
@@ -453,7 +453,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 });
 
                 test(`FILE_INFO_RESPONSE.file_info.HDU_List = [${item.HDUList}]`, () => {
-                    expect(FileInfoResponseTemp.fileInfo.HDUList).toEqual(item.HDUList);
+                    expect(FileInfoResponseTemp.fileInfo.HDUList.map(f => f = f.trim())).toEqual(item.HDUList.map(f => f = f.trim()));
                 });
 
                 test(`FILE_INFO_RESPONSE.file_info.name = "${item.fileName}"`, () => {
