@@ -2,6 +2,7 @@ import {CARTA} from "carta-protobuf";
 /// Toollet functions
 const IcdVersion = 3;
 export const EventType = {
+    EmptyEvent: 0,
     RegisterViewer: 1,
     FileListRequest: 2,
     FileInfoRequest: 3,
@@ -30,6 +31,7 @@ export const EventType = {
     SpectralProfileData: 26,
     RegionStatsData: 27,
     ErrorData: 28,
+    AnimationFlowControl: 29,
 };
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
@@ -69,13 +71,35 @@ export function setEvent(
 
     connection.send(eventData);
 }
+export async function setEventAsync(
+    connection: WebSocket, 
+    cartaType: any, 
+    eventMessage: any
+) {
+    return new Promise( resolve => {
+        let message = cartaType.create(eventMessage);
+        let payload = cartaType.encode(message).finish();
+        let eventData = new Uint8Array(8 + payload.byteLength);
+        const eventHeader16 = new Uint16Array(eventData.buffer, 0, 2);
+        const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
+        eventHeader16[0] = EventType[cartaType.name];
+        eventHeader16[1] = IcdVersion;
+        eventHeader32[0] = 0; // eventCounter;
+
+        eventData.set(payload, 8);
+
+        connection.send(eventData);
+
+        resolve();
+    });
+}
 /// Get websocket message
 export function getEvent(
     connection: WebSocket, 
     cartaType: any, 
     toDo: (DataMessage: any) => void,
 ) {
-        
+
     connection.onmessage = (messageEvent: MessageEvent) => {
         const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
         const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -94,56 +118,31 @@ export function getEvent(
         }
     };
 }
-/// Get CARTA stream
-export function getStream(
-    connection: WebSocket,
-    totalCount: number,
-    resolve: () => void,
-    toDo: {
-        RasterImageData?: (DataMessage: any) => void,
-        SpatialProfileData?: (DataMessage: any) => void,
-        RegionStatsData?: (DataMessage: any) => void,
-        RegionHistogramData?: (DataMessage: any) => void,
-        SpectralProfileData?: (DataMessage: any) => void,
-    },
+export async function getEventAsync(
+    connection: WebSocket, 
+    cartaType: any, 
+    toDo?: (DataMessage: any) => void,
 ) {
-    if (totalCount <= 0) {
-        resolve();
-    }
-    let _count: number = 0;
-    connection.onmessage = (messageEvent: MessageEvent) => {
-        const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
-        const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
-        const eventData = new Uint8Array(messageEvent.data, 8);
+    return new Promise( resolve =>
+        connection.onmessage = async (messageEvent: MessageEvent) => {
+            const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+            const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+            const eventData = new Uint8Array(messageEvent.data, 8);
 
-        const eventType = eventHeader16[0];
-        const eventIcdVersion = eventHeader16[1];
-        const eventId = eventHeader32[0];
+            const eventType = eventHeader16[0];
+            const eventIcdVersion = eventHeader16[1];
+            const eventId = eventHeader32[0];
 
-        if (eventIcdVersion !== IcdVersion) {
-            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            // if (eventIcdVersion !== IcdVersion) {
+            //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            // }
+            if (EventType[cartaType.name] === eventType) {
+                let DataMessage = cartaType.decode(eventData);
+                if(typeof toDo === "function") {
+                    await toDo(DataMessage);
+                }
+                resolve();
+            }
         }
-        
-        switch (eventType) {
-            case EventType["RasterImageData"]:
-                toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
-                break;
-            case EventType["SpatialProfileData"]:
-                toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
-                break;
-            case EventType["RegionStatsData"]:
-                toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
-                break;
-            case EventType["RegionHistogramData"]:
-                toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
-                break;
-            case EventType["SpectralProfileData"]:
-                toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
-                break;
-        }
-        _count++;
-        if (_count === totalCount) {
-            resolve();
-        }
-    };
+    );
 }

@@ -2,10 +2,41 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let testSubdirectoryName = "./public";
+let testSubdirectory = config.path.directory;
 let expectBasePath = config.path.base;
 let connectTimeout = config.timeout.connection;
-
+interface AssertItem {
+    register: CARTA.IRegisterViewer;
+    filelistGroup: CARTA.IFileListRequest[];
+    fileListResponseGroup: CARTA.IFileListResponse[];
+}
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 0,
+        apiKey: "",
+    },
+    filelistGroup: [
+        {directory: expectBasePath,},
+        {directory: testSubdirectory,},
+    ],
+    fileListResponseGroup: [
+        {
+            success: true,
+            directory: ".",
+            parent: "",
+            subdirectories: ["public"],
+        },
+        {
+            success: true,
+            directory: testSubdirectory,
+            parent: ".",
+            files: [
+                {name: "aJ.fits"},
+            ],
+            subdirectories: ["set_QA"],
+        },
+    ],
+}
 describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at default path ($BASE)", () => {
     describe(`connect to CARTA "${testServerUrl}"`, () => {
         let Connection: WebSocket;
@@ -15,96 +46,49 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, CARTA.RegisterViewer, 
-                    {
-                        sessionId: 0, 
-                        apiKey: "",
-                    }
-                );
-                await new Promise( resolve => { 
-                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                        RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);
-                            resolve();           
-                        }
-                    );
-                });
+                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 done();
             }
         }, connectTimeout);
 
-        describe(`access folder "${expectBasePath}"`, () => {
-            let FileListResponseTemp: CARTA.FileListResponse;
-            test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
-                await Utility.setEvent(Connection, CARTA.FileListRequest, 
-                    {
-                        directory: expectBasePath,
-                    }
-                );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.FileListResponse, 
+        assertItem.filelistGroup.map( (filelist, index) => {
+            describe(`access folder "${filelist.directory}"`, () => {
+                let FileListResponseTemp: CARTA.FileListResponse;
+                test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
+                    await Utility.setEventAsync(Connection, CARTA.FileListRequest, filelist);
+                    await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
                         (FileListResponse: CARTA.FileListResponse) => {
                             FileListResponseTemp = FileListResponse;
-                            resolve();
                         }
-                    );                
-                });
-            }, connectTimeout);
-        
-            test("FILE_LIST_RESPONSE.success == True", () => {
-                expect(FileListResponseTemp.success).toBe(true);
-            });
-
-            test(`FILE_LIST_RESPONSE.parent is ""`, () => {
-                expect(FileListResponseTemp.parent).toEqual("");
-            });
-
-            test(`FILE_LIST_RESPONSE.directory == "."`, () => {
-                console.log(`$Base = "${FileListResponseTemp.directory}"`);
-                expect(FileListResponseTemp.directory).toEqual(".");
-            });
-
-            test(`FILE_LIST_RESPONSE.subdirectories == ["public"]`, () => {
-                expect(FileListResponseTemp.subdirectories).toEqual(["public"]);
-            });
-        });
-
-        describe(`access folder "${testSubdirectoryName}"`, () => {
-            let FileListResponseTemp: CARTA.FileListResponse;
-            test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
-                await Utility.setEvent(Connection, CARTA.FileListRequest, 
-                    {
-                        directory: testSubdirectoryName,
-                    }
-                );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.FileListResponse, 
-                        (FileListResponse: CARTA.FileListResponse) => {
-                            FileListResponseTemp = FileListResponse;
-                            resolve();
-                        }
-                    );                
-                });
-            }, connectTimeout);
-        
-            test("FILE_LIST_RESPONSE.success == True", () => {
-                expect(FileListResponseTemp.success).toBe(true);
-            });
-
-            test(`FILE_LIST_RESPONSE.parent is "."`, () => {
-                expect(FileListResponseTemp.parent).toEqual(".");
-            });
-
-            test(`FILE_LIST_RESPONSE.directory == "public"`, () => {
-                expect(FileListResponseTemp.directory).toEqual("public");
-            });
-
-            test(`"aJ.fits" should be in FILE_LIST_RESPONSE.files[]"`, () => {
-                expect(FileListResponseTemp.files.find(f => f.name === "aJ.fits")).toBeDefined();
-            });
+                    );
+                }, connectTimeout);
             
-            test(`FILE_LIST_RESPONSE.subdirectories should have "set_QA"`, () => {
-                expect(FileListResponseTemp.subdirectories.find(f => f === "set_QA")).toBeDefined();
+                test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
+                    expect(FileListResponseTemp.success).toBe(assertItem.fileListResponseGroup[index].success);
+                });
+
+                test(`FILE_LIST_RESPONSE.parent is "${assertItem.fileListResponseGroup[index].parent}"`, () => {
+                    expect(FileListResponseTemp.parent).toEqual(assertItem.fileListResponseGroup[index].parent);
+                });
+
+                test(`FILE_LIST_RESPONSE.directory = "${assertItem.fileListResponseGroup[index].directory}"`, () => {
+                    expect(FileListResponseTemp.directory).toEqual(assertItem.fileListResponseGroup[index].directory);
+                });
+
+                if(assertItem.fileListResponseGroup[index].files !== undefined) {
+                    test(`FILE_LIST_RESPONSE.files[] should contain ${JSON.stringify(assertItem.fileListResponseGroup[index].files.map(f => f.name))}`, () => {
+                        assertItem.fileListResponseGroup[index].files.map( file => {
+                            expect(FileListResponseTemp.files.find(f => f.name === file.name)).toBeDefined();
+                        });
+                    });
+                }
+
+                test(`FILE_LIST_RESPONSE.subdirectories should contain "${assertItem.fileListResponseGroup[index].subdirectories}"`, () => {
+                    assertItem.fileListResponseGroup[index].subdirectories.map( dir => {
+                        expect(FileListResponseTemp.subdirectories).toContainEqual(dir);
+                    });
+                });
             });
         });
 
@@ -125,21 +109,8 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
             Connection.binaryType = "arraybuffer";
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEvent(this, CARTA.RegisterViewer, 
-                    {
-                        sessionId: 0, 
-                        apiKey: "",
-                    }
-                );
-                await new Promise( resolve => { 
-                    Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                        RegisterViewerAck => {
-                            expect(RegisterViewerAck.success).toBe(true);
-                            resolve();           
-                        }
-                    );
-                });
+                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 done();
             }
         }, connectTimeout);
@@ -147,19 +118,16 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
         describe(`access folder "/unknown/path"`, () => {
             let FileListResponseTemp: CARTA.FileListResponse;
             test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
-                await Utility.setEvent(Connection, CARTA.FileListRequest, 
+                await Utility.setEventAsync(Connection, CARTA.FileListRequest, 
                     {
                         directory: "/unknown/path",
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.FileListResponse, 
-                        (FileListResponse: CARTA.FileListResponse) => {
-                            FileListResponseTemp = FileListResponse;
-                            resolve();
-                        }
-                    );                
-                });
+                await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
+                    (FileListResponse: CARTA.FileListResponse) => {
+                        FileListResponseTemp = FileListResponse;
+                    }
+                );
             }, connectTimeout);
         
             test("FILE_LIST_RESPONSE.success == False", () => {
