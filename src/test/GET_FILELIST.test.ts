@@ -5,6 +5,7 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.directory;
 let expectBasePath = config.path.base;
 let connectTimeout = config.timeout.connection;
+let fileListTimeout = config.timeout.listFile;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelistGroup: CARTA.IFileListRequest[];
@@ -55,7 +56,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
         assertItem.filelistGroup.map( (filelist, index) => {
             describe(`access folder "${filelist.directory}"`, () => {
                 let FileListResponseTemp: CARTA.FileListResponse;
-                test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
+                test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.FileListRequest, filelist);
                     await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
                         (FileListResponse: CARTA.FileListResponse, resolve) => {
@@ -63,7 +64,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                             resolve();
                         }
                     );
-                }, connectTimeout);
+                }, fileListTimeout);
             
                 test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
                     expect(FileListResponseTemp.success).toBe(assertItem.fileListResponseGroup[index].success);
@@ -118,7 +119,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
     
         describe(`access folder "/unknown/path"`, () => {
             let FileListResponseTemp: CARTA.FileListResponse;
-            test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
+            test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.FileListRequest, 
                     {
                         directory: "/unknown/path",
@@ -130,7 +131,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
                         resolve();
                     }
                 );
-            }, connectTimeout);
+            }, fileListTimeout);
         
             test("FILE_LIST_RESPONSE.success == False", () => {
                 expect(FileListResponseTemp.success).toBe(false);
