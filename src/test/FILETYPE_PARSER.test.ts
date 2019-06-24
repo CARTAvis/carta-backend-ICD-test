@@ -82,7 +82,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         Connection.onopen = OnOpen;
         async function OnOpen (this: WebSocket, ev: Event) {
             await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             done();
         }
     }, connectTimeout);

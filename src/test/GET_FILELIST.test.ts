@@ -48,7 +48,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
             async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 done();
             }
         }, connectTimeout);
@@ -112,7 +112,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 done();
             }
         }, connectTimeout);
