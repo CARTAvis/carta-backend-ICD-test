@@ -606,7 +606,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
             describe(`query the info of file : ${fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                    await Utility.setEvent(Connection, CARTA.FileInfoRequest, 
+                    await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, 
                         {
                             directory: testSubdirectory, 
                             file: fileName, 
