@@ -1,4 +1,3 @@
-import {CARTA} from "carta-protobuf";
 /// Toollet functions
 const IcdVersion = 3;
 export const EventType = {
@@ -71,7 +70,7 @@ export function setEvent(
 
     connection.send(eventData);
 }
-export async function setEventAsync(
+export function setEventAsync(
     connection: WebSocket, 
     cartaType: any, 
     eventMessage: any
@@ -118,12 +117,12 @@ export function getEvent(
         }
     };
 }
-export async function getEventAsync(
+export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    toDo?: (DataMessage: any) => void,
+    promiseToDo?: (DataMessage: any, resolve: {} | PromiseLike<{}>, reject?: {} | PromiseLike<{}>) => void,
 ) {
-    return new Promise( resolve =>
+    return new Promise( (resolve, reject) =>
         connection.onmessage = async (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
             const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -131,17 +130,16 @@ export async function getEventAsync(
 
             const eventType = eventHeader16[0];
             const eventIcdVersion = eventHeader16[1];
-            const eventId = eventHeader32[0];
 
-            // if (eventIcdVersion !== IcdVersion) {
-            //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
-            // }
+            if (eventIcdVersion !== IcdVersion) {
+                console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            }
+
             if (EventType[cartaType.name] === eventType) {
                 let DataMessage = cartaType.decode(eventData);
-                if(typeof toDo === "function") {
-                    await toDo(DataMessage);
+                if(typeof promiseToDo === "function") {
+                    await promiseToDo(DataMessage, resolve, reject);
                 }
-                resolve();
             }
         }
     );
