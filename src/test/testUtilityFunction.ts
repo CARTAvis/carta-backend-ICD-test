@@ -53,6 +53,7 @@ export function getEventName(byteArray: Uint8Array): String {
     return String.fromCharCode.apply(null, byteArray);
 }
 /// Send websocket message
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
 export function setEvent(
     connection: WebSocket, 
     cartaType: any, eventMessage: any) {
@@ -70,6 +71,9 @@ export function setEvent(
 
     connection.send(eventData);
 }
+/// Send websocket message async
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
+/// return a Promise<any> for await
 export function setEventAsync(
     connection: WebSocket, 
     cartaType: any, 
@@ -93,10 +97,12 @@ export function setEventAsync(
     });
 }
 /// Get websocket message
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type)
+/// Function toDo: Parameters: dataMessage(the responding message)
 export function getEvent(
     connection: WebSocket, 
     cartaType: any, 
-    toDo: (DataMessage: any) => void,
+    toDo: (dataMessage: any) => void,
 ) {
 
     connection.onmessage = (messageEvent: MessageEvent) => {
@@ -108,19 +114,25 @@ export function getEvent(
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
 
-        // if (eventIcdVersion !== IcdVersion) {
-        //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
-        // }
+        if (eventIcdVersion !== IcdVersion) {
+            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+        }
+
         if (EventType[cartaType.name] === eventType) {
-            let DataMessage = cartaType.decode(eventData);
-            toDo(DataMessage);
+            let dataMessage = cartaType.decode(eventData);
+            toDo(dataMessage);
         }
     };
 }
+/// Get websocket message async
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type)
+/// Function promiseToDo: As absent, do nothing but receive a message.
+/// Parameters: dataMessage(the responding message), resolve as callback be finished, reject as callback be finished
+/// return a Promise<any> for await
 export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    promiseToDo?: (DataMessage: any, resolve: any, reject?: any) => void,
+    promiseToDo?: (dataMessage: any, resolve: (value?: any) => void, reject?: (reason?: any) => void) => void,
 ) {
     return new Promise( (resolve, reject) =>
         connection.onmessage = async (messageEvent: MessageEvent) => {
@@ -130,15 +142,18 @@ export function getEventAsync(
 
             const eventType = eventHeader16[0];
             const eventIcdVersion = eventHeader16[1];
+            const eventId = eventHeader32[0];
 
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
             }
 
             if (EventType[cartaType.name] === eventType) {
-                let DataMessage = cartaType.decode(eventData);
+                let dataMessage = cartaType.decode(eventData);
                 if(typeof promiseToDo === "function") {
-                    await promiseToDo(DataMessage, resolve, reject);
+                    await promiseToDo(dataMessage, resolve, reject);
+                } else {
+                    resolve();
                 }
             }
         }
