@@ -4,6 +4,7 @@ import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
+let fileListTimeout = config.timeout.listFile;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -88,7 +89,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         let FileListResponseTemp: CARTA.FileListResponse;
-        test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
+        test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
             await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
             await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
                 (FileListResponse: CARTA.FileListResponse, resolve) => {
@@ -96,7 +97,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                     resolve();
                 }
             );
-        }, connectTimeout);
+        }, fileListTimeout);
 
         test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponse.success}`, () => {
             expect(FileListResponseTemp.success).toBe(assertItem.fileListResponse.success);
