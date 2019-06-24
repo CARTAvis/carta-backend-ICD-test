@@ -47,7 +47,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
             async function OnOpen (this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
                 done();
             }
         }, connectTimeout);
@@ -58,8 +58,9 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                 test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.FileListRequest, filelist);
                     await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                        (FileListResponse: CARTA.FileListResponse) => {
+                        (FileListResponse: CARTA.FileListResponse, resolve) => {
                             FileListResponseTemp = FileListResponse;
+                            resolve();
                         }
                     );
                 }, connectTimeout);
@@ -110,7 +111,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
             Connection.onopen = OnOpen;
             async function OnOpen (this: WebSocket, ev: Event) {
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
                 done();
             }
         }, connectTimeout);
@@ -124,8 +125,9 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
                     }
                 );
                 await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                    (FileListResponse: CARTA.FileListResponse) => {
+                    (FileListResponse: CARTA.FileListResponse, resolve) => {
                         FileListResponseTemp = FileListResponse;
+                        resolve();
                     }
                 );
             }, connectTimeout);

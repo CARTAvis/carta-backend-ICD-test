@@ -81,7 +81,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         Connection.onopen = OnOpen;
         async function OnOpen (this: WebSocket, ev: Event) {
             await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck, (ack, resolve) => resolve());
             done();
         }
     }, connectTimeout);
@@ -91,8 +91,9 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms.`, async () => {
             await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
             await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                (FileListResponse: CARTA.FileListResponse, resolve) => {
                     FileListResponseTemp = FileListResponse;
+                    resolve();
                 }
             );
         }, connectTimeout);
