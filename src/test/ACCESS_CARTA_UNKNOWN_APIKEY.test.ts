@@ -29,8 +29,9 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend 
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
                 await Utility.getEventAsync(this, CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                    (RegisterViewerAck: CARTA.RegisterViewerAck, resolve) => {
                         RegisterViewerAckTemp = RegisterViewerAck;
+                        resolve();
                     }
                 );
                 done();

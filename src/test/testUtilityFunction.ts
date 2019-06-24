@@ -120,7 +120,7 @@ export function getEvent(
 export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    promiseToDo?: (DataMessage: any, resolve: {} | PromiseLike<{}>, reject?: {} | PromiseLike<{}>) => void,
+    promiseToDo?: (DataMessage: any, resolve: any, reject?: any) => void,
 ) {
     return new Promise( (resolve, reject) =>
         connection.onmessage = async (messageEvent: MessageEvent) => {

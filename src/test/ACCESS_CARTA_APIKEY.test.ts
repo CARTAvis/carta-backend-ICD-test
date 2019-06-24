@@ -32,9 +32,10 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
             async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck) => {
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck,  
+                    (RegisterViewerAck: CARTA.RegisterViewerAck, resolve) => {
                         RegisterViewerAckTemp = RegisterViewerAck;
+                        resolve();
                     }
                 );
                 done();
@@ -65,8 +66,9 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
         test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms`, async () => {
             await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
             await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse) => {
+                (FileListResponse: CARTA.FileListResponse, resolve) => {
                     FileListResponseTemp = FileListResponse;
+                    resolve();
                 }
             );
         }, connectTimeout);
