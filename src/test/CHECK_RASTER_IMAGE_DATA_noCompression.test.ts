@@ -193,7 +193,7 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
     describe(`Go to "${testSubdirectory}" folder`, () => {
 
         beforeAll( async () => {            
-            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1});
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
         });
         
         describe(`Open image "${assertItem.fileOpen.file}"`, () => {

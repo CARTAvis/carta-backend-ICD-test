@@ -119,7 +119,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1});
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
         }, connectTimeout);
 
         assertItem.fileOpenAckGroup.map( (fileOpenAck: CARTA.IOpenFileAck, index) => {
