@@ -158,7 +158,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                 if(rasterImageData.fileId < 0){                
                     test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterImageData, (ack, resolve, reject) => reject(), messageReturnTimeout);
+                        await Utility.getEventAsync(Connection, CARTA.RasterImageData, () => {}, messageReturnTimeout);
                     }, changeChannelTimeout + messageReturnTimeout);
                 }else{
                     let RasterImageDataTemp: CARTA.RasterImageData;

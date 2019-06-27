@@ -156,6 +156,9 @@ export function getEventAsync(
                 } else {
                     resolve();
                 }
+                if(timeout){
+                    reject();
+                }
             }
         };
         if(timeout){
