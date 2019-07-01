@@ -1,4 +1,3 @@
-import {CARTA} from "carta-protobuf";
 /// Toollet functions
 const IcdVersion = 3;
 export const EventType = {
@@ -54,6 +53,7 @@ export function getEventName(byteArray: Uint8Array): String {
     return String.fromCharCode.apply(null, byteArray);
 }
 /// Send websocket message
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
 export function setEvent(
     connection: WebSocket, 
     cartaType: any, eventMessage: any) {
@@ -71,7 +71,10 @@ export function setEvent(
 
     connection.send(eventData);
 }
-export async function setEventAsync(
+/// Send websocket message async
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
+/// return a Promise<any> for await
+export function setEventAsync(
     connection: WebSocket, 
     cartaType: any, 
     eventMessage: any
@@ -94,10 +97,12 @@ export async function setEventAsync(
     });
 }
 /// Get websocket message
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type)
+/// Function toDo: Parameters: dataMessage(the responding message)
 export function getEvent(
     connection: WebSocket, 
     cartaType: any, 
-    toDo: (DataMessage: any) => void,
+    toDo: (dataMessage: any) => void,
 ) {
 
     connection.onmessage = (messageEvent: MessageEvent) => {
@@ -109,21 +114,27 @@ export function getEvent(
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
 
-        // if (eventIcdVersion !== IcdVersion) {
-        //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
-        // }
+        if (eventIcdVersion !== IcdVersion) {
+            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+        }
+
         if (EventType[cartaType.name] === eventType) {
-            let DataMessage = cartaType.decode(eventData);
-            toDo(DataMessage);
+            let dataMessage = cartaType.decode(eventData);
+            toDo(dataMessage);
         }
     };
 }
-export async function getEventAsync(
+/// Get websocket message async
+/// Parameters: connection(Websocket ref), cartaType(CARTA.type)
+/// Function promiseToDo: As absent, do nothing but receive a message.
+/// Parameters: dataMessage(the responding message), resolve as callback be finished, reject as callback be finished
+/// return a Promise<any> for await
+export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    toDo?: (DataMessage: any) => void,
+    promiseToDo?: (dataMessage: any, resolve: (value?: any) => void, reject?: (reason?: any) => void) => void,
 ) {
-    return new Promise( resolve =>
+    return new Promise( (resolve, reject) =>
         connection.onmessage = async (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
             const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -133,15 +144,17 @@ export async function getEventAsync(
             const eventIcdVersion = eventHeader16[1];
             const eventId = eventHeader32[0];
 
-            // if (eventIcdVersion !== IcdVersion) {
-            //     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
-            // }
+            if (eventIcdVersion !== IcdVersion) {
+                console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            }
+
             if (EventType[cartaType.name] === eventType) {
-                let DataMessage = cartaType.decode(eventData);
-                if(typeof toDo === "function") {
-                    await toDo(DataMessage);
+                let dataMessage = cartaType.decode(eventData);
+                if(typeof promiseToDo === "function") {
+                    await promiseToDo(dataMessage, resolve, reject);
+                } else {
+                    resolve();
                 }
-                resolve();
             }
         }
     );
