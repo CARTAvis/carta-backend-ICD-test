@@ -133,8 +133,9 @@ export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
     promiseToDo?: (dataMessage: any, resolve: (value?: any) => void, reject?: (reason?: any) => void) => void,
+    timeout?: number,
 ) {
-    return new Promise( (resolve, reject) =>
+    return new Promise( (resolve, reject) => {
         connection.onmessage = async (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
             const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -155,7 +156,16 @@ export function getEventAsync(
                 } else {
                     resolve();
                 }
+                if(timeout){
+                    reject();
+                }
             }
+        };
+        if(timeout){
+            let Timer = setTimeout(() => {
+                clearTimeout(Timer);
+                resolve();
+            }, timeout); 
         }
-    );
+    });
 }
