@@ -179,6 +179,7 @@ export function getStream(
     totalCount: number,
     resolve: () => void,
     toDo: {
+        RasterTileData?: (DataMessage: any) => void,
         RasterImageData?: (DataMessage: any) => void,
         SpatialProfileData?: (DataMessage: any) => void,
         RegionStatsData?: (DataMessage: any) => void,
@@ -204,6 +205,9 @@ export function getStream(
         }
         
         switch (eventType) {
+            case EventType["RasterTileData"]:
+                toDo.RasterTileData(CARTA.RasterTileData.decode(eventData));
+                break;
             case EventType["RasterImageData"]:
                 toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
                 break;
