@@ -1,5 +1,5 @@
-/// Toollet functions
-const IcdVersion = 3;
+/// CARTA ICD definition
+const IcdVersion = 4;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -31,6 +31,10 @@ export const EventType = {
     RegionStatsData: 27,
     ErrorData: 28,
     AnimationFlowControl: 29,
+    AddRequireTiles: 30,
+    REMOVE_REQUIRED_TILES: 31,
+    RASTER_TILE_DATA: 32,
+
 };
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
