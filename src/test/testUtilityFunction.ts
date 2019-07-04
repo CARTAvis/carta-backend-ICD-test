@@ -178,13 +178,13 @@ export function getStream(
     connection: WebSocket,
     totalCount: number,
     resolve: () => void,
-    toDo: {
-        RasterTileData?: (DataMessage: any) => void,
-        RasterImageData?: (DataMessage: any) => void,
-        SpatialProfileData?: (DataMessage: any) => void,
-        RegionStatsData?: (DataMessage: any) => void,
-        RegionHistogramData?: (DataMessage: any) => void,
-        SpectralProfileData?: (DataMessage: any) => void,
+    toDo?: {
+        RasterTileData?: (DataMessage?: any) => void,
+        RasterImageData?: (DataMessage?: any) => void,
+        SpatialProfileData?: (DataMessage?: any) => void,
+        RegionStatsData?: (DataMessage?: any) => void,
+        RegionHistogramData?: (DataMessage?: any) => void,
+        SpectralProfileData?: (DataMessage?: any) => void,
     },
 ) {
     if (totalCount <= 0) {
@@ -199,30 +199,46 @@ export function getStream(
         const eventType = eventHeader16[0];
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
+        // console.log(eventType);
 
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
         }
-        
-        switch (eventType) {
-            case EventType["RasterTileData"]:
-                toDo.RasterTileData(CARTA.RasterTileData.decode(eventData));
-                break;
-            case EventType["RasterImageData"]:
-                toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
-                break;
-            case EventType["SpatialProfileData"]:
-                toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
-                break;
-            case EventType["RegionStatsData"]:
-                toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
-                break;
-            case EventType["RegionHistogramData"]:
-                toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
-                break;
-            case EventType["SpectralProfileData"]:
-                toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
-                break;
+        if (toDo) {
+            switch (eventType) {
+                case EventType["RasterTileData"]:
+                    if (typeof toDo.RasterTileData === "function") {
+                        toDo.RasterTileData(CARTA.RasterTileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RasterImageData"]:
+                    if (typeof toDo.RasterImageData === "function") {
+                        toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpatialProfileData"]:
+                    if (typeof toDo.SpatialProfileData === "function") {
+                        toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionStatsData"]:
+                    if (typeof toDo.RegionStatsData === "function") {
+                        toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionHistogramData"]:
+                    if (typeof toDo.RegionHistogramData === "function") {
+                        toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpectralProfileData"]:
+                    if (typeof toDo.SpectralProfileData === "function") {
+                        toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         _count++;
         if (_count === totalCount) {
