@@ -182,11 +182,10 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
 
             });
 
-            describe(`add required tiles for the file "${assertItem.fileOpenGroup[index].file}"`, () => {
+            describe(`set image channel for the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let RasterTileDataTemp: CARTA.RasterTileData;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
-                    // await Utility.setEventAsync(Connection, CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
                     await Utility.getEventAsync(Connection, CARTA.RasterTileData,
                         (RasterTileData: CARTA.RasterTileData, resolve) => {
                             RasterTileDataTemp = RasterTileData;
