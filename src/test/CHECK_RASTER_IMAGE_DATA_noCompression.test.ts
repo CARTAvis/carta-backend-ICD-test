@@ -11,8 +11,8 @@ interface AssertItem {
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     fileOpenAck: CARTA.IOpenFileAck;
-    setImageView: CARTA.ISetImageView;
-    rasterImageData: CARTA.IRasterImageData;
+    setImageChannel: CARTA.ISetImageChannels;
+    rasterTileData: CARTA.IRasterTileData;
     assert: {
         channelHistogramData: {
             numBins: number;
@@ -138,21 +138,16 @@ let assertItem: AssertItem = {
                 ],
             },
     },
-    setImageView: {
+    setImageChannel: {
         fileId: 0,
-        imageBounds: {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024},
-        mip: 3,
-        compressionType: CARTA.CompressionType.NONE,
-    },
-    rasterImageData: {
-        fileId: 0,
-        imageBounds: {xMin: 0, xMax: 1024, yMin: 0, yMax: 1024},
         channel: 0,
-        stokes: 0,
-        mip: 3,
-        compressionType: CARTA.CompressionType.NONE,
-        compressionQuality: 0,
+        requiredTiles: {
+            fileId: 0,
+            tiles: [0],
+            compressionType: CARTA.CompressionType.NONE,
+        },
     },
+    rasterTileData: {},
     assert: {
         channelHistogramData: {
             numBins: 1024,
@@ -198,11 +193,18 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
         
         describe(`Open image "${assertItem.fileOpen.file}"`, () => {
             let OpenFileAckTemp: CARTA.OpenFileAck;
+            let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
                 await Utility.getEventAsync(Connection, CARTA.OpenFileAck,  
                     (OpenFileAck: CARTA.OpenFileAck, resolve) => {
                         OpenFileAckTemp = OpenFileAck;
+                        resolve();
+                    }
+                );
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData,
+                    (RegionHistogramData: CARTA.RegionHistogramData, resolve) => {
+                        RegionHistogramDataTemp = RegionHistogramData;
                         resolve();
                     }
                 );
@@ -243,68 +245,67 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 });
             });
 
-        });
-
-        describe(`Set image view for "${assertItem.fileOpen.file}"`, () => {
-            let RasterImageDataTemp: CARTA.RasterImageData;
-            test(`RASTER_IMAGE_DATA should arrive within ${openFileTimeout} ms.`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetImageView, assertItem.setImageView);
-                await Utility.getEventAsync(Connection, CARTA.RasterImageData,  
-                    (RasterImageData: CARTA.RasterImageData, resolve) => {
-                        RasterImageDataTemp = RasterImageData;
-                        resolve();
-                    }
-                );
-            }, readFileTimeout);
-
-            test(`RASTER_IMAGE_DATA.file_id = ${assertItem.rasterImageData.fileId}`, () => {
-                expect(RasterImageDataTemp.fileId).toEqual(assertItem.rasterImageData.fileId);
+            test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.rasterImageData.fileId}`, () => {
+                expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.rasterImageData.fileId);
             });
 
-            test(`RASTER_IMAGE_DATA.image_bounds = {xMax: ${assertItem.rasterImageData.imageBounds}, yMax: ${assertItem.rasterImageData.imageBounds.yMax}}`, () => {
-                expect(RasterImageDataTemp.imageBounds).toEqual({xMax: assertItem.rasterImageData.imageBounds.xMax, yMax: assertItem.rasterImageData.imageBounds.yMax});
+            test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.rasterImageData.stokes}`, () => {
+                expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.rasterImageData.stokes);
             });
 
-            test(`RASTER_IMAGE_DATA.compression_type = ${CARTA.CompressionType[assertItem.rasterImageData.compressionType]}`, () => {
-                expect(RasterImageDataTemp.compressionType).toEqual(assertItem.rasterImageData.compressionType);
-            });
-
-            test(`RASTER_IMAGE_DATA.channel = ${assertItem.rasterImageData.channel}`, () => {
-                expect(RasterImageDataTemp.channel).toEqual(assertItem.rasterImageData.channel);
-            });
-
-            test(`RASTER_IMAGE_DATA.stokes = ${assertItem.rasterImageData.stokes}`, () => {
-                expect(RasterImageDataTemp.stokes).toEqual(assertItem.rasterImageData.stokes);
-            });
-
-            test("Assert RASTER_IMAGE_DATA.channel_histogram_data", () => {
-                expect(RasterImageDataTemp.channelHistogramData.histograms[0].numBins).toEqual(assertItem.assert.channelHistogramData.numBins);
-                expect(RasterImageDataTemp.channelHistogramData.histograms[0].bins.length).toEqual(assertItem.assert.channelHistogramData.lengthOfBins);
-                expect(RasterImageDataTemp.channelHistogramData.histograms[0].binWidth).toBeCloseTo(assertItem.assert.channelHistogramData.binWidth, 8);
-                expect(RasterImageDataTemp.channelHistogramData.histograms[0].firstBinCenter).toBeCloseTo(assertItem.assert.channelHistogramData.firstBinCenter, 8);
+            test("Assert REGION_HISTOGRAM_DATA.histogram", () => {
+                expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(assertItem.assert.channelHistogramData.numBins);
+                expect(RegionHistogramDataTemp.histograms[0].bins.length).toEqual(assertItem.assert.channelHistogramData.lengthOfBins);
+                expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(assertItem.assert.channelHistogramData.binWidth, 8);
+                expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(assertItem.assert.channelHistogramData.firstBinCenter, 8);
                 assertItem.assert.channelHistogramData.binValue.map( item => {
-                    expect(RasterImageDataTemp.channelHistogramData.histograms[0].bins[item.binIndex]).toEqual(item.value);
+                    expect(RegionHistogramDataTemp.histograms[0].bins[item.binIndex]).toEqual(item.value);
                 });
-                expect(RasterImageDataTemp.channelHistogramData.histograms[0].bins.reduce((sum, next) => sum += next)).toEqual(assertItem.assert.channelHistogramData.sumOfBinCount);
+                expect(RegionHistogramDataTemp.histograms[0].bins.reduce((sum, next) => sum += next)).toEqual(assertItem.assert.channelHistogramData.sumOfBinCount);
             });
-
-            test("Assert RASTER_IMAGE_DATA.nan_encodings", () => {
-                expect(RasterImageDataTemp.nanEncodings.length).toEqual(assertItem.assert.nanEncodings.length);
-            });
-
-            test("Assert RASTER_IMAGE_DATA.image_data", () => {
-                let _sum: number = 0;
-                RasterImageDataTemp.imageData.map(item => _sum += item.length);
-                expect(_sum).toEqual(assertItem.assert.imageData.length);
-                if (assertItem.rasterImageData.compressionType === CARTA.CompressionType.NONE) {
-                    assertItem.assert.imageData.assertPoints.map( assertPoint => {
-                        let _movingIndex = 4 * ( assertPoint.point.y * assertPoint.point.xMax + assertPoint.point.x );
-                        expect(Buffer.from(RasterImageDataTemp.imageData[0].slice(_movingIndex, _movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint.value, 8);
-                    });
-                }
-            });
-
         });
+
+        // describe(`Set image view for "${assertItem.fileOpen.file}"`, () => {
+        //     let RasterImageDataTemp: CARTA.RasterImageData;
+        //     test(`RASTER_IMAGE_DATA should arrive within ${openFileTimeout} ms.`, async () => {
+        //         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
+        //         await Utility.getEventAsync(Connection, CARTA.RasterTileData,
+        //                 (RasterTileData: CARTA.RasterTileData, resolve) => {
+        //                     RasterTileDataTemp = RasterTileData;
+        //                     resolve();
+        //                 }
+        //             );
+        //     }, readFileTimeout);
+
+        //     test(`RASTER_IMAGE_DATA.image_bounds = {xMax: ${assertItem.rasterImageData.imageBounds}, yMax: ${assertItem.rasterImageData.imageBounds.yMax}}`, () => {
+        //         expect(RasterImageDataTemp.imageBounds).toEqual({xMax: assertItem.rasterImageData.imageBounds.xMax, yMax: assertItem.rasterImageData.imageBounds.yMax});
+        //     });
+
+        //     test(`RASTER_IMAGE_DATA.compression_type = ${CARTA.CompressionType[assertItem.rasterImageData.compressionType]}`, () => {
+        //         expect(RasterImageDataTemp.compressionType).toEqual(assertItem.rasterImageData.compressionType);
+        //     });
+
+        //     test(`RASTER_IMAGE_DATA.channel = ${assertItem.rasterImageData.channel}`, () => {
+        //         expect(RasterImageDataTemp.channel).toEqual(assertItem.rasterImageData.channel);
+        //     });
+
+        //     test("Assert RASTER_IMAGE_DATA.nan_encodings", () => {
+        //         expect(RasterImageDataTemp.nanEncodings.length).toEqual(assertItem.assert.nanEncodings.length);
+        //     });
+
+        //     test("Assert RASTER_IMAGE_DATA.image_data", () => {
+        //         let _sum: number = 0;
+        //         RasterImageDataTemp.imageData.map(item => _sum += item.length);
+        //         expect(_sum).toEqual(assertItem.assert.imageData.length);
+        //         if (assertItem.rasterImageData.compressionType === CARTA.CompressionType.NONE) {
+        //             assertItem.assert.imageData.assertPoints.map( assertPoint => {
+        //                 let _movingIndex = 4 * ( assertPoint.point.y * assertPoint.point.xMax + assertPoint.point.x );
+        //                 expect(Buffer.from(RasterImageDataTemp.imageData[0].slice(_movingIndex, _movingIndex + 4)).readFloatLE(0)).toBeCloseTo(assertPoint.value, 8);
+        //             });
+        //         }
+        //     });
+
+        // });
     }); 
 
     afterAll( () => {
