@@ -109,15 +109,17 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     }
                 );                
             });
-            await Utility.setEvent(Connection, CARTA.SetImageView, 
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                 {
-                    fileId: assertItem.fileId, 
-                    imageBounds: assertItem.imageBounds, 
-                    mip: assertItem.mip, 
-                    compressionType: assertItem.compressionType, 
-                    compressionQuality: assertItem.compressionQuality, 
-                    numSubsets: assertItem.numSubsets,
-                }
+                    fileId: assertItem.fileId,
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: assertItem.fileId,
+                        tiles: [0],
+                        compressionType: CARTA.CompressionType.NONE,
+                    },
+                },
             );
             await Utility.setEvent(Connection, CARTA.SetSpatialRequirements, 
                 {
@@ -126,14 +128,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     spatialProfiles: assertItem.spatialProfiles,
                 }
             );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RasterImageData, 
-                    (RasterImageData: CARTA.RasterImageData) => {
-                        expect(RasterImageData.fileId).toEqual(assertItem.fileId);
-                        resolve();
-                    }
-                );                
-            });
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         }, readFileTimeout);     
         
         assertItem.assertProfile.map( function(item) {
