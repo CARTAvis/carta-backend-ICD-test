@@ -11,6 +11,7 @@ interface AssertItem {
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     fileOpenAck: CARTA.IOpenFileAck;
+    regionHistogram: CARTA.IRegionHistogramData;
     setImageChannel: CARTA.ISetImageChannels;
     rasterTileData: CARTA.IRasterTileData;
     assert: {
@@ -138,6 +139,10 @@ let assertItem: AssertItem = {
                 ],
             },
     },
+    regionHistogram: {
+        fileId: 0,
+        stokes: 0,
+    },
     setImageChannel: {
         fileId: 0,
         channel: 0,
@@ -245,12 +250,12 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
                 });
             });
 
-            test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.rasterImageData.fileId}`, () => {
-                expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.rasterImageData.fileId);
+            test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogram.fileId}`, () => {
+                expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogram.fileId);
             });
 
-            test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.rasterImageData.stokes}`, () => {
-                expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.rasterImageData.stokes);
+            test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogram.stokes}`, () => {
+                expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogram.stokes);
             });
 
             test("Assert REGION_HISTOGRAM_DATA.histogram", () => {
