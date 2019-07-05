@@ -66,6 +66,11 @@ let imageAssertItem: ImageAssertItem = {
         fileId: 0,
         channel: 12,
         stokes: 0,
+        requiredTiles: {
+            fileId: 0,
+            tiles: [0],
+            compressionType: CARTA.CompressionType.ZFP,
+        },
     },
 }
 
@@ -78,18 +83,13 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    resolve();
-                }                
-            ));
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             await done();
         }
     }, connectTimeout);
@@ -97,50 +97,58 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file.file}" to set region`, () => {
 
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEvent(Connection, CARTA.OpenFile, imageAssertItem.file);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
-            await Utility.setEvent(Connection, CARTA.SetImageView, imageAssertItem.imageDataInfo);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, imageAssertItem.file);
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
+                {
+                    fileId: 0,
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: 0,
+                        tiles: [0],
+                        compressionType: CARTA.CompressionType.NONE,
+                    },
+                },
+            );
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+            await Utility.setEventAsync(Connection, CARTA.SetCursor, imageAssertItem.cursor);
         });
 
         describe(`SET SPATIAL REQUIREMENTS`, () => {
-            test(`SPATIAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {                
-                await Utility.setEvent(Connection, CARTA.SetCursor, imageAssertItem.cursor);
-                await Utility.setEvent(Connection, CARTA.SetSpatialRequirements, imageAssertItem.spatial);
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.SpatialProfileData, resolve));
+            test(`SPATIAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, imageAssertItem.spatial);
+                await Utility.getEventAsync(Connection, CARTA.SpatialProfileData);
             }, regionTimeout);
         });
 
         describe("SET STATS REQUIREMENTS", () => {
             test(`REGION_STATS_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetStatsRequirements, imageAssertItem.stats);
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionStatsData, resolve));
+                await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, imageAssertItem.stats);
+                await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
             }, regionTimeout);
         });
     
         describe(`SET HISTOGRAM REQUIREMENTS`, () => {
             test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionHistogramData, resolve));
+                await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }, regionTimeout);
         });
 
         describe("SET IMAGE CHANNELS", () => {
-            let RasterImageDataTemp: CARTA.RasterImageData;
+            let RasterTileDataTemp: CARTA.RasterTileData;
             let SpatialProfileDataTemp: CARTA.SpatialProfileData;
             let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             let RegionStatsDataTemp: CARTA.RegionStatsData;
-            test(`RASTER_IMAGE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
+            test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
                 await new Promise( (resolve, reject) => 
                     Utility.getStream(Connection, 4, resolve,
                         {
-                            RasterImageData: RasterImageData => {
-                                RasterImageDataTemp = RasterImageData;
-                            },
-                            SpatialProfileData: SpatialProfileData => {
-                                SpatialProfileDataTemp = SpatialProfileData;
+                            RasterTileData: RasterTileData => {
+                                RasterTileDataTemp = RasterTileData;
                             },
                             RegionHistogramData: RegionHistogramData => {
                                 RegionHistogramDataTemp = RegionHistogramData;
@@ -148,13 +156,16 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
                             RegionStatsData: RegionStatsData => {
                                 RegionStatsDataTemp = RegionStatsData;
                             },
+                            SpatialProfileData: SpatialProfileData => {
+                                SpatialProfileDataTemp = SpatialProfileData;
+                            },
                         },
                     )
                 );
             }, changeChannelTimeout);
 
-            test(`RASTER_IMAGE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(RasterImageDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
+            test(`RASTER_TILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
+                expect(RasterTileDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
             });
 
             test(`REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.histogram.regionId}`, () => {
@@ -170,7 +181,7 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
             });
 
             test(`SPATIAL_PROFILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(SpatialProfileDataTemp.regionId).toEqual(imageAssertItem.imageChannels.channel);
+                expect(SpatialProfileDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
             });
 
             test(`SPATIAL_PROFILE_DATA.x = ${imageAssertItem.cursor.point.x}`, () => {

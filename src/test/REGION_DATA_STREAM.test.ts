@@ -79,20 +79,13 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();
-                    }
-                );
-            });
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             await done();
         }
     }, connectTimeout);
@@ -100,8 +93,8 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set region`, () => {
 
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1});
-            await Utility.setEvent(Connection, CARTA.OpenFile, 
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectory, 
                     file: imageAssertItem.fileName,
@@ -110,16 +103,27 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             );
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
-            await Utility.setEvent(Connection, CARTA.SetImageView, imageAssertItem.imageDataInfo);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
-            await Utility.setEvent(Connection, CARTA.SetRegion, imageAssertItem.region);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.SetRegionAck, resolve));
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
+                {
+                    fileId: 0,
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: 0,
+                        tiles: [0],
+                        compressionType: CARTA.CompressionType.NONE,
+                    },
+                },
+            );
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+            await Utility.setEventAsync(Connection, CARTA.SetRegion, imageAssertItem.region);
+            await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
         });
             
         describe(`SET SPECTRAL REQUIREMENTS`, () => {
             test(`SPECTRAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
+                await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, 
                     {
                         fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
@@ -138,7 +142,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
 
         describe("SET STATS REQUIREMENTS", () => {
             test(`REGION_STATS_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetStatsRequirements, 
+                await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, 
                     {
                         fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
@@ -152,7 +156,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
     
         describe(`SET HISTOGRAM REQUIREMENTS`, () => {
             test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, 
+                await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, 
                     {
                         fileId: imageAssertItem.imageDataInfo.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
@@ -170,7 +174,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             let RegionStatsDataTemp: CARTA.RegionStatsData;
             test(`SET_REGION_ACK, SPECTRAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                await Utility.setEvent(Connection, CARTA.SetRegion, 
+                await Utility.setEventAsync(Connection, CARTA.SetRegion, 
                     {
                         fileId: imageAssertItem.region.fileId,
                         regionId: imageAssertItem.region.assert.regionId,
