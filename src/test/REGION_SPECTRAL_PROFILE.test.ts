@@ -409,33 +409,22 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();
-                    }
-                );
-            });
-            await done();
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+            done();
         }
     }, connectTimeout);
     
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file}" to set image view`, () => {
 
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, 
-                {
-                    fileId: -1,
-                }
-            );
-            await Utility.setEvent(Connection, CARTA.OpenFile, 
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectory, 
                     file: imageAssertItem.file,
@@ -444,18 +433,20 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                     renderMode: CARTA.RenderMode.RASTER,
                 }
             ); 
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
-            await Utility.setEvent(Connection, CARTA.SetImageView, 
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                 {
-                    fileId: imageAssertItem.fileId, 
-                    imageBounds: imageAssertItem.imageDataInfo.imageBounds, 
-                    mip: imageAssertItem.imageDataInfo.mip, 
-                    compressionType: imageAssertItem.imageDataInfo.compressionType,
-                    compressionQuality: imageAssertItem.imageDataInfo.compressionQuality,
-                    numSubsets: imageAssertItem.imageDataInfo.numSubsets,
-                }
+                    fileId: 0,
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: 0,
+                        tiles: [0],
+                        compressionType: CARTA.CompressionType.NONE,
+                    },
+                },
             );
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         });
 
         imageAssertItem.regionGroup.map( function( region: Region) {
@@ -463,15 +454,13 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
             describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${region.assert.regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetRegion, region);
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, CARTA.SetRegionAck, 
-                            (SetRegionAck: CARTA.SetRegionAck) => {
-                                SetRegionAckTemp = SetRegionAck;
-                                resolve();
-                            }
-                        );
-                    });
+                    await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
+                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
+                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
+                            SetRegionAckTemp = SetRegionAck;
+                            resolve();
+                        }
+                    );
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = True", () => {
@@ -487,21 +476,19 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
             describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${region.assert.regionId}`, () => {
                 let SpectralProfileDataTemp: CARTA.SpectralProfileData;
                 test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
+                    await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, 
                         {
                             fileId: imageAssertItem.fileId,
                             regionId: region.assert.regionId,
                             spectralProfiles: region.profiles,
                         }
                     );
-                    await new Promise( resolve => {
-                        Utility.getEvent(Connection, CARTA.SpectralProfileData, 
-                            (SpectralProfileData: CARTA.SpectralProfileData) => {
-                                SpectralProfileDataTemp = SpectralProfileData;
-                                resolve();
-                            }
-                        );
-                    });
+                    await Utility.getEventAsync(Connection, CARTA.SpectralProfileData,  
+                        (SpectralProfileData: CARTA.SpectralProfileData, resolve) => {
+                            SpectralProfileDataTemp = SpectralProfileData;
+                            resolve();
+                        }
+                    );
                 }, regionTimeout);
                 
                 test(`SPECTRAL_PROFILE_DATA.region_id = ${region.assert.regionId}`, () => {
