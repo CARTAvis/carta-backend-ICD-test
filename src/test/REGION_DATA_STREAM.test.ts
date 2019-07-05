@@ -135,7 +135,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         ],
                     }
                 );
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.SpectralProfileData, resolve));
+                await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
             }, regionTimeout);
 
         });
@@ -149,7 +149,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         stats: imageAssertItem.region.stats.statsTypes,
                     }
                 );
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionStatsData, resolve));
+                await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
             }, regionTimeout);
 
         });
@@ -163,7 +163,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         histograms: [{channel: -1, numBins: -1},],
                     }
                 );
-                await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionHistogramData, resolve));
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }, regionTimeout);
 
         });
@@ -184,38 +184,27 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         rotation: 30.0,
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.SetRegionAck, 
-                        (SetRegionAck: CARTA.SetRegionAck) => {
-                            SetRegionAckTemp = SetRegionAck;
-                            resolve();
-                        }
-                    );
-                });
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.SpectralProfileData, 
-                        (SpectralProfileData: CARTA.SpectralProfileData) => {
-                            SpectralProfileDataTemp = SpectralProfileData;
-                            resolve();
-                        }
-                    );
-                });
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                        (RegionHistogramData: CARTA.RegionHistogramData) => {
-                            RegionHistogramDataTemp = RegionHistogramData;
-                            resolve();
-                        }
-                    );
-                });
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.RegionStatsData, 
-                        (RegionStatsData: CARTA.RegionStatsData) => {
-                            RegionStatsDataTemp = RegionStatsData;
-                            resolve();
-                        }
-                    );
-                });
+                await Utility.getEventAsync(Connection, CARTA.SetRegionAck, 
+                    (SetRegionAck: CARTA.SetRegionAck, resolve) => {
+                        SetRegionAckTemp = SetRegionAck;
+                        resolve();
+                    }
+                );
+                await new Promise( (resolve, reject) => 
+                    Utility.getStream(Connection, 3, resolve,
+                        {
+                            RegionHistogramData: RegionHistogramData => {
+                                RegionHistogramDataTemp = RegionHistogramData;
+                            },
+                            RegionStatsData: RegionStatsData => {
+                                RegionStatsDataTemp = RegionStatsData;
+                            },
+                            SpectralProfileData: SpectralProfileData => {
+                                SpectralProfileDataTemp = SpectralProfileData;
+                            },
+                        },
+                    )
+                );
   
             }, readFileTimeout);
             
