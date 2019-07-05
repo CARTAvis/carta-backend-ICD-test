@@ -113,23 +113,19 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
                     }
                 );
             });
-            await Utility.setEvent(Connection, CARTA.SetImageView, 
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                 {
                     fileId: imageAssertItem.fileId,
-                    imageBounds: imageAssertItem.imageDataInfo.imageBounds,
-                    mip: imageAssertItem.imageDataInfo.mip,
-                    compressionType: imageAssertItem.imageDataInfo.compressionType,
-                    compressionQuality: imageAssertItem.imageDataInfo.compressionQuality,
-                    numSubsets: imageAssertItem.imageDataInfo.numSubsets,
-                }
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: imageAssertItem.fileId,
+                        tiles: [0],
+                        compressionType: imageAssertItem.imageDataInfo.compressionType,
+                    },
+                },
             );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.RasterImageData, 
-                    (RasterImageData: CARTA.RasterImageData) => {
-                        resolve();
-                    }
-                );
-            });
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         });
                 
         let regionHistogramProgress: number;

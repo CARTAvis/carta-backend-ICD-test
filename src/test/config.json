@@ -9,7 +9,7 @@
         "performance": "set_QA_performance"
     },
     "timeout": {
-        "connection": 200,
+        "connection": 500,
         "listFile": 500,
         "openFile": 3000,
         "readFile": 3000,

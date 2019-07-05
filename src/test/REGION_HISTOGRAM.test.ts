@@ -126,43 +126,49 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                RegisterViewerAck => {
-                    expect(RegisterViewerAck.success).toBe(true);
-                    resolve();
-                }                
-            ));
-            await done();
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+            done();
         }
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file.file}" to set region`, () => {
 
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEvent(Connection, CARTA.OpenFile, imageAssertItem.file);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.OpenFileAck, resolve));
-            await Utility.setEvent(Connection, CARTA.SetImageView, imageAssertItem.imageDataInfo);
-            await new Promise( resolve => Utility.getEvent(Connection, CARTA.RasterImageData, resolve));
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, imageAssertItem.file);
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
+                {
+                    fileId: 0,
+                    channel: 0,
+                    requiredTiles: {
+                        fileId: 0,
+                        tiles: [0],
+                        compressionType: CARTA.CompressionType.NONE,
+                    },
+                },
+            );
+            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         });
 
         imageAssertItem.histogramDataGroup.map( (histogramData, index) => {
             describe(`SET REGION #${histogramData.regionId}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetRegion, imageAssertItem.regionGroup[index]);
-                    await new Promise( resolve => Utility.getEvent(Connection, CARTA.SetRegionAck, 
-                        (SetRegionAck: CARTA.SetRegionAck) => {
+                    await Utility.setEventAsync(Connection, CARTA.SetRegion, imageAssertItem.regionGroup[index]);
+                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
+                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
                             SetRegionAckTemp = SetRegionAck;
                             resolve();
-                        }                
-                    ));
+                        }
+                    );
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = true", () => {
@@ -177,13 +183,13 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
             describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
                 let RegionHistogramDataTemp: CARTA.RegionHistogramData;
                 test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogramGroup[index]);
-                    await new Promise( resolve => Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                        (RegionHistogramData: CARTA.RegionHistogramData) => {
+                    await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogramGroup[index]);
+                    await Utility.getEventAsync(Connection, CARTA.RegionHistogramData,  
+                        (RegionHistogramData: CARTA.RegionHistogramData, resolve) => {
                             RegionHistogramDataTemp = RegionHistogramData;
                             resolve();
-                        }                
-                    ));
+                        }
+                    );
                 }, regionTimeout);
 
                 test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {

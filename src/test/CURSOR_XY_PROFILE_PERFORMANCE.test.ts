@@ -11,7 +11,7 @@ let readLargeImageTimeout = config.timeout.readLargeImage;
 let baseDirectory: string;
 let count: number[][];
 
-describe("CURSOR_XY_PROFILE_PERFORMANCE test: Testing the performance of cursor xy profile generation", () => {   
+describe.skip("CURSOR_XY_PROFILE_PERFORMANCE test: Testing the performance of cursor xy profile generation", () => {   
     let Connection: WebSocket;
 
     beforeEach( done => {

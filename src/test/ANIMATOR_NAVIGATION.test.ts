@@ -12,7 +12,7 @@ interface AssertItem {
     fileOpens: CARTA.IOpenFile[];
     setImageViews: CARTA.ISetImageView[];
     setImageChannels: CARTA.ISetImageChannels[];
-    rasterImageDatas: CARTA.IRasterImageData[];
+    rasterTileDatas: CARTA.IRasterTileData[];
 }
 let assertItem: AssertItem = {
     register: {
@@ -58,10 +58,22 @@ let assertItem: AssertItem = {
             fileId: 0,
             channel: 2,
             stokes: 1,
+            requiredTiles: {
+                fileId: 0,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
         },
         {
             fileId: 1,
             channel: 12,
+            requiredTiles: {
+                fileId: 1,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
         },
         {
             fileId: 0,
@@ -77,29 +89,37 @@ let assertItem: AssertItem = {
             fileId: 2,
             channel: 0,
             stokes: 0,
+            requiredTiles: {
+                fileId: 2,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
         },
         {
             fileId: 0,
             channel: 0,
             stokes: 0,
+            requiredTiles: {
+                fileId: 0,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
         },
     ],
-    rasterImageDatas: [
+    rasterTileDatas: [
         {
             fileId: 0,
-            imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
             channel: 2,
             stokes: 1,
-            mip: 2,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
         },
         {
             fileId: 1,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
             channel: 12,
             stokes: 0,
-            mip: 2,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
         },
@@ -114,10 +134,8 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 0,
-            imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
             channel: 0,
             stokes: 0,
-            mip: 2,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
         },
@@ -148,56 +166,47 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             for(let i = 0; i < assertItem.fileOpens.length; i++){
                 await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpens[i]);
                 await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-                await Utility.setEventAsync(Connection, CARTA.SetImageView, assertItem.setImageViews[i]);
-                await Utility.getEventAsync(Connection, CARTA.RasterImageData);
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }
         });
 
-        assertItem.rasterImageDatas.map( (rasterImageData: CARTA.IRasterImageData, index: number) => {
+        assertItem.rasterTileDatas.map( (rasterTileData: CARTA.IRasterTileData, index: number) => {
             describe(`Set ${JSON.stringify(assertItem.setImageChannels[index])}`, () => {
-                if(rasterImageData.fileId < 0){                
+                if(rasterTileData.fileId < 0){                
                     test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterImageData, () => {}, messageReturnTimeout);
+                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, () => {}, messageReturnTimeout);
                     }, changeChannelTimeout + messageReturnTimeout);
                 }else{
-                    let RasterImageDataTemp: CARTA.RasterImageData;
+                    let RasterTileDataTemp: CARTA.RasterTileData;
                     test(`RASTER_IMAGE_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterImageData,  
-                            (RasterImageData: CARTA.RasterImageData, resolve) => {
-                                RasterImageDataTemp = RasterImageData;
+                        await Utility.getEventAsync(Connection, CARTA.RasterTileData,  
+                            (RasterTileData: CARTA.RasterTileData, resolve) => {
+                                RasterTileDataTemp = RasterTileData;
                                 resolve();
                             }
                         );
                     }, changeChannelTimeout);
 
-                    test(`RASTER_IMAGE_DATA.file_id = ${rasterImageData.fileId}`, () => {
-                        expect(RasterImageDataTemp.fileId).toEqual(rasterImageData.fileId);
+                    test(`RASTER_IMAGE_DATA.file_id = ${rasterTileData.fileId}`, () => {
+                        expect(RasterTileDataTemp.fileId).toEqual(rasterTileData.fileId);
                     });
 
-                    test(`RASTER_IMAGE_DATA.channel = ${rasterImageData.channel}`, () => {
-                        expect(RasterImageDataTemp.channel).toEqual(rasterImageData.channel);
+                    test(`RASTER_IMAGE_DATA.channel = ${rasterTileData.channel}`, () => {
+                        expect(RasterTileDataTemp.channel).toEqual(rasterTileData.channel);
                     });
 
-                    test(`RASTER_IMAGE_DATA.stokes = ${rasterImageData.stokes}`, () => {
-                        expect(RasterImageDataTemp.stokes).toEqual(rasterImageData.stokes);
+                    test(`RASTER_IMAGE_DATA.stokes = ${rasterTileData.stokes}`, () => {
+                        expect(RasterTileDataTemp.stokes).toEqual(rasterTileData.stokes);
                     });
 
-                    test(`RASTER_IMAGE_DATA.image_bounds = ${JSON.stringify(rasterImageData.imageBounds)}`, () => {
-                        expect(RasterImageDataTemp.imageBounds).toEqual(rasterImageData.imageBounds);
+                    test(`RASTER_IMAGE_DATA.compression_type = ${CARTA.CompressionType[rasterTileData.compressionType]}`, () => {
+                        expect(RasterTileDataTemp.compressionType).toEqual(rasterTileData.compressionType);
                     });
 
-                    test(`RASTER_IMAGE_DATA.mip = ${rasterImageData.mip}`, () => {
-                        expect(RasterImageDataTemp.mip).toEqual(rasterImageData.mip);
-                    });
-
-                    test(`RASTER_IMAGE_DATA.compression_type = ${CARTA.CompressionType[rasterImageData.compressionType]}`, () => {
-                        expect(RasterImageDataTemp.compressionType).toEqual(rasterImageData.compressionType);
-                    });
-
-                    test(`RASTER_IMAGE_DATA.compression_quality = ${rasterImageData.compressionQuality}`, () => {
-                        expect(RasterImageDataTemp.compressionQuality).toEqual(rasterImageData.compressionQuality);
+                    test(`RASTER_IMAGE_DATA.compression_quality = ${rasterTileData.compressionQuality}`, () => {
+                        expect(RasterTileDataTemp.compressionQuality).toEqual(rasterTileData.compressionQuality);
                     });
                 }
             });

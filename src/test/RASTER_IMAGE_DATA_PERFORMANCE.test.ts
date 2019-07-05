@@ -10,7 +10,7 @@ let testTimes = config.repeat.image;
 
 let baseDirectory: string;
 
-describe("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generation of RASTER_IMAGE_DATA", () => {   
+describe.skip("RASTER_IMAGE_DATA_PERFORMANCE test: Testing performance of the generation of RASTER_IMAGE_DATA", () => {   
     let Connection: WebSocket;
 
     beforeEach( done => {

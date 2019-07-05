@@ -1,5 +1,6 @@
-/// Toollet functions
-const IcdVersion = 3;
+import {CARTA} from "carta-protobuf";
+/// CARTA ICD definition
+const IcdVersion = 4;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -31,6 +32,9 @@ export const EventType = {
     RegionStatsData: 27,
     ErrorData: 28,
     AnimationFlowControl: 29,
+    AddRequireTiles: 30,
+    RemoveRequireTiles: 31,
+    RasterTileData: 32,
 };
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
@@ -168,4 +172,77 @@ export function getEventAsync(
             }, timeout); 
         }
     });
+}
+/// Get CARTA stream
+export function getStream(
+    connection: WebSocket,
+    totalCount: number,
+    resolve: () => void,
+    toDo?: {
+        RasterTileData?: (DataMessage?: any) => void,
+        RasterImageData?: (DataMessage?: any) => void,
+        SpatialProfileData?: (DataMessage?: any) => void,
+        RegionStatsData?: (DataMessage?: any) => void,
+        RegionHistogramData?: (DataMessage?: any) => void,
+        SpectralProfileData?: (DataMessage?: any) => void,
+    },
+) {
+    if (totalCount <= 0) {
+        resolve();
+    }
+    let _count: number = 0;
+    connection.onmessage = (messageEvent: MessageEvent) => {
+        const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+        const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+        const eventData = new Uint8Array(messageEvent.data, 8);
+
+        const eventType = eventHeader16[0];
+        const eventIcdVersion = eventHeader16[1];
+        const eventId = eventHeader32[0];
+        // console.log(eventType);
+
+        if (eventIcdVersion !== IcdVersion) {
+            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+        }
+        if (toDo) {
+            switch (eventType) {
+                case EventType["RasterTileData"]:
+                    if (typeof toDo.RasterTileData === "function") {
+                        toDo.RasterTileData(CARTA.RasterTileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RasterImageData"]:
+                    if (typeof toDo.RasterImageData === "function") {
+                        toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpatialProfileData"]:
+                    if (typeof toDo.SpatialProfileData === "function") {
+                        toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionStatsData"]:
+                    if (typeof toDo.RegionStatsData === "function") {
+                        toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionHistogramData"]:
+                    if (typeof toDo.RegionHistogramData === "function") {
+                        toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpectralProfileData"]:
+                    if (typeof toDo.SpectralProfileData === "function") {
+                        toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        _count++;
+        if (_count === totalCount) {
+            resolve();
+        }
+    };
 }

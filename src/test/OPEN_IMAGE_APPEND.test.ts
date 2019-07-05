@@ -11,8 +11,9 @@ interface AssertItem {
     filelist: CARTA.IFileListRequest;
     fileOpenGroup: CARTA.IOpenFile[];
     fileOpenAckGroup: CARTA.IOpenFileAck[];
-    setImageViewGroup: CARTA.ISetImageView[],
-    rasterImageDataGroup: CARTA.IRasterImageData[],
+    setImageChannelGroup: CARTA.ISetImageChannels[];
+    addRequiredTilesGroup: CARTA.IAddRequiredTiles[];
+    rasterTileDataGroup: CARTA.IRasterTileData[];
 }
 let assertItem: AssertItem = {
     register: {
@@ -68,33 +69,67 @@ let assertItem: AssertItem = {
             fileId: 3,
         },
     ],
-    setImageViewGroup: [
+    setImageChannelGroup: [
         {
             fileId: 0,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-            mip: 1,
+            channel: 0,
+            requiredTiles: {
+                fileId: 0,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.NONE,
+            },
+        },
+        {
+            fileId: 1,
+            channel: 0,
+            requiredTiles: {
+                fileId: 1,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.NONE,
+            },
+        },
+        {
+            fileId: 2,
+            channel: 0,
+            requiredTiles: {
+                fileId: 2,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.NONE,
+            },
+        },
+        {
+            fileId: 3,
+            channel: 0,
+            requiredTiles: {
+                fileId: 3,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.NONE,
+            },
+        },
+    ],
+    addRequiredTilesGroup: [
+        {
+            fileId: 0,
+            tiles: [0],
             compressionType: CARTA.CompressionType.NONE,
         },
         {
             fileId: 1,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-            mip: 2,
+            tiles: [0],
             compressionType: CARTA.CompressionType.NONE,
         },
         {
             fileId: 2,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-            mip: 4,
+            tiles: [0],
             compressionType: CARTA.CompressionType.NONE,
         },
         {
             fileId: 3,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-            mip: 8,
+            tiles: [0],
             compressionType: CARTA.CompressionType.NONE,
         },
     ],
-    rasterImageDataGroup: [
+    rasterTileDataGroup: [
         {fileId: 0},
         {fileId: 1},
         {fileId: 2},
@@ -134,9 +169,10 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                             resolve();
                         }
                     );
+                    await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 }, openFileTimeout);
 
-                test(`OPEN_FILE_ACK.success = $${fileOpenAck.success}`, () => {
+                test(`OPEN_FILE_ACK.success = ${fileOpenAck.success}`, () => {
                     expect(OpenFileAckTemp.success).toBe(fileOpenAck.success);
                 });
 
@@ -146,20 +182,20 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
 
             });
 
-            describe(`set image view for the file "${assertItem.fileOpenGroup[index].file}"`, () => {
-                let RasterImageDataTemp: CARTA.RasterImageData;
-                test(`RASTER_IMAGE_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetImageView, assertItem.setImageViewGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.RasterImageData,  
-                        (RasterImageData: CARTA.RasterImageData, resolve) => {
-                            RasterImageDataTemp = RasterImageData;
+            describe(`set image channel for the file "${assertItem.fileOpenGroup[index].file}"`, () => {
+                let RasterTileDataTemp: CARTA.RasterTileData;
+                test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
+                    await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
+                    await Utility.getEventAsync(Connection, CARTA.RasterTileData,
+                        (RasterTileData: CARTA.RasterTileData, resolve) => {
+                            RasterTileDataTemp = RasterTileData;
                             resolve();
                         }
                     );
                 }, readFileTimeout);
 
-                test(`RASTER_IMAGE_DATA.file_id = ${assertItem.rasterImageDataGroup[index].fileId}`, () => {
-                    expect(RasterImageDataTemp.fileId).toEqual(assertItem.rasterImageDataGroup[index].fileId);
+                test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileDataGroup[index].fileId}`, () => {
+                    expect(RasterTileDataTemp.fileId).toEqual(assertItem.rasterTileDataGroup[index].fileId);
                 });
 
             });
