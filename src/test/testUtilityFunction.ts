@@ -153,11 +153,10 @@ export function getEventAsync(
             }
 
             if (EventType[cartaType.name] === eventType) {
-                let dataMessage = cartaType.decode(eventData);
-                resolve(dataMessage);
                 if(timeout){
                     reject();
                 }
+                resolve(cartaType.decode(eventData));
             }
         };
         if(timeout){

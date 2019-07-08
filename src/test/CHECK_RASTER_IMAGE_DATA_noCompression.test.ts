@@ -201,18 +201,8 @@ describe("CHECK_RASTER_IMAGE_DATA_noCompression test: Testing message RASTER_IMA
             let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
-                await Utility.getEventAsync(Connection, CARTA.OpenFileAck,  
-                    (OpenFileAck: CARTA.OpenFileAck, resolve) => {
-                        OpenFileAckTemp = OpenFileAck;
-                        resolve();
-                    }
-                );
-                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData,
-                    (RegionHistogramData: CARTA.RegionHistogramData, resolve) => {
-                        RegionHistogramDataTemp = RegionHistogramData;
-                        resolve();
-                    }
-                );
+                OpenFileAckTemp = <CARTA.OpenFileAck>await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+                RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }, openFileTimeout);            
 
             test(`OPEN_FILE_ACK.success = ${assertItem.fileOpenAck.success}`, () => {

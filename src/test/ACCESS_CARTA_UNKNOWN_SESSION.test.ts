@@ -26,7 +26,7 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
             async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                RegisterViewerAckTemp = await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+                RegisterViewerAckTemp = <CARTA.RegisterViewerAck>await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 await this.close();
                 done();
             }

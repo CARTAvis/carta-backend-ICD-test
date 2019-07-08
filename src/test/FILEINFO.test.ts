@@ -496,11 +496,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, assertItem.fileInfoGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.FileInfoResponse,  
-                        (FileInfoResponse: CARTA.FileInfoResponse, resolve) => {
-                            FileInfoResponseTemp = FileInfoResponse;
-                            resolve();
-                        });                                         
+                    FileInfoResponseTemp = <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = true", () => {
@@ -613,12 +609,7 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                             hdu: "",
                         }
                     );
-                    await Utility.getEventAsync(Connection, CARTA.FileInfoResponse,  
-                        (FileInfoResponse: CARTA.FileInfoResponse, resolve) => {
-                            FileInfoResponseTemp = FileInfoResponse;
-                            resolve();
-                        }
-                    );                                         
+                   FileInfoResponseTemp =  <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = false", () => {

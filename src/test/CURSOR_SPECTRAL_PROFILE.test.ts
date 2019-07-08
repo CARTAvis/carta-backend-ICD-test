@@ -158,14 +158,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();           
-                    }
-                );
-            });
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             await done();
         }
     }, connectTimeout);
@@ -173,12 +166,8 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
     assertItems.map( function(assertItem) {
         describe(`read the file "${assertItem.fileName}" on folder "${testSubdirectoryName}"`, () => {
             beforeAll( async () => {
-                await Utility.setEvent(Connection, CARTA.CloseFile, 
-                    {
-                        fileId: -1,
-                    }
-                );
-                await Utility.setEvent(Connection, CARTA.OpenFile, 
+                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+                await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                     {
                         directory: testSubdirectoryName, 
                         file: assertItem.fileName, 
@@ -187,14 +176,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         renderMode: assertItem.renderMode,
                     }
                 );
-                await new Promise( resolve => {
-                    Utility.getEvent(Connection, CARTA.OpenFileAck, 
-                        OpenFileAck => {
-                            expect(OpenFileAck.success).toBe(true);
-                            resolve();
-                        }
-                    );                
-                });
+                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
                 await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                     {
@@ -207,7 +189,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         },
                     },
                 );
-                await Utility.setEvent(Connection, CARTA.SetSpectralRequirements, 
+                await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, 
                     {
                         fileId: assertItem.fileId, 
                         regionId: assertItem.regionId, 
@@ -221,20 +203,13 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                 describe(`set cursor on {${item.point.x}, ${item.point.y}}`, () => {
                         let SpectralProfileDataTemp: CARTA.SpectralProfileData;
                         test(`SPECTRAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
-                            await Utility.setEvent(Connection, CARTA.SetCursor, 
+                            await Utility.setEventAsync(Connection, CARTA.SetCursor, 
                                 {
                                     fileId: assertItem.fileId, 
                                     point: item.point,
                                 }
                             );
-                            await new Promise( resolve => {                        
-                                Utility.getEvent(Connection, CARTA.SpectralProfileData, 
-                                    (SpectralProfileData: CARTA.SpectralProfileData) => {
-                                        SpectralProfileDataTemp = SpectralProfileData;
-                                        resolve();
-                                    }
-                                );
-                            });
+                            SpectralProfileDataTemp = <CARTA.SpectralProfileData>await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
                         }, cursorTimeout);
 
                         test(`SPECTRAL_PROFILE_DATA.file_id = ${assertItem.fileId}`, () => {
