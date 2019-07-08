@@ -106,7 +106,8 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     requiredTiles: {
                         fileId: assertItem.fileId,
                         tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
+                        compressionType: CARTA.CompressionType.ZFP,
+                        compressionQuality: 20,
                     },
                 },
             );
