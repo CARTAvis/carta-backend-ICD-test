@@ -193,12 +193,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
-                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
-                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                            SetRegionAckTemp = SetRegionAck;
-                            resolve();
-                        }
-                    );
+                    SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = True", () => {
@@ -220,7 +215,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
             });
 
             test(`should not return within ${returnTimeout} ms`, async () => {
-                await Utility.getEventAsync(Connection, CARTA.RasterTileData, () => {}, returnTimeout);
+                await Utility.getEventAsync(Connection, CARTA.RasterTileData, returnTimeout);
             });
 
             describe("Modify region #3", () => {
@@ -236,12 +231,7 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                             rotation: 30.0,
                         }
                     );
-                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
-                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                            SetRegionAckTemp = SetRegionAck;
-                            resolve();
-                        }
-                    );
+                    SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = false", () => {

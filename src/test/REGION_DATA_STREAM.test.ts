@@ -182,7 +182,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         rotation: 30.0,
                     }
                 );
-                SetRegionAckTemp = await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
+                SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 Ack = await Utility.getStreamAsync(Connection, 3);
   
             }, readFileTimeout);

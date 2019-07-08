@@ -147,7 +147,7 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
         test("Assert a renew REGION_HISTOGRAM_DATA as the progress = 1.0", async () => {
             /// Then request to get the per-cube histogram again in 2 seconds.
             await new Promise( end => setTimeout(() => end(), 2000));
-            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram); 
+            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
             while (regionHistogramProgress < 1.0) {
                 await new Promise( (resolve, reject) => {                        
                     Utility.getEvent(Connection, CARTA.RegionHistogramData, 
