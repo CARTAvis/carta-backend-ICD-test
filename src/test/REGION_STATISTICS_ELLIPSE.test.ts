@@ -174,7 +174,7 @@ describe("REGION_STATISTICS_ELLIPSE test: Testing statistics with ellipse region
 
         beforeAll( async () => {
             await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEvent(Connection, CARTA.OpenFile, 
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectory, 
                     file: imageAssertItem.fileName,
@@ -205,12 +205,7 @@ describe("REGION_STATISTICS_ELLIPSE test: Testing statistics with ellipse region
                     let SetRegionAckTemp: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
-                        await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
-                            (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                                SetRegionAckTemp = SetRegionAck;
-                                resolve();
-                            }
-                        );
+                        SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                     }, regionTimeout);
 
                     test("SET_REGION_ACK.success = True", () => {
@@ -234,12 +229,7 @@ describe("REGION_STATISTICS_ELLIPSE test: Testing statistics with ellipse region
                             stats: region.stats.statsTypes,
                         }
                     );
-                    await Utility.getEventAsync(Connection, CARTA.RegionStatsData,  
-                        (RegionStatsData: CARTA.RegionStatsData, resolve) => {
-                            RegionStatsDataTemp = RegionStatsData;
-                            resolve();
-                        }
-                    );
+                    RegionStatsDataTemp = <CARTA.RegionStatsData>await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
                 }, regionTimeout);
                 
                 test(`REGION_STATS_DATA.region_id = ${region.assert.regionId}`, () => {
