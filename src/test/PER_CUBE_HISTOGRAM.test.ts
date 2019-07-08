@@ -143,7 +143,6 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                     await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
                     RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                     regionHistogramProgress = RegionHistogramDataTemp.progress;
-                    console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
                 }, readFileTimeout);
 
                 test("REGION_HISTOGRAM_DATA.progress = 1.0", () => {
