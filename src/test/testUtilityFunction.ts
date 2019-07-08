@@ -245,20 +245,20 @@ export function getStream(
 /// Until the number: totalCount of mesaages have received
 export function getStreamAsync(
     connection: WebSocket,
-    stream?: {
-        count?: number,
-        RasterTileData?: (DataMessage?: any) => void,
-        RasterImageData?: (DataMessage?: any) => void,
-        SpatialProfileData?: (DataMessage?: any) => void,
-        RegionStatsData?: (DataMessage?: any) => void,
-        RegionHistogramData?: (DataMessage?: any) => void,
-        SpectralProfileData?: (DataMessage?: any) => void,
-    },
+    count?: number,
 ) {
-    if (!stream || !stream.count || stream.count <= 0) {
+    if (count <= 0) {
         return Promise.resolve();
     }
     let _count: number = 0;
+    let ack = {
+        RasterTileData: CARTA.RasterTileData,
+        RasterImageData: CARTA.RasterImageData,
+        SpatialProfileData: CARTA.SpatialProfile,
+        RegionStatsData: CARTA.RegionStatsData,
+        RegionHistogramData: CARTA.RegionHistogramData,
+        SpectralProfileData: CARTA.SpectralProfileData,
+    };
     return new Promise( resolve => {
         connection.onmessage = (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
@@ -272,45 +272,32 @@ export function getStreamAsync(
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
             }
-            
             switch (eventType) {
                 case EventType["RasterTileData"]:
-                    if (typeof stream.RasterTileData === "function") {
-                        stream.RasterTileData(CARTA.RasterTileData.decode(eventData));
-                    }
+                    ack.RasterTileData = CARTA.RasterTileData.decode(eventData);
                     break;
                 case EventType["RasterImageData"]:
-                    if (typeof stream.RasterImageData === "function") {
-                        stream.RasterImageData(CARTA.RasterImageData.decode(eventData));
-                    }
+                    ack.RasterImageData = CARTA.RasterImageData.decode(eventData);
                     break;
                 case EventType["SpatialProfileData"]:
-                    if (typeof stream.SpatialProfileData === "function") {
-                        stream.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
-                    }
+                    ack.SpatialProfileData = CARTA.SpatialProfileData.decode(eventData);
                     break;
                 case EventType["RegionStatsData"]:
-                    if (typeof stream.RegionStatsData === "function") {
-                        stream.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
-                    }
+                    ack.RegionStatsData = CARTA.RegionStatsData.decode(eventData);
                     break;
                 case EventType["RegionHistogramData"]:
-                    if (typeof stream.RegionHistogramData === "function") {
-                        stream.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
-                    }
+                    ack.RegionHistogramData = CARTA.RegionHistogramData.decode(eventData);
                     break;
                 case EventType["SpectralProfileData"]:
-                    if (typeof stream.SpectralProfileData === "function") {
-                        stream.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
-                    }
+                    ack.SpectralProfileData = CARTA.SpectralProfileData.decode(eventData);
                     break;
                 default:
                     break;
             }
             
             _count++;
-            if (_count === stream.count) {
-                resolve();
+            if (_count === count) {
+                resolve(ack);
             }
         };
     });

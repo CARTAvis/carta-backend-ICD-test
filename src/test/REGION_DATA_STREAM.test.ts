@@ -170,9 +170,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
 
         describe("SET REGION", () => {
             let SetRegionAckTemp: CARTA.SetRegionAck;
-            let SpectralProfileDataTemp: CARTA.SpectralProfileData;
-            let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-            let RegionStatsDataTemp: CARTA.RegionStatsData;
+            let Ack;
             test(`SET_REGION_ACK, SPECTRAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${readFileTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.SetRegion, 
                     {
@@ -184,27 +182,8 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
                         rotation: 30.0,
                     }
                 );
-                await Utility.getEventAsync(Connection, CARTA.SetRegionAck, 
-                    (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                        SetRegionAckTemp = SetRegionAck;
-                        resolve();
-                    }
-                );
-                await new Promise( (resolve, reject) => 
-                    Utility.getStream(Connection, 3, resolve,
-                        {
-                            RegionHistogramData: RegionHistogramData => {
-                                RegionHistogramDataTemp = RegionHistogramData;
-                            },
-                            RegionStatsData: RegionStatsData => {
-                                RegionStatsDataTemp = RegionStatsData;
-                            },
-                            SpectralProfileData: SpectralProfileData => {
-                                SpectralProfileDataTemp = SpectralProfileData;
-                            },
-                        },
-                    )
-                );
+                SetRegionAckTemp = await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
+                Ack = await Utility.getStreamAsync(Connection, 3);
   
             }, readFileTimeout);
             
@@ -217,23 +196,23 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             });
 
             test(`SPECTRAL_PROFILE_DATA.region_id = ${imageAssertItem.region.assert.regionId}`, () => {
-                expect(SpectralProfileDataTemp.regionId).toEqual(imageAssertItem.region.assert.regionId);
+                expect(Ack.SpectralProfileData.regionId).toEqual(imageAssertItem.region.assert.regionId);
             });
 
             test(`SPECTRAL_PROFILE_DATA.progress = ${imageAssertItem.region.assert.progress}`, () => {
-                expect(SpectralProfileDataTemp.regionId).toEqual(imageAssertItem.region.assert.progress);
+                expect(Ack.SpectralProfileData.regionId).toEqual(imageAssertItem.region.assert.progress);
             });
 
             test(`REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.region.assert.regionId}`, () => {
-                expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.region.assert.regionId);
+                expect(Ack.RegionHistogramData.regionId).toEqual(imageAssertItem.region.assert.regionId);
             });
 
             test(`REGION_HISTOGRAM_DATA.progress = ${imageAssertItem.region.assert.progress}`, () => {
-                expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.region.assert.progress);
+                expect(Ack.RegionHistogramData.regionId).toEqual(imageAssertItem.region.assert.progress);
             });
 
             test(`REGION_STATS_DATA.region_id = ${imageAssertItem.region.assert.regionId}`, () => {
-                expect(RegionStatsDataTemp.regionId).toEqual(imageAssertItem.region.assert.regionId);
+                expect(Ack.RegionStatsData.regionId).toEqual(imageAssertItem.region.assert.regionId);
             });
 
         });
