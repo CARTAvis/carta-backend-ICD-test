@@ -144,24 +144,41 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
             let RegionStatsDataTemp: CARTA.RegionStatsData;
             test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
-                await new Promise( (resolve, reject) => 
-                    Utility.getStream(Connection, 4, resolve,
-                        {
-                            RasterTileData: RasterTileData => {
-                                RasterTileDataTemp = RasterTileData;
-                            },
-                            RegionHistogramData: RegionHistogramData => {
-                                RegionHistogramDataTemp = RegionHistogramData;
-                            },
-                            RegionStatsData: RegionStatsData => {
-                                RegionStatsDataTemp = RegionStatsData;
-                            },
-                            SpatialProfileData: SpatialProfileData => {
-                                SpatialProfileDataTemp = SpatialProfileData;
-                            },
+                await Utility.getStreamAsync(Connection,
+                    {
+                        count: 4,
+                        RasterTileData: RasterTileData => {
+                            RasterTileDataTemp = RasterTileData;
                         },
-                    )
+                        RegionHistogramData: RegionHistogramData => {
+                            RegionHistogramDataTemp = RegionHistogramData;
+                        },
+                        RegionStatsData: RegionStatsData => {
+                            RegionStatsDataTemp = RegionStatsData;
+                        },
+                        SpatialProfileData: SpatialProfileData => {
+                            SpatialProfileDataTemp = SpatialProfileData;
+                        },
+                    }
                 );
+                // await new Promise( (resolve, reject) => 
+                //     Utility.getStream(Connection, 4, resolve,
+                //         {
+                //             RasterTileData: RasterTileData => {
+                //                 RasterTileDataTemp = RasterTileData;
+                //             },
+                //             RegionHistogramData: RegionHistogramData => {
+                //                 RegionHistogramDataTemp = RegionHistogramData;
+                //             },
+                //             RegionStatsData: RegionStatsData => {
+                //                 RegionStatsDataTemp = RegionStatsData;
+                //             },
+                //             SpatialProfileData: SpatialProfileData => {
+                //                 SpatialProfileDataTemp = SpatialProfileData;
+                //             },
+                //         },
+                //     )
+                // );
             }, changeChannelTimeout);
 
             test(`RASTER_TILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {

@@ -136,7 +136,6 @@ export function getEvent(
 export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    promiseToDo?: (dataMessage: any, resolve: (value?: any) => void, reject?: (reason?: any) => void) => void,
     timeout?: number,
 ) {
     return new Promise( (resolve, reject) => {
@@ -155,11 +154,7 @@ export function getEventAsync(
 
             if (EventType[cartaType.name] === eventType) {
                 let dataMessage = cartaType.decode(eventData);
-                if(typeof promiseToDo === "function") {
-                    await promiseToDo(dataMessage, resolve, reject);
-                } else {
-                    resolve();
-                }
+                resolve(dataMessage);
                 if(timeout){
                     reject();
                 }
@@ -245,4 +240,78 @@ export function getStream(
             resolve();
         }
     };
+}
+/// Get CARTA stream async
+/// Until the number: totalCount of mesaages have received
+export function getStreamAsync(
+    connection: WebSocket,
+    stream?: {
+        count?: number,
+        RasterTileData?: (DataMessage?: any) => void,
+        RasterImageData?: (DataMessage?: any) => void,
+        SpatialProfileData?: (DataMessage?: any) => void,
+        RegionStatsData?: (DataMessage?: any) => void,
+        RegionHistogramData?: (DataMessage?: any) => void,
+        SpectralProfileData?: (DataMessage?: any) => void,
+    },
+) {
+    if (!stream || !stream.count || stream.count <= 0) {
+        return Promise.resolve();
+    }
+    let _count: number = 0;
+    return new Promise( resolve => {
+        connection.onmessage = (messageEvent: MessageEvent) => {
+            const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+            const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+            const eventData = new Uint8Array(messageEvent.data, 8);
+
+            const eventType = eventHeader16[0];
+            const eventIcdVersion = eventHeader16[1];
+            const eventId = eventHeader32[0];
+
+            if (eventIcdVersion !== IcdVersion) {
+                console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            }
+            
+            switch (eventType) {
+                case EventType["RasterTileData"]:
+                    if (typeof stream.RasterTileData === "function") {
+                        stream.RasterTileData(CARTA.RasterTileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RasterImageData"]:
+                    if (typeof stream.RasterImageData === "function") {
+                        stream.RasterImageData(CARTA.RasterImageData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpatialProfileData"]:
+                    if (typeof stream.SpatialProfileData === "function") {
+                        stream.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionStatsData"]:
+                    if (typeof stream.RegionStatsData === "function") {
+                        stream.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
+                    }
+                    break;
+                case EventType["RegionHistogramData"]:
+                    if (typeof stream.RegionHistogramData === "function") {
+                        stream.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpectralProfileData"]:
+                    if (typeof stream.SpectralProfileData === "function") {
+                        stream.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
+            _count++;
+            if (_count === stream.count) {
+                resolve();
+            }
+        };
+    });
 }
