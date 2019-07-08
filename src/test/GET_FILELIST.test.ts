@@ -58,12 +58,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                 let FileListResponseTemp: CARTA.FileListResponse;
                 test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.FileListRequest, filelist);
-                    await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                        (FileListResponse: CARTA.FileListResponse, resolve) => {
-                            FileListResponseTemp = FileListResponse;
-                            resolve();
-                        }
-                    );
+                    FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
                 }, fileListTimeout);
             
                 test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
@@ -125,12 +120,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
                         directory: "/unknown/path",
                     }
                 );
-                await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                    (FileListResponse: CARTA.FileListResponse, resolve) => {
-                        FileListResponseTemp = FileListResponse;
-                        resolve();
-                    }
-                );
+                FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
             }, fileListTimeout);
         
             test("FILE_LIST_RESPONSE.success == False", () => {

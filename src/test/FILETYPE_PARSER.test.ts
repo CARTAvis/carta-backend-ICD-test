@@ -91,12 +91,7 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         let FileListResponseTemp: CARTA.FileListResponse;
         test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
             await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
-            await Utility.getEventAsync(Connection, CARTA.FileListResponse, 
-                (FileListResponse: CARTA.FileListResponse, resolve) => {
-                    FileListResponseTemp = FileListResponse;
-                    resolve();
-                }
-            );
+            FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
         }, fileListTimeout);
 
         test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponse.success}`, () => {

@@ -163,12 +163,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 let OpenFileAckTemp: CARTA.OpenFileAck;
                 test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpenGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.OpenFileAck,  
-                        (OpenFileAck: CARTA.OpenFileAck, resolve) => {
-                            OpenFileAckTemp = OpenFileAck;
-                            resolve();
-                        }
-                    );
+                    OpenFileAckTemp = <CARTA.OpenFileAck>await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
                     await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 }, openFileTimeout);
 
@@ -186,12 +181,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 let RasterTileDataTemp: CARTA.RasterTileData;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.RasterTileData,
-                        (RasterTileData: CARTA.RasterTileData, resolve) => {
-                            RasterTileDataTemp = RasterTileData;
-                            resolve();
-                        }
-                    );
+                    RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
                 }, readFileTimeout);
 
                 test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileDataGroup[index].fileId}`, () => {
