@@ -92,6 +92,13 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
             );
             await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, 
+                {
+                    fileId: assertItem.fileId, 
+                    regionId: assertItem.regionId, 
+                    spatialProfiles: assertItem.spatialProfiles,
+                }
+            );
             await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                 {
                     fileId: assertItem.fileId,
@@ -102,13 +109,6 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         compressionType: CARTA.CompressionType.NONE,
                     },
                 },
-            );
-            await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, 
-                {
-                    fileId: assertItem.fileId, 
-                    regionId: assertItem.regionId, 
-                    spatialProfiles: assertItem.spatialProfiles,
-                }
             );
             await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         }, readFileTimeout);     
