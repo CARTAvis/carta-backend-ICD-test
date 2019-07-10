@@ -82,7 +82,8 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
             await Utility.setEvent(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
-                    apiKey: ""
+                    apiKey: "",
+                    clientFeatureFlags: 5,
                 }
             );
             await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
@@ -100,6 +101,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                     hdu: assertItem.hdu, 
                     fileId: assertItem.fileId, 
                     renderMode: assertItem.renderMode,
+                    tileSize: 256,
                 }
             );
             await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
@@ -108,10 +110,12 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                 {
                     fileId: assertItem.fileId,
                     channel: 0,
+                    stokes: 0,
                     requiredTiles: {
                         fileId: assertItem.fileId,
                         tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
+                        compressionType: CARTA.CompressionType.ZFP,
+                        compressionQuality: 11,
                     },
                 },
             );
