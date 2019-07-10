@@ -10,6 +10,7 @@ let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "",
+        clientFeatureFlags: 5,
     },
 }
 describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () => {
@@ -49,5 +50,8 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             expect(RegisterViewerAckTemp.message).toBe("");
         });
 
+        test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
+            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(0);
+        });
     });
 });

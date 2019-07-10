@@ -12,6 +12,7 @@ let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "11111111-1111-1111-1111-111111111111",
+        clientFeatureFlags: 5,
     },
     filelist: {
         directory: expectBasePath,
@@ -52,6 +53,10 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
 
         test("REGISTER_VIEWER_ACK.message is empty", () => {
             expect(RegisterViewerAckTemp.message).toBe("");
+        });
+
+        test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
+            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(0);
         });
 
     });

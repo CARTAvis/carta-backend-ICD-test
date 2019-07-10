@@ -11,6 +11,7 @@ let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "1234",
+        clientFeatureFlags: 5,
     },
 }
 describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend with an unknown API key", () => {
@@ -50,6 +51,9 @@ describe("ACCESS_CARTA_UNKNOWN_APIKEY tests: Testing connections to the backend 
             expect(RegisterViewerAckTemp.message).toBe("");
         });
 
+        test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
+            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(0);
+        });
     });
 
     afterAll( () => {
