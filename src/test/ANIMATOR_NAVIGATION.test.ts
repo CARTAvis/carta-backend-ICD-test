@@ -175,18 +175,13 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                 if(rasterTileData.fileId < 0){                
                     test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, () => {}, messageReturnTimeout);
+                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, messageReturnTimeout);
                     }, changeChannelTimeout + messageReturnTimeout);
                 }else{
                     let RasterTileDataTemp: CARTA.RasterTileData;
                     test(`RASTER_IMAGE_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterTileData,  
-                            (RasterTileData: CARTA.RasterTileData, resolve) => {
-                                RasterTileDataTemp = RasterTileData;
-                                resolve();
-                            }
-                        );
+                        RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
                     }, changeChannelTimeout);
 
                     test(`RASTER_IMAGE_DATA.file_id = ${rasterTileData.fileId}`, () => {

@@ -67,32 +67,21 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();           
-                    }
-                );
-            });
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             await done();
         }
     }, connectTimeout);
 
     describe(`read the file "${assertItem.fileName}" on folder "${testSubdirectoryName}"`, () => {
         beforeAll( async () => {
-            await Utility.setEvent(Connection, CARTA.CloseFile, 
-                {
-                    fileId: -1,
-                }
-            );
-            await Utility.setEvent(Connection, CARTA.OpenFile, 
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                 {
                     directory: testSubdirectoryName, 
                     file: assertItem.fileName, 
@@ -101,15 +90,15 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     renderMode: assertItem.renderMode,
                 }
             );
-            await new Promise( resolve => {
-                Utility.getEvent(Connection, CARTA.OpenFileAck, 
-                    OpenFileAck => {
-                        expect(OpenFileAck.success).toBe(true);
-                        resolve();
-                    }
-                );                
-            });
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, 
+                {
+                    fileId: assertItem.fileId, 
+                    regionId: assertItem.regionId, 
+                    spatialProfiles: assertItem.spatialProfiles,
+                }
+            );
             await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                 {
                     fileId: assertItem.fileId,
@@ -117,16 +106,10 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                     requiredTiles: {
                         fileId: assertItem.fileId,
                         tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
+                        compressionType: CARTA.CompressionType.ZFP,
+                        compressionQuality: 20,
                     },
                 },
-            );
-            await Utility.setEvent(Connection, CARTA.SetSpatialRequirements, 
-                {
-                    fileId: assertItem.fileId, 
-                    regionId: assertItem.regionId, 
-                    spatialProfiles: assertItem.spatialProfiles,
-                }
             );
             await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         }, readFileTimeout);     
@@ -141,14 +124,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                                 point: item.point,
                             }
                         );
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, CARTA.SpatialProfileData, 
-                                (SpatialProfileData: CARTA.SpatialProfileData) => {
-                                    SpatialProfileDataTemp = SpatialProfileData;
-                                    resolve();
-                                }
-                            );
-                        });
+                        SpatialProfileDataTemp = <CARTA.SpatialProfileData>await Utility.getEventAsync(Connection, CARTA.SpatialProfileData);
                     }, cursorTimeout);
 
                     test(`SPATIAL_PROFILE_DATA.value = ${item.value}`, () => {
@@ -197,17 +173,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                             point: item.point,
                         }
                     );
-                    await new Promise( (resolve, reject) => {                        
-                        Utility.getEvent(Connection, CARTA.SpatialProfileData, 
-                            (SpatialProfileData: CARTA.SpatialProfileData) => {
-                                reject();
-                            }
-                        );
-                        let failTimer = setTimeout(() => {
-                            clearTimeout(failTimer);
-                            resolve();
-                        }, cursorTimeout);
-                    });
+                    await Utility.getEventAsync(Connection, CARTA.SpatialProfileData, cursorTimeout);
                 }, cursorTimeout + connectTimeout);
 
                 test("Backend is not crashed", () => {

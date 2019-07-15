@@ -138,58 +138,38 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
         });
 
         describe("SET IMAGE CHANNELS", () => {
-            let RasterTileDataTemp: CARTA.RasterTileData;
-            let SpatialProfileDataTemp: CARTA.SpatialProfileData;
-            let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-            let RegionStatsDataTemp: CARTA.RegionStatsData;
+            let Ack;
             test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
-                await new Promise( (resolve, reject) => 
-                    Utility.getStream(Connection, 4, resolve,
-                        {
-                            RasterTileData: RasterTileData => {
-                                RasterTileDataTemp = RasterTileData;
-                            },
-                            RegionHistogramData: RegionHistogramData => {
-                                RegionHistogramDataTemp = RegionHistogramData;
-                            },
-                            RegionStatsData: RegionStatsData => {
-                                RegionStatsDataTemp = RegionStatsData;
-                            },
-                            SpatialProfileData: SpatialProfileData => {
-                                SpatialProfileDataTemp = SpatialProfileData;
-                            },
-                        },
-                    )
-                );
+                Ack = await Utility.getStreamAsync(Connection, 4);
             }, changeChannelTimeout);
 
             test(`RASTER_TILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(RasterTileDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
+                expect(Ack.RasterTileData.channel).toEqual(imageAssertItem.imageChannels.channel);
             });
 
             test(`REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.histogram.regionId}`, () => {
-                expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.histogram.regionId);
+                expect(Ack.RegionHistogramData.regionId).toEqual(imageAssertItem.histogram.regionId);
             });
 
             test(`REGION_STATS_DATA.region_id = ${imageAssertItem.stats.regionId}`, () => {
-                expect(RegionStatsDataTemp.regionId).toEqual(imageAssertItem.stats.regionId);
+                expect(Ack.RegionStatsData.regionId).toEqual(imageAssertItem.stats.regionId);
             });
 
             test(`REGION_STATS_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(RegionStatsDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
+                expect(Ack.RegionStatsData.channel).toEqual(imageAssertItem.imageChannels.channel);
             });
 
             test(`SPATIAL_PROFILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(SpatialProfileDataTemp.channel).toEqual(imageAssertItem.imageChannels.channel);
+                expect(Ack.SpatialProfileData.channel).toEqual(imageAssertItem.imageChannels.channel);
             });
 
             test(`SPATIAL_PROFILE_DATA.x = ${imageAssertItem.cursor.point.x}`, () => {
-                expect(SpatialProfileDataTemp.x).toEqual(imageAssertItem.cursor.point.x);
+                expect(Ack.SpatialProfileData.x).toEqual(imageAssertItem.cursor.point.x);
             });
 
             test(`SPATIAL_PROFILE_DATA.y = ${imageAssertItem.cursor.point.y}`, () => {
-                expect(SpatialProfileDataTemp.y).toEqual(imageAssertItem.cursor.point.y);
+                expect(Ack.SpatialProfileData.y).toEqual(imageAssertItem.cursor.point.y);
             });
         });
 

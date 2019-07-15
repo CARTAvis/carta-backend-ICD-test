@@ -163,12 +163,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetRegion, imageAssertItem.regionGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
-                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                            SetRegionAckTemp = SetRegionAck;
-                            resolve();
-                        }
-                    );
+                    SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = true", () => {
@@ -184,12 +179,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                 let RegionHistogramDataTemp: CARTA.RegionHistogramData;
                 test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogramGroup[index]);
-                    await Utility.getEventAsync(Connection, CARTA.RegionHistogramData,  
-                        (RegionHistogramData: CARTA.RegionHistogramData, resolve) => {
-                            RegionHistogramDataTemp = RegionHistogramData;
-                            resolve();
-                        }
-                    );
+                    RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 }, regionTimeout);
 
                 test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {

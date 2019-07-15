@@ -136,7 +136,6 @@ export function getEvent(
 export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    promiseToDo?: (dataMessage: any, resolve: (value?: any) => void, reject?: (reason?: any) => void) => void,
     timeout?: number,
 ) {
     return new Promise( (resolve, reject) => {
@@ -154,15 +153,10 @@ export function getEventAsync(
             }
 
             if (EventType[cartaType.name] === eventType) {
-                let dataMessage = cartaType.decode(eventData);
-                if(typeof promiseToDo === "function") {
-                    await promiseToDo(dataMessage, resolve, reject);
-                } else {
-                    resolve();
-                }
                 if(timeout){
                     reject();
                 }
+                resolve(cartaType.decode(eventData));
             }
         };
         if(timeout){
@@ -245,4 +239,65 @@ export function getStream(
             resolve();
         }
     };
+}
+/// Get CARTA stream async
+/// Until the number: totalCount of mesaages have received
+export function getStreamAsync(
+    connection: WebSocket,
+    count?: number,
+) {
+    if (count <= 0) {
+        return Promise.resolve();
+    }
+    let _count: number = 0;
+    let ack = {
+        RasterTileData: CARTA.RasterTileData,
+        RasterImageData: CARTA.RasterImageData,
+        SpatialProfileData: CARTA.SpatialProfile,
+        RegionStatsData: CARTA.RegionStatsData,
+        RegionHistogramData: CARTA.RegionHistogramData,
+        SpectralProfileData: CARTA.SpectralProfileData,
+    };
+    return new Promise( resolve => {
+        connection.onmessage = (messageEvent: MessageEvent) => {
+            const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+            const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+            const eventData = new Uint8Array(messageEvent.data, 8);
+
+            const eventType = eventHeader16[0];
+            const eventIcdVersion = eventHeader16[1];
+            const eventId = eventHeader32[0];
+
+            if (eventIcdVersion !== IcdVersion) {
+                console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+            }
+            switch (eventType) {
+                case EventType["RasterTileData"]:
+                    ack.RasterTileData = CARTA.RasterTileData.decode(eventData);
+                    break;
+                case EventType["RasterImageData"]:
+                    ack.RasterImageData = CARTA.RasterImageData.decode(eventData);
+                    break;
+                case EventType["SpatialProfileData"]:
+                    ack.SpatialProfileData = CARTA.SpatialProfileData.decode(eventData);
+                    break;
+                case EventType["RegionStatsData"]:
+                    ack.RegionStatsData = CARTA.RegionStatsData.decode(eventData);
+                    break;
+                case EventType["RegionHistogramData"]:
+                    ack.RegionHistogramData = CARTA.RegionHistogramData.decode(eventData);
+                    break;
+                case EventType["SpectralProfileData"]:
+                    ack.SpectralProfileData = CARTA.SpectralProfileData.decode(eventData);
+                    break;
+                default:
+                    break;
+            }
+            
+            _count++;
+            if (_count === count) {
+                resolve(ack);
+            }
+        };
+    });
 }

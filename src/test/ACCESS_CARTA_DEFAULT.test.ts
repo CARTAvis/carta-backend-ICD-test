@@ -26,12 +26,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck, 
-                    (RegisterViewerAck: CARTA.RegisterViewerAck, resolve) => {
-                        RegisterViewerAckTemp = RegisterViewerAck;
-                        resolve();
-                    }
-                );
+                RegisterViewerAckTemp = <CARTA.RegisterViewerAck>await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
                 await this.close();
                 done();
             }

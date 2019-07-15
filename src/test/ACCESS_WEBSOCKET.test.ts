@@ -16,7 +16,7 @@ describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", 
             Connection.close();
             done();     // Return to this test
         };
-    }, connectTimeout);
+    }, connectTimeout + 2000);
 
     test(`should connect to "${testServerUrl}".`, done => {
 

@@ -455,12 +455,7 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
-                    await Utility.getEventAsync(Connection, CARTA.SetRegionAck,  
-                        (SetRegionAck: CARTA.SetRegionAck, resolve) => {
-                            SetRegionAckTemp = SetRegionAck;
-                            resolve();
-                        }
-                    );
+                    SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = True", () => {
@@ -483,12 +478,7 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                             spectralProfiles: region.profiles,
                         }
                     );
-                    await Utility.getEventAsync(Connection, CARTA.SpectralProfileData,  
-                        (SpectralProfileData: CARTA.SpectralProfileData, resolve) => {
-                            SpectralProfileDataTemp = SpectralProfileData;
-                            resolve();
-                        }
-                    );
+                    SpectralProfileDataTemp = <CARTA.SpectralProfileData>await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
                 }, regionTimeout);
                 
                 test(`SPECTRAL_PROFILE_DATA.region_id = ${region.assert.regionId}`, () => {

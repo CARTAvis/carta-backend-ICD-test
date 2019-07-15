@@ -5,6 +5,7 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
+let messageReturnTimeout = config.timeout.readFile;
 let cubeHistogramTimeout = config.timeout.cubeHistogram;
 interface AssertItem {
     fileId: number;
@@ -94,21 +95,14 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
                 {
                     sessionId: 0, 
                     apiKey: ""
                 }
             );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();
-                    }
-                );
-            });
-            await done();
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+            done();   
         }
     }, connectTimeout);
 
@@ -117,12 +111,8 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
         describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set image view`, () => {
 
             beforeAll( async () => {
-                await Utility.setEvent(Connection, CARTA.CloseFile, 
-                    {
-                        fileId: -1,
-                    }
-                );
-                await Utility.setEvent(Connection, CARTA.OpenFile, 
+                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+                await Utility.setEventAsync(Connection, CARTA.OpenFile, 
                     {
                         directory: testSubdirectory, 
                         file: imageAssertItem.fileName,
@@ -130,14 +120,8 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                         hdu: imageAssertItem.hdu,
                         renderMode: CARTA.RenderMode.RASTER,
                     }
-                ); 
-                await new Promise( resolve => {           
-                    Utility.getEvent(Connection, CARTA.OpenFileAck, 
-                        (OpenFileAck: CARTA.OpenFileAck) => {
-                            resolve();
-                        }
-                    );
-                });
+                );
+                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
                 await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
                     {
@@ -156,16 +140,9 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
             let RegionHistogramDataTemp: CARTA.RegionHistogramData;
             if (/(?:\.([^.]+))?$/.exec(imageAssertItem.fileName)[1] === "hdf5") {
                 test(`SET HISTOGRAM REQUIREMENTS then the first REGION_HISTOGRAM_DATA arrives within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
-                    await new Promise( resolve => { 
-                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                            (RegionHistogramData: CARTA.RegionHistogramData) => {
-                                regionHistogramProgress = RegionHistogramData.progress;
-                                RegionHistogramDataTemp = RegionHistogramData;
-                                resolve();
-                            }
-                        );
-                    });
+                    await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
+                    RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                    regionHistogramProgress = RegionHistogramDataTemp.progress;
                 }, readFileTimeout);
 
                 test("REGION_HISTOGRAM_DATA.progress = 1.0", () => {
@@ -205,16 +182,9 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
             else {
                 test(`SET HISTOGRAM REQUIREMENTS then the first REGION_HISTOGRAM_DATA arrives within ${readFileTimeout} ms`, async () => {
                     await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
-                    await new Promise( resolve => { 
-                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                            (RegionHistogramData: CARTA.RegionHistogramData) => {
-                                regionHistogramProgress = RegionHistogramData.progress;
-                                RegionHistogramDataTemp = RegionHistogramData;
-                                console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
-                                resolve();
-                            }
-                        );
-                    });
+                    RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                    regionHistogramProgress = RegionHistogramDataTemp.progress;
+                    console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
                 }, readFileTimeout);
 
                 test(`REGION_HISTOGRAM_DATA.progress > 0 and REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.assertHistogram.regionId}`, () => {
@@ -223,55 +193,37 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 });
 
                 test(`The second REGION_HISTOGRAM_DATA should arrive and REGION_HISTOGRAM_DATA.progress > previous one `, async () => {
-                    await new Promise( resolve => {                        
-                        Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                            RegionHistogramData => {
-                                expect(RegionHistogramData.progress).toBeGreaterThan(regionHistogramProgress);
-                                expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.assertHistogram.regionId);
-                                regionHistogramProgress = RegionHistogramData.progress;
-                                console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
-                                resolve();
-                            }
-                        );
-                    });
+                    RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                    expect(RegionHistogramDataTemp.progress).toBeGreaterThan(regionHistogramProgress);
+                    expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.assertHistogram.regionId);
+                    regionHistogramProgress = RegionHistogramDataTemp.progress;
+                    console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
                 }, readFileTimeout);
 
                 test("Assert the REGION_HISTOGRAM_DATA as the progress be just greater than 0.5", async () => {
                     expect(regionHistogramProgress).toBeLessThan(1.0);
                     while (regionHistogramProgress < 0.5) {
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                                (RegionHistogramData: CARTA.RegionHistogramData) => {
-                                    regionHistogramProgress = RegionHistogramData.progress;
-                                    console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
-                                    resolve();
-                                }
-                            );
-                        });
+                        RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                        regionHistogramProgress = RegionHistogramDataTemp.progress;
+                        console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
                     }
                     if (regionHistogramProgress < 1.0) {
-                        await new Promise( resolve => {                        
-                            Utility.getEvent(Connection, CARTA.RegionHistogramData, 
-                                (RegionHistogramData: CARTA.RegionHistogramData) => {
-                                    regionHistogramProgress = RegionHistogramData.progress;
-                                    console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
-                                    expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(imageAssertItem.assertHistogram.binWidth, 4);
-                                    expect(RegionHistogramData.histograms[0].bins.length).toEqual(imageAssertItem.assertHistogram.lengthOfHistogramBins);
-                                    expect(RegionHistogramData.histograms[0].channel).toEqual(imageAssertItem.assertHistogram.channel);
-                                    expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(imageAssertItem.assertHistogram.firstBinCenter, 4);
-                                    expect(RegionHistogramData.histograms[0].numBins).toEqual(imageAssertItem.assertHistogram.numberBins); 
-                                    expect(RegionHistogramData.regionId).toEqual(imageAssertItem.assertHistogram.regionId);
-                                    resolve();
-                                }
-                            );
-                        });
+                        RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                        regionHistogramProgress = RegionHistogramDataTemp.progress;
+                        console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
+                        expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(imageAssertItem.assertHistogram.binWidth, 4);
+                        expect(RegionHistogramDataTemp.histograms[0].bins.length).toEqual(imageAssertItem.assertHistogram.lengthOfHistogramBins);
+                        expect(RegionHistogramDataTemp.histograms[0].channel).toEqual(imageAssertItem.assertHistogram.channel);
+                        expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(imageAssertItem.assertHistogram.firstBinCenter, 4);
+                        expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(imageAssertItem.assertHistogram.numberBins); 
+                        expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.assertHistogram.regionId);
                     }
                 }, cubeHistogramTimeout);
 
                 test("Assert the REGION_HISTOGRAM_DATA as the progress be 1.0", async () => {
                     expect(regionHistogramProgress).not.toEqual(1.0);
                     while (regionHistogramProgress < 1.0) {
-                        await new Promise( resolve => {                        
+                        await new Promise( (resolve, reject) => {                        
                             Utility.getEvent(Connection, CARTA.RegionHistogramData, 
                                 (RegionHistogramData: CARTA.RegionHistogramData) => {
                                     regionHistogramProgress = RegionHistogramData.progress;
@@ -287,6 +239,10 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                                     resolve();
                                 }
                             );
+                            let failTimer = setTimeout(() => {
+                                clearTimeout(failTimer);
+                                reject();
+                            }, messageReturnTimeout);
                         });
                     }
                 }, cubeHistogramTimeout);
