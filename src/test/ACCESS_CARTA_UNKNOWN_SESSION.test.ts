@@ -10,6 +10,7 @@ let assertItem: AssertItem = {
     register: {
         sessionId: 9999,
         apiKey: "",
+        clientFeatureFlags: 5,
     },
 }
 describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend with an unknown session id", () => {
