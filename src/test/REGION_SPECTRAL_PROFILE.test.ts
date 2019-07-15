@@ -397,6 +397,27 @@ let imageAssertItem: ImageAssertItem = {
                 },
             ],
         },
+        {
+            regionId: -1,
+            regionType: CARTA.RegionType.POINT,
+            controlPoints: [{x: 200, y: 200}],
+            rotation: 0.0,
+            regionName: "",
+            assert: {
+                regionId: 4,
+                progress: 1,                
+            },
+            profiles: [
+                {
+                    coordinate: "z",
+                    lengthOfDoubleVals: 25,
+                    lengthOfVals: 0,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    doubleVals: [],
+                    vals: [],
+                },
+            ],
+        },
     ],
 }
 
@@ -489,34 +510,40 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                     expect(SpectralProfileDataTemp.progress).toEqual(region.assert.progress);
                 });
 
-                test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
-                    let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
-                    let _assertValue = region.profiles.find(f => f.statsTypes[0] === CARTA.StatsType.Mean);
-                    expect(_meanProfile.coordinate).toEqual(_assertValue.coordinate);
-                    expect(_meanProfile.doubleVals.length).toEqual(_assertValue.lengthOfDoubleVals);
-                    expect(_meanProfile.statsType).toEqual(_assertValue.statsTypes[0]);
-                    _assertValue.doubleVals.map( doubleVal => {
-                        if (isNaN(doubleVal.value)) {
-                            expect(isNaN(_meanProfile.doubleVals[doubleVal.index])).toBe(true);
-                        } else {
-                            expect(_meanProfile.doubleVals[doubleVal.index]).toBeCloseTo(doubleVal.value, imageAssertItem.precisionDigits);
-                        }
-                    });
-                    if (_assertValue.lengthOfVals > 0) {
-                        expect(_meanProfile.vals.length).toEqual(_assertValue.lengthOfVals);
-                        _assertValue.vals.map( val => {
-                            if (isNaN(val.value)) {
-                                expect(isNaN(_meanProfile.vals[val.index])).toBe(true);
+                test(`Assert SPECTRAL_PROFILE_DATA.profiles of ${region.regionType === CARTA.RegionType.POINT ? "CARTA.StatsType.Sum" : "CARTA.StatsType.Mean"}`, () => {
+                    let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === (region.regionType === CARTA.RegionType.POINT ? CARTA.StatsType.Sum : CARTA.StatsType.Mean));
+                    let _assertValue = region.profiles.find(f => f.statsTypes[0] === (region.regionType === CARTA.RegionType.POINT ? CARTA.StatsType.Sum : CARTA.StatsType.Mean));
+                    if (_meanProfile && _assertValue) {
+                        expect(_meanProfile.coordinate).toEqual(_assertValue.coordinate);
+                        expect(_meanProfile.doubleVals.length).toEqual(_assertValue.lengthOfDoubleVals);
+                        expect(_meanProfile.statsType).toEqual(_assertValue.statsTypes[0]);
+                        _assertValue.doubleVals.map( doubleVal => {
+                            if (isNaN(doubleVal.value)) {
+                                expect(isNaN(_meanProfile.doubleVals[doubleVal.index])).toBe(true);
                             } else {
-                                expect(_meanProfile.vals[val.index]).toBeCloseTo(val.value, imageAssertItem.precisionDigits);
+                                expect(_meanProfile.doubleVals[doubleVal.index]).toBeCloseTo(doubleVal.value, imageAssertItem.precisionDigits);
                             }
                         });
+                        if (_assertValue.lengthOfVals > 0) {
+                            expect(_meanProfile.vals.length).toEqual(_assertValue.lengthOfVals);
+                            _assertValue.vals.map( val => {
+                                if (isNaN(val.value)) {
+                                    expect(isNaN(_meanProfile.vals[val.index])).toBe(true);
+                                } else {
+                                    expect(_meanProfile.vals[val.index]).toBeCloseTo(val.value, imageAssertItem.precisionDigits);
+                                }
+                            });
+                        }
+                    } else {
+                        expect(_meanProfile).toBeDefined();
+                        expect(_assertValue).toBeDefined();
                     }
                 });
 
                 test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
                     region.profiles.map(profile => {
                         let _returnedValue = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsTypes[0]);
+                        expect(_returnedValue).toBeDefined();
                         profile.doubleVals.map(assertDoubleVal => {
                             if (isNaN(assertDoubleVal.value)) {
                                 expect(isNaN(_returnedValue.doubleVals[assertDoubleVal.index])).toBe(true);
