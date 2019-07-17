@@ -128,11 +128,48 @@ export function getEvent(
         }
     };
 }
+interface ProcessedSpatialProfile extends CARTA.ISpatialProfile {values: Float32Array;}
+function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
+    if (profile.rawValuesFp32 && profile.rawValuesFp32.length && profile.rawValuesFp32.length % 4 === 0) {
+        return {
+            coordinate: profile.coordinate,
+            start: profile.start,
+            end: profile.end,
+            values: new Float32Array(profile.rawValuesFp32.slice().buffer)
+        };
+    }
+    return {
+        coordinate: profile.coordinate,
+        start: profile.start,
+        end: profile.end,
+        values: null
+    };
+}
+interface ProcessedSpectralProfile extends CARTA.ISpectralProfile {values: Float32Array | Float64Array;}
+function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpectralProfile {
+    if (profile.rawValuesFp64 && profile.rawValuesFp64.length && profile.rawValuesFp64.length % 8 === 0) {
+        return {
+            coordinate: profile.coordinate,
+            statsType: profile.statsType,
+            values: new Float64Array(profile.rawValuesFp64.slice().buffer)
+        };
+    } else if (profile.rawValuesFp32 && profile.rawValuesFp32.length && profile.rawValuesFp32.length % 4 === 0) {
+        return {
+            coordinate: profile.coordinate,
+            statsType: profile.statsType,
+            values: new Float32Array(profile.rawValuesFp32.slice().buffer)
+        };
+    }
+    return {
+        coordinate: profile.coordinate,
+        statsType: profile.statsType,
+        values: null
+    };
+}
 /// Get websocket message async
 /// Parameters: connection(Websocket ref), cartaType(CARTA.type)
-/// Function promiseToDo: As absent, do nothing but receive a message.
-/// Parameters: dataMessage(the responding message), resolve as callback be finished, reject as callback be finished
-/// return a Promise<any> for await
+/// timeout: promise will return nothing until time out if timeout > 0
+/// return a Promise<cartaType> for await
 export function getEventAsync(
     connection: WebSocket, 
     cartaType: any, 
@@ -156,7 +193,21 @@ export function getEventAsync(
                 if(timeout){
                     reject();
                 }
-                resolve(cartaType.decode(eventData));
+                let profileData;
+                switch (cartaType) {
+                    case CARTA.SpatialProfileData:
+                        profileData = CARTA.SpatialProfileData.decode(eventData);
+                        profileData.profiles = profileData.profiles.map( p => processSpatialProfile(p));
+                        break;
+                    case CARTA.SpectralProfileData:
+                        profileData = CARTA.SpectralProfileData.decode(eventData);
+                        profileData.profiles = profileData.profiles.map( p => processSpectralProfile(p));
+                        break;
+                    default:
+                        profileData = cartaType.decode(eventData);
+                        break;
+                }
+                resolve(profileData);
             }
         };
         if(timeout){
@@ -198,6 +249,8 @@ export function getStream(
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
         }
+
+        let _profileData;
         if (toDo) {
             switch (eventType) {
                 case EventType["RasterTileData"]:
@@ -212,7 +265,9 @@ export function getStream(
                     break;
                 case EventType["SpatialProfileData"]:
                     if (typeof toDo.SpatialProfileData === "function") {
-                        toDo.SpatialProfileData(CARTA.SpatialProfileData.decode(eventData));
+                        _profileData = CARTA.SpatialProfileData.decode(eventData);
+                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
+                        toDo.SpatialProfileData(_profileData);
                     }
                     break;
                 case EventType["RegionStatsData"]:
@@ -227,7 +282,9 @@ export function getStream(
                     break;
                 case EventType["SpectralProfileData"]:
                     if (typeof toDo.SpectralProfileData === "function") {
-                        toDo.SpectralProfileData(CARTA.SpectralProfileData.decode(eventData));
+                        _profileData = CARTA.SpectralProfileData.decode(eventData);
+                        _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
+                        toDo.SpectralProfileData(_profileData);
                     }
                     break;
                 default:
@@ -250,7 +307,7 @@ export function getStreamAsync(
         return Promise.resolve();
     }
     let _count: number = 0;
-    let ack = {
+    let ack: any = {
         RasterTileData: CARTA.RasterTileData,
         RasterImageData: CARTA.RasterImageData,
         SpatialProfileData: CARTA.SpatialProfile,
@@ -271,6 +328,7 @@ export function getStreamAsync(
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
             }
+            let _profileData;
             switch (eventType) {
                 case EventType["RasterTileData"]:
                     ack.RasterTileData = CARTA.RasterTileData.decode(eventData);
@@ -279,7 +337,9 @@ export function getStreamAsync(
                     ack.RasterImageData = CARTA.RasterImageData.decode(eventData);
                     break;
                 case EventType["SpatialProfileData"]:
-                    ack.SpatialProfileData = CARTA.SpatialProfileData.decode(eventData);
+                    _profileData = CARTA.SpatialProfileData.decode(eventData);
+                    _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
+                    ack.SpatialProfileData = _profileData;
                     break;
                 case EventType["RegionStatsData"]:
                     ack.RegionStatsData = CARTA.RegionStatsData.decode(eventData);
@@ -288,7 +348,9 @@ export function getStreamAsync(
                     ack.RegionHistogramData = CARTA.RegionHistogramData.decode(eventData);
                     break;
                 case EventType["SpectralProfileData"]:
-                    ack.SpectralProfileData = CARTA.SpectralProfileData.decode(eventData);
+                    _profileData = CARTA.SpectralProfileData.decode(eventData);
+                    _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
+                    ack.SpectralProfileData = _profileData;
                     break;
                 default:
                     break;

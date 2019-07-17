@@ -7,11 +7,9 @@ let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
 interface Profile {
     coordinate: string,
-    lengthOfDoubleVals: number,
     lengthOfVals: number,
     statsTypes: CARTA.StatsType[],
-    doubleVals: {index: number, value: number}[],
-    vals: {index: number, value: number}[],
+    values: {index: number, value: number}[],
 }
 interface Region {
         regionId: number;
@@ -23,6 +21,7 @@ interface Region {
             regionId: number,
             progress: number,
         };
+        spectralConfig: CARTA.SetSpectralRequirements.ISpectralConfig[];
         profiles: Profile[];
 }
 interface ImageAssertItem {
@@ -60,64 +59,65 @@ let imageAssertItem: ImageAssertItem = {
             regionName: "",
             assert: {
                 regionId: 1,
-                progress: 1,                
+                progress: 1,
             },
+            spectralConfig: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels, 
+                        CARTA.StatsType.Sum, 
+                        CARTA.StatsType.Mean, 
+                        CARTA.StatsType.RMS, 
+                        CARTA.StatsType.Sigma, 
+                        CARTA.StatsType.SumSq, 
+                        CARTA.StatsType.Min, 
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
             profiles: [
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
+                    lengthOfVals: 25,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    values: [{index: 10, value: 0.86641663}],
+                },
+                {
+                    coordinate: "z",
                     lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
-                    doubleVals: [{index: 10, value: 0.0577611}],
-                    vals: [{index: 10, value: 0.057761108378569286}],
+                    values: [{index: 10, value: 0.05776111}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
-                    statsTypes: [CARTA.StatsType.Sum],
-                    doubleVals: [{index: 10, value: 0.86641663}],
-                    vals: [],
-                },
-                {
-                    coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.RMS],
-                    doubleVals: [{index: 10, value: 0.05839548}],
-                    vals: [],
+                    values: [{index: 10, value: 0.05839548}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Sigma],
-                    doubleVals: [{index: 10, value: 0.00888533}],
-                    vals: [],
+                    values: [{index: 10, value: 0.00888533}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.SumSq],
-                    doubleVals: [{index: 10, value: 0.05115047}],
-                    vals: [],
+                    values: [{index: 10, value: 0.05115047}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Min],
-                    doubleVals: [{index: 10, value: 0.03859435}],
-                    vals: [],
+                    values: [{index: 10, value: 0.03859435}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Max],
-                    doubleVals: [{index: 10, value: 0.0702243}],
-                    vals: [],
+                    values: [{index: 10, value: 0.0702243}],
                 },
             ],
         },
@@ -129,64 +129,65 @@ let imageAssertItem: ImageAssertItem = {
             regionName: "",
             assert: {
                 regionId: 2,
-                progress: 1,                
+                progress: 1,
             },
+            spectralConfig: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels, 
+                        CARTA.StatsType.Sum, 
+                        CARTA.StatsType.Mean, 
+                        CARTA.StatsType.RMS, 
+                        CARTA.StatsType.Sigma, 
+                        CARTA.StatsType.SumSq, 
+                        CARTA.StatsType.Min, 
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
             profiles: [
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
+                    lengthOfVals: 25,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    values: [{index: 10, value: -0.3364888}],
+                },
+                {
+                    coordinate: "z",
                     lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
-                    doubleVals: [{index: 10, value: -0.02103055}],
-                    vals: [{index: 10, value: -0.02103055}],
+                    values: [{index: 10, value: -0.02103055}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
-                    statsTypes: [CARTA.StatsType.Sum],
-                    doubleVals: [{index: 10, value: -0.3364888}],
-                    vals: [],
-                },
-                {
-                    coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.RMS],
-                    doubleVals: [{index: 10, value: 0.02322209}],
-                    vals: [],
+                    values: [{index: 10, value: 0.02322209}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Sigma],
-                    doubleVals: [{index: 10, value: 0.01017089}],
-                    vals: [],
+                    values: [{index: 10, value: 0.01017089}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.SumSq],
-                    doubleVals: [{index: 10, value: 0.00862825}],
-                    vals: [],
+                    values: [{index: 10, value: 0.00862825}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Min],
-                    doubleVals: [{index: 10, value: -0.03209378}],
-                    vals: [],
+                    values: [{index: 10, value: -0.03209378}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Max],
-                    doubleVals: [{index: 10, value: -0.00236961}],
-                    vals: [],
+                    values: [{index: 10, value: -0.00236961}],
                 },
             ],
         },
@@ -198,64 +199,65 @@ let imageAssertItem: ImageAssertItem = {
             regionName: "",
             assert: {
                 regionId: 3,
-                progress: 1,                
+                progress: 1,
             },
+            spectralConfig: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels, 
+                        CARTA.StatsType.Sum, 
+                        CARTA.StatsType.Mean, 
+                        CARTA.StatsType.RMS, 
+                        CARTA.StatsType.Sigma, 
+                        CARTA.StatsType.SumSq, 
+                        CARTA.StatsType.Min, 
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
             profiles: [
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
+                    lengthOfVals: 1,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    values: [{index: 0, value: NaN}],
+                },
+                {
+                    coordinate: "z",
                     lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Mean],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [{index: 0, value: NaN}],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
-                    statsTypes: [CARTA.StatsType.Sum],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
-                },
-                {
-                    coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.RMS],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Sigma],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.SumSq],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Min],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Max],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
             ],
         },
@@ -267,64 +269,65 @@ let imageAssertItem: ImageAssertItem = {
             regionName: "",
             assert: {
                 regionId: 1,
-                progress: 1,                
+                progress: 1,
             },
+            spectralConfig: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels, 
+                        CARTA.StatsType.Sum, 
+                        CARTA.StatsType.Mean, 
+                        CARTA.StatsType.RMS, 
+                        CARTA.StatsType.Sigma, 
+                        CARTA.StatsType.SumSq, 
+                        CARTA.StatsType.Min, 
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
             profiles: [
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
+                    lengthOfVals: 25,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    values: [{index: 10, value: 0.2515069}],
+                },
+                {
+                    coordinate: "z",
                     lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Mean],
-                    doubleVals: [{index: 10, value: 0.01143213}],
-                    vals: [{index: 10, value: 0.01143213}],
+                    values: [{index: 10, value: 0.01143213}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
-                    statsTypes: [CARTA.StatsType.Sum],
-                    doubleVals: [{index: 10, value: 0.2515069}],
-                    vals: [],
-                },
-                {
-                    coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.RMS],
-                    doubleVals: [{index: 10, value: 0.01610695}],
-                    vals: [],
+                    values: [{index: 10, value: 0.01610695}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Sigma],
-                    doubleVals: [{index: 10, value: 0.01161338}],
-                    vals: [],
+                    values: [{index: 10, value: 0.01161338}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.SumSq],
-                    doubleVals: [{index: 10, value: 0.00570754}],
-                    vals: [],
+                    values: [{index: 10, value: 0.00570754}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Min],
-                    doubleVals: [{index: 10, value: -0.01199045}],
-                    vals: [],
+                    values: [{index: 10, value: -0.01199045}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 25,
-                    lengthOfVals: 0,
+                    lengthOfVals: 25,
                     statsTypes: [CARTA.StatsType.Max],
-                    doubleVals: [{index: 10, value: 0.02959144}],
-                    vals: [],
+                    values: [{index: 10, value: 0.02959144}],
                 },
             ],
         },
@@ -336,64 +339,65 @@ let imageAssertItem: ImageAssertItem = {
             regionName: "",
             assert: {
                 regionId: 2,
-                progress: 1,                
+                progress: 1,
             },
+            spectralConfig: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels, 
+                        CARTA.StatsType.Sum, 
+                        CARTA.StatsType.Mean, 
+                        CARTA.StatsType.RMS, 
+                        CARTA.StatsType.Sigma, 
+                        CARTA.StatsType.SumSq, 
+                        CARTA.StatsType.Min, 
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
             profiles: [
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
+                    lengthOfVals: 1,
+                    statsTypes: [CARTA.StatsType.Sum],
+                    values: [{index: 0, value: NaN}],
+                },
+                {
+                    coordinate: "z",
                     lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Mean],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [{index: 0, value: NaN}],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
-                    statsTypes: [CARTA.StatsType.Sum],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
-                },
-                {
-                    coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.RMS],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Sigma],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.SumSq],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Min],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
                 {
                     coordinate: "z",
-                    lengthOfDoubleVals: 1,
-                    lengthOfVals: 0,
+                    lengthOfVals: 1,
                     statsTypes: [CARTA.StatsType.Max],
-                    doubleVals: [{index: 0, value: NaN}],
-                    vals: [],
+                    values: [{index: 0, value: NaN}],
                 },
             ],
         },
@@ -442,7 +446,8 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                     requiredTiles: {
                         fileId: 0,
                         tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
+                        compressionType: CARTA.CompressionType.ZFP,
+                        compressionQuality: 11,
                     },
                 },
             );
@@ -469,16 +474,16 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
             });
             
             describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${region.assert.regionId}`, () => {
-                let SpectralProfileDataTemp: CARTA.SpectralProfileData;
+                let SpectralProfileDataTemp: any;
                 test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, 
                         {
                             fileId: imageAssertItem.fileId,
                             regionId: region.assert.regionId,
-                            spectralProfiles: region.profiles,
+                            spectralProfiles: region.spectralConfig,
                         }
                     );
-                    SpectralProfileDataTemp = <CARTA.SpectralProfileData>await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                    SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
                 }, regionTimeout);
                 
                 test(`SPECTRAL_PROFILE_DATA.region_id = ${region.assert.regionId}`, () => {
@@ -491,24 +496,24 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
 
                 test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
                     let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
-                    let _assertValue = region.profiles.find(f => f.statsTypes[0] === CARTA.StatsType.Mean);
-                    expect(_meanProfile.coordinate).toEqual(_assertValue.coordinate);
-                    expect(_meanProfile.doubleVals.length).toEqual(_assertValue.lengthOfDoubleVals);
-                    expect(_meanProfile.statsType).toEqual(_assertValue.statsTypes[0]);
-                    _assertValue.doubleVals.map( doubleVal => {
-                        if (isNaN(doubleVal.value)) {
-                            expect(isNaN(_meanProfile.doubleVals[doubleVal.index])).toBe(true);
+                    let _assertProfile = region.profiles.find(f => f.statsTypes[0] === CARTA.StatsType.Mean);
+                    expect(_meanProfile.coordinate).toEqual(_assertProfile.coordinate);
+                    expect(_meanProfile.values.length).toEqual(_assertProfile.lengthOfVals);
+                    expect(_meanProfile.statsType).toEqual(_assertProfile.statsTypes[0]);
+                    _assertProfile.values.map( assertVal => {
+                        if (isNaN(assertVal.value)) {
+                            expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
                         } else {
-                            expect(_meanProfile.doubleVals[doubleVal.index]).toBeCloseTo(doubleVal.value, imageAssertItem.precisionDigits);
+                            expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, imageAssertItem.precisionDigits);
                         }
                     });
-                    if (_assertValue.lengthOfVals > 0) {
-                        expect(_meanProfile.vals.length).toEqual(_assertValue.lengthOfVals);
-                        _assertValue.vals.map( val => {
-                            if (isNaN(val.value)) {
-                                expect(isNaN(_meanProfile.vals[val.index])).toBe(true);
+                    if (_assertProfile.lengthOfVals > 0) {
+                        expect(_meanProfile.values.length).toEqual(_assertProfile.lengthOfVals);
+                        _assertProfile.values.map( assertVal => {
+                            if (isNaN(assertVal.value)) {
+                                expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
                             } else {
-                                expect(_meanProfile.vals[val.index]).toBeCloseTo(val.value, imageAssertItem.precisionDigits);
+                                expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, imageAssertItem.precisionDigits);
                             }
                         });
                     }
@@ -516,12 +521,12 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
 
                 test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
                     region.profiles.map(profile => {
-                        let _returnedValue = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsTypes[0]);
-                        profile.doubleVals.map(assertDoubleVal => {
-                            if (isNaN(assertDoubleVal.value)) {
-                                expect(isNaN(_returnedValue.doubleVals[assertDoubleVal.index])).toBe(true);
+                        let _returnedProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsTypes[0]);
+                        profile.values.map(assertVal => {
+                            if (isNaN(assertVal.value)) {
+                                expect(isNaN(_returnedProfile.values[assertVal.index])).toBe(true);
                             } else {
-                                expect(_returnedValue.doubleVals[assertDoubleVal.index]).toBeCloseTo(assertDoubleVal.value, imageAssertItem.precisionDigits);
+                                expect(_returnedProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, imageAssertItem.precisionDigits);
                             }
                         });
                     });

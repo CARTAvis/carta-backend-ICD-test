@@ -44,7 +44,7 @@ let assertItems: AssertItem[] = [
         regionId: 0,
         stokes: 0,
         progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
         assertProfile: [
             {
                 point: {x: 316.0, y: 401.0},
@@ -70,7 +70,7 @@ let assertItems: AssertItem[] = [
         regionId: 0,
         stokes: 0,
         progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
         assertProfile: [
             {
                 point: {x: 316.0, y: 401.0},
@@ -96,7 +96,7 @@ let assertItems: AssertItem[] = [
         regionId: 0,
         stokes: 0,
         progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
         assertProfile: [
             {
                 point: {x: 1006, y: 478},
@@ -125,7 +125,7 @@ let assertItems: AssertItem[] = [
         regionId: 0,
         stokes: 0,
         progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.NumPixels]}],
+        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
         assertProfile: [
             {
                 point: {x: 1006, y: 478},
@@ -230,12 +230,12 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
 
                         test("Assert SPECTRAL_PROFILE_DATA.profiles", () => {
                             expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").coordinate).toEqual(assertItem.spectralProfiles.find(f => f.coordinate === "z").coordinate);
-                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").vals.length).toEqual(item.profileLen.z);
+                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values.length).toEqual(item.profileLen.z);
                             item.oddPoint.z.map( f => {
                                 if (isNaN(f.value)) {
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").vals[f.idx]).toEqual(NaN);
+                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[f.idx]).toEqual(NaN);
                                 } else {                            
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").vals[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
+                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
                                 }
                             });
                         });
