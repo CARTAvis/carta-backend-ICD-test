@@ -274,7 +274,9 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             });
 
             test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(assertItem.rasterTileData.assert.index)} = ${assertItem.rasterTileData.assert.value}`, () => {
-                const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((256*256-1)*4, 256*256*4).buffer);
+                const _x = assertItem.rasterTileData.assert.index.x;
+                const _y = assertItem.rasterTileData.assert.index.y;
+                const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
                 expect(dv.getFloat32(0, true)).toBeCloseTo(assertItem.rasterTileData.assert.value, assertItem.precisionDigit);
             });
 
@@ -329,7 +331,9 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 });
     
                 test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(rasterTileData.assert.index)} = ${rasterTileData.assert.value}`, () => {
-                    const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((256*256-1)*4, 256*256*4).buffer);
+                    const _x = assertItem.rasterTileData.assert.index.x;
+                    const _y = assertItem.rasterTileData.assert.index.y;
+                    const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
                     expect(dv.getFloat32(0, true)).toBeCloseTo(rasterTileData.assert.value, assertItem.precisionDigit);
                 });
     
