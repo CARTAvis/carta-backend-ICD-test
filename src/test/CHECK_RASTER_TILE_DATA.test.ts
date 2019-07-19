@@ -77,30 +77,30 @@ let assertItem: AssertItem = {
         ],
         assert: {
             lengthTiles: 1,
-            index: {x: 255, y: 255},
+            index: {x: 256, y: 256},
             value: 2.72519,
         }
     },
     addRequiredTilesGroup: [
         {
             fileId: 0,
+            tiles: [16781313], // Hex1001001
             compressionType: CARTA.CompressionType.NONE,
-            tiles: [16781313],
         },
         {
             fileId: 0,
+            tiles: [33566723], // Hex2003003
             compressionType: CARTA.CompressionType.NONE,
-            tiles: [33566723],
         },
         {
             fileId: 0,
+            tiles: [50360327], // Hex3007007
             compressionType: CARTA.CompressionType.NONE,
-            tiles: [50360327],
         },
         {
             fileId: 0,
+            tiles: [67170319], // Hex400F00F
             compressionType: CARTA.CompressionType.NONE,
-            tiles: [67170319],
         },
     ],
     rasterTileDataGroup: [
@@ -120,7 +120,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 255, y: 255},
+                index: {x: 256, y: 256},
                 value: 2.72519,
             }
         },
@@ -140,7 +140,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 255, y: 255},
+                index: {x: 256, y: 256},
                 value: 2.40348,
             }
         },
@@ -160,7 +160,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 255, y: 255},
+                index: {x: 256, y: 256},
                 value: 2.99947,
             }
         },
@@ -180,7 +180,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 255, y: 255},
+                index: {x: 256, y: 256},
                 value: 3.74704,
             }
         },
@@ -212,7 +212,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             let OpenFileAckTemp: CARTA.OpenFileAck;
             test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
-                OpenFileAckTemp = <CARTA.OpenFileAck>await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+                OpenFileAckTemp = <CARTA.OpenFileAck> await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
                 await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }, openFileTimeout);            
 
@@ -230,7 +230,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             let RasterTileDataTemp: CARTA.RasterTileData;
             test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
-                RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                RasterTileDataTemp = <CARTA.RasterTileData> await Utility.getEventAsync(Connection, CARTA.RasterTileData);
             }, readFileTimeout);
 
             test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileData.fileId}`, () => {
@@ -276,8 +276,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(assertItem.rasterTileData.assert.index)} = ${assertItem.rasterTileData.assert.value}`, () => {
                 const _x = assertItem.rasterTileData.assert.index.x;
                 const _y = assertItem.rasterTileData.assert.index.y;
-                const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
-                expect(dv.getFloat32(0, true)).toBeCloseTo(assertItem.rasterTileData.assert.value, assertItem.precisionDigit);
+                const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
+                expect(_dataView.getFloat32(0, true)).toBeCloseTo(assertItem.rasterTileData.assert.value, assertItem.precisionDigit);
             });
 
         });
@@ -287,7 +287,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 let RasterTileDataTemp: CARTA.RasterTileData;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                    RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                    RasterTileDataTemp = <CARTA.RasterTileData> await Utility.getEventAsync(Connection, CARTA.RasterTileData);
                 }, readFileTimeout);
     
                 test(`RASTER_TILE_DATA.file_id = ${rasterTileData.fileId}`, () => {
@@ -333,8 +333,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(rasterTileData.assert.index)} = ${rasterTileData.assert.value}`, () => {
                     const _x = assertItem.rasterTileData.assert.index.x;
                     const _y = assertItem.rasterTileData.assert.index.y;
-                    const dv = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
-                    expect(dv.getFloat32(0, true)).toBeCloseTo(rasterTileData.assert.value, assertItem.precisionDigit);
+                    const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
+                    expect(_dataView.getFloat32(0, true)).toBeCloseTo(rasterTileData.assert.value, assertItem.precisionDigit);
                 });
     
             });
