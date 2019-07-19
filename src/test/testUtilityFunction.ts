@@ -276,13 +276,6 @@ export function getStream(
                         toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
                     }
                     break;
-                case EventType["SpatialProfileData"]:
-                    if (typeof toDo.SpatialProfileData === "function") {
-                        _profileData = CARTA.SpatialProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
-                        toDo.SpatialProfileData(_profileData);
-                    }
-                    break;
                 case EventType["RegionStatsData"]:
                     if (typeof toDo.RegionStatsData === "function") {
                         toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
@@ -291,6 +284,13 @@ export function getStream(
                 case EventType["RegionHistogramData"]:
                     if (typeof toDo.RegionHistogramData === "function") {
                         toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpatialProfileData"]:
+                    if (typeof toDo.SpatialProfileData === "function") {
+                        _profileData = CARTA.SpatialProfileData.decode(eventData);
+                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
+                        toDo.SpatialProfileData(_profileData);
                     }
                     break;
                 case EventType["SpectralProfileData"]:
@@ -310,6 +310,14 @@ export function getStream(
         }
     };
 }
+interface AckStream {
+    RasterTileData: CARTA.RasterTileData[];
+    RasterImageData: CARTA.RasterImageData[];
+    SpatialProfileData: CARTA.SpatialProfile[];
+    RegionStatsData: CARTA.RegionStatsData[];
+    RegionHistogramData: CARTA.RegionHistogramData[];
+    SpectralProfileData: CARTA.SpectralProfileData[];
+}
 /// Get CARTA stream async
 /// Until the number: totalCount of mesaages have received
 export function getStreamAsync(
@@ -320,14 +328,7 @@ export function getStreamAsync(
         return Promise.resolve();
     }
     let _count: number = 0;
-    let ack: any = {
-        RasterTileData: CARTA.RasterTileData,
-        RasterImageData: CARTA.RasterImageData,
-        SpatialProfileData: CARTA.SpatialProfile,
-        RegionStatsData: CARTA.RegionStatsData,
-        RegionHistogramData: CARTA.RegionHistogramData,
-        SpectralProfileData: CARTA.SpectralProfileData,
-    };
+    let ack: AckStream;
     return new Promise( resolve => {
         connection.onmessage = (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
@@ -344,26 +345,26 @@ export function getStreamAsync(
             let _profileData;
             switch (eventType) {
                 case EventType["RasterTileData"]:
-                    ack.RasterTileData = CARTA.RasterTileData.decode(eventData);
+                    ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                     break;
                 case EventType["RasterImageData"]:
-                    ack.RasterImageData = CARTA.RasterImageData.decode(eventData);
+                    ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
+                    break;
+                case EventType["RegionStatsData"]:
+                    ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
+                    break;
+                case EventType["RegionHistogramData"]:
+                    ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
                     break;
                 case EventType["SpatialProfileData"]:
                     _profileData = CARTA.SpatialProfileData.decode(eventData);
                     _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
-                    ack.SpatialProfileData = _profileData;
-                    break;
-                case EventType["RegionStatsData"]:
-                    ack.RegionStatsData = CARTA.RegionStatsData.decode(eventData);
-                    break;
-                case EventType["RegionHistogramData"]:
-                    ack.RegionHistogramData = CARTA.RegionHistogramData.decode(eventData);
+                    ack.SpatialProfileData.push(_profileData);
                     break;
                 case EventType["SpectralProfileData"]:
                     _profileData = CARTA.SpectralProfileData.decode(eventData);
                     _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
-                    ack.SpectralProfileData = _profileData;
+                    ack.SpectralProfileData.push(_profileData);
                     break;
                 default:
                     break;
