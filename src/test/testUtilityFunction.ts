@@ -36,6 +36,7 @@ export const EventType = {
     RemoveRequireTiles: 31,
     RasterTileData: 32,
 };
+const isLog = false;
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
     const bytes = new Uint8Array(padLength);
@@ -70,9 +71,11 @@ export function setEvent(
     eventHeader16[0] = EventType[cartaType.name];
     eventHeader16[1] = IcdVersion;
     eventHeader32[0] = 0; // eventCounter;
+    if (isLog) {
+        console.log(`${cartaType.name} =>`);
+    }
 
     eventData.set(payload, 8);
-
     connection.send(eventData);
 }
 /// Send websocket message async
@@ -92,9 +95,11 @@ export function setEventAsync(
         eventHeader16[0] = EventType[cartaType.name];
         eventHeader16[1] = IcdVersion;
         eventHeader32[0] = 0; // eventCounter;
+        if (isLog) {
+            console.log(`${cartaType.name} =>`);
+        }
 
         eventData.set(payload, 8);
-
         connection.send(eventData);
 
         resolve();
@@ -117,6 +122,9 @@ export function getEvent(
         const eventType = eventHeader16[0];
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
+        if (isLog) {
+            console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+        }
 
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -184,6 +192,9 @@ export function getEventAsync(
             const eventType = eventHeader16[0];
             const eventIcdVersion = eventHeader16[1];
             const eventId = eventHeader32[0];
+            if (isLog) {
+                console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+            }
 
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -244,7 +255,9 @@ export function getStream(
         const eventType = eventHeader16[0];
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
-        // console.log(eventType);
+        if (isLog) {
+            console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+        }
 
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
