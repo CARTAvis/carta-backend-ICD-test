@@ -328,7 +328,14 @@ export function getStreamAsync(
         return Promise.resolve();
     }
     let _count: number = 0;
-    let ack: AckStream;
+    let ack: AckStream = {
+        RasterTileData: [],
+        RasterImageData: [],
+        SpatialProfileData: [],
+        RegionStatsData: [],
+        RegionHistogramData: [],
+        SpectralProfileData: [],
+    };
     return new Promise( resolve => {
         connection.onmessage = (messageEvent: MessageEvent) => {
             const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
