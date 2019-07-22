@@ -310,7 +310,7 @@ export function getStream(
         }
     };
 }
-interface AckStream {
+export interface AckStream {
     RasterTileData: CARTA.RasterTileData[];
     RasterImageData: CARTA.RasterImageData[];
     SpatialProfileData: CARTA.SpatialProfile[];
