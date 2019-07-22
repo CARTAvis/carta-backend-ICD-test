@@ -179,7 +179,7 @@ describe(`TILE_DATA_REQUEST test: Testing tile requesting messages "SET_IMAGE_CH
                 } else {
                     test(`RASTER_TILE_DATA should not arrive within ${readFileTimeout} ms`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, readFileTimeout - 1);
+                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, readFileTimeout * .5);
                     }, readFileTimeout);
                 }
                 
