@@ -135,9 +135,13 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
             });
 
             test(`RASTER_TILE_DATA.tiles should contain ${assertItem.setImageChannel.requiredTiles.tiles.length} tiles`, () => {
+                let _seq: number[] = [];
                 assertItem.setImageChannel.requiredTiles.tiles.map(tile => {
-                    expect(ack.RasterTileData.find(data => ((data.tiles[0].layer << 24) | (data.tiles[0].y << 12) | data.tiles[0].x) === tile).tiles[0].imageData.length).toBeGreaterThan(0);
+                    let _index: number = ack.RasterTileData.findIndex(data => ((data.tiles[0].layer << 24) | (data.tiles[0].y << 12) | data.tiles[0].x) === tile);
+                    expect(_index).toBeGreaterThanOrEqual(0);
+                    _seq.push(_index + 1);
                 });
+                console.dir(`Sequence of retruned tiles: ${JSON.stringify(_seq)}`);
             });
 
         });
