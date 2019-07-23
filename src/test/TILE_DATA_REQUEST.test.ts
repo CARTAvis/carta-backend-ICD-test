@@ -1,7 +1,6 @@
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
-import { util } from "protobufjs";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
@@ -134,7 +133,7 @@ describe(`TILE_DATA_REQUEST test: Testing tile requesting messages "SET_IMAGE_CH
             let ack: Utility.AckStream;
             test(`Only RASTER_TILE_DATA x${assertItem.rasterTileData.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
-                ack = <Utility.AckStream> await Utility.getStreamAsync(Connection, 4);
+                ack = <Utility.AckStream> await Utility.getStreamAsync(Connection, assertItem.rasterTileData.tiles.length);
                 expect(ack.RasterTileData.length).toEqual(assertItem.rasterTileData.tiles.length);
             }, readFileTimeout);
 
