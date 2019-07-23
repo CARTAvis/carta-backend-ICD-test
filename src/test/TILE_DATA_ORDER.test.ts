@@ -141,7 +141,7 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
                     expect(_index).toBeGreaterThanOrEqual(0);
                     _seq.push(_index + 1);
                 });
-                console.dir(`Sequence of returned tiles: ${JSON.stringify(_seq)}`);
+                console.dir(`Sequence of returned tiles(1-indexed): ${JSON.stringify(_seq)}`);
             });
 
         });
