@@ -8,11 +8,9 @@ let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
 interface Profile {
     coordinate: string,
-    lengthOfDoubleVals: number,
     lengthOfVals: number,
     statsTypes: CARTA.StatsType[],
-    doubleVals: {index: number, value: number}[],
-    vals: {index: number, value: number}[],
+    values: {index: number, value: number}[],
     channel?: number;
     stokes?: number;
     message?: string;
@@ -66,34 +64,28 @@ let imageAssertItems: ImageAssertItem[] = [
                 regionName: "",
                 assert: {
                     regionId: 1,
-                    progress: 1,                
+                    progress: 1,
                 },
                 profiles: [
                     {
                         coordinate: "z",
-                        lengthOfDoubleVals: 5,
-                        lengthOfVals: 0,
+                        lengthOfVals: 5,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: 0.035725489635913335}],
-                        vals: [],
+                        values: [{index: 2, value: 0.035725489635913335}],
                     },
                     {
                         coordinate: "z",
-                        lengthOfDoubleVals: 5,
-                        lengthOfVals: 0,
+                        lengthOfVals: 5,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: -0.0004460110767806237}],
-                        vals: [],
+                        values: [{index: 2, value: -0.0004460110767806237}],
                         channel: 0,
                         stokes: 1,
                     },
                     {
                         coordinate: "Uz",
-                        lengthOfDoubleVals: 5,
-                        lengthOfVals: 0,
+                        lengthOfVals: 5,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: -0.00010940432089077795}],
-                        vals: [],
+                        values: [{index: 2, value: -0.00010940432089077795}],
                     },
                 ],
                 errorProfiles: [
@@ -128,34 +120,28 @@ let imageAssertItems: ImageAssertItem[] = [
                 regionName: "",
                 assert: {
                     regionId: 1,
-                    progress: 1,                
+                    progress: 1,
                 },
                 profiles: [
                     {
                         coordinate: "z",
-                        lengthOfDoubleVals: 5,
-                        lengthOfVals: 0,
+                        lengthOfVals: 5,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: 0.035725489635913335}],
-                        vals: [],
+                        values: [{index: 2, value: 0.035725489635913335}],
                     },
                     {
                         coordinate: "z",
-                        lengthOfDoubleVals: 5,
                         lengthOfVals: 0,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: -0.0004460110767806237}],
-                        vals: [],
+                        values: [{index: 2, value: -0.0004460110767806237}],
                         channel: 0,
                         stokes: 1,
                     },
                     {
                         coordinate: "Uz",
-                        lengthOfDoubleVals: 5,
                         lengthOfVals: 0,
                         statsTypes: [CARTA.StatsType.Mean],
-                        doubleVals: [{index: 2, value: -0.00010940432089077795}],
-                        vals: [],
+                        values: [{index: 2, value: -0.00010940432089077795}],
                     },
                 ],
                 errorProfiles: [
@@ -214,7 +200,8 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         requiredTiles: {
                             fileId: 0,
                             tiles: [0],
-                            compressionType: CARTA.CompressionType.NONE,
+                            compressionType: CARTA.CompressionType.ZFP,
+                            compressionQuality: 11,
                         },
                     },
                 );
@@ -249,7 +236,7 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
 
                 region.profiles.map( profile => {
                     describe(`${isNumber(profile.stokes)?`Switch to stokes ${profile.stokes} on`:`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]}`} region #${region.assert.regionId} with coordinate "${profile.coordinate}"`, () => {
-                        let SpectralProfileDataTemp: CARTA.SpectralProfileData;
+                        let SpectralProfileDataTemp: any;
                         test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
                             if (isNumber(profile.stokes)) {
                                 await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
@@ -269,7 +256,7 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                                         spectralProfiles: [profile],
                                     }
                                 );
-                                SpectralProfileDataTemp = <CARTA.SpectralProfileData>await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                                SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
                             }
                         }, regionTimeout);
                         
@@ -290,13 +277,13 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                         test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
                             let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
                             expect(_meanProfile.coordinate).toEqual(profile.coordinate);
-                            expect(_meanProfile.doubleVals.length).toEqual(profile.lengthOfDoubleVals);
+                            expect(_meanProfile.values.length).toEqual(profile.lengthOfVals);
                             expect(_meanProfile.statsType).toEqual(profile.statsTypes[0]);
-                            profile.doubleVals.map( doubleVal => {
-                                if (isNaN(doubleVal.value)) {
-                                    expect(isNaN(_meanProfile.doubleVals[doubleVal.index])).toBe(true);
+                            profile.values.map( assertVal => {
+                                if (isNaN(assertVal.value)) {
+                                    expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
                                 } else {
-                                    expect(_meanProfile.doubleVals[doubleVal.index]).toBeCloseTo(doubleVal.value, imageAssertItem.precisionDigits);
+                                    expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, imageAssertItem.precisionDigits);
                                 }
                             });
                         });
