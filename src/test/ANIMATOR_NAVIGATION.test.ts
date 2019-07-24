@@ -10,14 +10,16 @@ let messageReturnTimeout = config.timeout.messageEvent;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     fileOpens: CARTA.IOpenFile[];
-    setImageViews: CARTA.ISetImageView[];
     setImageChannels: CARTA.ISetImageChannels[];
+    changeImageChannels: CARTA.ISetImageChannels[];
+    regionHistogramDatas: CARTA.IRegionHistogramData[];
     rasterTileDatas: CARTA.IRasterTileData[];
 }
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "",
+        clientFeatureFlags: 5,
     },
     fileOpens: [
         {
@@ -26,6 +28,7 @@ let assertItem: AssertItem = {
             fileId: 0,
             hdu: "0",
             renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -33,27 +36,34 @@ let assertItem: AssertItem = {
             fileId: 1, 
             hdu: "0",
             renderMode: CARTA.RenderMode.RASTER,
-        },
-    ],
-    setImageViews: [
-        {
-            fileId: 0,
-            imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
-            mip: 2,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            numSubsets: 4,
-        },
-        {
-            fileId: 1,
-            imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-            mip: 2,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            numSubsets: 4,
+            tileSize: 256,
         },
     ],
     setImageChannels: [
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 0,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+        {
+            fileId: 1,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 1,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+    ],
+    changeImageChannels: [
         {
             fileId: 0,
             channel: 2,
@@ -106,6 +116,32 @@ let assertItem: AssertItem = {
                 compressionType: CARTA.CompressionType.ZFP,
                 compressionQuality: 11,
             },
+        },
+    ],
+    regionHistogramDatas: [
+        {
+            fileId: 0,
+            stokes: 1,
+            regionId: -1,
+            progress: 1,
+            histograms: [{channel: 2}],
+        },
+        {
+            fileId: 1,
+            stokes: 0,
+            regionId: -1,
+            progress: 1,
+            histograms: [{channel: 12}],
+        },
+        {},
+        {},
+        {},
+        {
+            fileId: 0,
+            stokes: 0,
+            regionId: -1,
+            progress: 1,
+            histograms: [{channel: 0}],
         },
     ],
     rasterTileDatas: [
@@ -167,21 +203,51 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                 await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpens[i]);
                 await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
                 await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[i]);
+                await Utility.getEventAsync(Connection, CARTA.RasterTileData);
             }
         });
 
         assertItem.rasterTileDatas.map( (rasterTileData: CARTA.IRasterTileData, index: number) => {
-            describe(`Set ${JSON.stringify(assertItem.setImageChannels[index])}`, () => {
+            describe(`Set ${JSON.stringify(assertItem.changeImageChannels[index])}`, () => {
                 if(rasterTileData.fileId < 0){                
-                    test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout} ms.`, async () => {
-                        await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, messageReturnTimeout);
-                    }, changeChannelTimeout + messageReturnTimeout);
+                    test(`REGION_HISTOGRAM_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
+                        await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
+                        await Utility.getEventAsync(Connection, CARTA.RegionHistogramData, messageReturnTimeout * .5);
+                    }, changeChannelTimeout + messageReturnTimeout);               
+                    test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
+                        await Utility.getEventAsync(Connection, CARTA.RasterTileData, messageReturnTimeout * .5);
+                    }, messageReturnTimeout);
                 }else{
+                    let RegionHistogramDataTemp: CARTA.RegionHistogramData;
                     let RasterTileDataTemp: CARTA.RasterTileData;
+                    test(`REGION_HISTOGRAM_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
+                        await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
+                        RegionHistogramDataTemp = <CARTA.RegionHistogramData> await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                    }, changeChannelTimeout);
+
+                    test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDatas[index].regionId}`, () => {
+                        expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
+                    });
+
+                    test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDatas[index].stokes}`, () => {
+                        expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogramDatas[index].stokes);
+                    });
+
+                    test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDatas[index].regionId}`, () => {
+                        expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
+                    });
+
+                    test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDatas[index].progress}`, () => {
+                        expect(RegionHistogramDataTemp.progress).toEqual(assertItem.regionHistogramDatas[index].progress);
+                    });
+
+                    test(`REGION_HISTOGRAM_DATA.histograms.channel = ${assertItem.regionHistogramDatas[index].histograms[0].channel}`, () => {
+                        expect(RegionHistogramDataTemp.histograms[0].channel).toEqual(assertItem.regionHistogramDatas[index].histograms[0].channel);
+                    });
+
                     test(`RASTER_IMAGE_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
-                        await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels[index]);
-                        RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                        RasterTileDataTemp = <CARTA.RasterTileData> await Utility.getEventAsync(Connection, CARTA.RasterTileData);
                     }, changeChannelTimeout);
 
                     test(`RASTER_IMAGE_DATA.file_id = ${rasterTileData.fileId}`, () => {
@@ -196,13 +262,6 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                         expect(RasterTileDataTemp.stokes).toEqual(rasterTileData.stokes);
                     });
 
-                    test(`RASTER_IMAGE_DATA.compression_type = ${CARTA.CompressionType[rasterTileData.compressionType]}`, () => {
-                        expect(RasterTileDataTemp.compressionType).toEqual(rasterTileData.compressionType);
-                    });
-
-                    test(`RASTER_IMAGE_DATA.compression_quality = ${rasterTileData.compressionQuality}`, () => {
-                        expect(RasterTileDataTemp.compressionQuality).toEqual(rasterTileData.compressionQuality);
-                    });
                 }
             });
         });
