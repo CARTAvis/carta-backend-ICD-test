@@ -78,6 +78,7 @@ let assertItem: AssertItem = {
         {
             fileId: 1,
             channel: 12,
+            stokes: 0,
             requiredTiles: {
                 fileId: 1,
                 tiles: [0],
@@ -209,8 +210,9 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
         });
 
         assertItem.rasterTileDatas.map( (rasterTileData: CARTA.IRasterTileData, index: number) => {
-            describe(`Set ${JSON.stringify(assertItem.changeImageChannels[index])}`, () => {
-                if(rasterTileData.fileId < 0){                
+            const { requiredTiles, ..._channel } = assertItem.changeImageChannels[index];
+            describe(`Set Image Channel ${JSON.stringify(_channel)}`, () => {
+                if(rasterTileData.fileId < 0){
                     test(`REGION_HISTOGRAM_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
                         await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
                         await Utility.getEventAsync(Connection, CARTA.RegionHistogramData, messageReturnTimeout * .5);
