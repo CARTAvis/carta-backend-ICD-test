@@ -55,7 +55,7 @@ let assertItem: AssertItem = {
             regionId: -1,
             regionName: "polygon_2",
             regionType: CARTA.RegionType.POLYGON,
-            controlPoints: [{x: 116, y: 640}, {x: 106, y: 574}, {x: 137, y: 577}],
+            controlPoints: [{x: 116, y: 604}, {x: 106, y: 574}, {x: 137, y: 577}],
             rotation: 0.0,
         },
         {
@@ -275,7 +275,7 @@ let assertItem: AssertItem = {
                 {statsType: CARTA.StatsType.NumPixels,  value: 1              },
                 {statsType: CARTA.StatsType.Sum,        value: -0.00115214    },
                 {statsType: CARTA.StatsType.Mean,       value: -0.00115214    },
-                {statsType: CARTA.StatsType.RMS,        value: -0.00115214    },
+                {statsType: CARTA.StatsType.RMS,        value: 0.00115214    },
                 {statsType: CARTA.StatsType.Sigma,      value: 0              },
                 {statsType: CARTA.StatsType.SumSq,      value: 1.32743435e-06 },
                 {statsType: CARTA.StatsType.Min,        value: -0.00115214    },
