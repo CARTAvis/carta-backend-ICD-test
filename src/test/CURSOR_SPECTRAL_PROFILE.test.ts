@@ -2,251 +2,343 @@ import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let testSubdirectoryName = config.path.QA;
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let cursorTimeout = config.timeout.mouseEvent;
+interface ISpectralProfileDataExt extends CARTA.ISpectralProfileData {
+    profileLength?: number; 
+    assertProfile?: {idx: number, value: number}[],
+}
 interface AssertItem {
-    fileName: string;
-    hdu: string;
-    fileId: number;
-    renderMode: CARTA.RenderMode;
-    imageBounds: {xMin: number, xMax: number, yMin: number, yMax: number};
-    mip: number;
-    compressionType: CARTA.CompressionType;
-    compressionQuality: number;
-    numSubsets: number;
-    regionId: number;
-    stokes: number;
-    progress: number;
-    spectralProfiles: CARTA.SetSpectralRequirements.ISpectralConfig[];
-    assertProfile: {
-        point: {x: number, y: number},
-        profileLen: {z: number}, 
-        oddPoint: {
-            z: {idx: number, value: number}[],
-        }
-    }[];
-    errorPoint: {point: {x: number, y: number}}[];
+    register: CARTA.IRegisterViewer;
+    filelist: CARTA.IFileListRequest;
+    fileOpenGroup: CARTA.IOpenFile[];
+    setImageChannelGroup: CARTA.ISetImageChannels[];
+    setSpectralRequirementsGroup: CARTA.ISetSpectralRequirements[];
+    setCursorGroups: CARTA.ISetCursor[][];
+    spectralProfileDataGroups: ISpectralProfileDataExt[][];
     precisionDigits: number;
 }
-let assertItems: AssertItem[] = [
-    {
-        fileName: "M17_SWex.image",
-        hdu: "",
-        fileId: 0,
-        renderMode: CARTA.RenderMode.RASTER,
-        imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 480},
-        mip: 2,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 11,
-        numSubsets: 4,
-        regionId: 0,
-        stokes: 0,
-        progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
-        assertProfile: [
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 0,
+        apiKey: "",
+        clientFeatureFlags: 5,
+    },
+    filelist: {directory: testSubdirectory},     
+    fileOpenGroup: [
+        {
+            directory: testSubdirectory,
+            file: "M17_SWex.image",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+        {
+            directory: testSubdirectory,
+            file: "M17_SWex.hdf5",
+            hdu: "",
+            fileId: 1,
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+        {
+            directory: testSubdirectory,
+            file: "HH211_IQU.fits",
+            hdu: "",
+            fileId: 2,
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+        {
+            directory: testSubdirectory,
+            file: "HH211_IQU.hdf5",
+            hdu: "",
+            fileId: 3,
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+    ],
+    setImageChannelGroup: [
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 0,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+        {
+            fileId: 1,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 1,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+        {
+            fileId: 2,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 2,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+        {
+            fileId: 3,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 3,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+                tiles: [0],
+            },
+        },
+    ],
+    setSpectralRequirementsGroup: [
+        {
+            fileId: 0, 
+            regionId: 0, 
+            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+        },
+        {
+            fileId: 1, 
+            regionId: 0, 
+            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+        },
+        {
+            fileId: 2, 
+            regionId: 0, 
+            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+        },
+        {
+            fileId: 3, 
+            regionId: 0, 
+            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+        },
+    ],
+    setCursorGroups: [
+        [
             {
+                fileId: 0,
                 point: {x: 316.0, y: 401.0},
-                profileLen: {z: 25}, 
-                oddPoint: {
-                    z: [{idx: 12, value: -2.194151791839e-02}],
-                },
+            },
+            {
+                fileId: 0,
+                point: {x: 106, y: 135},
+            },
+            {
+                fileId: 0,
+                point: {x: -10, y: -10},
             },
         ],
-        errorPoint: [],
-        precisionDigits: 4,
-    },
-    {
-        fileName: "M17_SWex.hdf5",
-        hdu: "",
-        fileId: 0,
-        renderMode: CARTA.RenderMode.RASTER,
-        imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 480},
-        mip: 2,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 11,
-        numSubsets: 4,
-        regionId: 0,
-        stokes: 0,
-        progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
-        assertProfile: [
+        [
             {
+                fileId: 1,
                 point: {x: 316.0, y: 401.0},
-                profileLen: {z: 25}, 
-                oddPoint: {
-                    z: [{idx: 12, value: -2.194151791839e-02}],
-                },
             },
-        ],
-        errorPoint: [],
-        precisionDigits: 4,
-    },
-    {
-        fileName: "HH211_IQU.fits",
-        hdu: "0",
-        fileId: 0,
-        renderMode: CARTA.RenderMode.RASTER,
-        imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
-        mip: 2,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 11,
-        numSubsets: 4,
-        regionId: 0,
-        stokes: 0,
-        progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
-        assertProfile: [
             {
-                point: {x: 1006, y: 478},
-                profileLen: {z: 5}, 
-                oddPoint: {
-                    z: [
-                        {idx: 0, value: NaN},
-                        {idx: 2, value:  -1.186280068476e-03},
-                    ],
-                },
+                fileId: 1,
+                point: {x: 106, y: 135},
             },
-        ],
-        errorPoint: [],
-        precisionDigits: 4,
-    },
-    {
-        fileName: "HH211_IQU.hdf5",
-        hdu: "0",
-        fileId: 0,
-        renderMode: CARTA.RenderMode.RASTER,
-        imageBounds: {xMin: 0, xMax: 1049, yMin: 0, yMax: 1049},
-        mip: 2,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 11,
-        numSubsets: 4,
-        regionId: 0,
-        stokes: 0,
-        progress: 1,
-        spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
-        assertProfile: [
             {
-                point: {x: 1006, y: 478},
-                profileLen: {z: 5}, 
-                oddPoint: {
-                    z: [
-                        {idx: 0, value: NaN},
-                        {idx: 2, value:  -1.186280068476e-03},
-                    ],
-                },
+                fileId: 1,
+                point: {x: -10, y: -10},
             },
         ],
-        errorPoint: [],
-        precisionDigits: 4,
-    },
-]
+        [
+            {
+                fileId: 2,
+                point: {x: 1006, y: 478},
+            },
+        ],
+        [
+            {
+                fileId: 3,
+                point: {x: 1006, y: 478},
+            },
+        ],
+    ],
+    spectralProfileDataGroups: [
+        [
+            {
+                fileId: 0,
+                regionId: 0,
+                stokes: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 25,
+                assertProfile: [
+                    {idx: 12, value: -2.194151791839e-02},
+                ],
+            },
+            {
+                fileId: 0,
+                regionId: 0,
+                stokes: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 25,
+                assertProfile: [
+                    {idx: 12, value: NaN},
+                ],
+            },
+            {
+                progress: -1,
+            },
+        ],
+        [
+            {
+                fileId: 1,
+                regionId: 0,
+                stokes: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 25,
+                assertProfile: [
+                    {idx: 12, value: -2.194151791839e-02},
+                ],
+            },
+            {
+                fileId: 1,
+                regionId: 0,
+                stokes: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 25,
+                assertProfile: [
+                    {idx: 12, value: NaN},
+                ],
+            },
+            {
+                progress: -1,
+            },
+        ],
+        [
+            {
+                fileId: 2,
+                regionId: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 5,
+                assertProfile: [
+                    {idx: 0, value: NaN},
+                    {idx: 2, value: -1.186280068476e-03},
+                ],
+            },
+        ],
+        [
+            {
+                fileId: 3,
+                regionId: 0,
+                progress: 1,
+                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profileLength: 5,
+                assertProfile: [
+                    {idx: 0, value: NaN},
+                    {idx: 2, value: -1.186280068476e-03},
+                ],
+            },
+        ],
+    ],
+    precisionDigits: 4,
+}
 
 describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial profiles are delivered correctly", () => {   
     let Connection: WebSocket;    
 
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
+    assertItem.fileOpenGroup.map( (fileOpen, index) => {
+    describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
+        beforeEach( done => {
+            Connection = new WebSocket(testServerUrl);
+            Connection.binaryType = "arraybuffer";
+            Connection.onopen = OnOpen;
 
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: ""
-                }
-            );
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            await done();
-        }
-    }, connectTimeout);
+            async function OnOpen (this: WebSocket, ev: Event) {
+                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
+                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
+                await Utility.setEventAsync(this, CARTA.CloseFile, {fileId: -1});
+                await Utility.setEventAsync(this, CARTA.OpenFile, fileOpen);
+                await Utility.getEventAsync(this, CARTA.OpenFileAck);
+                await Utility.getEventAsync(this, CARTA.RegionHistogramData);
+                await Utility.setEventAsync(this, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
+                await Utility.setEventAsync(this, CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
+                await Utility.getEventAsync(this, CARTA.RasterTileData);
+                done();
+            }
+        }, readFileTimeout);
 
-    assertItems.map( function(assertItem) {
-        describe(`read the file "${assertItem.fileName}" on folder "${testSubdirectoryName}"`, () => {
-            beforeAll( async () => {
-                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
-                await Utility.setEventAsync(Connection, CARTA.OpenFile, 
-                    {
-                        directory: testSubdirectoryName, 
-                        file: assertItem.fileName, 
-                        hdu: assertItem.hdu, 
-                        fileId: assertItem.fileId, 
-                        renderMode: assertItem.renderMode,
-                    }
-                );
-                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
-                    {
-                        fileId: assertItem.fileId,
-                        channel: 0,
-                        requiredTiles: {
-                            fileId: assertItem.fileId,
-                            tiles: [0],
-                            compressionType: CARTA.CompressionType.NONE,
-                        },
-                    },
-                );
-                await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, 
-                    {
-                        fileId: assertItem.fileId, 
-                        regionId: assertItem.regionId, 
-                        spectralProfiles: assertItem.spectralProfiles,
-                    }
-                );
-                await Utility.getEventAsync(Connection, CARTA.RasterTileData);
-            }, readFileTimeout);     
-            
-            assertItem.assertProfile.map( function(item) {
-                describe(`set cursor on {${item.point.x}, ${item.point.y}}`, () => {
-                        let SpectralProfileDataTemp: CARTA.SpectralProfileData;
-                        test(`SPECTRAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
-                            await Utility.setEventAsync(Connection, CARTA.SetCursor, 
-                                {
-                                    fileId: assertItem.fileId, 
-                                    point: item.point,
-                                }
-                            );
-                            SpectralProfileDataTemp = <CARTA.SpectralProfileData>await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+        describe(`read the file "${fileOpen.file}"`, () => {
+
+            assertItem.spectralProfileDataGroups[index].map( (spectralProfileData, idx) => {
+                describe(`set cursor on {${assertItem.setCursorGroups[index][idx].point.x}, ${assertItem.setCursorGroups[index][idx].point.y}}`, () => {
+                    let SpectralProfileDataTemp: any;
+                    if (spectralProfileData.progress < 0) {
+                        test(`SPECTRAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
+                            await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
+                            await Utility.getEventAsync(Connection, CARTA.SpectralProfileData, cursorTimeout * .5);
                         }, cursorTimeout);
 
-                        test(`SPECTRAL_PROFILE_DATA.file_id = ${assertItem.fileId}`, () => {
-                            expect(SpectralProfileDataTemp.fileId).toEqual(assertItem.fileId);
+                        test("Backend still alive", async () => {
+                            expect(Connection.readyState).toEqual(WebSocket.OPEN);
+                            await Utility.setEventAsync(Connection, CARTA.SetCursor, {x: 0, y: 0});
+                            await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                        }, connectTimeout);
+
+                    } else {
+                        test(`SPECTRAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
+                            await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
+                            SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                            expect(SpectralProfileDataTemp.progress).toEqual(spectralProfileData.progress);
+                        }, cursorTimeout);
+
+                        test(`SPECTRAL_PROFILE_DATA.file_id = ${spectralProfileData.fileId}`, () => {
+                            expect(SpectralProfileDataTemp.fileId).toEqual(spectralProfileData.fileId);
                         });
 
-                        test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.regionId}`, () => {
-                            expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.regionId);
+                        test(`SPECTRAL_PROFILE_DATA.region_id = ${spectralProfileData.regionId}`, () => {
+                            expect(SpectralProfileDataTemp.regionId).toEqual(spectralProfileData.regionId);
                         });
 
-                        test(`SPECTRAL_PROFILE_DATA.stokes = ${assertItem.stokes}`, () => {
-                            expect(SpectralProfileDataTemp.stokes).toEqual(assertItem.stokes);
-                        });
-
-                        test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.progress}`, () => {
-                            expect(SpectralProfileDataTemp.progress).toEqual(assertItem.progress);
-                        });
+                        if (spectralProfileData.stokes) {
+                            test(`SPECTRAL_PROFILE_DATA.stokes = ${spectralProfileData.stokes}`, () => {
+                                expect(SpectralProfileDataTemp.stokes).toEqual(spectralProfileData.stokes);
+                            });
+                        }
 
                         test("Assert SPECTRAL_PROFILE_DATA.profiles", () => {
-                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").coordinate).toEqual(assertItem.spectralProfiles.find(f => f.coordinate === "z").coordinate);
-                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values.length).toEqual(item.profileLen.z);
-                            item.oddPoint.z.map( f => {
-                                if (isNaN(f.value)) {
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[f.idx]).toEqual(NaN);
+                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").coordinate).toEqual(spectralProfileData.profiles.find(f => f.coordinate === "z").coordinate);
+                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values.length).toEqual(spectralProfileData.profileLength);
+                        });
+
+                        test("Assert SPECTRAL_PROFILE_DATA.profiles.values", () => {
+                            spectralProfileData.assertProfile.map( profile => {
+                                if (isNaN(profile.value)) {
+                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toEqual(NaN);
                                 } else {                            
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
+                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toBeCloseTo(profile.value, assertItem.precisionDigits);
                                 }
                             });
                         });
-
+                    }
                 });
             });
-
         });
+
+        afterEach(() => Connection.close());
+    });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
 });
