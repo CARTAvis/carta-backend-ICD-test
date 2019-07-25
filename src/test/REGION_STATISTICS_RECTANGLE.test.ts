@@ -277,8 +277,8 @@ describe("REGION_STATISTICS_RECTANGLE test: Testing statistics with rectangle re
                         SetRegionAckTemp = <CARTA.SetRegionAck> await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                     }, regionTimeout);
 
-                    test("SET_REGION_ACK.success = True", () => {
-                        expect(SetRegionAckTemp.success).toBe(true);
+                    test(`SET_REGION_ACK.success = ${assertItem.regionAckGroup[index].success}`, () => {
+                        expect(SetRegionAckTemp.success).toBe(assertItem.regionAckGroup[index].success);
                     });
 
                     test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
