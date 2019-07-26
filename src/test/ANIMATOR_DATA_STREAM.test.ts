@@ -7,17 +7,24 @@ let connectTimeout = config.timeout.connection;
 let changeChannelTimeout = config.timeout.changeChannel;
 let regionTimeout = config.timeout.region;
 
-interface ImageAssertItem {
+interface AssertItem {
+    precisionDigits: number;
+    registerViewer: CARTA.IRegisterViewer;
     file: CARTA.IOpenFile;
     imageDataInfo: CARTA.ISetImageView;
-    precisionDigits: number;
     cursor: CARTA.ISetCursor;
     spatial: CARTA.ISetSpatialRequirements;
     stats: CARTA.ISetStatsRequirements;
     histogram: CARTA.ISetHistogramRequirements;
-    imageChannels: CARTA.ISetImageChannels;
+    imageChannels: CARTA.ISetImageChannels[];
 }
-let imageAssertItem: ImageAssertItem = { 
+let assertItem: AssertItem = {
+    registerViewer:
+    {
+        sessionId: 0, 
+        apiKey: "",
+        clientFeatureFlags: 5,
+    },
     file: {
         directory: testSubdirectory,
         file: "M17_SWex.image",
@@ -62,77 +69,74 @@ let imageAssertItem: ImageAssertItem = {
         regionId: -1,
         histograms: [{channel: -1, numBins: -1}],
     },
-    imageChannels: {
-        fileId: 0,
-        channel: 12,
-        stokes: 0,
-        requiredTiles: {
+    imageChannels: [
+        {
             fileId: 0,
-            tiles: [0],
-            compressionType: CARTA.CompressionType.ZFP,
+            channel: 0,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 0,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
         },
-    },
+        {
+            fileId: 0,
+            channel: 12,
+            stokes: 0,
+            requiredTiles: {
+                fileId: 0,
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
+            },
+        },
+    ],
 }
 
 describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () => {   
     let Connection: WebSocket;
-
     beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
-
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: ""
-                }
-            );
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.registerViewer);
             await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            await done();
+            done();
         }
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file.file}" to set region`, () => {
+    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.file.file}" to set region`, () => {
 
         beforeAll( async () => {
             await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, imageAssertItem.file);
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.file);
             await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
-                {
-                    fileId: 0,
-                    channel: 0,
-                    requiredTiles: {
-                        fileId: 0,
-                        tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
-                    },
-                },
-            );
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.imageChannels[0]);
             await Utility.getEventAsync(Connection, CARTA.RasterTileData);
-            await Utility.setEventAsync(Connection, CARTA.SetCursor, imageAssertItem.cursor);
+            await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.cursor);
         });
 
         describe(`SET SPATIAL REQUIREMENTS`, () => {
             test(`SPATIAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, imageAssertItem.spatial);
+                await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, assertItem.spatial);
                 await Utility.getEventAsync(Connection, CARTA.SpatialProfileData);
             }, regionTimeout);
         });
 
         describe("SET STATS REQUIREMENTS", () => {
             test(`REGION_STATS_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, imageAssertItem.stats);
+                await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, assertItem.stats);
                 await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
             }, regionTimeout);
         });
     
         describe(`SET HISTOGRAM REQUIREMENTS`, () => {
             test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
+                await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, assertItem.histogram);
                 await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             }, regionTimeout);
         });
@@ -140,42 +144,40 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
         describe("SET IMAGE CHANNELS", () => {
             let Ack;
             test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, imageAssertItem.imageChannels);
+                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.imageChannels[1]);
                 Ack = await Utility.getStreamAsync(Connection, 4);
             }, changeChannelTimeout);
 
-            test(`RASTER_TILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(Ack.RasterTileData.channel).toEqual(imageAssertItem.imageChannels.channel);
+            test(`RASTER_TILE_DATA.channel = ${assertItem.imageChannels[1].channel}`, () => {
+                expect(Ack.RasterTileData[0].channel).toEqual(assertItem.imageChannels[1].channel);
             });
 
-            test(`REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.histogram.regionId}`, () => {
-                expect(Ack.RegionHistogramData.regionId).toEqual(imageAssertItem.histogram.regionId);
+            test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.histogram.regionId}`, () => {
+                expect(Ack.RegionHistogramData[0].regionId).toEqual(assertItem.histogram.regionId);
             });
 
-            test(`REGION_STATS_DATA.region_id = ${imageAssertItem.stats.regionId}`, () => {
-                expect(Ack.RegionStatsData.regionId).toEqual(imageAssertItem.stats.regionId);
+            test(`REGION_STATS_DATA.region_id = ${assertItem.stats.regionId}`, () => {
+                expect(Ack.RegionStatsData[0].regionId).toEqual(assertItem.stats.regionId);
             });
 
-            test(`REGION_STATS_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(Ack.RegionStatsData.channel).toEqual(imageAssertItem.imageChannels.channel);
+            test(`REGION_STATS_DATA.channel = ${assertItem.imageChannels[1].channel}`, () => {
+                expect(Ack.RegionStatsData[0].channel).toEqual(assertItem.imageChannels[1].channel);
             });
 
-            test(`SPATIAL_PROFILE_DATA.channel = ${imageAssertItem.imageChannels.channel}`, () => {
-                expect(Ack.SpatialProfileData.channel).toEqual(imageAssertItem.imageChannels.channel);
+            test(`SPATIAL_PROFILE_DATA.channel = ${assertItem.imageChannels[1].channel}`, () => {
+                expect(Ack.SpatialProfileData[0].channel).toEqual(assertItem.imageChannels[1].channel);
             });
 
-            test(`SPATIAL_PROFILE_DATA.x = ${imageAssertItem.cursor.point.x}`, () => {
-                expect(Ack.SpatialProfileData.x).toEqual(imageAssertItem.cursor.point.x);
+            test(`SPATIAL_PROFILE_DATA.x = ${assertItem.cursor.point.x}`, () => {
+                expect(Ack.SpatialProfileData[0].x).toEqual(assertItem.cursor.point.x);
             });
 
-            test(`SPATIAL_PROFILE_DATA.y = ${imageAssertItem.cursor.point.y}`, () => {
-                expect(Ack.SpatialProfileData.y).toEqual(imageAssertItem.cursor.point.y);
+            test(`SPATIAL_PROFILE_DATA.y = ${assertItem.cursor.point.y}`, () => {
+                expect(Ack.SpatialProfileData[0].y).toEqual(assertItem.cursor.point.y);
             });
         });
 
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });
