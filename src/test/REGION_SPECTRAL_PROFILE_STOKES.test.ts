@@ -1,8 +1,6 @@
 import {CARTA} from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
-import { isNumber } from "util";
-import { OpenFile } from "performance/SocketOperation";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
