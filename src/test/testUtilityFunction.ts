@@ -36,6 +36,7 @@ export const EventType = {
     RemoveRequireTiles: 31,
     RasterTileData: 32,
 };
+const isLog = false;
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
     const bytes = new Uint8Array(padLength);
@@ -70,9 +71,11 @@ export function setEvent(
     eventHeader16[0] = EventType[cartaType.name];
     eventHeader16[1] = IcdVersion;
     eventHeader32[0] = 0; // eventCounter;
+    if (isLog) {
+        console.log(`${cartaType.name} =>`);
+    }
 
     eventData.set(payload, 8);
-
     connection.send(eventData);
 }
 /// Send websocket message async
@@ -92,9 +95,11 @@ export function setEventAsync(
         eventHeader16[0] = EventType[cartaType.name];
         eventHeader16[1] = IcdVersion;
         eventHeader32[0] = 0; // eventCounter;
+        if (isLog) {
+            console.log(`${cartaType.name} =>`);
+        }
 
         eventData.set(payload, 8);
-
         connection.send(eventData);
 
         resolve();
@@ -117,6 +122,9 @@ export function getEvent(
         const eventType = eventHeader16[0];
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
+        if (isLog) {
+            console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+        }
 
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -184,6 +192,9 @@ export function getEventAsync(
             const eventType = eventHeader16[0];
             const eventIcdVersion = eventHeader16[1];
             const eventId = eventHeader32[0];
+            if (isLog) {
+                console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+            }
 
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -244,7 +255,9 @@ export function getStream(
         const eventType = eventHeader16[0];
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
-        // console.log(eventType);
+        if (isLog) {
+            console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+        }
 
         if (eventIcdVersion !== IcdVersion) {
             console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -263,13 +276,6 @@ export function getStream(
                         toDo.RasterImageData(CARTA.RasterImageData.decode(eventData));
                     }
                     break;
-                case EventType["SpatialProfileData"]:
-                    if (typeof toDo.SpatialProfileData === "function") {
-                        _profileData = CARTA.SpatialProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
-                        toDo.SpatialProfileData(_profileData);
-                    }
-                    break;
                 case EventType["RegionStatsData"]:
                     if (typeof toDo.RegionStatsData === "function") {
                         toDo.RegionStatsData(CARTA.RegionStatsData.decode(eventData));
@@ -278,6 +284,13 @@ export function getStream(
                 case EventType["RegionHistogramData"]:
                     if (typeof toDo.RegionHistogramData === "function") {
                         toDo.RegionHistogramData(CARTA.RegionHistogramData.decode(eventData));
+                    }
+                    break;
+                case EventType["SpatialProfileData"]:
+                    if (typeof toDo.SpatialProfileData === "function") {
+                        _profileData = CARTA.SpatialProfileData.decode(eventData);
+                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
+                        toDo.SpatialProfileData(_profileData);
                     }
                     break;
                 case EventType["SpectralProfileData"]:
@@ -297,6 +310,14 @@ export function getStream(
         }
     };
 }
+export interface AckStream {
+    RasterTileData: CARTA.RasterTileData[];
+    RasterImageData: CARTA.RasterImageData[];
+    SpatialProfileData: CARTA.SpatialProfile[];
+    RegionStatsData: CARTA.RegionStatsData[];
+    RegionHistogramData: CARTA.RegionHistogramData[];
+    SpectralProfileData: CARTA.SpectralProfileData[];
+}
 /// Get CARTA stream async
 /// Until the number: totalCount of mesaages have received
 export function getStreamAsync(
@@ -307,13 +328,13 @@ export function getStreamAsync(
         return Promise.resolve();
     }
     let _count: number = 0;
-    let ack: any = {
-        RasterTileData: CARTA.RasterTileData,
-        RasterImageData: CARTA.RasterImageData,
-        SpatialProfileData: CARTA.SpatialProfile,
-        RegionStatsData: CARTA.RegionStatsData,
-        RegionHistogramData: CARTA.RegionHistogramData,
-        SpectralProfileData: CARTA.SpectralProfileData,
+    let ack: AckStream = {
+        RasterTileData: [],
+        RasterImageData: [],
+        SpatialProfileData: [],
+        RegionStatsData: [],
+        RegionHistogramData: [],
+        SpectralProfileData: [],
     };
     return new Promise( resolve => {
         connection.onmessage = (messageEvent: MessageEvent) => {
@@ -331,26 +352,26 @@ export function getStreamAsync(
             let _profileData;
             switch (eventType) {
                 case EventType["RasterTileData"]:
-                    ack.RasterTileData = CARTA.RasterTileData.decode(eventData);
+                    ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                     break;
                 case EventType["RasterImageData"]:
-                    ack.RasterImageData = CARTA.RasterImageData.decode(eventData);
+                    ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
+                    break;
+                case EventType["RegionStatsData"]:
+                    ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
+                    break;
+                case EventType["RegionHistogramData"]:
+                    ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
                     break;
                 case EventType["SpatialProfileData"]:
                     _profileData = CARTA.SpatialProfileData.decode(eventData);
                     _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
-                    ack.SpatialProfileData = _profileData;
-                    break;
-                case EventType["RegionStatsData"]:
-                    ack.RegionStatsData = CARTA.RegionStatsData.decode(eventData);
-                    break;
-                case EventType["RegionHistogramData"]:
-                    ack.RegionHistogramData = CARTA.RegionHistogramData.decode(eventData);
+                    ack.SpatialProfileData.push(_profileData);
                     break;
                 case EventType["SpectralProfileData"]:
                     _profileData = CARTA.SpectralProfileData.decode(eventData);
                     _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
-                    ack.SpectralProfileData = _profileData;
+                    ack.SpectralProfileData.push(_profileData);
                     break;
                 default:
                     break;
