@@ -172,7 +172,7 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
             describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}" with ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {
                 let ack: Utility.AckStream;
                 test(`RASTER_TILE_DATA x${setImageChannel.requiredTiles.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
+                    await Utility.setEventAsync(Connection, CARTA.SetImageChannels, setImageChannel);
                     ack = <Utility.AckStream> await Utility.getStreamAsync(Connection, setImageChannel.requiredTiles.tiles.length);
                     expect(ack.RasterTileData.length).toEqual(setImageChannel.requiredTiles.tiles.length);
                 }, readFileTimeout);
