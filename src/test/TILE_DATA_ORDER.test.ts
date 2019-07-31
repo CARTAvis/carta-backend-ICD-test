@@ -179,7 +179,7 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
 
                 test(`Tile "${setImageChannel.requiredTiles.tiles[0]}" should return within the ${setImageChannel.rank>2?setImageChannel.rank+"th":setImageChannel.rank>1?setImageChannel.rank+"nd":setImageChannel.rank+"st"} rank`, () => {
                     let _encodeTile = (ack.RasterTileData[0].tiles[0].layer << 24) | (ack.RasterTileData[0].tiles[0].y << 12) | ack.RasterTileData[0].tiles[0].x;
-                    expect(setImageChannel.requiredTiles.tiles.slice(0, 9).findIndex(f => f === _encodeTile) >= 0).toBe(true);
+                    expect(setImageChannel.requiredTiles.tiles.slice(0, setImageChannel.rank).findIndex(f => f === _encodeTile) >= 0).toBe(true);
                 });
 
                 test(`RASTER_TILE_DATA.tiles should contain ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {
