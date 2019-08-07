@@ -7,9 +7,9 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
 
-interface ImageAssertItem {
-    file: CARTA.IOpenFile;
-    imageDataInfo: CARTA.ISetImageView;
+interface AssertItem {
+    registerViewer: CARTA.IRegisterViewer;
+    fileOpen: CARTA.IOpenFile;
     precisionDigits: number;
     cursor?: CARTA.ISetCursor;
     regionGroup: CARTA.ISetRegion[];
@@ -17,23 +17,31 @@ interface ImageAssertItem {
     stats?: CARTA.ISetStatsRequirements;
     histogramGroup: CARTA.ISetHistogramRequirements[];
     histogramDataGroup: CARTA.IRegionHistogramData[];
-    imageChannels?: CARTA.ISetImageChannels;
+    setImageChannels?: CARTA.ISetImageChannels;
 }
-let imageAssertItem: ImageAssertItem = { 
-    file: {
+let assertItem: AssertItem = {
+    registerViewer: {
+        sessionId: 0, 
+        apiKey: "",
+        clientFeatureFlags: 5,
+    },
+    fileOpen: {
         directory: testSubdirectory,
         file: "M17_SWex.image",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    imageDataInfo: {
+    setImageChannels: {
         fileId: 0,
-        compressionQuality: 11,
-        imageBounds: {xMin: 0, xMax: 640, yMin: 0, yMax: 800},
-        compressionType: CARTA.CompressionType.ZFP,
-        mip: 2,
-        numSubsets: 4,
+        channel: 0,
+        stokes: 0,
+        requiredTiles: {
+            fileId: 0,
+            tiles: [0],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+        },
     },
     precisionDigits: 4,
     regionGroup: [
@@ -119,50 +127,33 @@ let imageAssertItem: ImageAssertItem = {
 
 describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () => {   
     let Connection: WebSocket;
-
     beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
-
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: ""
-                }
-            );
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.registerViewer);
             await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             done();
         }
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.file.file}" to set region`, () => {
+    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.fileOpen.file}" to set region`, () => {
 
         beforeAll( async () => {
             await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, imageAssertItem.file);
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
             await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
-                {
-                    fileId: 0,
-                    channel: 0,
-                    requiredTiles: {
-                        fileId: 0,
-                        tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
-                    },
-                },
-            );
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
             await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         });
 
-        imageAssertItem.histogramDataGroup.map( (histogramData, index) => {
+        assertItem.histogramDataGroup.map( (histogramData, index) => {
             describe(`SET REGION #${histogramData.regionId}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetRegion, imageAssertItem.regionGroup[index]);
+                    await Utility.setEventAsync(Connection, CARTA.SetRegion, assertItem.regionGroup[index]);
                     SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
                 }, regionTimeout);
 
@@ -178,7 +169,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
             describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
                 let RegionHistogramDataTemp: CARTA.RegionHistogramData;
                 test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogramGroup[index]);
+                    await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, assertItem.histogramGroup[index]);
                     RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
                 }, regionTimeout);
 
@@ -192,10 +183,10 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
 
                 test("Assert REGION_HISTOGRAM_DATA.histograms", () => {
                     if (RegionHistogramDataTemp.histograms[0].binWidth !== 0) {
-                        expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, imageAssertItem.precisionDigits);
+                        expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
                     }
                     if (RegionHistogramDataTemp.histograms[0].firstBinCenter !== 0) {
-                        expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, imageAssertItem.precisionDigits);
+                        expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
                     }
                     expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
                     expect(RegionHistogramDataTemp.histograms[0].bins).toEqual(histogramData.histograms[0].bins);
@@ -205,7 +196,5 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
 
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll( () => Connection.close());
 });

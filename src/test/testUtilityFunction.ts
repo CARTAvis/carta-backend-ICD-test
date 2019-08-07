@@ -1,6 +1,6 @@
 import {CARTA} from "carta-protobuf";
 /// CARTA ICD definition
-const IcdVersion = 5;
+const IcdVersion = 6;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,

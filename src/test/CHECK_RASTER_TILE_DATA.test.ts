@@ -122,7 +122,7 @@ let assertItem: AssertItem = {
             assert: {
                 lengthTiles: 1,
                 index: {x: 256, y: 256},
-                value: 2.72519,
+                value: 2.85753,
             }
         },
         {

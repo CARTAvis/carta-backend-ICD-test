@@ -8,58 +8,70 @@ let readFileTimeout = config.timeout.readFile;
 let cubeHistogramTimeout = config.timeout.cubeHistogram;
 let messageReturnTimeout = config.timeout.readFile;
 let cancelTimeout = config.timeout.cancel;
-interface AssertItem {
-    fileId: number;
-    fileName: string;
-    hdu: string;
-    imageDataInfo: {
-        compressionQuality: number,
-        imageBounds: {xMin: number, xMax: number, yMin: number, yMax: number},
-        compressionType: CARTA.CompressionType,
-        mip: number,
-        numSubsets: number,
-    };
-    histogram: {
-        fileId: number,
-        regionId: number,
-        histograms: {channel: number, numBins: number}[],
-    };
-    assertHistogram: {
-        regionId: number,
-        binWidth: number,
-        lengthOfHistogramBins: number,
-        channel: number,
-        firstBinCenter: number,
-        numberBins: number,
-        binValues?: {index: number, value: number}[],
-    };
+interface IRegionHistogramDataExt extends CARTA.IRegionHistogramData {
+    lengthOfHistogramBins: number;
+    binValues: {index: number, value: number}[];
 }
-let imageAssertItem: AssertItem = 
-{
-    fileId: 0,
-    fileName: "supermosaic.10.fits",
-    hdu: "",
-    imageDataInfo: {
-        compressionQuality: 11,
-        imageBounds: {xMin: 0, xMax: 4224, yMin: 0, yMax: 1824},
-        compressionType: CARTA.CompressionType.ZFP,
-        mip: 7,
-        numSubsets: 4,
+interface AssertItem {
+    register: CARTA.IRegisterViewer;
+    fileOpen: CARTA.IOpenFile;
+    setImageChannels: CARTA.ISetImageChannels;
+    setHistogramRequirements: CARTA.ISetHistogramRequirements;
+    cancelHistogramRequirements: CARTA.ISetHistogramRequirements;
+    regionHistogramData: IRegionHistogramDataExt;
+    precisionDigits: number;
+}
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 0,
+        apiKey: "",
+        clientFeatureFlags: 5,
     },
-    histogram: {
+    fileOpen: {
+        directory: testSubdirectory,
+        file: "supermosaic.10.fits",
+        fileId: 0,
+        hdu: "",
+        renderMode: CARTA.RenderMode.RASTER,
+        tileSize: 256,
+    },
+    setImageChannels: {
+        fileId: 0,
+        channel: 0,
+        stokes: 0,
+        requiredTiles: {
+            fileId: 0,
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+            tiles: [0],
+        },
+    },
+    setHistogramRequirements: {
         fileId: 0,
         regionId: -2,
-        histograms: [{channel: -2, numBins: -1}],
+        histograms: [
+            {channel: -2, numBins: -1},
+        ],
     },
-    assertHistogram: {
+    cancelHistogramRequirements: {
+        fileId: 0,
         regionId: -2,
-        binWidth: 0.7235205769538879,
+        histograms: [],
+    },
+    regionHistogramData: {
+        regionId: -2,
+        histograms: [
+            {
+                channel: -2,
+                numBins: 2775,
+                binWidth: 0.7235205769538879,
+                firstBinCenter: -1773.2998046875,
+            },
+        ],
         lengthOfHistogramBins: 2775,
-        channel: -2,
-        firstBinCenter: -1773.2998046875,
-        numberBins: 2775,
         binValues: [{index: 2500, value: 9359604},],
-    }
+    },
+    precisionDigits: 4,
 }
 
 describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capability of the calculations of the per-cube histogram", () => {   
@@ -71,62 +83,39 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
         Connection.onopen = OnOpen;
 
         async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: ""
-                }
-            );
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
             await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             done();
         }
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${imageAssertItem.fileName}" to set image view`, () => {
+    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.fileOpen.file}" to set image view`, () => {
 
         beforeAll( async () => {
             await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, 
-                {
-                    directory: testSubdirectory, 
-                    file: imageAssertItem.fileName,
-                    fileId: imageAssertItem.fileId,
-                    hdu: imageAssertItem.hdu,
-                    renderMode: CARTA.RenderMode.RASTER,
-                }
-            );
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
             await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, 
-                {
-                    fileId: imageAssertItem.fileId,
-                    channel: 0,
-                    requiredTiles: {
-                        fileId: imageAssertItem.fileId,
-                        tiles: [0],
-                        compressionType: imageAssertItem.imageDataInfo.compressionType,
-                    },
-                },
-            );
+            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
             await Utility.getEventAsync(Connection, CARTA.RasterTileData);
         });
                 
         let regionHistogramProgress: number;
         let RegionHistogramDataTemp: CARTA.RegionHistogramData;
         test(`SET HISTOGRAM REQUIREMENTS then the first REGION_HISTOGRAM_DATA arrives within ${readFileTimeout} ms`, async () => {
-            await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
-            RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Utility.setEvent(Connection, CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+            RegionHistogramDataTemp = <CARTA.RegionHistogramData> await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             regionHistogramProgress = RegionHistogramDataTemp.progress;
             console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
         }, readFileTimeout);
 
-        test(`REGION_HISTOGRAM_DATA.progress > 0 and REGION_HISTOGRAM_DATA.region_id = ${imageAssertItem.assertHistogram.regionId}`, () => {
+        test(`REGION_HISTOGRAM_DATA.progress > 0 and REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramData.regionId}`, () => {
             expect(regionHistogramProgress).toBeGreaterThan(0);
-            expect(RegionHistogramDataTemp.regionId).toEqual(imageAssertItem.assertHistogram.regionId);  
+            expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramData.regionId);  
         });
 
         test(`The second REGION_HISTOGRAM_DATA should arrive and REGION_HISTOGRAM_DATA.progress > previous one `, async () => {
-            RegionHistogramDataTemp = <CARTA.RegionHistogramData>await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            RegionHistogramDataTemp = <CARTA.RegionHistogramData> await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
             regionHistogramProgress = RegionHistogramDataTemp.progress;
             console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
         }, readFileTimeout);
@@ -134,20 +123,14 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
         test("Assert no more REGION_HISTOGRAM_DATA returns", async () => {
             /// After 10 seconds, the request of the per-cube histogram is cancelled.
             await new Promise( end => setTimeout(() => end(), cancelTimeout));
-            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements,  
-                {
-                    fileId: imageAssertItem.fileId, 
-                    regionId: -2, 
-                    histograms: [],
-                }
-            );
+            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, assertItem.cancelHistogramRequirements);
             await Utility.getEventAsync(Connection, CARTA.RegionHistogramData, messageReturnTimeout);
         }, readFileTimeout + messageReturnTimeout + cancelTimeout);
 
         test("Assert a renew REGION_HISTOGRAM_DATA as the progress = 1.0", async () => {
             /// Then request to get the per-cube histogram again in 2 seconds.
             await new Promise( end => setTimeout(() => end(), 2000));
-            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, imageAssertItem.histogram);
+            await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
             while (regionHistogramProgress < 1.0) {
                 await new Promise( (resolve, reject) => {                        
                     Utility.getEvent(Connection, CARTA.RegionHistogramData, 
@@ -155,12 +138,12 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
                             regionHistogramProgress = RegionHistogramData.progress;
                             console.log(`Region Histogram Progress = ${regionHistogramProgress}`);
                             if (regionHistogramProgress === 1.0) {
-                                expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(imageAssertItem.assertHistogram.binWidth, 4);
-                                expect(RegionHistogramData.histograms[0].bins.length).toEqual(imageAssertItem.assertHistogram.lengthOfHistogramBins);
-                                expect(RegionHistogramData.histograms[0].channel).toEqual(imageAssertItem.assertHistogram.channel);
-                                expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(imageAssertItem.assertHistogram.firstBinCenter, 4);
-                                expect(RegionHistogramData.histograms[0].numBins).toEqual(imageAssertItem.assertHistogram.numberBins); 
-                                expect(RegionHistogramData.regionId).toEqual(imageAssertItem.assertHistogram.regionId);
+                                expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(assertItem.regionHistogramData.histograms[0].binWidth, assertItem.precisionDigits);
+                                expect(RegionHistogramData.histograms[0].bins.length).toEqual(assertItem.regionHistogramData.lengthOfHistogramBins);
+                                expect(RegionHistogramData.histograms[0].channel).toEqual(assertItem.regionHistogramData.histograms[0].channel);
+                                expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(assertItem.regionHistogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
+                                expect(RegionHistogramData.histograms[0].numBins).toEqual(assertItem.regionHistogramData.histograms[0].numBins); 
+                                expect(RegionHistogramData.regionId).toEqual(assertItem.regionHistogramData.regionId);
                             }
                             resolve();
                         }
@@ -175,7 +158,5 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION tests: Testing the cancellation capabi
         
     });
     
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });
