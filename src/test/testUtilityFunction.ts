@@ -1,6 +1,6 @@
 import {CARTA} from "carta-protobuf";
 /// CARTA ICD definition
-const IcdVersion = 6;
+const IcdVersion = 7;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -35,6 +35,14 @@ export const EventType = {
     AddRequireTiles: 30,
     RemoveRequireTiles: 31,
     RasterTileData: 32,
+    RegionListRequest: 33,
+    RegionListResponse: 34,
+    RegionFileInfoRequest: 35,
+    RegionFileInfoResponse: 36,
+    ImportRegion: 37,
+    ImportRegionAck: 38,
+    ExportRegion: 39,
+    ExportRegionAck: 40,
 };
 const isLog = false;
 /// Transfer functionality from String to Uint8Array
