@@ -8,7 +8,7 @@ let regionTimeout = config.timeout.region;
 
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
-    openFile: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile[];
     setImageChannels: CARTA.ISetImageChannels;
     regionGroup: CARTA.ISetRegion[];
     setRegionAckGroup: CARTA.ISetRegionAck[];
@@ -22,14 +22,25 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    openFile: {
-        directory: testSubdirectory, 
-        file: "M17_SWex.image",
-        fileId: 0,
-        hdu: "",
-        renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
-    },
+    openFile: 
+    [
+        {
+            directory: testSubdirectory, 
+            file: "M17_SWex.image",
+            fileId: 0,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+        {
+            directory: testSubdirectory, 
+            file: "M17_SWex.hdf5",
+            fileId: 0,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+    ],
     setImageChannels: {
         fileId: 0,
         channel: 0,
@@ -288,7 +299,6 @@ let assertItem: AssertItem = {
 
 describe("REGION_STATISTICS_POLYGON test: Testing statistics with polygon regions", () => {   
     let Connection: WebSocket;
-
     beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
         Connection.binaryType = "arraybuffer";
@@ -300,65 +310,64 @@ describe("REGION_STATISTICS_POLYGON test: Testing statistics with polygon region
         }
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set image view`, () => {
+    assertItem.openFile.map(openFile => {
+        describe(`Go to "${testSubdirectory}" folder and open image "${openFile.file}" to set image view`, () => {
 
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.openFile); 
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
-            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
-        });
+            beforeAll( async () => {
+                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
+                await Utility.setEventAsync(Connection, CARTA.OpenFile, openFile); 
+                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
+                await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+            });
 
-        assertItem.regionGroup.map( (region: CARTA.ISetRegion, index) => {
-            if (region.regionId) {
-                describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.setRegionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
-                    let SetRegionAckTemp: CARTA.SetRegionAck;
-                    test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                        await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
-                        SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
-                    }, regionTimeout);
+            assertItem.regionGroup.map( (region: CARTA.ISetRegion, index) => {
+                if (region.regionId) {
+                    describe(`${region.regionId < 0?"Creating":"Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.setRegionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
+                        let SetRegionAckTemp: CARTA.SetRegionAck;
+                        test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
+                            await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
+                            SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
+                        }, regionTimeout);
 
-                    test(`SET_REGION_ACK.success = ${assertItem.setRegionAckGroup[index].success}`, () => {
-                        expect(SetRegionAckTemp.success).toBe(assertItem.setRegionAckGroup[index].success);
+                        test(`SET_REGION_ACK.success = ${assertItem.setRegionAckGroup[index].success}`, () => {
+                            expect(SetRegionAckTemp.success).toBe(assertItem.setRegionAckGroup[index].success);
+                        });
+
+                        test(`SET_REGION_ACK.region_id = ${assertItem.setRegionAckGroup[index].regionId}`, () => {
+                            expect(SetRegionAckTemp.regionId).toEqual(assertItem.setRegionAckGroup[index].regionId);
+                        });
+
                     });
-
-                    test(`SET_REGION_ACK.region_id = ${assertItem.setRegionAckGroup[index].regionId}`, () => {
-                        expect(SetRegionAckTemp.regionId).toEqual(assertItem.setRegionAckGroup[index].regionId);
-                    });
-
-                });
-            }
-            
-            describe(`SET STATS REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.setRegionAckGroup[index].regionId}`, () => {
-                let RegionStatsDataTemp: CARTA.RegionStatsData;
-                test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, assertItem.setStatsRequirementsGroup[index]);
-                    RegionStatsDataTemp = <CARTA.RegionStatsData>await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
-                }, regionTimeout);
+                }
                 
-                test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsDataGroup[index].regionId}`, () => {
-                    expect(RegionStatsDataTemp.regionId).toEqual(assertItem.regionStatsDataGroup[index].regionId);
-                });
-
-                test("Assert REGION_STATS_DATA.statistics", () => {
-                    assertItem.regionStatsDataGroup[index].statistics.map(stats => {
-                        if (isNaN(stats.value)) {
-                            expect(isNaN(RegionStatsDataTemp.statistics.find( f => f.statsType === stats.statsType).value)).toBe(true);
-                        } else {
-                            expect(RegionStatsDataTemp.statistics.find( f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
-                        }
+                describe(`SET STATS REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.setRegionAckGroup[index].regionId}`, () => {
+                    let RegionStatsDataTemp: CARTA.RegionStatsData;
+                    test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
+                        await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, assertItem.setStatsRequirementsGroup[index]);
+                        RegionStatsDataTemp = <CARTA.RegionStatsData>await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
+                    }, regionTimeout);
+                    
+                    test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsDataGroup[index].regionId}`, () => {
+                        expect(RegionStatsDataTemp.regionId).toEqual(assertItem.regionStatsDataGroup[index].regionId);
                     });
+
+                    test("Assert REGION_STATS_DATA.statistics", () => {
+                        assertItem.regionStatsDataGroup[index].statistics.map(stats => {
+                            if (isNaN(stats.value)) {
+                                expect(isNaN(RegionStatsDataTemp.statistics.find( f => f.statsType === stats.statsType).value)).toBe(true);
+                            } else {
+                                expect(RegionStatsDataTemp.statistics.find( f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
+                            }
+                        });
+                    });
+
                 });
 
             });
 
         });
-
     });
-
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll( () => Connection.close());
 });
