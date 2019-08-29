@@ -14,7 +14,7 @@ interface ISpectralProfileData extends CARTA.ISpectralProfileData {
 }
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
-    openFile: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile[];
     setImageChannels: CARTA.ISetImageChannels;
     setRegionGroup: CARTA.ISetRegion[];
     regionAckGroup: CARTA.ISetRegionAck[];
@@ -28,14 +28,25 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    openFile: {
-        directory: testSubdirectory, 
-        file: "M17_SWex.image",
-        fileId: 0,
-        hdu: "",
-        renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
-    },
+    openFile: 
+    [
+        {
+            directory: testSubdirectory, 
+            file: "M17_SWex.image",
+            fileId: 0,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+        {
+            directory: testSubdirectory, 
+            file: "M17_SWex.hdf5",
+            fileId: 0,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+            tileSize: 256,
+        },
+    ],
     setImageChannels: {
         fileId: 0,
         channel: 0,
@@ -435,66 +446,58 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
             done();
         }
     }, connectTimeout);
-    
-    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set image view`, () => {
 
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.openFile); 
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
-            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
-        });
+    assertItem.openFile.map(openFile => {
+        describe(`Go to "${testSubdirectory}" folder and open image "${openFile.file}" to set image view`, () => {
 
-        assertItem.setRegionGroup.map( (region, index) => {
-            describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
-                let SetRegionAckTemp: CARTA.SetRegionAck;
-                test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
-                    SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
-                }, regionTimeout);
-
-                test(`SET_REGION_ACK.success = ${assertItem.regionAckGroup[index].success}`, () => {
-                    expect(SetRegionAckTemp.success).toBe(assertItem.regionAckGroup[index].success);
-                });
-
-                test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
-                    expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAckGroup[index].regionId);
-                });
-
+            beforeAll( async () => {
+                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
+                await Utility.setEventAsync(Connection, CARTA.OpenFile, openFile); 
+                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
+                await Utility.getEventAsync(Connection, CARTA.RasterTileData);
             });
-            
-            describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId}`, () => {
-                let SpectralProfileDataTemp: any;
-                test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
-                    SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
-                }, regionTimeout);
-                
-                test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileDataGroup[index].regionId}`, () => {
-                    expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.spectralProfileDataGroup[index].regionId);
-                });
 
-                test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileDataGroup[index].progress}`, () => {
-                    expect(SpectralProfileDataTemp.progress).toEqual(assertItem.spectralProfileDataGroup[index].progress);
-                });
+            assertItem.setRegionGroup.map( (region, index) => {
+                describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
+                    let SetRegionAckTemp: CARTA.SetRegionAck;
+                    test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
+                        await Utility.setEventAsync(Connection, CARTA.SetRegion, region);
+                        SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
+                    }, regionTimeout);
 
-                test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
-                    let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
-                    let _assertProfile = assertItem.spectralProfileDataGroup[index].profile.find(f => f.statsType === CARTA.StatsType.Mean);
-                    expect(_meanProfile.coordinate).toEqual(_assertProfile.coordinate);
-                    expect(_meanProfile.values.length).toEqual(_assertProfile.profileLength);
-                    expect(_meanProfile.statsType).toEqual(_assertProfile.statsType);
-                    _assertProfile.assertValues.map( assertVal => {
-                        if (isNaN(assertVal.value)) {
-                            expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
-                        } else {
-                            expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
-                        }
+                    test(`SET_REGION_ACK.success = ${assertItem.regionAckGroup[index].success}`, () => {
+                        expect(SetRegionAckTemp.success).toBe(assertItem.regionAckGroup[index].success);
                     });
-                    if (_assertProfile.profileLength > 0) {
+
+                    test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
+                        expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAckGroup[index].regionId);
+                    });
+
+                });
+                
+                describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId}`, () => {
+                    let SpectralProfileDataTemp: any;
+                    test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
+                        await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
+                        SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                    }, regionTimeout);
+                    
+                    test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileDataGroup[index].regionId}`, () => {
+                        expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.spectralProfileDataGroup[index].regionId);
+                    });
+
+                    test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileDataGroup[index].progress}`, () => {
+                        expect(SpectralProfileDataTemp.progress).toEqual(assertItem.spectralProfileDataGroup[index].progress);
+                    });
+
+                    test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
+                        let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
+                        let _assertProfile = assertItem.spectralProfileDataGroup[index].profile.find(f => f.statsType === CARTA.StatsType.Mean);
+                        expect(_meanProfile.coordinate).toEqual(_assertProfile.coordinate);
                         expect(_meanProfile.values.length).toEqual(_assertProfile.profileLength);
+                        expect(_meanProfile.statsType).toEqual(_assertProfile.statsType);
                         _assertProfile.assertValues.map( assertVal => {
                             if (isNaN(assertVal.value)) {
                                 expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
@@ -502,27 +505,37 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                                 expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
                             }
                         });
-                    }
-                });
+                        if (_assertProfile.profileLength > 0) {
+                            expect(_meanProfile.values.length).toEqual(_assertProfile.profileLength);
+                            _assertProfile.assertValues.map( assertVal => {
+                                if (isNaN(assertVal.value)) {
+                                    expect(isNaN(_meanProfile.values[assertVal.index])).toBe(true);
+                                } else {
+                                    expect(_meanProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
+                                }
+                            });
+                        }
+                    });
 
-                test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
-                    assertItem.spectralProfileDataGroup[index].profile.map(profile => {
-                        let _returnedProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsType);
-                        profile.assertValues.map(assertVal => {
-                            if (isNaN(assertVal.value)) {
-                                expect(isNaN(_returnedProfile.values[assertVal.index])).toBe(true);
-                            } else {
-                                expect(_returnedProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
-                            }
+                    test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
+                        assertItem.spectralProfileDataGroup[index].profile.map(profile => {
+                            let _returnedProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsType);
+                            profile.assertValues.map(assertVal => {
+                                if (isNaN(assertVal.value)) {
+                                    expect(isNaN(_returnedProfile.values[assertVal.index])).toBe(true);
+                                } else {
+                                    expect(_returnedProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
+                                }
+                            });
                         });
                     });
+
                 });
 
             });
 
         });
-
-    }); 
+    });
 
     afterAll( () => Connection.close);
 });
