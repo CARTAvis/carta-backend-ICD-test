@@ -1,4 +1,5 @@
 import {CARTA} from "carta-protobuf";
+const isLog = false;
 /// CARTA ICD definition
 const IcdVersion = 7;
 export const EventType = {
@@ -32,7 +33,7 @@ export const EventType = {
     RegionStatsData: 27,
     ErrorData: 28,
     AnimationFlowControl: 29,
-    AddRequireTiles: 30,
+    AddRequiredTiles: 30,
     RemoveRequireTiles: 31,
     RasterTileData: 32,
     RegionListRequest: 33,
@@ -44,7 +45,7 @@ export const EventType = {
     ExportRegion: 39,
     ExportRegionAck: 40,
 };
-const isLog = false;
+let eventCount = {value: 0};
 /// Transfer functionality from String to Uint8Array
 export function stringToUint8Array(str: string, padLength: number): Uint8Array {
     const bytes = new Uint8Array(padLength);
@@ -78,7 +79,7 @@ export function setEvent(
     const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
     eventHeader16[0] = EventType[cartaType.name];
     eventHeader16[1] = IcdVersion;
-    eventHeader32[0] = 0; // eventCounter;
+    eventHeader32[0] = eventCount.value++; // eventCounter;
     if (isLog) {
         console.log(`${cartaType.name} =>`);
     }
@@ -92,7 +93,7 @@ export function setEvent(
 export function setEventAsync(
     connection: WebSocket, 
     cartaType: any, 
-    eventMessage: any
+    eventMessage: any,
 ) {
     return new Promise( resolve => {
         let message = cartaType.create(eventMessage);
@@ -102,7 +103,7 @@ export function setEventAsync(
         const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
         eventHeader16[0] = EventType[cartaType.name];
         eventHeader16[1] = IcdVersion;
-        eventHeader32[0] = 0; // eventCounter;
+        eventHeader32[0] = eventCount.value++; // eventCounter;
         if (isLog) {
             console.log(`${cartaType.name} =>`);
         }
