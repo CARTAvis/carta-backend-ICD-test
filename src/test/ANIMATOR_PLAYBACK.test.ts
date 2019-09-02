@@ -146,7 +146,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StartAnimation, {...assertItem.startAnimation, reverse: true});
+                await Utility.setEventAsync(Connection, CARTA.StartAnimation, 
+                    {
+                        ...assertItem.startAnimation, 
+                        reverse: true,
+                    }
+                );
                 await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
                 for(let i=assertItem.startAnimation.startFrame.channel;i<assertItem.startAnimation.lastFrame.channel*2;i++) {
                     RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
