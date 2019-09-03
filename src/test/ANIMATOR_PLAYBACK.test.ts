@@ -1,138 +1,185 @@
-import {CARTA} from "carta-protobuf";
+import { CARTA } from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
+import * as Long from "long";
 let testServerUrl = config.serverURL;
-let testSubdirectoryName = config.path.QA;
-let expectBasePath = config.path.base;
-let readFileTimeout = config.timeout.readFile;
+let testSubdirectory = config.path.QA;
+let connectTimeout = config.timeout.connection;
 let playTimeout = config.timeout.playImages;
+interface AssertItem {
+    register: CARTA.IRegisterViewer;
+    fileOpens: CARTA.IOpenFile;
+    startAnimation: CARTA.IStartAnimation;
+    stopAnimation: CARTA.IStopAnimation;
+    animationFlowControl: CARTA.IAnimationFlowControl;
+};
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 0,
+        apiKey: "",
+        clientFeatureFlags: 5,
+    },
+    fileOpens:
+    {
+        directory: testSubdirectory,
+        file: "M17_SWex.image",
+        fileId: 0,
+        hdu: "",
+        renderMode: CARTA.RenderMode.RASTER,
+    },
+    startAnimation:
+    {
+        fileId: 0,
+        startFrame: { channel: 0, stokes: 0 },
+        firstFrame: { channel: 0, stokes: 0 },
+        lastFrame: { channel: 24, stokes: 0 },
+        deltaFrame: { channel: 1, stokes: 0 },
+        imageView: {
+            fileId: 0,
+            imageBounds: { xMax: 640, yMax: 800 },
+            mip: 4,
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 16,
+        },
+    },
+    stopAnimation:
+    {
+        fileId: 0,
+        endFrame: { channel: 10, stokes: 0 },
+    },
+    animationFlowControl:
+    {
+        fileId: 0,
+        animationId: 0,
+    },
+};
 
-let baseDirectory: string;
-let testFileName = "S255_IR_sci.spw25.cube.I.pbcor.fits";
-let playFrames = 150; // image
-
-describe.skip("ANIMATOR_PLAYBACK test: Testing animation playback", () => {   
+describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     let Connection: WebSocket;
-
-    beforeAll( done => {
+    beforeAll(done => {
         Connection = new WebSocket(testServerUrl);
-        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         Connection.binaryType = "arraybuffer";
         Connection.onopen = OnOpen;
-
-        async function OnOpen (this: WebSocket, ev: Event) {
-            expect(this.readyState).toBe(WebSocket.OPEN);
-            await Utility.setEvent(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "1234"
-                }
-            );
-            await new Promise( resolve => { 
-                Utility.getEvent(this, CARTA.RegisterViewerAck, 
-                    RegisterViewerAck => {
-                        expect(RegisterViewerAck.success).toBe(true);
-                        resolve();           
-                    }
-                );
-            });
-            await Utility.setEvent(this, CARTA.FileListRequest, 
-                {
-                    directory: expectBasePath
-                }
-            );
-            await new Promise( resolve => {
-                Utility.getEvent(this, CARTA.FileListResponse, 
-                        FileListResponseBase => {
-                        expect(FileListResponseBase.success).toBe(true);
-                        baseDirectory = FileListResponseBase.directory;
-                        resolve();
-                    }
-                );                
-            });
-            await Utility.setEvent(this, CARTA.OpenFile, 
-                {
-                    directory: baseDirectory + "/" + testSubdirectoryName, 
-                    file: testFileName, 
-                    hdu: "0", 
-                    fileId: 0, 
-                    renderMode: CARTA.RenderMode.RASTER,
-                }
-            );
-            await new Promise( resolve => {
-                Utility.getEvent(this, CARTA.OpenFileAck, 
-                    OpenFileAck => {
-                        expect(OpenFileAck.success).toBe(true);
-                        resolve();
-                    }
-                );
-                
-            });
-            await Utility.setEvent(this, CARTA.SetImageView, 
-                {
-                    fileId: 0, 
-                    imageBounds: {
-                        xMin: 0, xMax: 1920, 
-                        yMin: 0, yMax: 1920
-                    }, 
-                    mip: 4, 
-                    compressionType: CARTA.CompressionType.ZFP,
-                    compressionQuality: 11, 
-                    numSubsets: 4,
-                }
-            );
-            await new Promise( resolve => {
-                Utility.getEvent(this, CARTA.RasterImageData, 
-                    RasterImageData => {
-                        expect(RasterImageData.fileId).toEqual(0);
-                        resolve();
-                    }
-                );                
-            });
+        async function OnOpen(this: WebSocket, ev: Event) {
+            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
+            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
             done();
         }
-    }, readFileTimeout);
-    
-    let timer: number;
-    let timeElapsed: number;
-    test(`play ${playFrames} images.`,
-    async () => {
-        timer = await new Date().getTime();
-        for (let idx = 1; idx < playFrames + 1; idx++) {
-            await Utility.setEvent(Connection, CARTA.SetImageChannels,  
-                {
-                    fileId: 0, 
-                    channel: idx, 
-                    stokes: 0,
+    }, connectTimeout);
+
+    describe(`Go to "${testSubdirectory}" folder and open images`, () => {
+
+        beforeAll(async () => {
+            await Utility.setEventAsync(Connection, CARTA.CloseFile, { fileId: -1 });
+            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpens);
+            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+        });
+
+        describe(`Play all images`, () => {
+            let RasterImageData: CARTA.RasterImageData[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.StartAnimation, assertItem.startAnimation);
+                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                for (let i = assertItem.startAnimation.startFrame.channel; i < assertItem.startAnimation.lastFrame.channel; i++) {
+                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
+                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: RasterImageData[i].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(RasterImageData[i].channel);
                 }
-            );
-            await new Promise( (resolve, reject) => {
-                Utility.getEvent(Connection, CARTA.RasterImageData, 
-                    RasterImageData => {
-                        expect(RasterImageData.fileId).toEqual(0);
-                        expect(RasterImageData.channel).toEqual(idx);
-                        expect(RasterImageData.stokes).toEqual(0);
-                        resolve();
+            }, playTimeout);
+
+            test(`Received image channels should be in sequence`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.channel).toEqual(++index);
+                });
+                console.log(`Sequent channel index: ${sequence}`);
+            });
+
+            test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.imageBounds).toEqual(assertItem.startAnimation.imageView.imageBounds);
+                });
+            });
+        });
+
+        describe(`Play some images until stop`, () => {
+            let RasterImageData: CARTA.RasterImageData[] = [];
+            test(`Image should return one after one`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.StartAnimation, assertItem.startAnimation);
+                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                for (let i = assertItem.startAnimation.startFrame.channel; i < assertItem.stopAnimation.endFrame.channel; i++) {
+                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
+                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: RasterImageData[i].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                }
+            }, playTimeout);
+
+            test(`Last image on channel${JSON.stringify(assertItem.stopAnimation.endFrame)} should receive after stop`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.StopAnimation, assertItem.stopAnimation);
+                let RasterImageData = <CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData);
+                expect(RasterImageData.channel).toEqual(assertItem.stopAnimation.endFrame.channel);
+            });
+        });
+
+        describe(`Play images round-trip`, () => {
+            let RasterImageData: CARTA.RasterImageData[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await Utility.setEventAsync(Connection, CARTA.StartAnimation,
+                    {
+                        ...assertItem.startAnimation,
+                        reverse: true,
                     }
                 );
-                let failTimer = setTimeout(() => {
-                    clearTimeout(failTimer);
-                    reject();
-                }, readFileTimeout);                
+                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                for (let i = assertItem.startAnimation.startFrame.channel; i < assertItem.startAnimation.lastFrame.channel * 2; i++) {
+                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
+                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: RasterImageData[i].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(RasterImageData[i].channel);
+                }
+            }, playTimeout);
+
+            test(`Received image channels should be in sequence and then reverse`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.channel).toEqual(index < assertItem.startAnimation.lastFrame.channel ? index : assertItem.startAnimation.lastFrame.channel * 2 - index);
+                });
+                console.log(`Channel index in roundtrip: ${sequence}`);
             });
-        }
-        timeElapsed = await new Date().getTime() - timer;
-    }, playTimeout); // test
 
-    test(`assert playing time within ${playTimeout} ms.`,
-    () => {
-        expect(timeElapsed).toBeLessThan(playTimeout);
-        expect(timeElapsed).not.toEqual(0);
-        console.log(`FPS = ${(timeElapsed ? playFrames * 1000 / timeElapsed : 0)}Hz. @${new Date()}`);
-    });   
-
-    afterAll( async () => {
-        await Connection.close();
-        await expect(Connection.readyState).toBe(WebSocket.CLOSED);
+            test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.imageBounds).toEqual(assertItem.startAnimation.imageView.imageBounds);
+                });
+            });
+        });
     });
+
+    afterAll(() => Connection.close());
 });
