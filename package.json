@@ -1,6 +1,6 @@
 {
     "name": "carta-backend-ICD-test",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "private": true,
     "dependencies": {
         "procfs-stats": "^1.0.2",
@@ -12,8 +12,8 @@
     },
     "devDependencies": {
         "@types/jest": "^23.3.14",
-        "@types/node": "^10.14.8",
+        "@types/node": "^10.14.17",
         "protobufjs": "^6.8.8",
-        "typescript": "^3.5.1"
+        "typescript": "^3.6.2"
     }
 }
