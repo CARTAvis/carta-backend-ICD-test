@@ -201,7 +201,7 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
                 });
 
                 fileInfo.contents.map( (message, index) => {
-                    test(`REGION_FILE_INFO_RESPONSE.contents[${index}] = "${message.slice(0, 45)}${message.length==0?"":"..."}"`, () => {
+                    test(`REGION_FILE_INFO_RESPONSE.contents[${index}] = "${message.slice(0, 45)}${message.length<45?"":"..."}"`, () => {
                         expect(regionFileInfoResponse.contents[index]).toEqual(message);
                     });
                 });
