@@ -22,7 +22,9 @@
         "concurrent": 4000,
         "messageEvent": 500,
         "mouseEvent": 1000,
-        "region": 500
+        "region": 500,
+        "import": 500,
+        "export": 500
     },
     "repeat": {
         "concurrent": 10,
