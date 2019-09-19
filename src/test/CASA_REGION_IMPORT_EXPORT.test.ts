@@ -246,17 +246,17 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Utility.setEventAsync(Connection, CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
                     importRegionAck = await Utility.getEventAsync(Connection, CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
-                }, exportTimeout);
+                }, importTimeout);
 
-                test(`EXPORT_REGION_ACK.success = ${Region.success}`, () => {
+                test(`IMPORT_REGION_ACK.success = ${Region.success}`, () => {
                     expect(importRegionAck.success).toBe(Region.success);
                 });
 
-                test(`Length of EXPORT_REGION_ACK.regions = ${Region.lengthOfRegions}`, () => {
+                test(`Length of IMPORT_REGION_ACK.regions = ${Region.lengthOfRegions}`, () => {
                     expect(importRegionAck.regions.length).toEqual(Region.lengthOfRegions);
                 });
 
-                test(`EXPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
+                test(`IMPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
                     expect(importRegionAck.regions[Region.assertRegionId.index].regionId).toEqual(Region.assertRegionId.id);
                 });
             });
