@@ -122,7 +122,6 @@ let assertItem: AssertItem = {
                     regionId: 10, 
                     regionInfo: {
                         regionType: CARTA.RegionType.RECTANGLE,
-                        rotation: 0,
                         controlPoints: [{x: 168.04367065429688, y: 519.8883056640625}, {x: 56.96287155151367, y: 56.96287536621094}],
                     },
                 },
@@ -130,7 +129,6 @@ let assertItem: AssertItem = {
                     regionId: 11, 
                     regionInfo: {
                         regionType: CARTA.RegionType.RECTANGLE,
-                        rotation: 0,
                         controlPoints: [{x: 130.50320434570312, y: 429.2734375}, {x: 121.68660736083984, y: 36.25899124145508}],
                     },
                 },
@@ -211,7 +209,6 @@ let assertItem: AssertItem = {
                     regionId: 21, 
                     regionInfo: {
                         regionType: CARTA.RegionType.ELLIPSE,
-                        rotation: 0,
                         controlPoints: [{x: 758.3348999023438, y: 635.0986328125}, {x: 50.48550033569336, y: 50.48550033569336}],
                     },
                 },
@@ -249,7 +246,6 @@ let assertItem: AssertItem = {
                     regionId: 26, 
                     regionInfo: {
                         regionType: CARTA.RegionType.RECTANGLE,
-                        rotation: 0,
                         controlPoints: [{x: 168.04367065429688, y: 519.8883056640625}, {x: 56.96287155151367, y: 56.96287536621094}],
                     },
                 },
@@ -257,7 +253,6 @@ let assertItem: AssertItem = {
                     regionId: 27, 
                     regionInfo: {
                         regionType: CARTA.RegionType.RECTANGLE,
-                        rotation: 0,
                         controlPoints: [{x: 130.50320434570312, y: 429.2734375}, {x: 121.68660736083984, y: 36.25899124145508}],
                     },
                 },
@@ -344,7 +339,12 @@ describe("CASA_REGION_IMPORT_INTERNAL test: Testing import of CASA region files 
 
                 regionAck.regions.map( (region, index) => {
                     test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
-                        expect(importRegionAck.regions[index]).toContainEqual(region);
+                        expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
+                        if(region.regionInfo.regionType)
+                            expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
+                        if(region.regionInfo.rotation)
+                            expect(importRegionAck.regions[index].regionInfo.rotation).toEqual(region.regionInfo.rotation);
+                        expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);
                     });
                 });
             });
