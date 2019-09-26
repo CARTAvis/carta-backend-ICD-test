@@ -344,7 +344,7 @@ describe("CASA_REGION_IMPORT_INTERNAL test: Testing import of CASA region files 
 
                 regionAck.regions.map( (region, index) => {
                     test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
-                        expect(importRegionAck.regions[index]).toEqual(region);
+                        expect(importRegionAck.regions[index]).toContainEqual(region);
                     });
                 });
             });
