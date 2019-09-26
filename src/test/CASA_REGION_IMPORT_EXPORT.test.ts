@@ -59,7 +59,6 @@ let assertItem: AssertItem = {
                 regionId: 1, 
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
-                    rotation: 0,
                     controlPoints: [{x: 320, y: 400}, {x: 40, y: 100}],
                 },
             },
@@ -67,7 +66,6 @@ let assertItem: AssertItem = {
                 regionId: 2, 
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
-                    rotation: 0,
                     controlPoints: [{x: 320, y: 400}, {x: 100, y: 40}],
                 },
             },
@@ -90,7 +88,6 @@ let assertItem: AssertItem = {
                 regionId: 5, 
                 regionInfo: {
                     regionType: CARTA.RegionType.ELLIPSE,
-                    rotation: 0,
                     controlPoints: [{x: 320, y: 400}, {x: 200, y: 200}],
                 },
             },
@@ -217,7 +214,12 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
 
             assertItem.importRegionAck.regions.map( (region, index) => {
                 test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
-                    expect(importRegionAck.regions[index]).toContainEqual(region);
+                    expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
+                    if(region.regionInfo.regionType)
+                        expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
+                    if(region.regionInfo.rotation)
+                        expect(importRegionAck.regions[index].regionInfo.rotation).toEqual(region.regionInfo.rotation);
+                    expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);   
                 });
             });
         });
