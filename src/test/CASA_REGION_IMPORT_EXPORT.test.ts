@@ -257,7 +257,7 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
                 });
 
                 test(`IMPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
-                    expect(importRegionAck.regions[Region.assertRegionId.index].regionId).toContainEqual(Region.assertRegionId.id);
+                    expect(importRegionAck.regions[Region.assertRegionId.index].regionId).toEqual(Region.assertRegionId.id);
                 });
             });
         });
