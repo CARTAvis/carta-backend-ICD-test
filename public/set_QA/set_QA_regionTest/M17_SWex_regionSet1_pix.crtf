@@ -1,0 +1,17 @@
+#CRTFv0 CASA Region Text Format version 0
+symbol [[-103.8pix, 613.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+centerbox [[-106.4pix, 528.9pix], [75.1pix, 75.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+centerbox [[-118.0pix, 412.4pix], [137.2pix, 54.4pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+rotbox [[-120.6pix, 251.9pix], [173.5pix, 44.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[758.3pix, 635.1pix], [50.5pix, 50.5pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[749.3pix, 486.2pix], [29.8pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[745.4pix, 369.7pix], [18.1pix, 79.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+poly [[757.0pix, 270.1pix], [715.6pix, 118.6pix], [829.5pix, 191.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+symbol [[175.8pix, 591.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+centerbox [[168.0pix, 519.9pix], [57.0pix, 57.0pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+centerbox [[130.5pix, 429.3pix], [121.7pix, 36.2pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+rotbox [[100.7pix, 284.3pix], [137.2pix, 36.2pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[496.8pix, 574.3pix], [49.2pix, 49.2pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[533.1pix, 435.7pix], [25.9pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+ellipse [[522.7pix, 307.6pix], [22.0pix, 80.3pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
+poly [[491.6pix, 228.6pix], [416.5pix, 110.8pix], [586.1pix, 106.9pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false
