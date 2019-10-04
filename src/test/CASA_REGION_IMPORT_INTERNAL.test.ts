@@ -75,7 +75,7 @@ let assertItem: AssertItem = {
                 {
                     regionId: 4, 
                     regionInfo: {
-                        regionType: CARTA.RegionType.ELLIPSE,
+                        regionType: CARTA.RegionType.RECTANGLE,
                         rotation: 45,
                         controlPoints: [{x: -120.6, y: 251.9}, {x: 173.5, y: 44.0}],
                     },
@@ -114,7 +114,7 @@ let assertItem: AssertItem = {
                 {
                     regionId: 9, 
                     regionInfo: {
-                        regionType: CARTA.RegionType.RECTANGLE,
+                        regionType: CARTA.RegionType.POINT,
                         controlPoints: [{x: 175.81072998046875, y: 591.085693359375}],
                     },
                 },
@@ -200,7 +200,7 @@ let assertItem: AssertItem = {
                 {
                     regionId: 20, 
                     regionInfo: {
-                        regionType: CARTA.RegionType.ELLIPSE,
+                        regionType: CARTA.RegionType.RECTANGLE,
                         rotation: 45,
                         controlPoints: [{x: -120.6, y: 251.9}, {x: 173.5, y: 44.0}],
                     },
@@ -238,7 +238,7 @@ let assertItem: AssertItem = {
                 {
                     regionId: 25, 
                     regionInfo: {
-                        regionType: CARTA.RegionType.RECTANGLE,
+                        regionType: CARTA.RegionType.POINT,
                         controlPoints: [{x: 175.81072998046875, y: 591.085693359375}],
                     },
                 },
