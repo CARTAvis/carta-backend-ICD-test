@@ -215,8 +215,7 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
             assertItem.importRegionAck.regions.map( (region, index) => {
                 test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
                     expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
-                    if(region.regionInfo.regionType)
-                        expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
+                    expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
                     if(region.regionInfo.rotation)
                         expect(importRegionAck.regions[index].regionInfo.rotation).toEqual(region.regionInfo.rotation);
                     expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);   
