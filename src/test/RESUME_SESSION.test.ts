@@ -71,6 +71,11 @@ let assertItem: AssertItem = {
             },
         ]
     },
+    resumeSessionAck:
+    {
+        success: true,
+        message: "",
+    },
     openFileAck:
     [
         {
