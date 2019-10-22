@@ -24,7 +24,8 @@
         "mouseEvent": 1000,
         "region": 500,
         "import": 500,
-        "export": 500
+        "export": 500,
+        "resume": 3000
     },
     "repeat": {
         "concurrent": 10,
