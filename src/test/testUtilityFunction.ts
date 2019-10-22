@@ -1,7 +1,7 @@
 import {CARTA} from "carta-protobuf";
 const isLog = false;
 /// CARTA ICD definition
-const IcdVersion = 7;
+const IcdVersion = 9;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -44,6 +44,14 @@ export const EventType = {
     ImportRegionAck: 38,
     ExportRegion: 39,
     ExportRegionAck: 40,
+    SetUserPreferences: 41,
+    SetUserPreferencesAck: 42,
+    SetUserLayout: 43,
+    SetUserLayoutAck: 44,
+    SetContourParameters: 45,
+    ContourImageData: 46,
+    ResumeSession: 47,
+    ResumeSessionAck: 48,
 };
 let eventCount = {value: 0};
 /// Transfer functionality from String to Uint8Array
