@@ -126,11 +126,8 @@ describe("RESUME_SESSION test: Test to resume images and regions", () => {
                 test(`OPEN_FILE_ACK.success = ${openFile.success}`, () => {
                     expect(OpenFileAckTemp[index].success).toBe(openFile.success);
                 });
-            });
-
-            assertItem.SetRegionAck.map( (setRegion, index) => {
-                test(`SET_REGION_ACK.success = ${setRegion.success}`, () => {
-                    expect(SetRegionAckTemp[index].success).toBe(setRegion.success);
+                test(`SET_REGION_ACK.success = ${assertItem.SetRegionAck[index].success}`, () => {
+                    expect(SetRegionAckTemp[index].success).toBe(assertItem.SetRegionAck[index].success);
                 });
             });
 
