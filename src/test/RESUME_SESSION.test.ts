@@ -34,12 +34,6 @@ let assertItem: AssertItem = {
                 tileSize: 256,
                 channel: 0,
                 stokes: 0,
-                requiredTiles: {
-                    fileId: 0,
-                    tiles: [0],
-                    compressionType: CARTA.CompressionType.ZFP,
-                    compressionQuality: 11,
-                },
                 regions:
                 [
                     {
@@ -62,12 +56,6 @@ let assertItem: AssertItem = {
                 tileSize: 256,
                 channel: 0,
                 stokes: 0,
-                requiredTiles: {
-                    fileId: 0,
-                    tiles: [0],
-                    compressionType: CARTA.CompressionType.ZFP,
-                    compressionQuality: 11,
-                },
                 regions:
                 [
                     {
