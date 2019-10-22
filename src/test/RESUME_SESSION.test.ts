@@ -115,26 +115,26 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
         });
 
         describe(`RESUME_SESSION`, () => {
-            let OpenFileAckTemp: CARTA.OpenFileAck[] = new Array(2);
-            let SetRegionAckTemp: CARTA.SetRegionAck[] = new Array(2);
+            let OpenFileAckTemp: CARTA.OpenFileAck[] = new Array(assertItem.resumeSession.images.length);
+            let SetRegionAckTemp: CARTA.SetRegionAck[] = new Array(assertItem.resumeSession.images.length);
             let ResumeSessionAckTemp: CARTA.ResumeSessionAck;
             test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.ResumeSession, assertItem.resumeSession);
-                OpenFileAckTemp[0] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
-                SetRegionAckTemp[0] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
-                OpenFileAckTemp[1] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
-                SetRegionAckTemp[1] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                for (let i = 0; i< assertItem.resumeSession.images.length; i++) {
+                    OpenFileAckTemp[i] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
+                    SetRegionAckTemp[i] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                }
                 ResumeSessionAckTemp = await Utility.getEventAsync(Connection, CARTA.ResumeSessionAck) as CARTA.ResumeSessionAck;
             }, resumeTimeout);
 
-            assertItem.openFileAck.map( (openFile, index) => {
-                test(`OPEN_FILE_ACK.success = ${openFile.success}`, () => {
-                    expect(OpenFileAckTemp[index].success).toBe(openFile.success);
+            for (let index = 0; index< assertItem.resumeSession.images.length; index++) {
+                test(`OPEN_FILE_ACK.success = ${assertItem.openFileAck[index].success}`, () => {
+                    expect(OpenFileAckTemp[index].success).toBe(assertItem.openFileAck[index].success);
                 });
                 test(`SET_REGION_ACK.success = ${assertItem.setRegionAck[index].success}`, () => {
                     expect(SetRegionAckTemp[index].success).toBe(assertItem.setRegionAck[index].success);
                 });
-            });
+            }
 
             test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
                 expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
