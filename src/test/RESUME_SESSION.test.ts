@@ -91,7 +91,7 @@ let assertItem: AssertItem = {
     ],
 }
 
-describe("RESUME_SESSION test: Test to resume images and regions", () => {   
+describe("RESUME SESSION test: Test to resume images and regions", () => {   
     let Connection: WebSocket;
     beforeAll( done => {
         Connection = new WebSocket(testServerUrl);
@@ -109,11 +109,11 @@ describe("RESUME_SESSION test: Test to resume images and regions", () => {
         beforeAll( async () => {
         });
 
-        describe(`RESUME SESSION`, () => {
+        describe(`RESUME_SESSION`, () => {
             let OpenFileAckTemp: CARTA.OpenFileAck[] = [];
             let SetRegionAckTemp: CARTA.SetRegionAck[] = [];
             let ResumeSessionAckTemp: CARTA.ResumeSessionAck;
-            test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME SESSION should arrive within ${resumeTimeout} ms`, async () => {
+            test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.ResumeSession, assertItem.resumeSession);
                 OpenFileAckTemp.push(await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck);
                 SetRegionAckTemp.push(await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck);
@@ -131,9 +131,14 @@ describe("RESUME_SESSION test: Test to resume images and regions", () => {
                 });
             });
 
-            test(`RESUME SESSION.success = ${assertItem.resumeSessionAck.success}`, () => {
+            test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
                 expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
             });
+
+            if (ResumeSessionAckTemp.message) {
+                console.warn(`RESUME_SESSION_ACK error message: 
+                    ${ResumeSessionAckTemp.message}`);
+            }
 
         });
 
