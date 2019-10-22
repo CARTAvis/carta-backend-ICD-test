@@ -12,7 +12,7 @@ interface AssertItem {
     resumeSession?: CARTA.IResumeSession;
     resumeSessionAck?: CARTA.IResumeSessionAck;
     openFileAck?: CARTA.IOpenFileAck[];
-    SetRegionAck?: CARTA.ISetRegionAck[];
+    setRegionAck?: CARTA.ISetRegionAck[];
 }
 let assertItem: AssertItem = {
     registerViewer: {
@@ -80,7 +80,7 @@ let assertItem: AssertItem = {
             success: true,
         },
     ],
-    SetRegionAck:
+    setRegionAck:
     [
         {
             success: true,
@@ -110,15 +110,15 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
         });
 
         describe(`RESUME_SESSION`, () => {
-            let OpenFileAckTemp: CARTA.OpenFileAck[] = [];
-            let SetRegionAckTemp: CARTA.SetRegionAck[] = [];
+            let OpenFileAckTemp: CARTA.OpenFileAck[] = new Array(2);
+            let SetRegionAckTemp: CARTA.SetRegionAck[] = new Array(2);
             let ResumeSessionAckTemp: CARTA.ResumeSessionAck;
             test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.ResumeSession, assertItem.resumeSession);
-                OpenFileAckTemp.push(await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck);
-                SetRegionAckTemp.push(await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck);
-                OpenFileAckTemp.push(await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck);
-                SetRegionAckTemp.push(await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck);
+                OpenFileAckTemp[0] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
+                SetRegionAckTemp[0] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                OpenFileAckTemp[1] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
+                SetRegionAckTemp[1] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
                 ResumeSessionAckTemp = await Utility.getEventAsync(Connection, CARTA.ResumeSessionAck) as CARTA.ResumeSessionAck;
             }, resumeTimeout);
 
@@ -126,8 +126,8 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
                 test(`OPEN_FILE_ACK.success = ${openFile.success}`, () => {
                     expect(OpenFileAckTemp[index].success).toBe(openFile.success);
                 });
-                test(`SET_REGION_ACK.success = ${assertItem.SetRegionAck[index].success}`, () => {
-                    expect(SetRegionAckTemp[index].success).toBe(assertItem.SetRegionAck[index].success);
+                test(`SET_REGION_ACK.success = ${assertItem.setRegionAck[index].success}`, () => {
+                    expect(SetRegionAckTemp[index].success).toBe(assertItem.setRegionAck[index].success);
                 });
             });
 
