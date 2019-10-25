@@ -161,3 +161,41 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT test: Testing multiple concurrent conn
     });
 
 });
+
+import {CLIENT} from "./CLIENT";
+let Client: CLIENT[] = Array(testNumber);
+interface AssertItem {
+    register: CARTA.IRegisterViewer;
+    filelist: CARTA.IFileListRequest;
+}
+let assertItem: AssertItem = {
+    register: {
+        sessionId: 0,
+        clientFeatureFlags: 5,
+    },
+    filelist: {
+        directory: config.path.base,
+    },
+}
+describe("Access Websocket concurrent test using CLIENT", () => {
+
+    test(`establish ${testNumber} connections to "${testServerUrl}".`, async () => {
+
+        for (let i = 0; i< Client.length; i++) {
+            Client[i] = new CLIENT(testServerUrl);
+            await Client[i].open();
+        }
+
+    }, concurrentTimeout);
+
+    test(`close ${testNumber} connections from "${testServerUrl}".`, async () => {
+
+        for (let i = 0; i< Client.length; i++) {
+            // await Client[i].send(CARTA.RegisterViewer, assertItem.register);
+            // await Client[i].receive(CARTA.RegisterViewerAck);
+            await Client[i].close();
+        }
+
+    }, concurrentTimeout);
+        
+});
