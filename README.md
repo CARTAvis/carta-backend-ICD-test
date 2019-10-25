@@ -18,9 +18,9 @@ Prerequisite `npm` packages can be installed using `$ npm install`.
 
 ## Run it
 ### Test one at a time
-To avoid side effect, likely concurrent issue or IO traffic, it is better to run one test at one time. There is always a simple test from the beginning of the connection to backend, the address of which can be modified at `/test/config.json`.
-* For the local computer test, set `"serverURL": "ws://127.0.0.1:3002"` in the `/test/config.json`, where `3002` is the port number from the backend setting in this example.
-* For the server test, set `"serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev"` in the `/test/config.json`.
+To avoid side effect, likely concurrent issue or IO traffic, it is better to run one test at one time. There is always a simple test from the beginning of the connection to backend, the address of which can be modified at `src/test/config.json`.
+* For the local computer test, set `"serverURL": "ws://127.0.0.1:3002"` in the `src/test/config.json`, where `3002` is the port number from the backend setting in this example.
+* For the server test, set `"serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev"` in the `src/test/config.json`.
 * A first test could be run by `$ npm test src/test/ACCESS_CARTA_DEFAULT.test.ts`. As if it was failed, we might check up the parameters at `config.json` to fit the environment.
 * The test `$ npm test src/test/FILEINFO.test.ts` can help us verify the supported file formats. In case this test is failed, we may increase the timeout limitation, likely `timeout.readfile` or `timeout.openfile` at `config.json`.
 
