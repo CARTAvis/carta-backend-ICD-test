@@ -177,7 +177,7 @@ let assertItem: AssertItem = {
         directory: config.path.base,
     },
 }
-describe.only("Access Websocket and register concurrently", () => {
+describe("Access Websocket and register concurrently", () => {
 
     test(`establish ${testNumber} connections to "${testServerUrl}".`, async () => {
 
