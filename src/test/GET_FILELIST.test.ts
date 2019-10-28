@@ -1,5 +1,5 @@
 import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.directory;
@@ -40,25 +40,20 @@ let assertItem: AssertItem = {
 }
 describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at default path ($BASE)", () => {
     describe(`connect to CARTA "${testServerUrl}"`, () => {
-        let Connection: WebSocket;
-        beforeAll( done => {
-            Connection = new WebSocket(testServerUrl);
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = OnOpen;
-            async function OnOpen (this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-                done();
-            }
+        let Connection: Client;
+        beforeAll( async () => {
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
 
         assertItem.filelistGroup.map( (filelist, index) => {
             describe(`access folder "${filelist.directory}"`, () => {
                 let FileListResponseTemp: CARTA.FileListResponse;
                 test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.FileListRequest, filelist);
-                    FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+                    await Connection.send(CARTA.FileListRequest, filelist);
+                    FileListResponseTemp = await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse;
                 }, fileListTimeout);
             
                 test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
@@ -89,9 +84,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
             });
         });
 
-        afterAll( () => {
-            Connection.close();
-        });
+        afterAll( async () => await Connection.close());
     });
     
 });
@@ -99,28 +92,24 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
 describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list generation if the requested path does not exist", () => {    
     describe(`connect to CARTA "${testServerUrl}"`, () => {
 
-        let Connection: WebSocket;
+        let Connection: Client;
     
-        beforeAll( done => {
-            Connection = new WebSocket(testServerUrl);
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = OnOpen;
-            async function OnOpen (this: WebSocket, ev: Event) {
-                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-                done();
-            }
+        beforeAll( async () => {
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
     
         describe(`access folder "/unknown/path"`, () => {
             let FileListResponseTemp: CARTA.FileListResponse;
             test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.FileListRequest, 
+                await Connection.send(CARTA.FileListRequest, 
                     {
                         directory: "/unknown/path",
                     }
                 );
-                FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+                FileListResponseTemp = await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse;
             }, fileListTimeout);
         
             test("FILE_LIST_RESPONSE.success == False", () => {
@@ -135,9 +124,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
             });
         });
         
-        afterAll( () => {
-            Connection.close();
-        });
+        afterAll( async () => await Connection.close());
     });    
     
 });

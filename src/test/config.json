@@ -31,5 +31,10 @@
         "cursor": 10,
         "image": 10,
         "animation": 100
+    },
+    "log": {
+        "error": false,
+        "warning": true,
+        "event": false
     }
 }
