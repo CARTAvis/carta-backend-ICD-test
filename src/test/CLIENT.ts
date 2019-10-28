@@ -1,8 +1,8 @@
 import {CARTA} from "carta-protobuf";
-const isLog = false;
+import config from "./config.json";
 
 /// CARTA ICD definition
-const IcdVersion = 9;
+const IcdVersion = 10;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -54,8 +54,7 @@ export const EventType = {
     ResumeSession: 47,
     ResumeSessionAck: 48,
 };
-
-export class CLIENT {
+export class Client {
     static eventCount = {value: 0};
     connection: WebSocket;
     // Construct a websocket connection to url
@@ -92,9 +91,9 @@ export class CLIENT {
             const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
             eventHeader16[0] = EventType[cartaType.name];
             eventHeader16[1] = IcdVersion;
-            eventHeader32[0] = CLIENT.eventCount.value++; // eventCounter;
-            if (isLog) {
-                console.log(`${cartaType.name} =>`);
+            eventHeader32[0] = Client.eventCount.value++; // eventCounter;
+            if (config.log.event) {
+                console.log(`${cartaType.name} => @ ${eventHeader32[0]}`);
             }
     
             eventData.set(payload, 8);
@@ -117,11 +116,11 @@ export class CLIENT {
                 const eventType = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
-                if (isLog) {
-                    console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+                if (config.log.event) {
+                    console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)} @ ${eventId}`);
                 }
     
-                if (eventIcdVersion !== IcdVersion) {
+                if (eventIcdVersion !== IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
                 }
     
@@ -145,6 +144,30 @@ export class CLIENT {
                     }
                     resolve(data);
                 }
+            };
+            if(timeout){
+                let Timer = setTimeout(() => {
+                    clearTimeout(Timer);
+                    resolve();
+                }, timeout); 
+            }
+        });
+    }
+    /// Mock a receiving of websocket message in any type async
+    /// timeout: promise will return nothing until time out if timeout > 0
+    /// return a Promise<null> for await
+    receiveMock(timeout?: number) {
+        return new Promise( (resolve, reject) => {
+            this.connection.onmessage = async (messageEvent: MessageEvent) => {
+                const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);    
+                const eventType = eventHeader16[0];
+                const eventIcdVersion = eventHeader16[1];
+                const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)} @ ${eventId}`);
+                }
+                resolve();
             };
             if(timeout){
                 let Timer = setTimeout(() => {
@@ -181,7 +204,7 @@ export class CLIENT {
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
     
-                if (eventIcdVersion !== IcdVersion) {
+                if (eventIcdVersion !== IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
                 }
                 let _profileData;
