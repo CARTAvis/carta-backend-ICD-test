@@ -13,6 +13,7 @@ interface AssertItem {
     stopAnimation: CARTA.IStopAnimation;
     animationFlowControl: CARTA.IAnimationFlowControl;
     reverseAnimation: CARTA.IStartAnimation;
+    blinkAnimation: CARTA.IStartAnimation;
 };
 let assertItem: AssertItem = {
     register: {
@@ -67,6 +68,22 @@ let assertItem: AssertItem = {
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 16,
         },
+    },
+    blinkAnimation:
+    {
+        fileId: 0,
+        startFrame: { channel: 3, stokes: 0 },
+        firstFrame: { channel: 3, stokes: 0 },
+        lastFrame: { channel: 10, stokes: 0 },
+        deltaFrame: { channel: 7, stokes: 0 },
+        imageView: {
+            fileId: 0,
+            imageBounds: { xMax: 640, yMax: 800 },
+            mip: 4,
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 16,
+        },
+        reverse: true,
     },
 };
 
@@ -223,6 +240,46 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             test(`Received image channels should be in sequence`, async () => {
                 RasterImageData.map((imageData, index) => {
                     expect(imageData.channel).toEqual(assertItem.reverseAnimation.startFrame.channel-index);
+                });
+                console.log(`Sequent channel index: ${sequence}`);
+            });
+
+            test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.imageBounds).toEqual(assertItem.startAnimation.imageView.imageBounds);
+                });
+            });
+        });
+
+        describe(`Blink images bewteen ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
+            let RasterImageData: CARTA.RasterImageData[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
+                for (let i = 0; i < 20; i++) {
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: RasterImageData[i].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(RasterImageData[i].channel);
+                }
+                await Connection.send(CARTA.StopAnimation, {
+                    endFrame: assertItem.blinkAnimation.firstFrame,
+                });
+                await Connection.receive(CARTA.RasterImageData);
+            }, playTimeout);
+
+            test(`Received image channels should be in sequence`, async () => {
+                RasterImageData.map((imageData, index) => {
+                    expect(imageData.channel === assertItem.blinkAnimation.firstFrame.channel || imageData.channel === assertItem.blinkAnimation.lastFrame.channel).toBe(true);
                 });
                 console.log(`Sequent channel index: ${sequence}`);
             });
