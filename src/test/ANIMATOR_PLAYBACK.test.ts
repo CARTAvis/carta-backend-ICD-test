@@ -67,7 +67,6 @@ let assertItem: AssertItem = {
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 16,
         },
-        reverse: true,
     },
 };
 
