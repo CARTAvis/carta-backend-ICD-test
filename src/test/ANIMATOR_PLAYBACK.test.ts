@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 import * as Long from "long";
 let testServerUrl = config.serverURL;
@@ -71,36 +71,32 @@ let assertItem: AssertItem = {
 };
 
 describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
-    let Connection: WebSocket;
-    beforeAll(done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen(this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+    let Connection: Client;
+    beforeAll( async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open images`, () => {
 
         beforeAll(async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, { fileId: -1 });
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpens);
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            await Connection.send(CARTA.OpenFile, assertItem.fileOpens);
+            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receive(CARTA.RegionHistogramData);
         });
 
         describe(`Play all images forwardly`, () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StartAnimation, assertItem.startAnimation);
-                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < Math.abs(assertItem.startAnimation.lastFrame.channel-assertItem.startAnimation.firstFrame.channel); i++) {
-                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
-                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl,
                             receivedFrame: {
@@ -131,11 +127,11 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         describe(`Play some images until stop`, () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             test(`Image should return one after one`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StartAnimation, assertItem.startAnimation);
-                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < Math.abs(assertItem.stopAnimation.endFrame.channel-assertItem.startAnimation.firstFrame.channel); i++) {
-                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
-                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl,
                             receivedFrame: {
@@ -149,8 +145,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             }, playTimeout);
 
             test(`Last image on channel${JSON.stringify(assertItem.stopAnimation.endFrame)} should receive after stop`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StopAnimation, assertItem.stopAnimation);
-                let RasterImageData = <CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData);
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
+                let RasterImageData = await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData;
                 expect(RasterImageData.channel).toEqual(assertItem.stopAnimation.endFrame.channel);
             });
         });
@@ -159,16 +155,16 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StartAnimation,
+                await Connection.send(CARTA.StartAnimation,
                     {
                         ...assertItem.startAnimation,
                         reverse: true,
                     }
                 );
-                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < Math.abs(assertItem.startAnimation.lastFrame.channel-assertItem.startAnimation.firstFrame.channel) * 2; i++) {
-                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
-                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl,
                             receivedFrame: {
@@ -180,8 +176,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(RasterImageData[i].channel);
                 }
-                await Utility.setEventAsync(Connection, CARTA.StopAnimation, assertItem.stopAnimation);
-                await Utility.getEventAsync(Connection, CARTA.RasterImageData);
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
+                await Connection.receive(CARTA.RasterImageData);
             }, playTimeout);
 
             test(`Received image channels should be in sequence and then reverse`, async () => {
@@ -202,11 +198,11 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.StartAnimation, assertItem.reverseAnimation);
-                await Utility.getEventAsync(Connection, CARTA.StartAnimationAck);
+                await Connection.send(CARTA.StartAnimation, assertItem.reverseAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < Math.abs(assertItem.reverseAnimation.lastFrame.channel-assertItem.reverseAnimation.firstFrame.channel); i++) {
-                    RasterImageData.push(<CARTA.RasterImageData> await Utility.getEventAsync(Connection, CARTA.RasterImageData));
-                    await Utility.setEventAsync(Connection, CARTA.AnimationFlowControl,
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl,
                             receivedFrame: {
@@ -218,10 +214,10 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(RasterImageData[i].channel);
                 }
-                await Utility.setEventAsync(Connection, CARTA.StopAnimation, {
+                await Connection.send(CARTA.StopAnimation, {
                     endFrame: assertItem.reverseAnimation.firstFrame,
                 });
-                await Utility.getEventAsync(Connection, CARTA.RasterImageData);
+                await Connection.receive(CARTA.RasterImageData);
             }, playTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
@@ -239,5 +235,5 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         });
     });
 
-    afterAll(() => Connection.close());
+    afterAll(async () => await Connection.close());
 });
