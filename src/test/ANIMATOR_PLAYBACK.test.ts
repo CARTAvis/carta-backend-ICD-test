@@ -32,9 +32,9 @@ let assertItem: AssertItem = {
     startAnimation:
     {
         fileId: 0,
-        startFrame: { channel: 0, stokes: 0 },
-        firstFrame: { channel: 0, stokes: 0 },
-        lastFrame: { channel: 24, stokes: 0 },
+        startFrame: { channel: 10, stokes: 0 },
+        firstFrame: { channel: 10, stokes: 0 },
+        lastFrame: { channel: 20, stokes: 0 },
         deltaFrame: { channel: 1, stokes: 0 },
         imageView: {
             fileId: 0,
@@ -47,7 +47,7 @@ let assertItem: AssertItem = {
     stopAnimation:
     {
         fileId: 0,
-        endFrame: { channel: 10, stokes: 0 },
+        endFrame: { channel: 18, stokes: 0 },
     },
     animationFlowControl:
     {
@@ -57,10 +57,10 @@ let assertItem: AssertItem = {
     reverseAnimation:
     {
         fileId: 0,
-        startFrame: { channel: 24, stokes: 0 },
-        firstFrame: { channel: 0, stokes: 0 },
-        lastFrame: { channel: 24, stokes: 0 },
-        deltaFrame: { channel: -1, stokes: 0 },
+        startFrame: { channel: 20, stokes: 0 },
+        firstFrame: { channel: 10, stokes: 0 },
+        lastFrame: { channel: 20, stokes: 0 },
+        deltaFrame: { channel: 1, stokes: 0 },
         imageView: {
             fileId: 0,
             imageBounds: { xMax: 640, yMax: 800 },
@@ -68,6 +68,7 @@ let assertItem: AssertItem = {
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 16,
         },
+        reverse: true,
     },
     blinkAnimation:
     {
@@ -105,13 +106,16 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             await Connection.receive(CARTA.RegionHistogramData);
         });
 
-        describe(`Play all images forwardly`, () => {
+        describe(`Play all images forwardly with looping`, () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
+                await Connection.send(CARTA.StartAnimation, {
+                    ...assertItem.startAnimation,
+                    looping: true,
+                });
                 await Connection.receive(CARTA.StartAnimationAck);
-                for (let i = 0; i < Math.abs(assertItem.startAnimation.lastFrame.channel-assertItem.startAnimation.firstFrame.channel); i++) {
+                for (let i = 0; i < 2 * Math.abs(assertItem.startAnimation.lastFrame.channel - assertItem.startAnimation.firstFrame.channel) + 2; i++) {
                     RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
@@ -125,13 +129,17 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(RasterImageData[i].channel);
                 }
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
+                await Connection.receive(CARTA.RasterImageData);
             }, playTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
-                RasterImageData.map((imageData, index) => {
-                    expect(imageData.channel).toEqual(++index);
-                });
                 console.log(`Sequent channel index: ${sequence}`);
+                let i = 0;
+                RasterImageData.map((imageData, index) => {
+                    let j = i++ % Math.abs(1 + assertItem.startAnimation.lastFrame.channel - assertItem.startAnimation.firstFrame.channel) + assertItem.startAnimation.firstFrame.channel;
+                    expect(imageData.channel).toEqual(j);
+                });
             });
 
             test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
@@ -179,7 +187,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     }
                 );
                 await Connection.receive(CARTA.StartAnimationAck);
-                for (let i = 0; i < Math.abs(assertItem.startAnimation.lastFrame.channel-assertItem.startAnimation.firstFrame.channel) * 2; i++) {
+                for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation.lastFrame.channel-assertItem.startAnimation.firstFrame.channel); i++) {
                     RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
@@ -198,10 +206,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             }, playTimeout);
 
             test(`Received image channels should be in sequence and then reverse`, async () => {
-                RasterImageData.map((imageData, index) => {
-                    expect(imageData.channel).toEqual(index < assertItem.startAnimation.lastFrame.channel ? index : assertItem.startAnimation.lastFrame.channel * 2 - index);
-                });
                 console.log(`Channel index in roundtrip: ${sequence}`);
+                let previous: number = assertItem.startAnimation.startFrame.channel - 1;
+                RasterImageData.map((imageData, index) => {
+                    expect(Math.abs(imageData.channel - previous)).toEqual(1);
+                    previous = imageData.channel;
+                });
             });
 
             test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
@@ -217,7 +227,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             test(`Image should return one after one`, async () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.reverseAnimation);
                 await Connection.receive(CARTA.StartAnimationAck);
-                for (let i = 0; i < Math.abs(assertItem.reverseAnimation.lastFrame.channel-assertItem.reverseAnimation.firstFrame.channel); i++) {
+                for (let i = 0; i < Math.abs(assertItem.reverseAnimation.lastFrame.channel - assertItem.reverseAnimation.firstFrame.channel); i++) {
                     RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
@@ -238,10 +248,10 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             }, playTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
+                console.log(`Reverse channel index: ${sequence}`);
                 RasterImageData.map((imageData, index) => {
-                    expect(imageData.channel).toEqual(assertItem.reverseAnimation.startFrame.channel-index);
+                    // expect(imageData.channel).toEqual(assertItem.reverseAnimation.startFrame.channel-index);
                 });
-                console.log(`Sequent channel index: ${sequence}`);
             });
 
             test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
@@ -278,10 +288,10 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             }, playTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
+                console.log(`Blink channel index: ${sequence}`);
                 RasterImageData.map((imageData, index) => {
                     expect(imageData.channel === assertItem.blinkAnimation.firstFrame.channel || imageData.channel === assertItem.blinkAnimation.lastFrame.channel).toBe(true);
                 });
-                console.log(`Sequent channel index: ${sequence}`);
             });
 
             test(`Received image size should be ${JSON.stringify(assertItem.startAnimation.imageView.imageBounds)}`, async () => {
