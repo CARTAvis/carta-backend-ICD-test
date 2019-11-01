@@ -326,7 +326,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 }, playTimeout);
 
                 test(`Received image channels should be in sequence`, async () => {
-                    console.log(`Reverse channel index: ${sequence}`);
+                    console.log(`Backward channel index: ${sequence}`);
                     RasterImageData.map((imageData, index) => {
                         expect(imageData.channel).toEqual(animation.startFrame.channel-index);
                     });
