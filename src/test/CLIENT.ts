@@ -1,60 +1,62 @@
 import {CARTA} from "carta-protobuf";
 import config from "./config.json";
 
-/// CARTA ICD definition
-const IcdVersion = 10;
-export const EventType = {
-    EmptyEvent: 0,
-    RegisterViewer: 1,
-    FileListRequest: 2,
-    FileInfoRequest: 3,
-    OpenFile: 4,
-    SetImageView: 5,
-    SetImageChannels: 6,
-    SetCursor: 7,
-    SetSpatialRequirements: 8,
-    SetHistogramRequirements: 9,
-    SetStatsRequirements: 10,
-    SetRegion: 11,
-    RemoveRegion: 12,
-    CloseFile: 13,
-    SetSpectralRequirements: 14,
-    StartAnimation: 15,
-    StartAnimationAck: 16,
-    StopAnimation: 17,
-    RegisterViewerAck: 18,
-    FileListResponse: 19,
-    FileInfoResponse: 20,
-    OpenFileAck: 21,
-    SetRegionAck: 22,
-    RegionHistogramData: 23,
-    RasterImageData: 24,
-    SpatialProfileData: 25,
-    SpectralProfileData: 26,
-    RegionStatsData: 27,
-    ErrorData: 28,
-    AnimationFlowControl: 29,
-    AddRequiredTiles: 30,
-    RemoveRequireTiles: 31,
-    RasterTileData: 32,
-    RegionListRequest: 33,
-    RegionListResponse: 34,
-    RegionFileInfoRequest: 35,
-    RegionFileInfoResponse: 36,
-    ImportRegion: 37,
-    ImportRegionAck: 38,
-    ExportRegion: 39,
-    ExportRegionAck: 40,
-    SetUserPreferences: 41,
-    SetUserPreferencesAck: 42,
-    SetUserLayout: 43,
-    SetUserLayoutAck: 44,
-    SetContourParameters: 45,
-    ContourImageData: 46,
-    ResumeSession: 47,
-    ResumeSessionAck: 48,
-};
 export class Client {
+    IcdVersion: number = 10;
+    EventType = {
+        EmptyEvent: 0,
+        RegisterViewer: 1,
+        FileListRequest: 2,
+        FileInfoRequest: 3,
+        OpenFile: 4,
+        SetImageView: 5,
+        SetImageChannels: 6,
+        SetCursor: 7,
+        SetSpatialRequirements: 8,
+        SetHistogramRequirements: 9,
+        SetStatsRequirements: 10,
+        SetRegion: 11,
+        RemoveRegion: 12,
+        CloseFile: 13,
+        SetSpectralRequirements: 14,
+        StartAnimation: 15,
+        StartAnimationAck: 16,
+        StopAnimation: 17,
+        RegisterViewerAck: 18,
+        FileListResponse: 19,
+        FileInfoResponse: 20,
+        OpenFileAck: 21,
+        SetRegionAck: 22,
+        RegionHistogramData: 23,
+        RasterImageData: 24,
+        SpatialProfileData: 25,
+        SpectralProfileData: 26,
+        RegionStatsData: 27,
+        ErrorData: 28,
+        AnimationFlowControl: 29,
+        AddRequiredTiles: 30,
+        RemoveRequireTiles: 31,
+        RasterTileData: 32,
+        RegionListRequest: 33,
+        RegionListResponse: 34,
+        RegionFileInfoRequest: 35,
+        RegionFileInfoResponse: 36,
+        ImportRegion: 37,
+        ImportRegionAck: 38,
+        ExportRegion: 39,
+        ExportRegionAck: 40,
+        SetUserPreferences: 41,
+        SetUserPreferencesAck: 42,
+        SetUserLayout: 43,
+        SetUserLayoutAck: 44,
+        SetContourParameters: 45,
+        ContourImageData: 46,
+        ResumeSession: 47,
+        ResumeSessionAck: 48,
+    };
+    EventTypeValue(key: number): string {
+        return Object.keys(this.EventType).find( f => this.EventType[f] === key);
+    }
     static eventCount = {value: 0};
     connection: WebSocket;
     // Construct a websocket connection to url
@@ -89,8 +91,8 @@ export class Client {
             let eventData = new Uint8Array(8 + payload.byteLength);
             const eventHeader16 = new Uint16Array(eventData.buffer, 0, 2);
             const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
-            eventHeader16[0] = EventType[cartaType.name];
-            eventHeader16[1] = IcdVersion;
+            eventHeader16[0] = this.EventType[cartaType.name];
+            eventHeader16[1] = this.IcdVersion;
             eventHeader32[0] = Client.eventCount.value++; // eventCounter;
             if (config.log.event) {
                 console.log(`${cartaType.name} => @ ${eventHeader32[0]}`);
@@ -117,14 +119,14 @@ export class Client {
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)} @ ${eventId}`);
+                    console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
                 }
     
-                if (eventIcdVersion !== IcdVersion && config.log.warning) {
-                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+                if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
+                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
     
-                if (EventType[cartaType.name] === eventType) {
+                if (this.EventType[cartaType.name] === eventType) {
                     if(timeout){
                         reject();
                     }
@@ -165,7 +167,7 @@ export class Client {
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)} @ ${eventId}`);
+                    console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
                 }
                 resolve();
             };
@@ -204,29 +206,29 @@ export class Client {
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
     
-                if (eventIcdVersion !== IcdVersion && config.log.warning) {
-                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
+                if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
+                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
                 let _profileData;
                 switch (eventType) {
-                    case EventType["RasterTileData"]:
+                    case this.EventType["RasterTileData"]:
                         ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                         break;
-                    case EventType["RasterImageData"]:
+                    case this.EventType["RasterImageData"]:
                         ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
                         break;
-                    case EventType["RegionStatsData"]:
+                    case this.EventType["RegionStatsData"]:
                         ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
                         break;
-                    case EventType["RegionHistogramData"]:
+                    case this.EventType["RegionHistogramData"]:
                         ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
                         break;
-                    case EventType["SpatialProfileData"]:
+                    case this.EventType["SpatialProfileData"]:
                         _profileData = CARTA.SpatialProfileData.decode(eventData);
                         _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
                         ack.SpatialProfileData.push(_profileData);
                         break;
-                    case EventType["SpectralProfileData"]:
+                    case this.EventType["SpectralProfileData"]:
                         _profileData = CARTA.SpectralProfileData.decode(eventData);
                         _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
                         ack.SpectralProfileData.push(_profileData);
