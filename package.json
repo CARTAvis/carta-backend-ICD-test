@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "procfs-stats": "^1.0.2",
-        "react-scripts": "^3.0.1",
+        "react-scripts": "^3.2.0",
         "usage": "^0.7.1"
     },
     "scripts": {
@@ -12,8 +12,8 @@
     },
     "devDependencies": {
         "@types/jest": "^23.3.14",
-        "@types/node": "^10.14.17",
+        "@types/node": "^10.17.3",
         "protobufjs": "^6.8.8",
-        "typescript": "^3.6.2"
+        "typescript": "^3.6.4"
     }
 }
