@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
@@ -15,22 +15,23 @@ let assertItem: AssertItem = {
 }
 describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend with an unknown session id", () => {
     describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
+        let Connection: Client;
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
-        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, done => {        
-            // Connect to "testServerUrl"
-            let Connection = new WebSocket(testServerUrl);
-            expect(Connection.readyState).toBe(WebSocket.CONNECTING);
+        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, async () => {
+            Connection = new Client(testServerUrl);
+            expect(Connection.connection.readyState).toBe(WebSocket.CONNECTING);
 
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = OnOpen;        
-            
-            async function OnOpen(this: WebSocket, ev: Event) {
-                expect(this.readyState).toBe(WebSocket.OPEN);
-                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                RegisterViewerAckTemp = <CARTA.RegisterViewerAck>await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-                await this.close();
-                done();
-            }
+            await Connection.open().then(()=>{
+                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+            });
+
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
+
+            await Connection.close().then(()=>{
+                expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
+            });
+
         }, connectTimeout);
 
         test("REGISTER_VIEWER_ACK.success = False", () => {
