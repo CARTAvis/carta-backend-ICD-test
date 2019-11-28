@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -9,8 +9,8 @@ let openFileTimeout = config.timeout.openFile;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileInfoGroup: CARTA.IFileInfoRequest[];
-    fileInfoResGroup: CARTA.IFileInfoResponse[];
+    fileInfoRequest: CARTA.IFileInfoRequest[];
+    fileInfoResponse: CARTA.IFileInfoResponse[];
 }
 let assertItem: AssertItem = {
     register: {
@@ -18,7 +18,7 @@ let assertItem: AssertItem = {
         apiKey: "",
     },
     filelist: {directory: testSubdirectory},
-    fileInfoGroup: [
+    fileInfoRequest: [
         {
             directory: testSubdirectory,
             file: "M17_SWex.fits",
@@ -45,7 +45,7 @@ let assertItem: AssertItem = {
             hdu: "0",
         },
     ],
-    fileInfoResGroup: [
+    fileInfoResponse: [
         {
             success: true,
             message: "",
@@ -471,32 +471,27 @@ let assertItem: AssertItem = {
 }
 
 describe("FILEINFO test: Testing if info of an image file is correctly delivered by the backend", () => {   
-    let Connection: WebSocket;
-
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+    
+    let Connection: Client;
+    beforeAll( async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder`, 
-    () => {
+    describe(`Go to "${testSubdirectory}" folder`, () => {
         beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
-            await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+            await Connection.receive(CARTA.FileListResponse);
         }, listFileTimeout);
         
-        assertItem.fileInfoResGroup.map( (fileInfoRes: CARTA.IFileInfoResponse, index: number) => {
-            describe(`query the info of file : ${assertItem.fileInfoGroup[index].file}`, () => {
+        assertItem.fileInfoResponse.map( (fileInfoRes: CARTA.IFileInfoResponse, index: number) => {
+            describe(`query the info of file : ${assertItem.fileInfoRequest[index].file}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, assertItem.fileInfoGroup[index]);
-                    FileInfoResponseTemp = <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
+                    await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest[index]);
+                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = true", () => {
@@ -564,52 +559,38 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll( () =>  Connection.close() );
 });
 
-describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => {   
-    let Connection: WebSocket;
-
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "",
-                }
-            );
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => { 
+  
+    let Connection: Client;
+    beforeAll( async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
         beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.FileListRequest, 
-                {
-                    directory: testSubdirectory,
-                }
-            );
-            await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+            await Connection.receive(CARTA.FileListResponse);
         }, listFileTimeout);
         
         [ "no_such_file.image", "broken_header.miriad"].map( (fileName: string) => {
             describe(`query the info of file : ${fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
+                
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, 
+                    await Connection.send(CARTA.FileInfoRequest,  
                         {
                             directory: testSubdirectory, 
                             file: fileName, 
                             hdu: "",
                         }
                     );
-                   FileInfoResponseTemp =  <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
+                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = false", () => {
@@ -619,13 +600,11 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                 test("FILE_INFO_RESPONSE.message is not None", () => {
                     expect(FileInfoResponseTemp.message).toBeDefined();
                     expect(FileInfoResponseTemp.message).not.toBe("");
-                    console.log(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
+                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
                 });
             });
         });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll( () =>  Connection.close() );
 });

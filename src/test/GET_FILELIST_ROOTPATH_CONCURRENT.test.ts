@@ -46,35 +46,30 @@ describe("GET_FILELIST_ROOTPATH_CONCURRENT test: Testing generation of a file li
         }
     }, concurrentTimeout);
     
-    test(`assert every FILE_LIST_RESPONSE.success to be True.`, 
-    () => {
+    test(`assert every FILE_LIST_RESPONSE.success to be True.`, () => {
         for (let response of fileListResponse) {
             expect(response.success).toBe(true);
         }       
     });
 
-    test(`assert every FILE_LIST_RESPONSE.parent is None.`, 
-    () => {
+    test(`assert every FILE_LIST_RESPONSE.parent is None.`, () => {
         for (let response of fileListResponse) {
             expect(response.parent).toBe("");
         }   
     });
 
-    test(`assert every FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, 
-    () => {
+    test(`assert every FILE_LIST_RESPONSE.directory is "${expectRootPath}".`, () => {
         for (let response of fileListResponse) {
             expect(response.directory).toBe(expectRootPath);
         }
     });
 
-    test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, 
-    () => {
+    test(`assert all FILE_LIST_RESPONSE.files[] are identical.`, () => {
         expect(fileListResponse[0]).toBeDefined();
         expect(fileListResponse.every(f => JSON.stringify(f.files) === JSON.stringify(fileListResponse[0].files))).toBe(true);
     });
 
-    test(`assert all FILE_LIST_RESPONSE.subdirectories[] are identical.`, 
-    () => {
+    test(`assert all FILE_LIST_RESPONSE.subdirectories[] are identical.`, () => {
         expect(fileListResponse[0]).toBeDefined();
         expect(fileListResponse.every(f => JSON.stringify(f.subdirectories) === JSON.stringify(fileListResponse[0].subdirectories))).toBe(true);
     });

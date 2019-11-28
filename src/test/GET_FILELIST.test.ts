@@ -1,4 +1,4 @@
-import {CARTA} from "carta-protobuf";
+import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -53,7 +53,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                 let FileListResponseTemp: CARTA.FileListResponse;
                 test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
                     await Connection.send(CARTA.FileListRequest, filelist);
-                    FileListResponseTemp = await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse;
+                    FileListResponseTemp = await Connection.receive(CARTA.FileListResponse);
                 }, fileListTimeout);
             
                 test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
@@ -120,7 +120,7 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
                 let _message = FileListResponseTemp.message;
                 expect(_message).toBeDefined();
                 expect(_message).not.toBe("");
-                console.log(`As access folder "/unknown/path", FILE_LIST_RESPONSE.message is "${_message}"`);
+                console.warn(`As access folder "/unknown/path", FILE_LIST_RESPONSE.message is "${_message}"`);
             });
         });
         

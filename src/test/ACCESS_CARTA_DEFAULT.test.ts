@@ -21,14 +21,14 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             Connection = new Client(testServerUrl);
             expect(Connection.connection.readyState).toBe(WebSocket.CONNECTING);
 
-            await Connection.open().then(()=>{
+            await Connection.open().then( () => {
                 expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             });
 
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
 
-            await Connection.close().then(()=>{
+            await Connection.close().then( () => {
                 expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
             });
 
