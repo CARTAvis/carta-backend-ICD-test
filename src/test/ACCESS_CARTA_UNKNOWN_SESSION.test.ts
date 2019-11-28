@@ -46,7 +46,7 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
             expect(RegisterViewerAckTemp.message).toBeDefined();
             expect(RegisterViewerAckTemp.message).not.toEqual("");
             if ( RegisterViewerAckTemp.message !== "" ) {
-                console.log(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAckTemp.message}" @${new Date()}`);
+                console.warn(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAckTemp.message}" @${new Date()}`);
             }
         });
 

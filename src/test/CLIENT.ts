@@ -64,20 +64,32 @@ export class Client {
         this.connection = new WebSocket(url);
         this.connection.binaryType = "arraybuffer";
     } 
-    open() {
-        return new Promise( (resolve, reject) => {
+    open(timeout?: number) {
+        return new Promise<void>( (resolve, reject) => {
             this.connection.onopen = onOpen;
             function onOpen (this: WebSocket, ev: Event) {
                 resolve();
             }
+            if (timeout) {
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, timeout);
+            }
         });
     }
-    close() {
+    close(timeout?: number) {
         this.connection.close();
-        return new Promise( (resolve, reject) => {
+        return new Promise<void>( (resolve, reject) => {
             this.connection.onclose = onClose;
             function onClose (this: WebSocket, ev: Event) {
                 resolve();
+            }
+            if (timeout) {
+                let failTimer = setTimeout(() => {
+                    clearTimeout(failTimer);
+                    reject();
+                }, timeout);
             }
         });
     }
@@ -85,7 +97,7 @@ export class Client {
     /// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
     /// return a Promise<any> for await
     send(cartaType: any, eventMessage: any,) {
-        return new Promise( resolve => {
+        return new Promise<void>( resolve => {
             let message = cartaType.create(eventMessage);
             let payload = cartaType.encode(message).finish();
             let eventData = new Uint8Array(8 + payload.byteLength);
@@ -109,7 +121,7 @@ export class Client {
     /// timeout: promise will return nothing until time out if timeout > 0
     /// return a Promise<cartaType> for await
     receive(cartaType: any, timeout?: number) {
-        return new Promise( (resolve, reject) => {
+        return new Promise<any>( (resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
@@ -159,7 +171,7 @@ export class Client {
     /// timeout: promise will return nothing until time out if timeout > 0
     /// return a Promise<null> for await
     receiveMock(timeout?: number) {
-        return new Promise( (resolve, reject) => {
+        return new Promise<void>( (resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);    
@@ -196,7 +208,7 @@ export class Client {
             SpectralProfileData: [],
         };
 
-        return new Promise( resolve => {
+        return new Promise<AckStream>( resolve => {
             this.connection.onmessage = (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
