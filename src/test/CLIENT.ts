@@ -120,7 +120,7 @@ export class Client {
     /// Parameters: connection(Websocket ref), cartaType(CARTA.type)
     /// timeout: promise will return nothing until time out if timeout > 0
     /// return a Promise<cartaType> for await
-    receive(cartaType: any, timeout?: number) {
+    receive(cartaType: any, timeout?: number, isReceive?: boolean) {
         return new Promise<any>( (resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
@@ -139,7 +139,7 @@ export class Client {
                 }
     
                 if (this.EventType[cartaType.name] === eventType) {
-                    if(timeout){
+                    if(timeout && !isReceive){
                         reject();
                     }
                     let data;
@@ -162,7 +162,11 @@ export class Client {
             if(timeout){
                 let Timer = setTimeout(() => {
                     clearTimeout(Timer);
-                    resolve();
+                    if(isReceive){
+                        reject();
+                    }else{
+                        resolve();
+                    }
                 }, timeout); 
             }
         });

@@ -207,10 +207,10 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                 if (rasterTileData.fileId < 0) {
                     test(`REGION_HISTOGRAM_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
                         await Connection.send(CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
-                        await Connection.receive(CARTA.RegionHistogramData, messageReturnTimeout * .5);
+                        await Connection.receive(CARTA.RegionHistogramData, messageReturnTimeout * .5, false);
                     }, changeChannelTimeout + messageReturnTimeout);
                     test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
-                        await Connection.receive(CARTA.RasterTileData, messageReturnTimeout * .5);
+                        await Connection.receive(CARTA.RasterTileData, messageReturnTimeout * .5, false);
                     }, messageReturnTimeout);
                 } else {
                     let RegionHistogramDataTemp: CARTA.RegionHistogramData;

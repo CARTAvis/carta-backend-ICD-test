@@ -283,7 +283,7 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                         if (spectralProfileData.progress < 0) {
                             test(`SPECTRAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
                                 await Connection.send(CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
-                                await Connection.receive(CARTA.SpectralProfileData, cursorTimeout * .5);
+                                await Connection.receive(CARTA.SpectralProfileData, cursorTimeout * .5, false);
                             }, cursorTimeout);
 
                             test("Backend still alive", async () => {
