@@ -17,8 +17,8 @@ let assertItem: AssertItem = {
         apiKey: "",
     },
     filelistGroup: [
-        {directory: expectBasePath,},
-        {directory: testSubdirectory,},
+        { directory: expectBasePath, },
+        { directory: testSubdirectory, },
     ],
     fileListResponseGroup: [
         {
@@ -32,7 +32,7 @@ let assertItem: AssertItem = {
             directory: testSubdirectory,
             parent: ".",
             files: [
-                {name: "aJ.fits"},
+                { name: "aJ.fits" },
             ],
             subdirectories: ["set_QA"],
         },
@@ -41,21 +41,21 @@ let assertItem: AssertItem = {
 describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at default path ($BASE)", () => {
     describe(`connect to CARTA "${testServerUrl}"`, () => {
         let Connection: Client;
-        beforeAll( async () => {
+        beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
 
-        assertItem.filelistGroup.map( (filelist, index) => {
+        assertItem.filelistGroup.map((filelist, index) => {
             describe(`access folder "${filelist.directory}"`, () => {
                 let FileListResponseTemp: CARTA.FileListResponse;
                 test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
                     await Connection.send(CARTA.FileListRequest, filelist);
                     FileListResponseTemp = await Connection.receive(CARTA.FileListResponse);
                 }, fileListTimeout);
-            
+
                 test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponseGroup[index].success}`, () => {
                     expect(FileListResponseTemp.success).toBe(assertItem.fileListResponseGroup[index].success);
                 });
@@ -68,50 +68,50 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                     expect(FileListResponseTemp.directory).toEqual(assertItem.fileListResponseGroup[index].directory);
                 });
 
-                if(assertItem.fileListResponseGroup[index].files !== undefined) {
+                if (assertItem.fileListResponseGroup[index].files !== undefined) {
                     test(`FILE_LIST_RESPONSE.files[] should contain ${JSON.stringify(assertItem.fileListResponseGroup[index].files.map(f => f.name))}`, () => {
-                        assertItem.fileListResponseGroup[index].files.map( file => {
+                        assertItem.fileListResponseGroup[index].files.map(file => {
                             expect(FileListResponseTemp.files.find(f => f.name === file.name)).toBeDefined();
                         });
                     });
                 }
 
                 test(`FILE_LIST_RESPONSE.subdirectories should contain "${assertItem.fileListResponseGroup[index].subdirectories}"`, () => {
-                    assertItem.fileListResponseGroup[index].subdirectories.map( dir => {
+                    assertItem.fileListResponseGroup[index].subdirectories.map(dir => {
                         expect(FileListResponseTemp.subdirectories).toContainEqual(dir);
                     });
                 });
             });
         });
 
-        afterAll( async () => await Connection.close());
+        afterAll(async () => await Connection.close());
     });
-    
+
 });
 
-describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list generation if the requested path does not exist", () => {    
+describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list generation if the requested path does not exist", () => {
     describe(`connect to CARTA "${testServerUrl}"`, () => {
 
         let Connection: Client;
-    
-        beforeAll( async () => {
+
+        beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
-    
+
         describe(`access folder "/unknown/path"`, () => {
             let FileListResponseTemp: CARTA.FileListResponse;
             test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
-                await Connection.send(CARTA.FileListRequest, 
+                await Connection.send(CARTA.FileListRequest,
                     {
                         directory: "/unknown/path",
                     }
                 );
                 FileListResponseTemp = await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse;
             }, fileListTimeout);
-        
+
             test("FILE_LIST_RESPONSE.success == False", () => {
                 expect(FileListResponseTemp.success).toBe(false);
             });
@@ -123,8 +123,8 @@ describe("GET_FILELIST_UNKNOWN_PATH tests: Testing error handle of file list gen
                 console.warn(`As access folder "/unknown/path", FILE_LIST_RESPONSE.message is "${_message}"`);
             });
         });
-        
-        afterAll( async () => await Connection.close());
-    });    
-    
+
+        afterAll(async () => await Connection.close());
+    });
+
 });
