@@ -25,7 +25,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: {directory: testSubdirectory},    
+    filelist: { directory: testSubdirectory },
     fileOpenGroup: [
         {
             directory: testSubdirectory,
@@ -209,7 +209,8 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
         {
             fileId: 2,
             channel: 0,
@@ -225,7 +226,8 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
         {
             fileId: 3,
             channel: 0,
@@ -241,11 +243,12 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
     ],
 }
 
-describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images one by one without closing former ones", () => { 
+describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images one by one without closing former ones", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -256,12 +259,12 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
 
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
-        beforeAll( async () => {
-            await Connection.send(CARTA.CloseFile, {fileId: -1});
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
         }, connectTimeout);
 
-        assertItem.fileOpenAckGroup.map( (fileOpenAck: CARTA.IOpenFileAck, index) => {
-                    
+        assertItem.fileOpenAckGroup.map((fileOpenAck: CARTA.IOpenFileAck, index) => {
+
             describe(`open the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let OpenFileAckTemp: CARTA.OpenFileAck;
                 test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms`, async () => {
@@ -273,7 +276,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                     expect(OpenFileAckTemp.success).toBe(fileOpenAck.success);
                 });
 
-                test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {                    
+                test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {
                     expect(OpenFileAckTemp.fileId).toEqual(fileOpenAck.fileId);
                 });
 
@@ -282,19 +285,19 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                     RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
                 }, openFileTimeout);
 
-                test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {
                     expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDataGroup[index].stokes}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDataGroup[index].stokes}`, () => {
                     expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogramDataGroup[index].stokes);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDataGroup[index].regionId}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDataGroup[index].regionId}`, () => {
                     expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDataGroup[index].regionId);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDataGroup[index].progress}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDataGroup[index].progress}`, () => {
                     expect(RegionHistogramDataTemp.progress).toEqual(assertItem.regionHistogramDataGroup[index].progress);
                 });
 
@@ -360,7 +363,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 });
 
             });
-            
+
         });
     });
 
