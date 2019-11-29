@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -7,12 +7,12 @@ let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
 interface IRasterTileDataExt extends CARTA.IRasterTileData {
-    assert : {
+    assert: {
         lengthTiles: number,
         index: {
-            x: number, 
+            x: number,
             y: number
-        }, 
+        },
         value: number,
     };
 }
@@ -35,7 +35,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: {directory: testSubdirectory},    
+    filelist: { directory: testSubdirectory },
     fileOpen: {
         directory: testSubdirectory,
         file: "cluster_04096.fits",
@@ -78,7 +78,7 @@ let assertItem: AssertItem = {
         ],
         assert: {
             lengthTiles: 1,
-            index: {x: 256, y: 256},
+            index: { x: 256, y: 256 },
             value: 2.72519,
         }
     },
@@ -121,7 +121,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 256, y: 256},
+                index: { x: 256, y: 256 },
                 value: 2.85753,
             }
         },
@@ -141,7 +141,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 256, y: 256},
+                index: { x: 256, y: 256 },
                 value: 2.40348,
             }
         },
@@ -161,7 +161,7 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 256, y: 256},
+                index: { x: 256, y: 256 },
                 value: 2.99947,
             }
         },
@@ -181,41 +181,35 @@ let assertItem: AssertItem = {
             ],
             assert: {
                 lengthTiles: 1,
-                index: {x: 256, y: 256},
+                index: { x: 256, y: 256 },
                 value: 3.74704,
             }
         },
     ],
 }
 
-describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {   
-    let Connection: WebSocket;
-
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();   
-        }
+describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
-    
+
     describe(`Go to "${testSubdirectory}" folder`, () => {
 
-        beforeAll( async () => {            
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
         });
-        
+
         describe(`Open image "${assertItem.fileOpen.file}"`, () => {
             let OpenFileAckTemp: CARTA.OpenFileAck;
             test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
-                OpenFileAckTemp = <CARTA.OpenFileAck> await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            }, openFileTimeout);            
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                OpenFileAckTemp = await Connection.receive(CARTA.OpenFileAck);
+                await Connection.receive(CARTA.RegionHistogramData);
+            }, openFileTimeout);
 
             test(`OPEN_FILE_ACK.success = ${assertItem.fileOpenAck.success}`, () => {
                 expect(OpenFileAckTemp.success).toBe(assertItem.fileOpenAck.success);
@@ -230,8 +224,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}"`, () => {
             let RasterTileDataTemp: CARTA.RasterTileData;
             test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
-                RasterTileDataTemp = <CARTA.RasterTileData> await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+                RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
             }, readFileTimeout);
 
             test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileData.fileId}`, () => {
@@ -277,7 +271,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(assertItem.rasterTileData.assert.index)} = ${assertItem.rasterTileData.assert.value}`, () => {
                 const _x = assertItem.rasterTileData.assert.index.x;
                 const _y = assertItem.rasterTileData.assert.index.y;
-                const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
+                const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x * _y - 1) * 4, _x * _y * 4).buffer);
                 expect(_dataView.getFloat32(0, true)).toBeCloseTo(assertItem.rasterTileData.assert.value, assertItem.precisionDigit);
             });
 
@@ -287,14 +281,14 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             describe(`ADD_REQUIRED_TILES [${assertItem.addRequiredTilesGroup[index].tiles}]`, () => {
                 let RasterTileDataTemp: CARTA.RasterTileData;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                    RasterTileDataTemp = <CARTA.RasterTileData> await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+                    RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
                 }, readFileTimeout);
-    
+
                 test(`RASTER_TILE_DATA.file_id = ${rasterTileData.fileId}`, () => {
                     expect(RasterTileDataTemp.fileId).toEqual(rasterTileData.fileId);
                 });
-    
+
                 test(`RASTER_TILE_DATA.channel = ${rasterTileData.channel}`, () => {
                     expect(RasterTileDataTemp.channel).toEqual(rasterTileData.channel);
                 });
@@ -302,47 +296,45 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 test(`RASTER_TILE_DATA.stokes = ${rasterTileData.stokes}`, () => {
                     expect(RasterTileDataTemp.stokes).toEqual(rasterTileData.stokes);
                 });
-    
+
                 test(`RASTER_TILE_DATA.compression_type = ${rasterTileData.compressionType}`, () => {
                     expect(RasterTileDataTemp.compressionType).toEqual(rasterTileData.compressionType);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles.length = ${rasterTileData.assert.lengthTiles}`, () => {
                     expect(RasterTileDataTemp.tiles.length).toEqual(rasterTileData.assert.lengthTiles);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].x = ${rasterTileData.tiles[0].x}`, () => {
                     expect(RasterTileDataTemp.tiles[0].x).toEqual(rasterTileData.tiles[0].x);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].y = ${rasterTileData.tiles[0].y}`, () => {
                     expect(RasterTileDataTemp.tiles[0].y).toEqual(rasterTileData.tiles[0].y);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].layer = ${rasterTileData.tiles[0].layer}`, () => {
                     expect(RasterTileDataTemp.tiles[0].layer).toEqual(rasterTileData.tiles[0].layer);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].height = ${rasterTileData.tiles[0].height}`, () => {
                     expect(RasterTileDataTemp.tiles[0].height).toEqual(rasterTileData.tiles[0].height);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].width = ${rasterTileData.tiles[0].width}`, () => {
                     expect(RasterTileDataTemp.tiles[0].width).toEqual(rasterTileData.tiles[0].width);
                 });
-    
+
                 test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(rasterTileData.assert.index)} = ${rasterTileData.assert.value}`, () => {
                     const _x = assertItem.rasterTileData.assert.index.x;
                     const _y = assertItem.rasterTileData.assert.index.y;
-                    const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x*_y-1)*4, _x*_y*4).buffer);
+                    const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x * _y - 1) * 4, _x * _y * 4).buffer);
                     expect(_dataView.getFloat32(0, true)).toBeCloseTo(rasterTileData.assert.value, assertItem.precisionDigit);
                 });
-    
+
             });
         });
-    }); 
-
-    afterAll( () => {
-        Connection.close();
     });
+
+    afterAll(() => Connection.close());
 });
