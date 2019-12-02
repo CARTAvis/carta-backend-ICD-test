@@ -3,63 +3,64 @@ import config from "./config.json";
 
 export class Client {
     IcdVersion: number = 10;
-    EventType = {
-        EmptyEvent: 0,
-        RegisterViewer: 1,
-        FileListRequest: 2,
-        FileInfoRequest: 3,
-        OpenFile: 4,
-        SetImageView: 5,
-        SetImageChannels: 6,
-        SetCursor: 7,
-        SetSpatialRequirements: 8,
-        SetHistogramRequirements: 9,
-        SetStatsRequirements: 10,
-        SetRegion: 11,
-        RemoveRegion: 12,
-        CloseFile: 13,
-        SetSpectralRequirements: 14,
-        StartAnimation: 15,
-        StartAnimationAck: 16,
-        StopAnimation: 17,
-        RegisterViewerAck: 18,
-        FileListResponse: 19,
-        FileInfoResponse: 20,
-        OpenFileAck: 21,
-        SetRegionAck: 22,
-        RegionHistogramData: 23,
-        RasterImageData: 24,
-        SpatialProfileData: 25,
-        SpectralProfileData: 26,
-        RegionStatsData: 27,
-        ErrorData: 28,
-        AnimationFlowControl: 29,
-        AddRequiredTiles: 30,
-        RemoveRequireTiles: 31,
-        RasterTileData: 32,
-        RegionListRequest: 33,
-        RegionListResponse: 34,
-        RegionFileInfoRequest: 35,
-        RegionFileInfoResponse: 36,
-        ImportRegion: 37,
-        ImportRegionAck: 38,
-        ExportRegion: 39,
-        ExportRegionAck: 40,
-        SetUserPreferences: 41,
-        SetUserPreferencesAck: 42,
-        SetUserLayout: 43,
-        SetUserLayoutAck: 44,
-        SetContourParameters: 45,
-        ContourImageData: 46,
-        ResumeSession: 47,
-        ResumeSessionAck: 48,
-    };
-    EventTypeValue(key: number): string {
-        return Object.keys(this.EventType).find(f => this.EventType[f] === key);
-    }
-
-    EventTypeCARTA(key: number): any {
-        return eval(Object.keys(this.EventType).find(f => this.EventType[f] === key));
+    CartaType = new Map<number, any>([
+        [ 0, CARTA.ErrorData],
+        [ 1, CARTA.RegisterViewer],
+        [ 2, CARTA.FileListRequest],
+        [ 3, CARTA.FileInfoRequest],
+        [ 4, CARTA.OpenFile],
+        [ 5, CARTA.SetImageView],
+        [ 6, CARTA.SetImageChannels],
+        [ 7, CARTA.SetCursor],
+        [ 8, CARTA.SetSpatialRequirements],
+        [ 9, CARTA.SetHistogramRequirements],
+        [10, CARTA.SetStatsRequirements],
+        [11, CARTA.SetRegion],
+        [12, CARTA.RemoveRegion],
+        [13, CARTA.CloseFile],
+        [14, CARTA.SetSpectralRequirements],
+        [15, CARTA.StartAnimation],
+        [16, CARTA.StartAnimationAck],
+        [17, CARTA.StopAnimation],
+        [18, CARTA.RegisterViewerAck],
+        [19, CARTA.FileListResponse],
+        [20, CARTA.FileInfoResponse],
+        [21, CARTA.OpenFileAck],
+        [22, CARTA.SetRegionAck],
+        [23, CARTA.RegionHistogramData],
+        [24, CARTA.RasterImageData],
+        [25, CARTA.SpatialProfileData],
+        [26, CARTA.SpectralProfileData],
+        [27, CARTA.RegionStatsData],
+        [28, CARTA.ErrorData],
+        [29, CARTA.AnimationFlowControl],
+        [30, CARTA.AddRequiredTiles],
+        [31, CARTA.RemoveRequiredTiles],
+        [32, CARTA.RasterTileData],
+        [33, CARTA.RegionListRequest],
+        [34, CARTA.RegionListResponse],
+        [35, CARTA.RegionFileInfoRequest],
+        [36, CARTA.RegionFileInfoResponse],
+        [37, CARTA.ImportRegion],
+        [38, CARTA.ImportRegionAck],
+        [39, CARTA.ExportRegion],
+        [40, CARTA.ExportRegionAck],
+        [41, CARTA.SetUserPreferences],
+        [42, CARTA.SetUserPreferencesAck],
+        [43, CARTA.SetUserLayout],
+        [44, CARTA.SetUserLayoutAck],
+        [45, CARTA.SetContourParameters],
+        [46, CARTA.ContourImageData],
+        [47, CARTA.ResumeSession],
+        [48, CARTA.ResumeSessionAck],
+    ]);
+    CartaTypeValue(type: any): number {
+        let ret: number = 0;
+        for (let [key, value] of this.CartaType.entries()) {
+            if (value === type)
+                ret = key;
+        }
+        return ret;
     }
     static eventCount = { value: 0 };
     connection: WebSocket;
@@ -107,7 +108,7 @@ export class Client {
             let eventData = new Uint8Array(8 + payload.byteLength);
             const eventHeader16 = new Uint16Array(eventData.buffer, 0, 2);
             const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
-            eventHeader16[0] = this.EventType[cartaType.name];
+            eventHeader16[0] = this.CartaTypeValue(cartaType);
             eventHeader16[1] = this.IcdVersion;
             eventHeader32[0] = Client.eventCount.value++; // eventCounter;
             if (config.log.event) {
@@ -131,18 +132,18 @@ export class Client {
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
                 const eventData = new Uint8Array(messageEvent.data, 8);
 
-                const eventType = eventHeader16[0];
+                const eventNumber = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
                 }
 
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
 
-                if (this.EventType[cartaType.name] === eventType) {
+                if (this.CartaType.get(eventNumber) === cartaType) {
                     if (timeout && !isReceive) {
                         reject();
                     }
@@ -184,15 +185,15 @@ export class Client {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
                 const eventData = new Uint8Array(messageEvent.data, 8);
-                const eventType = eventHeader16[0];
+                const eventNumber = eventHeader16[0];
                 // const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
                 }
 
                 let data;
-                switch (this.EventTypeCARTA(eventType)) {
+                switch (this.CartaType.get(eventNumber)) {
                     case CARTA.SpatialProfileData:
                         data = CARTA.SpatialProfileData.decode(eventData);
                         data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -202,7 +203,7 @@ export class Client {
                         data.profiles = data.profiles.map(p => processSpectralProfile(p));
                         break;
                     default:
-                        data = this.EventTypeCARTA(eventType).decode(eventData);
+                        data = this.CartaType.get(eventNumber).decode(eventData);
                         break;
                 }
                 resolve(data);
@@ -238,7 +239,7 @@ export class Client {
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
                 const eventData = new Uint8Array(messageEvent.data, 8);
 
-                const eventType = eventHeader16[0];
+                const eventNumber = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
 
@@ -246,25 +247,25 @@ export class Client {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
                 let _profileData;
-                switch (eventType) {
-                    case this.EventType["RasterTileData"]:
+                switch (this.CartaType.get(eventNumber)) {
+                    case CARTA.RasterTileData:
                         ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                         break;
-                    case this.EventType["RasterImageData"]:
+                    case CARTA.RasterImageData:
                         ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
                         break;
-                    case this.EventType["RegionStatsData"]:
+                    case CARTA.RegionStatsData:
                         ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
                         break;
-                    case this.EventType["RegionHistogramData"]:
+                    case CARTA.RegionHistogramData:
                         ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
                         break;
-                    case this.EventType["SpatialProfileData"]:
+                    case CARTA.SpatialProfileData:
                         _profileData = CARTA.SpatialProfileData.decode(eventData);
                         _profileData.profiles = _profileData.profiles.map(p => processSpatialProfile(p));
                         ack.SpatialProfileData.push(_profileData);
                         break;
-                    case this.EventType["SpectralProfileData"]:
+                    case CARTA.SpectralProfileData:
                         _profileData = CARTA.SpectralProfileData.decode(eventData);
                         _profileData.profiles = _profileData.profiles.map(p => processSpectralProfile(p));
                         ack.SpectralProfileData.push(_profileData);
