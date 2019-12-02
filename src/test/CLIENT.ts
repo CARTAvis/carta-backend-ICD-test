@@ -1,4 +1,4 @@
-import {CARTA} from "carta-protobuf";
+import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 
 export class Client {
@@ -55,19 +55,23 @@ export class Client {
         ResumeSessionAck: 48,
     };
     EventTypeValue(key: number): string {
-        return Object.keys(this.EventType).find( f => this.EventType[f] === key);
+        return Object.keys(this.EventType).find(f => this.EventType[f] === key);
     }
-    static eventCount = {value: 0};
+
+    EventTypeCARTA(key: number): any {
+        return eval(Object.keys(this.EventType).find(f => this.EventType[f] === key));
+    }
+    static eventCount = { value: 0 };
     connection: WebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
         this.connection = new WebSocket(url);
         this.connection.binaryType = "arraybuffer";
-    } 
+    }
     open(timeout?: number) {
-        return new Promise<void>( (resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this.connection.onopen = onOpen;
-            function onOpen (this: WebSocket, ev: Event) {
+            function onOpen(this: WebSocket, ev: Event) {
                 resolve();
             }
             if (timeout) {
@@ -80,9 +84,9 @@ export class Client {
     }
     close(timeout?: number) {
         this.connection.close();
-        return new Promise<void>( (resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this.connection.onclose = onClose;
-            function onClose (this: WebSocket, ev: Event) {
+            function onClose(this: WebSocket, ev: Event) {
                 resolve();
             }
             if (timeout) {
@@ -96,8 +100,8 @@ export class Client {
     /// Send websocket message async
     /// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
     /// return a Promise<any> for await
-    send(cartaType: any, eventMessage: any,) {
-        return new Promise<void>( resolve => {
+    send(cartaType: any, eventMessage: any, ) {
+        return new Promise<void>(resolve => {
             let message = cartaType.create(eventMessage);
             let payload = cartaType.encode(message).finish();
             let eventData = new Uint8Array(8 + payload.byteLength);
@@ -109,10 +113,10 @@ export class Client {
             if (config.log.event) {
                 console.log(`${cartaType.name} => @ ${eventHeader32[0]}`);
             }
-    
+
             eventData.set(payload, 8);
             this.connection.send(eventData);
-    
+
             resolve();
         });
     }
@@ -121,36 +125,36 @@ export class Client {
     /// timeout: promise will return nothing until time out if timeout > 0
     /// return a Promise<cartaType> for await
     receive(cartaType: any, timeout?: number, isReceive?: boolean) {
-        return new Promise<any>( (resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
                 const eventData = new Uint8Array(messageEvent.data, 8);
-    
+
                 const eventType = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
                     console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
                 }
-    
+
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
-    
+
                 if (this.EventType[cartaType.name] === eventType) {
-                    if(timeout && !isReceive){
+                    if (timeout && !isReceive) {
                         reject();
                     }
                     let data;
                     switch (cartaType) {
                         case CARTA.SpatialProfileData:
                             data = CARTA.SpatialProfileData.decode(eventData);
-                            data.profiles = data.profiles.map( p => processSpatialProfile(p));
+                            data.profiles = data.profiles.map(p => processSpatialProfile(p));
                             break;
                         case CARTA.SpectralProfileData:
                             data = CARTA.SpectralProfileData.decode(eventData);
-                            data.profiles = data.profiles.map( p => processSpectralProfile(p));
+                            data.profiles = data.profiles.map(p => processSpectralProfile(p));
                             break;
                         default:
                             data = cartaType.decode(eventData);
@@ -159,39 +163,55 @@ export class Client {
                     resolve(data);
                 }
             };
-            if(timeout){
+            if (timeout) {
                 let Timer = setTimeout(() => {
                     clearTimeout(Timer);
-                    if(isReceive){
+                    if (isReceive) {
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
-                }, timeout); 
+                }, timeout);
             }
         });
     }
-    /// Mock a receiving of websocket message in any type async
-    /// timeout: promise will return nothing until time out if timeout > 0
-    /// return a Promise<null> for await
-    receiveMock(timeout?: number) {
-        return new Promise<void>( (resolve, reject) => {
+    /// A receiving websocket message in any type async
+    /// timeout: promise will return CARTA data until time out if timeout > 0
+    /// return a Promise<any> for await
+    receiveAny(timeout?: number) {
+        return new Promise<any>((resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
-                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);    
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+                const eventData = new Uint8Array(messageEvent.data, 8);
                 const eventType = eventHeader16[0];
-                const eventIcdVersion = eventHeader16[1];
+                // const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
                     console.log(`<= ${this.EventTypeValue(eventType)} @ ${eventId}`);
                 }
-                resolve();
+
+                let data;
+                switch (this.EventTypeCARTA(eventType)) {
+                    case CARTA.SpatialProfileData:
+                        data = CARTA.SpatialProfileData.decode(eventData);
+                        data.profiles = data.profiles.map(p => processSpatialProfile(p));
+                        break;
+                    case CARTA.SpectralProfileData:
+                        data = CARTA.SpectralProfileData.decode(eventData);
+                        data.profiles = data.profiles.map(p => processSpectralProfile(p));
+                        break;
+                    default:
+                        data = this.EventTypeCARTA(eventType).decode(eventData);
+                        break;
+                }
+                resolve(data);
             };
-            if(timeout){
+            if (timeout) {
                 let Timer = setTimeout(() => {
                     clearTimeout(Timer);
-                    resolve();
-                }, timeout); 
+                    reject();
+                }, timeout);
             }
         });
     }
@@ -212,16 +232,16 @@ export class Client {
             SpectralProfileData: [],
         };
 
-        return new Promise<AckStream>( resolve => {
+        return new Promise<AckStream>(resolve => {
             this.connection.onmessage = (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
                 const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
                 const eventData = new Uint8Array(messageEvent.data, 8);
-    
+
                 const eventType = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
-    
+
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
@@ -241,18 +261,18 @@ export class Client {
                         break;
                     case this.EventType["SpatialProfileData"]:
                         _profileData = CARTA.SpatialProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map( p => processSpatialProfile(p));
+                        _profileData.profiles = _profileData.profiles.map(p => processSpatialProfile(p));
                         ack.SpatialProfileData.push(_profileData);
                         break;
                     case this.EventType["SpectralProfileData"]:
                         _profileData = CARTA.SpectralProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
+                        _profileData.profiles = _profileData.profiles.map(p => processSpectralProfile(p));
                         ack.SpectralProfileData.push(_profileData);
                         break;
                     default:
                         break;
                 }
-                
+
                 _count++;
                 if (_count === count) {
                     resolve(ack);
@@ -270,7 +290,7 @@ export interface AckStream {
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
 }
-interface ProcessedSpatialProfile extends CARTA.ISpatialProfile {values: Float32Array;}
+interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
     if (profile.rawValuesFp32 && profile.rawValuesFp32.length && profile.rawValuesFp32.length % 4 === 0) {
         return {
@@ -287,7 +307,7 @@ function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatial
         values: null
     };
 }
-interface ProcessedSpectralProfile extends CARTA.ISpectralProfile {values: Float32Array | Float64Array;}
+interface ProcessedSpectralProfile extends CARTA.ISpectralProfile { values: Float32Array | Float64Array; }
 function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpectralProfile {
     if (profile.rawValuesFp64 && profile.rawValuesFp64.length && profile.rawValuesFp64.length % 8 === 0) {
         return {
