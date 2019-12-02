@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -10,7 +10,7 @@ let listTimeout = config.timeout.listFile;
 let readTimeout = config.timeout.readFile;
 
 interface AssertItem {
-    registerViewer: CARTA.IRegisterViewer;
+    register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     precisionDigits: number;
     regionListRequest: CARTA.IRegionListRequest;
@@ -19,14 +19,14 @@ interface AssertItem {
     regionFileInfoResponse: CARTA.IRegionFileInfoResponse[];
 };
 let assertItem: AssertItem = {
-    registerViewer: {
-        sessionId: 0, 
+    register: {
+        sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    openFile: 
+    openFile:
     {
-        directory: testSubdirectory, 
+        directory: testSubdirectory,
         file: "M17_SWex.image",
         fileId: 0,
         hdu: "",
@@ -56,101 +56,97 @@ let assertItem: AssertItem = {
         ],
     },
     regionFileInfoRequest:
-    [
-        {
-            directory: regionSubdirectory,
-            file: "M17_SWex_regionSet1_world.crtf",
-        },
-        {
-            directory: regionSubdirectory,
-            file: "M17_SWex_regionSet1_pix.crtf",
-        },
-    ],
+        [
+            {
+                directory: regionSubdirectory,
+                file: "M17_SWex_regionSet1_world.crtf",
+            },
+            {
+                directory: regionSubdirectory,
+                file: "M17_SWex_regionSet1_pix.crtf",
+            },
+        ],
     regionFileInfoResponse:
-    [
-        {
-            success: true,
-            fileInfo: {
-                name: "M17_SWex_regionSet1_world.crtf",
-                type: CARTA.FileType.CRTF,
+        [
+            {
+                success: true,
+                fileInfo: {
+                    name: "M17_SWex_regionSet1_world.crtf",
+                    type: CARTA.FileType.CRTF,
+                },
+                contents: [
+                    "#CRTFv0 CASA Region Text Format version 0",
+                    "symbol [[275.13653085deg, -16.17909524deg], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[275.13683271deg, -16.18844433deg], [30.0324arcsec, 30.0324arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[275.13818398deg, -16.20138900deg], [54.8867arcsec, 21.7476arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "rotbox [[275.13848816deg, -16.21922423deg], [69.3851arcsec, 17.6052arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.03678830deg, -16.17664969deg], [20.1942arcsec, 20.1942arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.03783248deg, -16.19319074deg], [11.9094arcsec, 27.9612arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.03827857deg, -16.20613583deg], [7.2492arcsec, 31.5858arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "poly [[275.03692766deg, -16.21721067deg], [275.04171714deg, -16.23404023deg], [275.02853660deg, -16.22598234deg]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "symbol [[275.10418191deg, -16.18154538deg], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[275.10508122deg, -16.18945613deg], [22.7832arcsec, 22.7832arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[275.10942574deg, -16.19952405deg], [48.6731arcsec, 14.4984arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "rotbox [[275.11287275deg, -16.21563298deg], [54.8867arcsec, 14.4984arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.06703966deg, -16.18341488deg], [19.6764arcsec, 19.6764arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.06284424deg, -16.19880459deg], [10.3560arcsec, 27.9612arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[275.06404078deg, -16.21304420deg], [8.8026arcsec, 32.1036arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "poly [[275.06764385deg, -16.22182373deg], [275.07633134deg, -16.23491317deg], [275.05670656deg, -16.23534275deg]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "",
+                ],
             },
-            contents: [
-                "#CRTFv0 CASA Region Text Format version 0",
-                "symbol [[275.13653085deg, -16.17909524deg], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[275.13683271deg, -16.18844433deg], [30.0324arcsec, 30.0324arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[275.13818398deg, -16.20138900deg], [54.8867arcsec, 21.7476arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "rotbox [[275.13848816deg, -16.21922423deg], [69.3851arcsec, 17.6052arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.03678830deg, -16.17664969deg], [20.1942arcsec, 20.1942arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.03783248deg, -16.19319074deg], [11.9094arcsec, 27.9612arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.03827857deg, -16.20613583deg], [7.2492arcsec, 31.5858arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "poly [[275.03692766deg, -16.21721067deg], [275.04171714deg, -16.23404023deg], [275.02853660deg, -16.22598234deg]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "symbol [[275.10418191deg, -16.18154538deg], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[275.10508122deg, -16.18945613deg], [22.7832arcsec, 22.7832arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[275.10942574deg, -16.19952405deg], [48.6731arcsec, 14.4984arcsec]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "rotbox [[275.11287275deg, -16.21563298deg], [54.8867arcsec, 14.4984arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.06703966deg, -16.18341488deg], [19.6764arcsec, 19.6764arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.06284424deg, -16.19880459deg], [10.3560arcsec, 27.9612arcsec], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[275.06404078deg, -16.21304420deg], [8.8026arcsec, 32.1036arcsec], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "poly [[275.06764385deg, -16.22182373deg], [275.07633134deg, -16.23491317deg], [275.05670656deg, -16.23534275deg]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "",
-            ],
-        },
-        {
-            success: true,
-            fileInfo: {
-                name: "M17_SWex_regionSet1_pix.crtf",
-                type: CARTA.FileType.CRTF,
+            {
+                success: true,
+                fileInfo: {
+                    name: "M17_SWex_regionSet1_pix.crtf",
+                    type: CARTA.FileType.CRTF,
+                },
+                contents: [
+                    "#CRTFv0 CASA Region Text Format version 0",
+                    "symbol [[-103.8pix, 613.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[-106.4pix, 528.9pix], [75.1pix, 75.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[-118.0pix, 412.4pix], [137.2pix, 54.4pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "rotbox [[-120.6pix, 251.9pix], [173.5pix, 44.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[758.3pix, 635.1pix], [50.5pix, 50.5pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[749.3pix, 486.2pix], [29.8pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[745.4pix, 369.7pix], [18.1pix, 79.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "poly [[757.0pix, 270.1pix], [715.6pix, 118.6pix], [829.5pix, 191.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "symbol [[175.8pix, 591.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[168.0pix, 519.9pix], [57.0pix, 57.0pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "centerbox [[130.5pix, 429.3pix], [121.7pix, 36.2pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "rotbox [[100.7pix, 284.3pix], [137.2pix, 36.2pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[496.8pix, 574.3pix], [49.2pix, 49.2pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[533.1pix, 435.7pix], [25.9pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "ellipse [[522.7pix, 307.6pix], [22.0pix, 80.3pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "poly [[491.6pix, 228.6pix], [416.5pix, 110.8pix], [586.1pix, 106.9pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
+                    "",
+                ],
             },
-            contents: [
-                "#CRTFv0 CASA Region Text Format version 0",
-                "symbol [[-103.8pix, 613.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[-106.4pix, 528.9pix], [75.1pix, 75.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[-118.0pix, 412.4pix], [137.2pix, 54.4pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "rotbox [[-120.6pix, 251.9pix], [173.5pix, 44.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[758.3pix, 635.1pix], [50.5pix, 50.5pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[749.3pix, 486.2pix], [29.8pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[745.4pix, 369.7pix], [18.1pix, 79.0pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "poly [[757.0pix, 270.1pix], [715.6pix, 118.6pix], [829.5pix, 191.1pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "symbol [[175.8pix, 591.1pix], .] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[168.0pix, 519.9pix], [57.0pix, 57.0pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "centerbox [[130.5pix, 429.3pix], [121.7pix, 36.2pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "rotbox [[100.7pix, 284.3pix], [137.2pix, 36.2pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[496.8pix, 574.3pix], [49.2pix, 49.2pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[533.1pix, 435.7pix], [25.9pix, 69.9pix], 0.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "ellipse [[522.7pix, 307.6pix], [22.0pix, 80.3pix], 45.00000000deg] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "poly [[491.6pix, 228.6pix], [416.5pix, 110.8pix], [586.1pix, 106.9pix]] coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=green, font=Helvetica, fontsize=10, fontstyle=bold, usetex=false",
-                "",
-            ],
-        },
-    ],
+        ],
 };
 
-describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {   
-    let Connection: WebSocket;
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.registerViewer);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
 
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.openFile);
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1, });
+            await Connection.send(CARTA.OpenFile, assertItem.openFile);
+            await Connection.receive(CARTA.OpenFileAck);
         });
 
         describe(`Go to "${regionSubdirectory}" and send REGION_LIST_REQUEST`, () => {
             let regionListResponse: CARTA.RegionListResponse;
             test(`REGION_LIST_RESPONSE should return within ${listTimeout}ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.RegionListRequest, assertItem.regionListRequest);
-                regionListResponse = await Utility.getEventAsync(Connection, CARTA.RegionListResponse) as CARTA.RegionListResponse;
+                await Connection.send(CARTA.RegionListRequest, assertItem.regionListRequest);
+                regionListResponse = await Connection.receive(CARTA.RegionListResponse) as CARTA.RegionListResponse;
             }, listTimeout);
 
             test(`REGION_LIST_RESPONSE.success = ${assertItem.regionListResponse.success}`, () => {
@@ -169,7 +165,7 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
                 expect(regionListResponse.subdirectories).toEqual(assertItem.regionListResponse.subdirectories);
             });
 
-            assertItem.regionListResponse.files.map( file => {
+            assertItem.regionListResponse.files.map(file => {
                 test(`REGION_LIST_RESPONSE.file should contain "${file.name}" in type of ${CARTA.FileType[file.type]}`, () => {
                     expect(regionListResponse.files.find(f => f.name == file.name).type).toEqual(file.type);
                 });
@@ -180,8 +176,8 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
             describe(`Read "${assertItem.regionFileInfoRequest[idxInfo].file}"`, () => {
                 let regionFileInfoResponse: CARTA.RegionFileInfoResponse;
                 test(`REGION_FILE_INFO_RESPONSE should return within ${readTimeout}ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.RegionFileInfoRequest, assertItem.regionFileInfoRequest[idxInfo]);
-                    regionFileInfoResponse = await Utility.getEventAsync(Connection, CARTA.RegionFileInfoResponse) as CARTA.RegionFileInfoResponse;
+                    await Connection.send(CARTA.RegionFileInfoRequest, assertItem.regionFileInfoRequest[idxInfo]);
+                    regionFileInfoResponse = await Connection.receive(CARTA.RegionFileInfoResponse) as CARTA.RegionFileInfoResponse;
                 }, readTimeout);
 
                 test(`REGION_FILE_INFO_RESPONSE.success = ${fileInfo.success}`, () => {
@@ -200,8 +196,8 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
                     expect(regionFileInfoResponse.contents.length).toEqual(fileInfo.contents.length);
                 });
 
-                fileInfo.contents.map( (message, index) => {
-                    test(`REGION_FILE_INFO_RESPONSE.contents[${index}] = "${message.slice(0, 45)}${message.length<45?"":"..."}"`, () => {
+                fileInfo.contents.map((message, index) => {
+                    test(`REGION_FILE_INFO_RESPONSE.contents[${index}] = "${message.slice(0, 45)}${message.length < 45 ? "" : "..."}"`, () => {
                         expect(regionFileInfoResponse.contents[index]).toEqual(message);
                     });
                 });
@@ -209,5 +205,5 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
         });
     });
 
-    afterAll( () => Connection.close());
+    afterAll(() => Connection.close());
 });
