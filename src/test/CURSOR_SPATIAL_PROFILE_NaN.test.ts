@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 import { isNull } from "util";
 let testServerUrl = config.serverURL;
@@ -8,11 +8,11 @@ let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let cursorTimeout = config.timeout.mouseEvent;
 interface ISpatialProfileDataExt extends CARTA.ISpatialProfileData {
-    value?: number, 
-    profileLength?: {x: number, y: number}, 
+    value?: number,
+    profileLength?: { x: number, y: number },
     oddPoint?: {
-        x: {one: {idx: number, value: number}[], others?: number}, 
-        y: {one: {idx: number, value: number}[], others?: number},
+        x: { one: { idx: number, value: number }[], others?: number },
+        y: { one: { idx: number, value: number }[], others?: number },
     }
 }
 interface AssertItem {
@@ -54,82 +54,78 @@ let assertItem: AssertItem = {
     },
     setSpatialRequirements:
     {
-        fileId: 0, 
-        regionId: 0, 
+        fileId: 0,
+        regionId: 0,
         spatialProfiles: ["x", "y"],
     },
     setCursor:
-    [
-        {
-            fileId: 0,
-            point: {x: 314.00, y: 393.00},
-        },
-        {
-            fileId: 0,
-            point: {x: 596.00, y: 292.00},
-        },
-    ],
+        [
+            {
+                fileId: 0,
+                point: { x: 314.00, y: 393.00 },
+            },
+            {
+                fileId: 0,
+                point: { x: 596.00, y: 292.00 },
+            },
+        ],
     spatialProfileData:
-    [
-        {
-            fileId: 0,
-            regionId: 0,
-            stokes: 0,
-            x: 314.0,
-            y: 393.0,
-            profileLength: {x: 640, y: 800}, 
-            value: -0.004026404581964016, 
-            oddPoint: {
-                x: {one: [{idx: 0, value: NaN}, {idx: 200, value: -0.0018224817467853427}], others: null}, 
-                y: {one: [{idx: 799, value: NaN}, {idx: 400, value: 0.0019619895610958338}], others: null},
-            }
-        },
-        {
-            fileId: 0,
-            regionId: 0,
-            stokes: 0,
-            x: 596.0,
-            y: 292.0,
-            profileLength: {x: 640, y: 800}, 
-            value: NaN, 
-            oddPoint: {
-                x: {one: [], others: NaN}, 
-                y: {one: [], others: NaN},
-            }
-        },
-    ],
+        [
+            {
+                fileId: 0,
+                regionId: 0,
+                stokes: 0,
+                x: 314.0,
+                y: 393.0,
+                profileLength: { x: 640, y: 800 },
+                value: -0.004026404581964016,
+                oddPoint: {
+                    x: { one: [{ idx: 0, value: NaN }, { idx: 200, value: -0.0018224817467853427 }], others: null },
+                    y: { one: [{ idx: 799, value: NaN }, { idx: 400, value: 0.0019619895610958338 }], others: null },
+                }
+            },
+            {
+                fileId: 0,
+                regionId: 0,
+                stokes: 0,
+                x: 596.0,
+                y: 292.0,
+                profileLength: { x: 640, y: 800 },
+                value: NaN,
+                oddPoint: {
+                    x: { one: [], others: NaN },
+                    y: { one: [], others: NaN },
+                }
+            },
+        ],
 }
 
-describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spatial profiles with NaN data are delivered correctly", () => {   
-    let Connection: WebSocket;
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEvent(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spatial profiles with NaN data are delivered correctly", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannel);
-            await Utility.setEventAsync(Connection, CARTA.SetSpatialRequirements, assertItem.setSpatialRequirements);
-            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialRequirements);
+            await Connection.receive(CARTA.RasterTileData);
         }, readFileTimeout);
-        
-        assertItem.spatialProfileData.map( (profileData, index) => {
+
+        assertItem.spatialProfileData.map((profileData, index) => {
             describe(`set cursor on {${assertItem.setCursor[index].point.x}, ${assertItem.setCursor[index].point.y}}`, () => {
                 let SpatialProfileDataTemp: any;
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.setCursor[index]);
-                    SpatialProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpatialProfileData);
+                    await Connection.send(CARTA.SetCursor, assertItem.setCursor[index]);
+                    SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${profileData.value}`, () => {
@@ -145,36 +141,36 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                     expect(SpatialProfileDataTemp.y).toEqual(profileData.y);
                 });
 
-                test(`Assert value of profile_x : ${profileData.oddPoint.x.one.map( f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(profileData.oddPoint.x.others)?"other values = NaN":isNull(profileData.oddPoint.x.others)?"":"other values = " + profileData.oddPoint.x.others}`, () => {
-                    profileData.oddPoint.x.one.map( f => {
+                test(`Assert value of profile_x : ${profileData.oddPoint.x.one.map(f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(profileData.oddPoint.x.others) ? "other values = NaN" : isNull(profileData.oddPoint.x.others) ? "" : "other values = " + profileData.oddPoint.x.others}`, () => {
+                    profileData.oddPoint.x.one.map(f => {
                         if (isNaN(f.value)) {
                             expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values[f.idx]).toEqual(NaN);
-                        } else {                            
+                        } else {
                             expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
                         }
                     });
                     if (profileData.oddPoint.x.others !== null) {
-                        SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map( (value, index) => {
+                        SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map((value, index) => {
                             if (profileData.oddPoint.x.one.findIndex(f => f.idx === index) !== -1) {
                                 expect(value).toEqual(profileData.oddPoint.x.others);
-                            }                          
+                            }
                         });
                     }
                 });
 
-                test(`Assert value of profile_y : ${profileData.oddPoint.y.one.map( f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(profileData.oddPoint.x.others)?"other values = NaN":isNull(profileData.oddPoint.x.others)?"":"other values = " + profileData.oddPoint.x.others}`, () => {
-                    profileData.oddPoint.y.one.map( f => {
+                test(`Assert value of profile_y : ${profileData.oddPoint.y.one.map(f => ` #${f.idx} = ${f.value.toPrecision(assertItem.precisionDigits)}`)} ${isNaN(profileData.oddPoint.x.others) ? "other values = NaN" : isNull(profileData.oddPoint.x.others) ? "" : "other values = " + profileData.oddPoint.x.others}`, () => {
+                    profileData.oddPoint.y.one.map(f => {
                         if (isNaN(f.value)) {
                             expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values[f.idx]).toEqual(NaN);
-                        } else {                            
+                        } else {
                             expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values[f.idx]).toBeCloseTo(f.value, assertItem.precisionDigits);
                         }
                     });
                     if (profileData.oddPoint.y.others !== null) {
-                        SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map( (value, index) => {
+                        SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map((value, index) => {
                             if (profileData.oddPoint.y.one.findIndex(f => f.idx === index) !== -1) {
                                 expect(value).toEqual(profileData.oddPoint.y.others);
-                            }                          
+                            }
                         });
                     }
                 });

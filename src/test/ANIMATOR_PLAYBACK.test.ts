@@ -30,36 +30,36 @@ let assertItem: AssertItem = {
         renderMode: CARTA.RenderMode.RASTER,
     },
     startAnimation:
-    [
-        {
-            fileId: 0,
-            startFrame: { channel: 10, stokes: 0 },
-            firstFrame: { channel: 10, stokes: 0 },
-            lastFrame: { channel: 20, stokes: 0 },
-            deltaFrame: { channel: 1, stokes: 0 },
-            imageView: {
+        [
+            {
                 fileId: 0,
-                imageBounds: { xMax: 640, yMax: 800 },
-                mip: 4,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 16,
+                startFrame: { channel: 10, stokes: 0 },
+                firstFrame: { channel: 10, stokes: 0 },
+                lastFrame: { channel: 20, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMax: 640, yMax: 800 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                },
             },
-        },
-        {
-            fileId: 0,
-            startFrame: { channel: 19, stokes: 0 },
-            firstFrame: { channel: 9, stokes: 0 },
-            lastFrame: { channel: 19, stokes: 0 },
-            deltaFrame: { channel: -1, stokes: 0 },
-            imageView: {
+            {
                 fileId: 0,
-                imageBounds: { xMax: 640, yMax: 800 },
-                mip: 4,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 16,
+                startFrame: { channel: 19, stokes: 0 },
+                firstFrame: { channel: 9, stokes: 0 },
+                lastFrame: { channel: 19, stokes: 0 },
+                deltaFrame: { channel: -1, stokes: 0 },
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMax: 640, yMax: 800 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                },
             },
-        },
-    ],
+        ],
     stopAnimation:
     {
         fileId: 0,
@@ -71,37 +71,37 @@ let assertItem: AssertItem = {
         animationId: 0,
     },
     reverseAnimation:
-    [
-        {
-            fileId: 0,
-            startFrame: { channel: 20, stokes: 0 },
-            firstFrame: { channel: 10, stokes: 0 },
-            lastFrame: { channel: 20, stokes: 0 },
-            deltaFrame: { channel: 1, stokes: 0 },
-            imageView: {
+        [
+            {
                 fileId: 0,
-                imageBounds: { xMax: 640, yMax: 800 },
-                mip: 4,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 16,
+                startFrame: { channel: 20, stokes: 0 },
+                firstFrame: { channel: 10, stokes: 0 },
+                lastFrame: { channel: 20, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMax: 640, yMax: 800 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                },
+                reverse: true,
             },
-            reverse: true,
-        },
-        {
-            fileId: 0,
-            startFrame: { channel: 20, stokes: 0 },
-            firstFrame: { channel: 10, stokes: 0 },
-            lastFrame: { channel: 20, stokes: 0 },
-            deltaFrame: { channel: -1, stokes: 0 },
-            imageView: {
+            {
                 fileId: 0,
-                imageBounds: { xMax: 640, yMax: 800 },
-                mip: 4,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 16,
+                startFrame: { channel: 20, stokes: 0 },
+                firstFrame: { channel: 10, stokes: 0 },
+                lastFrame: { channel: 20, stokes: 0 },
+                deltaFrame: { channel: -1, stokes: 0 },
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMax: 640, yMax: 800 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                },
             },
-        },
-    ],
+        ],
     blinkAnimation:
     {
         fileId: 0,
@@ -122,7 +122,7 @@ let assertItem: AssertItem = {
 
 describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     let Connection: Client;
-    beforeAll( async () => {
+    beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.send(CARTA.RegisterViewer, assertItem.register);
@@ -225,13 +225,13 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 });
             });
         });
-    
+
         describe(`Play some images until stop`, () => {
             let RasterImageData: CARTA.RasterImageData[] = [];
             test(`Image should return one after one`, async () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[0]);
                 await Connection.receive(CARTA.StartAnimationAck);
-                for (let i = 0; i < Math.abs(assertItem.stopAnimation.endFrame.channel-assertItem.startAnimation[0].firstFrame.channel); i++) {
+                for (let i = 0; i < Math.abs(assertItem.stopAnimation.endFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
                     RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
@@ -264,7 +264,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     }
                 );
                 await Connection.receive(CARTA.StartAnimationAck);
-                for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel-assertItem.startAnimation[0].firstFrame.channel); i++) {
+                for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
                     RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
@@ -299,8 +299,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
-        assertItem.reverseAnimation.map( (animation, index) => {
-            describe(`Play all images backwardly using method${index+1}`, () => {
+        assertItem.reverseAnimation.map((animation, index) => {
+            describe(`Play all images backwardly using method${index + 1}`, () => {
                 let RasterImageData: CARTA.RasterImageData[] = [];
                 let sequence: number[] = [];
                 test(`Image should return one after one`, async () => {
@@ -328,7 +328,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 test(`Received image channels should be in sequence`, async () => {
                     console.log(`Backward channel index: ${sequence}`);
                     RasterImageData.map((imageData, index) => {
-                        expect(imageData.channel).toEqual(animation.startFrame.channel-index);
+                        expect(imageData.channel).toEqual(animation.startFrame.channel - index);
                     });
                 });
 

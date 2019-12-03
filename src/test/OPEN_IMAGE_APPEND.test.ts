@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -25,7 +25,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: {directory: testSubdirectory},    
+    filelist: { directory: testSubdirectory },
     fileOpenGroup: [
         {
             directory: testSubdirectory,
@@ -209,7 +209,8 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
         {
             fileId: 2,
             channel: 0,
@@ -225,7 +226,8 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
         {
             fileId: 3,
             channel: 0,
@@ -241,65 +243,61 @@ let assertItem: AssertItem = {
                     width: 160,
                     height: 200,
                 },
-            ],},
+            ],
+        },
     ],
 }
 
-describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images one by one without closing former ones", () => {   
-    let Connection: WebSocket;
-
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();   
-        }
+describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images one by one without closing former ones", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
+
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
         }, connectTimeout);
 
-        assertItem.fileOpenAckGroup.map( (fileOpenAck: CARTA.IOpenFileAck, index) => {
-                    
+        assertItem.fileOpenAckGroup.map((fileOpenAck: CARTA.IOpenFileAck, index) => {
+
             describe(`open the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let OpenFileAckTemp: CARTA.OpenFileAck;
                 test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpenGroup[index]);
-                    OpenFileAckTemp = <CARTA.OpenFileAck>await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+                    await Connection.send(CARTA.OpenFile, assertItem.fileOpenGroup[index]);
+                    OpenFileAckTemp = await Connection.receive(CARTA.OpenFileAck);
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK.success = ${fileOpenAck.success}`, () => {
                     expect(OpenFileAckTemp.success).toBe(fileOpenAck.success);
                 });
 
-                test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {                    
+                test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {
                     expect(OpenFileAckTemp.fileId).toEqual(fileOpenAck.fileId);
                 });
 
                 let RegionHistogramDataTemp: CARTA.RegionHistogramData;
                 test(`REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                    RegionHistogramDataTemp = <CARTA.RegionHistogramData> await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                    RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
                 }, openFileTimeout);
 
-                test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {
                     expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDataGroup[index].stokes}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDataGroup[index].stokes}`, () => {
                     expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogramDataGroup[index].stokes);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDataGroup[index].regionId}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDataGroup[index].regionId}`, () => {
                     expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDataGroup[index].regionId);
                 });
 
-                test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDataGroup[index].progress}`, () => {                    
+                test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDataGroup[index].progress}`, () => {
                     expect(RegionHistogramDataTemp.progress).toEqual(assertItem.regionHistogramDataGroup[index].progress);
                 });
 
@@ -308,8 +306,8 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
             describe(`set image channel for the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let RasterTileDataTemp: CARTA.RasterTileData;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
-                    RasterTileDataTemp = <CARTA.RasterTileData>await Utility.getEventAsync(Connection, CARTA.RasterTileData);
+                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
+                    RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
                 }, readFileTimeout);
 
                 test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileDataGroup[index].fileId}`, () => {
@@ -365,11 +363,9 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 });
 
             });
-            
+
         });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });

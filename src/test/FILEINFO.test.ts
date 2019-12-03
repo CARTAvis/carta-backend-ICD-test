@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -9,16 +9,16 @@ let openFileTimeout = config.timeout.openFile;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileInfoGroup: CARTA.IFileInfoRequest[];
-    fileInfoResGroup: CARTA.IFileInfoResponse[];
+    fileInfoRequest: CARTA.IFileInfoRequest[];
+    fileInfoResponse: CARTA.IFileInfoResponse[];
 }
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "",
     },
-    filelist: {directory: testSubdirectory},
-    fileInfoGroup: [
+    filelist: { directory: testSubdirectory },
+    fileInfoRequest: [
         {
             directory: testSubdirectory,
             file: "M17_SWex.fits",
@@ -45,7 +45,7 @@ let assertItem: AssertItem = {
             hdu: "0",
         },
     ],
-    fileInfoResGroup: [
+    fileInfoResponse: [
         {
             success: true,
             message: "",
@@ -62,7 +62,7 @@ let assertItem: AssertItem = {
                 depth: 25,
                 stokes: 1,
                 stokesVals: [""],
-                headerEntries: [ 
+                headerEntries: [
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
                     { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
@@ -72,35 +72,41 @@ let assertItem: AssertItem = {
                         name: "BMAJ",
                         value: "0.000572514",
                         entryType: 1,
-                        numericValue: 0.0005725136068132 },
+                        numericValue: 0.0005725136068132
+                    },
                     {
                         name: "BMIN",
                         value: "0.000414239",
                         entryType: 1,
-                        numericValue: 0.00041423857212070003 },
+                        numericValue: 0.00041423857212070003
+                    },
                     {
                         name: "BPA",
                         value: "-74.6267",
                         entryType: 1,
-                        numericValue: -74.62673187256 },
+                        numericValue: -74.62673187256
+                    },
                     { name: "BUNIT", value: "Jy/beam" },
                     { name: "LONPOLE", value: "180", entryType: 1, numericValue: 180 },
                     {
                         name: "LATPOLE",
                         value: "-16.2028",
                         entryType: 1,
-                        numericValue: -16.20277777779 },
+                        numericValue: -16.20277777779
+                    },
                     { name: "CTYPE3", value: "FREQ" },
                     {
                         name: "CRVAL3",
                         value: "8.67514e+10",
                         entryType: 1,
-                        numericValue: 86751396188.4 },
+                        numericValue: 86751396188.4
+                    },
                     {
                         name: "CDELT3",
                         value: "-244238",
                         entryType: 1,
-                        numericValue: -244237.7011414 },
+                        numericValue: -244237.7011414
+                    },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
@@ -112,35 +118,40 @@ let assertItem: AssertItem = {
                         name: "RESTFRQ",
                         value: "8.67543e+10",
                         entryType: 1,
-                        numericValue: 86754290000 },
+                        numericValue: 86754290000
+                    },
                     { name: "VELREF", value: "257", entryType: 2, numericValue: 257 },
                 ],
-                computedEntries: [ 
+                computedEntries: [
                     { name: "Name", value: "M17_SWex.fits" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
                         value: "25",
                         entryType: 2,
-                        numericValue: 25 },
+                        numericValue: 25
+                    },
                     {
                         name: "Number of Stokes",
                         value: "1",
                         entryType: 2,
-                        numericValue: 1 },
+                        numericValue: 1
+                    },
                     { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
                     { name: "Image reference pixels", value: "[321, 401] " },
                     {
                         name: "Image reference coordinates",
-                        value: "[275.0875 deg, -16.2028 deg]" },
+                        value: "[275.0875 deg, -16.2028 deg]"
+                    },
                     {
                         name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000, -016.12.10.0000]" },
+                        value: "[18:20:21.0000, -016.12.10.0000]"
+                    },
                     { name: "Celestial frame", value: "ICRS" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
                     { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" } 
+                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
                 ],
             },
         },
@@ -170,29 +181,34 @@ let assertItem: AssertItem = {
                         name: "BMAJ",
                         value: "0.000572514",
                         entryType: 1,
-                        numericValue: 0.0005725136068132 },
+                        numericValue: 0.0005725136068132
+                    },
                     {
                         name: "BMIN",
                         value: "0.000414239",
                         entryType: 1,
-                        numericValue: 0.0004142385721207 },
+                        numericValue: 0.0004142385721207
+                    },
                     {
                         name: "BPA",
                         value: "-74.6267",
                         entryType: 1,
-                        numericValue: -74.6267318725586 },
+                        numericValue: -74.6267318725586
+                    },
                     { name: "BUNIT", value: "Jy/beam" },
                     { name: "CTYPE3", value: "Frequency" },
                     {
                         name: "CRVAL3",
                         value: "8.67514e+10",
                         entryType: 1,
-                        numericValue: 86751396188.4 },
+                        numericValue: 86751396188.4
+                    },
                     {
                         name: "CDELT3",
                         value: "-244238",
                         entryType: 1,
-                        numericValue: -244237.7011414 },
+                        numericValue: -244237.7011414
+                    },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "Stokes" },
@@ -204,34 +220,39 @@ let assertItem: AssertItem = {
                         name: "RESTFRQ",
                         value: "8.67543e+10 Hz\n",
                         entryType: 1,
-                        numericValue: 86754290000 },
+                        numericValue: 86754290000
+                    },
                 ],
-                computedEntries: [ 
+                computedEntries: [
                     { name: "Name", value: "M17_SWex.image" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
                         value: "25",
                         entryType: 2,
-                        numericValue: 25 },
+                        numericValue: 25
+                    },
                     {
                         name: "Number of Stokes",
                         value: "1",
                         entryType: 2,
-                        numericValue: 1 },
+                        numericValue: 1
+                    },
                     { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
                     { name: "Image reference pixels", value: "[321, 401]" },
                     {
                         name: "Image reference coordinates",
-                        value: "[275.088 deg, -16.203 deg]" },
+                        value: "[275.088 deg, -16.203 deg]"
+                    },
                     {
                         name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000 -016.12.10.0000]" },
+                        value: "[18:20:21.0000 -016.12.10.0000]"
+                    },
                     { name: "Celestial frame", value: "ICRS, 2000" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
                     { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" } 
+                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
                 ],
             },
         },
@@ -273,37 +294,42 @@ let assertItem: AssertItem = {
                     { name: "CDELT4", value: "1.000000000000E+00" },
                     { name: "CRPIX4", value: "1.000000000000E+00" },
                     { name: "CUNIT4" },
-                    { name: "RESTFRQ", value: "8.675429000000E+10" },,
+                    { name: "RESTFRQ", value: "8.675429000000E+10" }, ,
                     { name: "VELREF", value: "257" },
                 ],
-                computedEntries: [ 
+                computedEntries: [
                     { name: "Name", value: "M17_SWex.hdf5" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
                         value: "25",
                         entryType: 2,
-                        numericValue: 25 },
+                        numericValue: 25
+                    },
                     {
                         name: "Number of Stokes",
                         value: "1",
                         entryType: 2,
-                        numericValue: 1 },
+                        numericValue: 1
+                    },
                     { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
                     {
                         name: "Image reference pixels",
-                        value: "[3.210000000000E+02, 4.010000000000E+02] " },
+                        value: "[3.210000000000E+02, 4.010000000000E+02] "
+                    },
                     {
                         name: "Image reference coordinates",
-                        value: "[275.0875 deg, -16.2028 deg]" },
+                        value: "[275.0875 deg, -16.2028 deg]"
+                    },
                     {
                         name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000, -016.12.10.0000]" },
+                        value: "[18:20:21.0000, -016.12.10.0000]"
+                    },
                     { name: "Celestial frame", value: "ICRS" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
                     { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" } 
+                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
                 ],
             },
         },
@@ -333,29 +359,34 @@ let assertItem: AssertItem = {
                         name: "BMAJ",
                         value: "0.000572514",
                         entryType: 1,
-                        numericValue: 0.0005725135932445429 },
+                        numericValue: 0.0005725135932445429
+                    },
                     {
                         name: "BMIN",
                         value: "0.000414239",
                         entryType: 1,
-                        numericValue: 0.00041423858135383447 },
+                        numericValue: 0.00041423858135383447
+                    },
                     {
                         name: "BPA",
                         value: "-74.6267",
                         entryType: 1,
-                        numericValue: -74.6267318725586 },
+                        numericValue: -74.6267318725586
+                    },
                     { name: "BUNIT", value: "Jy/beam" },
                     { name: "CTYPE3", value: "Frequency" },
                     {
                         name: "CRVAL3",
                         value: "8.67514e+10",
                         entryType: 1,
-                        numericValue: 86751396188.40004 },
+                        numericValue: 86751396188.40004
+                    },
                     {
                         name: "CDELT3",
                         value: "-244238",
                         entryType: 1,
-                        numericValue: -244237.7011414 },
+                        numericValue: -244237.7011414
+                    },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "Stokes" },
@@ -367,35 +398,39 @@ let assertItem: AssertItem = {
                         name: "RESTFRQ",
                         value: "8.67543e+10 Hz\n",
                         entryType: 1,
-                        numericValue: 86754290000.00003 
+                        numericValue: 86754290000.00003
                     },
                 ],
-                computedEntries: [ 
+                computedEntries: [
                     { name: "Name", value: "M17_SWex.miriad" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
                         value: "25",
                         entryType: 2,
-                        numericValue: 25 },
+                        numericValue: 25
+                    },
                     {
                         name: "Number of Stokes",
                         value: "1",
                         entryType: 2,
-                        numericValue: 1 },
+                        numericValue: 1
+                    },
                     { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
                     { name: "Image reference pixels", value: "[321, 401]" },
                     {
                         name: "Image reference coordinates",
-                        value: "[275.088 deg, -16.203 deg]" },
+                        value: "[275.088 deg, -16.203 deg]"
+                    },
                     {
                         name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000 -016.12.10.0000]" },
+                        value: "[18:20:21.0000 -016.12.10.0000]"
+                    },
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Spectral frame", value: "BARYCENT" },
                     { name: "Pixel unit", value: "Jy/beam" },
                     { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" } 
+                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
                 ],
             },
         },
@@ -425,43 +460,50 @@ let assertItem: AssertItem = {
                         name: "CDELT1",
                         value: "-0.00166667",
                         entryType: 1,
-                        numericValue: -0.001666666666667 },
+                        numericValue: -0.001666666666667
+                    },
                     {
                         name: "CDELT2",
                         value: "0.00166667",
                         entryType: 1,
-                        numericValue: 0.001666666666667 },
+                        numericValue: 0.001666666666667
+                    },
                     { name: "CTYPE1", value: "RA---TAN" },
                     { name: "CTYPE2", value: "DEC--TAN" },
                     {
                         name: "EQUINOX",
                         value: "2000",
                         entryType: 1,
-                        numericValue: 2000 },
+                        numericValue: 2000
+                    },
                     { name: "CROTA2", value: "0", entryType: 1 },
                     {
                         name: "CRVAL1",
                         value: "107.305",
                         entryType: 1,
-                        numericValue: 107.30461727023817 },
+                        numericValue: 107.30461727023817
+                    },
                     {
                         name: "CRVAL2",
                         value: "-10.6107",
                         entryType: 1,
-                        numericValue: -10.610720896516849 },
+                        numericValue: -10.610720896516849
+                    },
                     { name: "RADESYS", value: "ICRS" },
                 ],
-                computedEntries: [ 
+                computedEntries: [
                     { name: "Name", value: "spire500_ext.fits" },
                     { name: "Shape", value: "[830, 870]" },
                     { name: "Coordinate type", value: "RA---TAN, DEC--TAN" },
                     { name: "Image reference pixels", value: "[861, 976] " },
                     {
                         name: "Image reference coordinates",
-                        value: "[107.3046 , -10.6107 ]" },
+                        value: "[107.3046 , -10.6107 ]"
+                    },
                     {
                         name: "Image ref coords (coord type)",
-                        value: "[107.305 , -10.6107 ]" },
+                        value: "[107.305 , -10.6107 ]"
+                    },
                     { name: "Celestial frame", value: "ICRS, 2000" },
                     { name: "Pixel increment", value: "-0.002 , 0.002 " }
                 ],
@@ -470,33 +512,28 @@ let assertItem: AssertItem = {
     ],
 }
 
-describe("FILEINFO test: Testing if info of an image file is correctly delivered by the backend", () => {   
-    let Connection: WebSocket;
+describe("FILEINFO test: Testing if info of an image file is correctly delivered by the backend", () => {
 
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder`, 
-    () => {
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
-            await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+    describe(`Go to "${testSubdirectory}" folder`, () => {
+        beforeAll(async () => {
+            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+            await Connection.receive(CARTA.FileListResponse);
         }, listFileTimeout);
-        
-        assertItem.fileInfoResGroup.map( (fileInfoRes: CARTA.IFileInfoResponse, index: number) => {
-            describe(`query the info of file : ${assertItem.fileInfoGroup[index].file}`, () => {
+
+        assertItem.fileInfoResponse.map((fileInfoRes: CARTA.IFileInfoResponse, index: number) => {
+            describe(`query the info of file : ${assertItem.fileInfoRequest[index].file}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, assertItem.fileInfoGroup[index]);
-                    FileInfoResponseTemp = <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
+                    await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest[index]);
+                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = true", () => {
@@ -548,68 +585,54 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 });
 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                    fileInfoRes.fileInfoExtended.computedEntries.map( (entry: CARTA.IHeaderEntry) => {
+                    fileInfoRes.fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry) => {
                         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                     });
                 });
-                
+
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                    fileInfoRes.fileInfoExtended.headerEntries.map( (entry: CARTA.IHeaderEntry) => {
+                    fileInfoRes.fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry) => {
                         expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                     });
                 });
 
-            }); 
+            });
         });
 
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });
 
-describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => {   
-    let Connection: WebSocket;
+describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => {
 
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: "",
-                }
-            );
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.FileListRequest, 
-                {
-                    directory: testSubdirectory,
-                }
-            );
-            await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+        beforeAll(async () => {
+            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+            await Connection.receive(CARTA.FileListResponse);
         }, listFileTimeout);
-        
-        [ "no_such_file.image", "broken_header.miriad"].map( (fileName: string) => {
+
+        ["no_such_file.image", "broken_header.miriad"].map((fileName: string) => {
             describe(`query the info of file : ${fileName}`, () => {
                 let FileInfoResponseTemp: CARTA.FileInfoResponse;
+
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.FileInfoRequest, 
+                    await Connection.send(CARTA.FileInfoRequest,
                         {
-                            directory: testSubdirectory, 
-                            file: fileName, 
+                            directory: testSubdirectory,
+                            file: fileName,
                             hdu: "",
                         }
                     );
-                   FileInfoResponseTemp =  <CARTA.FileInfoResponse>await Utility.getEventAsync(Connection, CARTA.FileInfoResponse);                                         
+                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = false", () => {
@@ -619,13 +642,11 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                 test("FILE_INFO_RESPONSE.message is not None", () => {
                     expect(FileInfoResponseTemp.message).toBeDefined();
                     expect(FileInfoResponseTemp.message).not.toBe("");
-                    console.log(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
+                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
                 });
             });
         });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });

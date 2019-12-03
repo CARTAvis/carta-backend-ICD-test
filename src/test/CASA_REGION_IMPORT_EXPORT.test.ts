@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -9,7 +9,7 @@ let connectTimeout = config.timeout.connection;
 let importTimeout = config.timeout.import;
 let exportTimeout = config.timeout.export;
 
-interface ImportRegionAckExt extends CARTA.IImportRegionAck{
+interface ImportRegionAckExt extends CARTA.IImportRegionAck {
     lengthOfRegions?: number;
     assertRegionId?: {
         index: number,
@@ -17,7 +17,7 @@ interface ImportRegionAckExt extends CARTA.IImportRegionAck{
     };
 };
 interface AssertItem {
-    registerViewer: CARTA.IRegisterViewer;
+    register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion;
@@ -28,21 +28,21 @@ interface AssertItem {
     importRegionAck2: ImportRegionAckExt[];
 };
 let assertItem: AssertItem = {
-    registerViewer: {
-        sessionId: 0, 
+    register: {
+        sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    openFile: 
+    openFile:
     {
-        directory: testSubdirectory, 
+        directory: testSubdirectory,
         file: "M17_SWex.image",
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
         tileSize: 256,
     },
-    precisionDigits: 4,    
+    precisionDigits: 4,
     importRegion:
     {
         groupId: 0,
@@ -56,152 +56,148 @@ let assertItem: AssertItem = {
         success: true,
         regions: [
             {
-                regionId: 1, 
+                regionId: 1,
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
-                    controlPoints: [{x: 320, y: 400}, {x: 40, y: 100}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 40, y: 100 }],
                 },
             },
             {
-                regionId: 2, 
+                regionId: 2,
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
-                    controlPoints: [{x: 320, y: 400}, {x: 100, y: 40}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 40 }],
                 },
             },
             {
-                regionId: 3, 
+                regionId: 3,
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
                     rotation: 45,
-                    controlPoints: [{x: 320, y: 400}, {x: 200, y: 40}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 40 }],
                 },
             },
             {
-                regionId: 4, 
+                regionId: 4,
                 regionInfo: {
                     regionType: CARTA.RegionType.POLYGON,
-                    controlPoints: [{x: 320, y: 400}, {x: 320, y: 600}, {x: 400, y: 400}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
                 },
             },
             {
-                regionId: 5, 
+                regionId: 5,
                 regionInfo: {
                     regionType: CARTA.RegionType.ELLIPSE,
-                    controlPoints: [{x: 320, y: 400}, {x: 200, y: 200}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 200 }],
                 },
             },
             {
-                regionId: 6, 
+                regionId: 6,
                 regionInfo: {
                     regionType: CARTA.RegionType.ELLIPSE,
                     rotation: 45,
-                    controlPoints: [{x: 320, y: 400}, {x: 100, y: 20}],
+                    controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 20 }],
                 },
             },
             {
-                regionId: 7, 
+                regionId: 7,
                 regionInfo: {
                     regionType: CARTA.RegionType.POINT,
-                    controlPoints: [{x: 320, y: 300}],
+                    controlPoints: [{ x: 320, y: 300 }],
                 },
             },
         ],
     },
     exportRegion:
-    [
-        {
-            type: CARTA.FileType.CRTF,
-            coordType: CARTA.CoordinateType.WORLD,
-            fileId: 0,
-            regionId: [1,2,3,4,5,6,7],
-            directory: regionSubdirectory,
-            file: "M17_SWex_testRegions_pix_export_to_world.crtf",
-        },
-        {
-            type: CARTA.FileType.CRTF,
-            coordType: CARTA.CoordinateType.PIXEL,
-            fileId: 0,
-            regionId: [1,2,3,4,5,6,7],
-            directory: regionSubdirectory,
-            file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
-        },
-    ],
+        [
+            {
+                type: CARTA.FileType.CRTF,
+                coordType: CARTA.CoordinateType.WORLD,
+                fileId: 0,
+                regionId: [1, 2, 3, 4, 5, 6, 7],
+                directory: regionSubdirectory,
+                file: "M17_SWex_testRegions_pix_export_to_world.crtf",
+            },
+            {
+                type: CARTA.FileType.CRTF,
+                coordType: CARTA.CoordinateType.PIXEL,
+                fileId: 0,
+                regionId: [1, 2, 3, 4, 5, 6, 7],
+                directory: regionSubdirectory,
+                file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
+            },
+        ],
     exportRegionAck:
-    [
-        {
-            success: true,
-            contents: [""],
-        },
-        {
-            success: true,
-            contents: [""],
-        },
-    ],
+        [
+            {
+                success: true,
+                contents: [""],
+            },
+            {
+                success: true,
+                contents: [""],
+            },
+        ],
     importRegion2:
-    [
-        {
-            groupId: 0,
-            type: CARTA.FileType.CRTF,
-            directory: regionSubdirectory,
-            file: "M17_SWex_testRegions_pix_export_to_world.crtf",
-            contents: [],
-        },
-        {
-            groupId: 0,
-            type: CARTA.FileType.CRTF,
-            directory: regionSubdirectory,
-            file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
-            contents: [],
-        },
-    ],
+        [
+            {
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
+                directory: regionSubdirectory,
+                file: "M17_SWex_testRegions_pix_export_to_world.crtf",
+                contents: [],
+            },
+            {
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
+                directory: regionSubdirectory,
+                file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
+                contents: [],
+            },
+        ],
     importRegionAck2:
-    [
-        {
-            success: true,
-            lengthOfRegions: 7,
-            assertRegionId: {
-                index: 6,
-                id: 14,
+        [
+            {
+                success: true,
+                lengthOfRegions: 7,
+                assertRegionId: {
+                    index: 6,
+                    id: 14,
+                },
             },
-        },
-        {
-            success: true,
-            lengthOfRegions: 7,
-            assertRegionId: {
-                index: 6,
-                id: 21,
+            {
+                success: true,
+                lengthOfRegions: 7,
+                assertRegionId: {
+                    index: 6,
+                    id: 21,
+                },
             },
-        },
-    ],
+        ],
 };
 
-describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region format", () => {   
-    let Connection: WebSocket;
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.registerViewer);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region format", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
 
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1,});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.openFile);
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1, });
+            await Connection.send(CARTA.OpenFile, assertItem.openFile);
+            await Connection.receive(CARTA.OpenFileAck);
         });
 
         describe(`Import "${assertItem.importRegion.file}"`, () => {
             let importRegionAck: CARTA.ImportRegionAck;
             test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.ImportRegion, assertItem.importRegion);
-                importRegionAck = await Utility.getEventAsync(Connection, CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                await Connection.send(CARTA.ImportRegion, assertItem.importRegion);
+                importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
             }, importTimeout);
 
             test(`IMPORT_REGION_ACK.success = ${assertItem.importRegionAck.success}`, () => {
@@ -212,13 +208,13 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
                 expect(importRegionAck.regions.length).toEqual(assertItem.importRegionAck.regions.length);
             });
 
-            assertItem.importRegionAck.regions.map( (region, index) => {
+            assertItem.importRegionAck.regions.map((region, index) => {
                 test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
                     expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
                     expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
-                    if(region.regionInfo.rotation)
+                    if (region.regionInfo.rotation)
                         expect(importRegionAck.regions[index].regionInfo.rotation).toEqual(region.regionInfo.rotation);
-                    expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);   
+                    expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);
                 });
             });
         });
@@ -227,8 +223,8 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
             describe(`Export "${assertItem.exportRegion[idxRegion].file}"`, () => {
                 let exportRegionAck: CARTA.ExportRegionAck;
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
-                    exportRegionAck = await Utility.getEventAsync(Connection, CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
+                    await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
+                    exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
                 }, exportTimeout);
 
                 test(`EXPORT_REGION_ACK.success = ${exRegion.success}`, () => {
@@ -245,8 +241,8 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
             describe(`Import "${assertItem.importRegion2[idxRegion].file}"`, () => {
                 let importRegionAck: CARTA.ImportRegionAck;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
-                    importRegionAck = await Utility.getEventAsync(Connection, CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                    await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
+                    importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                 }, importTimeout);
 
                 test(`IMPORT_REGION_ACK.success = ${Region.success}`, () => {
@@ -264,5 +260,5 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
         });
     });
 
-    afterAll( () => Connection.close());
+    afterAll(() => Connection.close());
 });

@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -7,8 +7,8 @@ let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let cursorTimeout = config.timeout.mouseEvent;
 interface ISpectralProfileDataExt extends CARTA.ISpectralProfileData {
-    profileLength?: number; 
-    assertProfile?: {idx: number, value: number}[],
+    profileLength?: number;
+    assertProfile?: { idx: number, value: number }[],
 }
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -26,7 +26,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: {directory: testSubdirectory},     
+    filelist: { directory: testSubdirectory },
     fileOpenGroup: [
         {
             directory: testSubdirectory,
@@ -109,65 +109,65 @@ let assertItem: AssertItem = {
     ],
     setSpectralRequirementsGroup: [
         {
-            fileId: 0, 
-            regionId: 0, 
-            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+            fileId: 0,
+            regionId: 0,
+            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
         },
         {
-            fileId: 1, 
-            regionId: 0, 
-            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+            fileId: 1,
+            regionId: 0,
+            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
         },
         {
-            fileId: 2, 
-            regionId: 0, 
-            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+            fileId: 2,
+            regionId: 0,
+            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
         },
         {
-            fileId: 3, 
-            regionId: 0, 
-            spectralProfiles: [{coordinate: "z", statsTypes: [CARTA.StatsType.Sum]}],
+            fileId: 3,
+            regionId: 0,
+            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
         },
     ],
     setCursorGroups: [
         [
             {
                 fileId: 0,
-                point: {x: 316.0, y: 401.0},
+                point: { x: 316.0, y: 401.0 },
             },
             {
                 fileId: 0,
-                point: {x: 106, y: 135},
+                point: { x: 106, y: 135 },
             },
             {
                 fileId: 0,
-                point: {x: -10, y: -10},
+                point: { x: -10, y: -10 },
             },
         ],
         [
             {
                 fileId: 1,
-                point: {x: 316.0, y: 401.0},
+                point: { x: 316.0, y: 401.0 },
             },
             {
                 fileId: 1,
-                point: {x: 106, y: 135},
+                point: { x: 106, y: 135 },
             },
             {
                 fileId: 1,
-                point: {x: -10, y: -10},
+                point: { x: -10, y: -10 },
             },
         ],
         [
             {
                 fileId: 2,
-                point: {x: 1006, y: 478},
+                point: { x: 1006, y: 478 },
             },
         ],
         [
             {
                 fileId: 3,
-                point: {x: 1006, y: 478},
+                point: { x: 1006, y: 478 },
             },
         ],
     ],
@@ -178,10 +178,10 @@ let assertItem: AssertItem = {
                 regionId: 0,
                 stokes: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 25,
                 assertProfile: [
-                    {idx: 12, value: -2.194151791839e-02},
+                    { idx: 12, value: -2.194151791839e-02 },
                 ],
             },
             {
@@ -189,10 +189,10 @@ let assertItem: AssertItem = {
                 regionId: 0,
                 stokes: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 25,
                 assertProfile: [
-                    {idx: 12, value: NaN},
+                    { idx: 12, value: NaN },
                 ],
             },
             {
@@ -205,10 +205,10 @@ let assertItem: AssertItem = {
                 regionId: 0,
                 stokes: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 25,
                 assertProfile: [
-                    {idx: 12, value: -2.194151791839e-02},
+                    { idx: 12, value: -2.194151791839e-02 },
                 ],
             },
             {
@@ -216,10 +216,10 @@ let assertItem: AssertItem = {
                 regionId: 0,
                 stokes: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 25,
                 assertProfile: [
-                    {idx: 12, value: NaN},
+                    { idx: 12, value: NaN },
                 ],
             },
             {
@@ -231,11 +231,11 @@ let assertItem: AssertItem = {
                 fileId: 2,
                 regionId: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 5,
                 assertProfile: [
-                    {idx: 0, value: NaN},
-                    {idx: 2, value: -1.186280068476e-03},
+                    { idx: 0, value: NaN },
+                    { idx: 2, value: -1.186280068476e-03 },
                 ],
             },
         ],
@@ -244,11 +244,11 @@ let assertItem: AssertItem = {
                 fileId: 3,
                 regionId: 0,
                 progress: 1,
-                profiles: [{coordinate: "z", statsType: CARTA.StatsType.Sum}],
+                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
                 profileLength: 5,
                 assertProfile: [
-                    {idx: 0, value: NaN},
-                    {idx: 2, value: -1.186280068476e-03},
+                    { idx: 0, value: NaN },
+                    { idx: 2, value: -1.186280068476e-03 },
                 ],
             },
         ],
@@ -256,89 +256,84 @@ let assertItem: AssertItem = {
     precisionDigits: 4,
 }
 
-describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial profiles are delivered correctly", () => {   
-    let Connection: WebSocket;    
+describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial profiles are delivered correctly", () => {
+    let Connection: Client;
 
-    assertItem.fileOpenGroup.map( (fileOpen, index) => {
-    describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
-        beforeEach( done => {
-            Connection = new WebSocket(testServerUrl);
-            Connection.binaryType = "arraybuffer";
-            Connection.onopen = OnOpen;
+    assertItem.fileOpenGroup.map((fileOpen, index) => {
+        describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
+            beforeEach(async () => {
+                Connection = new Client(testServerUrl);
+                await Connection.open();
+                await Connection.send(CARTA.RegisterViewer, assertItem.register);
+                await Connection.receive(CARTA.RegisterViewerAck);
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+                await Connection.send(CARTA.OpenFile, fileOpen);
+                await Connection.receive(CARTA.OpenFileAck);
+                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
+                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
+                await Connection.receive(CARTA.RasterTileData);
+            }, readFileTimeout);
 
-            async function OnOpen (this: WebSocket, ev: Event) {
-                await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-                await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-                await Utility.setEventAsync(this, CARTA.CloseFile, {fileId: -1});
-                await Utility.setEventAsync(this, CARTA.OpenFile, fileOpen);
-                await Utility.getEventAsync(this, CARTA.OpenFileAck);
-                await Utility.getEventAsync(this, CARTA.RegionHistogramData);
-                await Utility.setEventAsync(this, CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
-                await Utility.setEventAsync(this, CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
-                await Utility.getEventAsync(this, CARTA.RasterTileData);
-                done();
-            }
-        }, readFileTimeout);
+            describe(`read the file "${fileOpen.file}"`, () => {
 
-        describe(`read the file "${fileOpen.file}"`, () => {
+                assertItem.spectralProfileDataGroups[index].map((spectralProfileData, idx) => {
+                    describe(`set cursor on {${assertItem.setCursorGroups[index][idx].point.x}, ${assertItem.setCursorGroups[index][idx].point.y}}`, () => {
+                        let SpectralProfileDataTemp: any;
+                        if (spectralProfileData.progress < 0) {
+                            test(`SPECTRAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
+                                await Connection.send(CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
+                                await Connection.receive(CARTA.SpectralProfileData, cursorTimeout * .5, false);
+                            }, cursorTimeout);
 
-            assertItem.spectralProfileDataGroups[index].map( (spectralProfileData, idx) => {
-                describe(`set cursor on {${assertItem.setCursorGroups[index][idx].point.x}, ${assertItem.setCursorGroups[index][idx].point.y}}`, () => {
-                    let SpectralProfileDataTemp: any;
-                    if (spectralProfileData.progress < 0) {
-                        test(`SPECTRAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
-                            await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
-                            await Utility.getEventAsync(Connection, CARTA.SpectralProfileData, cursorTimeout * .5);
-                        }, cursorTimeout);
+                            test("Backend still alive", async () => {
+                                expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
+                                await Connection.send(CARTA.SetCursor, { x: 0, y: 0 });
+                                await Connection.receive(CARTA.SpectralProfileData);
+                            }, connectTimeout);
 
-                        test("Backend still alive", async () => {
-                            expect(Connection.readyState).toEqual(WebSocket.OPEN);
-                            await Utility.setEventAsync(Connection, CARTA.SetCursor, {x: 0, y: 0});
-                            await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
-                        }, connectTimeout);
+                        } else {
+                            test(`SPECTRAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
+                                await Connection.send(CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
+                                SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+                                expect(SpectralProfileDataTemp.progress).toEqual(spectralProfileData.progress);
+                            }, cursorTimeout);
 
-                    } else {
-                        test(`SPECTRAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
-                            await Utility.setEventAsync(Connection, CARTA.SetCursor, assertItem.setCursorGroups[index][idx]);
-                            SpectralProfileDataTemp = await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
-                            expect(SpectralProfileDataTemp.progress).toEqual(spectralProfileData.progress);
-                        }, cursorTimeout);
+                            test(`SPECTRAL_PROFILE_DATA.file_id = ${spectralProfileData.fileId}`, () => {
+                                expect(SpectralProfileDataTemp.fileId).toEqual(spectralProfileData.fileId);
+                            });
 
-                        test(`SPECTRAL_PROFILE_DATA.file_id = ${spectralProfileData.fileId}`, () => {
-                            expect(SpectralProfileDataTemp.fileId).toEqual(spectralProfileData.fileId);
-                        });
+                            test(`SPECTRAL_PROFILE_DATA.region_id = ${spectralProfileData.regionId}`, () => {
+                                expect(SpectralProfileDataTemp.regionId).toEqual(spectralProfileData.regionId);
+                            });
 
-                        test(`SPECTRAL_PROFILE_DATA.region_id = ${spectralProfileData.regionId}`, () => {
-                            expect(SpectralProfileDataTemp.regionId).toEqual(spectralProfileData.regionId);
-                        });
+                            if (spectralProfileData.stokes) {
+                                test(`SPECTRAL_PROFILE_DATA.stokes = ${spectralProfileData.stokes}`, () => {
+                                    expect(SpectralProfileDataTemp.stokes).toEqual(spectralProfileData.stokes);
+                                });
+                            }
 
-                        if (spectralProfileData.stokes) {
-                            test(`SPECTRAL_PROFILE_DATA.stokes = ${spectralProfileData.stokes}`, () => {
-                                expect(SpectralProfileDataTemp.stokes).toEqual(spectralProfileData.stokes);
+                            test("Assert SPECTRAL_PROFILE_DATA.profiles", () => {
+                                expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").coordinate).toEqual(spectralProfileData.profiles.find(f => f.coordinate === "z").coordinate);
+                                expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values.length).toEqual(spectralProfileData.profileLength);
+                            });
+
+                            test("Assert SPECTRAL_PROFILE_DATA.profiles.values", () => {
+                                spectralProfileData.assertProfile.map(profile => {
+                                    if (isNaN(profile.value)) {
+                                        expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toEqual(NaN);
+                                    } else {
+                                        expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toBeCloseTo(profile.value, assertItem.precisionDigits);
+                                    }
+                                });
                             });
                         }
-
-                        test("Assert SPECTRAL_PROFILE_DATA.profiles", () => {
-                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").coordinate).toEqual(spectralProfileData.profiles.find(f => f.coordinate === "z").coordinate);
-                            expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values.length).toEqual(spectralProfileData.profileLength);
-                        });
-
-                        test("Assert SPECTRAL_PROFILE_DATA.profiles.values", () => {
-                            spectralProfileData.assertProfile.map( profile => {
-                                if (isNaN(profile.value)) {
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toEqual(NaN);
-                                } else {                            
-                                    expect(SpectralProfileDataTemp.profiles.find(f => f.coordinate === "z").values[profile.idx]).toBeCloseTo(profile.value, assertItem.precisionDigits);
-                                }
-                            });
-                        });
-                    }
+                    });
                 });
             });
-        });
 
-        afterEach(() => Connection.close());
-    });
+            afterEach(() => Connection.close());
+        });
     });
 
 });

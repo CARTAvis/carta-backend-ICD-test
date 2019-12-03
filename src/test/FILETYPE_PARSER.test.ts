@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -17,81 +17,77 @@ let assertItem: AssertItem = {
         sessionId: 0,
         apiKey: "",
     },
-    filelist: {directory: testSubdirectory,},
+    filelist: { directory: testSubdirectory, },
     fileListResponse: {
         success: true,
         directory: testSubdirectory,
         parent: config.path.directory,
         files: [
             {
-                name: "M17_SWex.image", 
-                type: CARTA.FileType.CASA, 
-                size: 53009869, 
+                name: "M17_SWex.image",
+                type: CARTA.FileType.CASA,
+                size: 53009869,
                 HDUList: [""],
             },
             {
-                name: "M17_SWex.fits", 
-                type: CARTA.FileType.FITS, 
-                size: 51393600, 
+                name: "M17_SWex.fits",
+                type: CARTA.FileType.FITS,
+                size: 51393600,
                 HDUList: ["0"],
             },
             {
-                name: "M17_SWex.miriad", 
-                type: CARTA.FileType.MIRIAD, 
-                size: 52993642, 
+                name: "M17_SWex.miriad",
+                type: CARTA.FileType.MIRIAD,
+                size: 52993642,
                 HDUList: [""],
             },
             {
-                name: "M17_SWex.hdf5", 
-                type: CARTA.FileType.HDF5, 
-                size: 112823720, 
+                name: "M17_SWex.hdf5",
+                type: CARTA.FileType.HDF5,
+                size: 112823720,
                 HDUList: ["0"],
             },
             {
-                name: "spire500_ext.fits", 
-                type: CARTA.FileType.FITS, 
-                size: 17591040, 
+                name: "spire500_ext.fits",
+                type: CARTA.FileType.FITS,
+                size: 17591040,
                 HDUList: ["1 ExtName: image", "6 ExtName: error", "7 ExtName: coverage"],
             },
         ],
     },
     filesNull: [
-        "empty2.miriad", 
-        "empty2.fits", 
+        "empty2.miriad",
+        "empty2.fits",
         "empty2.image",
-        "empty2.hdf5", 
-        "empty.txt", 
+        "empty2.hdf5",
+        "empty.txt",
         "empty.image",
-        "empty.miriad", 
-        "empty.fits", 
+        "empty.miriad",
+        "empty.fits",
         "empty.hdf5",
     ],
     foldersNull: [
-        "empty_folder", 
+        "empty_folder",
         "empty.image",
-        "empty.miriad", 
-        "empty.fits", 
+        "empty.miriad",
+        "empty.fits",
         "empty.hdf5",
     ],
 }
 describe("FILETYPE_PARSER test: Testing if all supported image types can be detected and displayed in the file list", () => {
-    let Connection: WebSocket;
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();
-        }
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         let FileListResponseTemp: CARTA.FileListResponse;
         test(`should get "FILE_LIST_RESPONSE" within ${fileListTimeout} ms.`, async () => {
-            await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
-            FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
+            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+            FileListResponseTemp = await Connection.receive(CARTA.FileListResponse);
         }, fileListTimeout);
 
         test(`FILE_LIST_RESPONSE.success = ${assertItem.fileListResponse.success}`, () => {
@@ -117,28 +113,26 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
                     file.HDUList.map(HDU => {
                         expect(_HDUList).toContainEqual(HDU.trim());
                     });
-                });        
+                });
             });
         });
 
         describe("Assert non-existent file", () => {
-            assertItem.filesNull.map( file => {
-                test(`the file "${file}" should not exist.`,  () => {
+            assertItem.filesNull.map(file => {
+                test(`the file "${file}" should not exist.`, () => {
                     expect(FileListResponseTemp.files).not.toContainEqual(file);
-                });                
+                });
             });
         });
 
         describe(`Assert the folder inside "${testSubdirectory}"`, () => {
-            assertItem.foldersNull.map( folder => {
+            assertItem.foldersNull.map(folder => {
                 test(`the folder "${folder}" should exist.`, () => {
                     expect(FileListResponseTemp.subdirectories).toContainEqual(folder);
-                });                
+                });
             });
         });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(async () => await Connection.close());
 });

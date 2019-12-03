@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -24,7 +24,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: {directory: testSubdirectory},    
+    filelist: { directory: testSubdirectory },
     fileOpen: {
         directory: testSubdirectory,
         file: "cluster_04096.fits",
@@ -89,7 +89,7 @@ let assertItem: AssertItem = {
                     50331648,
                     50335744,
                     50339840,
-                    50343936, 
+                    50343936,
                     50348032,
                     50352128,
                     50356224,
@@ -147,37 +147,34 @@ let assertItem: AssertItem = {
     ],
 }
 
-describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {   
-    let Connection: WebSocket;
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            done();   
-        }
+describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
+
     assertItem.setImageChannel.map(setImageChannel => {
         describe(`Go to "${testSubdirectory}" folder`, () => {
 
-            beforeAll( async () => {            
-                await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
-                await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.fileOpen);
-                await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+            beforeAll(async () => {
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                await Connection.receive(CARTA.OpenFileAck);
+                await Connection.receive(CARTA.RegionHistogramData);
             });
-            
+
             describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}" with ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {
-                let ack: Utility.AckStream;
+                let ack: AckStream;
                 test(`RASTER_TILE_DATA x${setImageChannel.requiredTiles.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
-                    await Utility.setEventAsync(Connection, CARTA.SetImageChannels, setImageChannel);
-                    ack = <Utility.AckStream> await Utility.getStreamAsync(Connection, setImageChannel.requiredTiles.tiles.length);
+                    await Connection.send(CARTA.SetImageChannels, setImageChannel);
+                    ack = await Connection.stream(setImageChannel.requiredTiles.tiles.length) as AckStream;
                     expect(ack.RasterTileData.length).toEqual(setImageChannel.requiredTiles.tiles.length);
                 }, readFileTimeout);
 
-                test(`Tile "${setImageChannel.requiredTiles.tiles[0]}" should return within the ${setImageChannel.rank>2?setImageChannel.rank+"th":setImageChannel.rank>1?setImageChannel.rank+"nd":setImageChannel.rank+"st"} rank`, () => {
+                test(`Tile "${setImageChannel.requiredTiles.tiles[0]}" should return within the ${setImageChannel.rank > 2 ? setImageChannel.rank + "th" : setImageChannel.rank > 1 ? setImageChannel.rank + "nd" : setImageChannel.rank + "st"} rank`, () => {
                     let _encodeTile = (ack.RasterTileData[0].tiles[0].layer << 24) | (ack.RasterTileData[0].tiles[0].y << 12) | ack.RasterTileData[0].tiles[0].x;
                     expect(setImageChannel.requiredTiles.tiles.slice(0, setImageChannel.rank).findIndex(f => f === _encodeTile) >= 0).toBe(true);
                 });
@@ -192,11 +189,9 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
                     console.dir(`Sequence of returned tiles(1-indexed): ${JSON.stringify(_seq)}`);
                 });
 
-            });            
+            });
         });
     });
 
-    afterAll( () => {
-        Connection.close();
-    });
+    afterAll(() => Connection.close());
 });

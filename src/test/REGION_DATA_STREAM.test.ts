@@ -1,5 +1,5 @@
-import {CARTA} from "carta-protobuf";
-import * as Utility from "./testUtilityFunction";
+import { CARTA } from "carta-protobuf";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -8,7 +8,7 @@ let readFileTimeout = config.timeout.readFile;
 let regionTimeout = config.timeout.region;
 interface AssertItem {
     precisionDigits: number;
-    registerViewer: CARTA.IRegisterViewer;
+    register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     setImageChannels: CARTA.ISetImageChannels;
     setRegion: CARTA.ISetRegion[];
@@ -22,15 +22,15 @@ interface AssertItem {
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
-    registerViewer:
+    register:
     {
-        sessionId: 0, 
+        sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
     openFile:
     {
-        directory: testSubdirectory, 
+        directory: testSubdirectory,
         file: "M17_SWex.image",
         fileId: 0,
         hdu: "",
@@ -54,7 +54,7 @@ let assertItem: AssertItem = {
             regionId: -1,
             regionName: "",
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{x: 302, y: 370}, {x: 10, y: 10}],
+            controlPoints: [{ x: 302, y: 370 }, { x: 10, y: 10 }],
             rotation: 0.0,
         },
         {
@@ -62,7 +62,7 @@ let assertItem: AssertItem = {
             regionId: 1,
             regionName: "",
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{x: 302, y: 370}, {x: 10, y: 10}],
+            controlPoints: [{ x: 302, y: 370 }, { x: 10, y: 10 }],
             rotation: 30.0,
         },
     ],
@@ -92,13 +92,13 @@ let assertItem: AssertItem = {
         fileId: 0,
         regionId: 1,
         stats: [
-            CARTA.StatsType.NumPixels, 
-            CARTA.StatsType.Sum, 
-            CARTA.StatsType.Mean, 
-            CARTA.StatsType.RMS, 
-            CARTA.StatsType.Sigma, 
-            CARTA.StatsType.SumSq, 
-            CARTA.StatsType.Min, 
+            CARTA.StatsType.NumPixels,
+            CARTA.StatsType.Sum,
+            CARTA.StatsType.Mean,
+            CARTA.StatsType.RMS,
+            CARTA.StatsType.Sigma,
+            CARTA.StatsType.SumSq,
+            CARTA.StatsType.Min,
             CARTA.StatsType.Max
         ],
     },
@@ -110,68 +110,57 @@ let assertItem: AssertItem = {
     {
         fileId: 0,
         regionId: 1,
-        histograms: [{channel: -1, numBins: -1}],
+        histograms: [{ channel: -1, numBins: -1 }],
     },
-    regionHistogramData: 
+    regionHistogramData:
     {
         regionId: 1,
         progress: 1,
     },
 }
 
-describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {   
-    let Connection: WebSocket;
-
-    beforeAll( done => {
-        Connection = new WebSocket(testServerUrl);
-        Connection.binaryType = "arraybuffer";
-        Connection.onopen = OnOpen;
-
-        async function OnOpen (this: WebSocket, ev: Event) {
-            await Utility.setEventAsync(this, CARTA.RegisterViewer, 
-                {
-                    sessionId: 0, 
-                    apiKey: ""
-                }
-            );
-            await Utility.getEventAsync(this, CARTA.RegisterViewerAck);
-            await done();
-        }
+describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
+    let Connection: Client;
+    beforeAll(async () => {
+        Connection = new Client(testServerUrl);
+        await Connection.open();
+        await Connection.send(CARTA.RegisterViewer, assertItem.register);
+        await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set region`, () => {
 
-        beforeAll( async () => {
-            await Utility.setEventAsync(Connection, CARTA.CloseFile, {fileId: -1});
-            await Utility.setEventAsync(Connection, CARTA.OpenFile, assertItem.openFile);
-            await Utility.getEventAsync(Connection, CARTA.OpenFileAck);
-            await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
-            await Utility.setEventAsync(Connection, CARTA.SetImageChannels, assertItem.setImageChannels);
-            await Utility.getEventAsync(Connection, CARTA.RasterTileData);
-            await Utility.setEventAsync(Connection, CARTA.SetRegion, assertItem.setRegion[0]);
-            await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
+        beforeAll(async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            await Connection.send(CARTA.OpenFile, assertItem.openFile);
+            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
+            await Connection.receive(CARTA.RasterTileData);
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
+            await Connection.receive(CARTA.SetRegionAck);
         });
-            
+
         describe(`SET SPECTRAL REQUIREMENTS`, () => {
             test(`SPECTRAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                await Utility.getEventAsync(Connection, CARTA.SpectralProfileData);
+                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                await Connection.receive(CARTA.SpectralProfileData);
             }, regionTimeout);
 
         });
 
         describe("SET STATS REQUIREMENTS", () => {
             test(`REGION_STATS_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetStatsRequirements, assertItem.setStatsRequirements);
-                await Utility.getEventAsync(Connection, CARTA.RegionStatsData);
+                await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements);
+                await Connection.receive(CARTA.RegionStatsData);
             }, regionTimeout);
 
         });
-    
+
         describe(`SET HISTOGRAM REQUIREMENTS`, () => {
             test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                await Utility.getEventAsync(Connection, CARTA.RegionHistogramData);
+                await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+                await Connection.receive(CARTA.RegionHistogramData);
             }, regionTimeout);
 
         });
@@ -180,12 +169,12 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
             let SetRegionAckTemp: CARTA.SetRegionAck;
             let Ack;
             test(`SET_REGION_ACK, SPECTRAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                await Utility.setEventAsync(Connection, CARTA.SetRegion, assertItem.setRegion[1]);
-                SetRegionAckTemp = <CARTA.SetRegionAck>await Utility.getEventAsync(Connection, CARTA.SetRegionAck);
-                Ack = await Utility.getStreamAsync(Connection, 3);
-  
+                await Connection.send(CARTA.SetRegion, assertItem.setRegion[1]);
+                SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                Ack = await Connection.stream(3);
+
             }, readFileTimeout);
-            
+
             test("SET_REGION_ACK.success = true", () => {
                 expect(SetRegionAckTemp.success).toBe(true);
             });
