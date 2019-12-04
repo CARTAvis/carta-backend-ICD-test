@@ -118,7 +118,7 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
             }, resumeTimeout);
 
             test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-                let ResumeSessionAckTemp = Ack.Acknowledgement[0] as CARTA.ResumeSessionAck;
+                let ResumeSessionAckTemp = Ack.Responce[0] as CARTA.ResumeSessionAck;
                 expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
                 if (ResumeSessionAckTemp.message) {
                     console.warn(`RESUME_SESSION_ACK error message: 
