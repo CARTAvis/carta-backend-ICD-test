@@ -231,7 +231,7 @@ export class Client {
             RegionStatsData: [],
             RegionHistogramData: [],
             SpectralProfileData: [],
-            Acknowledgement: [],
+            Responce: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -272,7 +272,7 @@ export class Client {
                         ack.SpectralProfileData.push(_profileData);
                         break;
                     default:
-                        ack.Acknowledgement.push(this.CartaType.get(eventNumber).decode(eventData));
+                        ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
                         break;
                 }
 
@@ -292,7 +292,7 @@ export interface AckStream {
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
-    Acknowledgement: any[],
+    Responce: any[],
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
