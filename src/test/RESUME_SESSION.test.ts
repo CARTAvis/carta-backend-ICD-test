@@ -112,7 +112,7 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
 
         describe(`RESUME_SESSION`, () => {
             let Ack: AckStream;
-            test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+            test(`Some REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
                 await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
                 Ack = await Connection.stream(3) as AckStream;
             }, resumeTimeout);
