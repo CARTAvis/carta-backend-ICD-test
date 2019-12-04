@@ -115,35 +115,20 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
         });
 
         describe(`RESUME_SESSION`, () => {
-            let OpenFileAckTemp: CARTA.OpenFileAck[] = new Array(assertItem.resumeSession.images.length);
-            let SetRegionAckTemp: CARTA.SetRegionAck[] = new Array(assertItem.resumeSession.images.length);
-            let ResumeSessionAckTemp: CARTA.ResumeSessionAck;
+            let Ack: Utility.AckStream;
             test(`OPEN_FILE_ACK & SET_REGION_ACK & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
                 await Utility.setEventAsync(Connection, CARTA.ResumeSession, assertItem.resumeSession);
-                for (let i = 0; i< assertItem.resumeSession.images.length; i++) {
-                    OpenFileAckTemp[i] = await Utility.getEventAsync(Connection, CARTA.OpenFileAck) as CARTA.OpenFileAck;
-                    SetRegionAckTemp[i] = await Utility.getEventAsync(Connection, CARTA.SetRegionAck) as CARTA.SetRegionAck;
-                }
-                ResumeSessionAckTemp = await Utility.getEventAsync(Connection, CARTA.ResumeSessionAck) as CARTA.ResumeSessionAck;
+                Ack = await Utility.getStreamAsync(Connection, 3) as Utility.AckStream;
             }, resumeTimeout);
 
-            for (let index = 0; index< assertItem.resumeSession.images.length; index++) {
-                test(`OPEN_FILE_ACK.success = ${assertItem.openFileAck[index].success}`, () => {
-                    expect(OpenFileAckTemp[index].success).toBe(assertItem.openFileAck[index].success);
-                });
-                test(`SET_REGION_ACK.success = ${assertItem.setRegionAck[index].success}`, () => {
-                    expect(SetRegionAckTemp[index].success).toBe(assertItem.setRegionAck[index].success);
-                });
-            }
-
             test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-                expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
+                expect(Ack.ResumeSessionAck[0].success).toBe(assertItem.resumeSessionAck.success);
+                if (Ack.ResumeSessionAck[0].message) {
+                    console.warn(`RESUME_SESSION_ACK error message: 
+                        ${Ack.ResumeSessionAck[0].message}`);
+                }
             });
 
-            if (ResumeSessionAckTemp.message) {
-                console.warn(`RESUME_SESSION_ACK error message: 
-                    ${ResumeSessionAckTemp.message}`);
-            }
 
         });
 

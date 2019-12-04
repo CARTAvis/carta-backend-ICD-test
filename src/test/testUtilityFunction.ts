@@ -1,7 +1,7 @@
 import {CARTA} from "carta-protobuf";
 const isLog = false;
 /// CARTA ICD definition
-const IcdVersion = 9;
+const IcdVersion = 11;
 export const EventType = {
     EmptyEvent: 0,
     RegisterViewer: 1,
@@ -34,7 +34,7 @@ export const EventType = {
     ErrorData: 28,
     AnimationFlowControl: 29,
     AddRequiredTiles: 30,
-    RemoveRequireTiles: 31,
+    RemoveRequiredTiles: 31,
     RasterTileData: 32,
     RegionListRequest: 33,
     RegionListResponse: 34,
@@ -334,6 +334,7 @@ export interface AckStream {
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
+    ResumeSessionAck: CARTA.ResumeSessionAck[];
 }
 /// Get CARTA stream async
 /// Until the number: totalCount of mesaages have received
@@ -352,6 +353,7 @@ export function getStreamAsync(
         RegionStatsData: [],
         RegionHistogramData: [],
         SpectralProfileData: [],
+        ResumeSessionAck: [],
     };
     return new Promise( resolve => {
         connection.onmessage = (messageEvent: MessageEvent) => {
@@ -362,6 +364,9 @@ export function getStreamAsync(
             const eventType = eventHeader16[0];
             const eventIcdVersion = eventHeader16[1];
             const eventId = eventHeader32[0];
+            if (isLog) {
+                console.log(`<= ${Object.keys(EventType).find( f => EventType[f] === eventType)}`);
+            }
 
             if (eventIcdVersion !== IcdVersion) {
                 console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${IcdVersion}. Errors may occur`);
@@ -389,6 +394,9 @@ export function getStreamAsync(
                     _profileData = CARTA.SpectralProfileData.decode(eventData);
                     _profileData.profiles = _profileData.profiles.map( p => processSpectralProfile(p));
                     ack.SpectralProfileData.push(_profileData);
+                    break;
+                case EventType["ResumeSessionAck"]:
+                    ack.ResumeSessionAck.push(CARTA.ResumeSessionAck.decode(eventData));
                     break;
                 default:
                     break;
