@@ -102,7 +102,8 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        let ack = await Connection.receiveAny();
+        expect(ack.constructor.name).toEqual(CARTA.RegisterViewerAck.name);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
@@ -118,7 +119,7 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
             }, resumeTimeout);
 
             test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-                let ResumeSessionAckTemp = Ack.Responce[0] as CARTA.ResumeSessionAck;
+                let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
                 expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
                 if (ResumeSessionAckTemp.message) {
                     console.warn(`RESUME_SESSION_ACK error message: 

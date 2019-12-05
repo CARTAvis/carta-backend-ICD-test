@@ -194,8 +194,8 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             for (let i = 0; i < assertItem.fileOpens.length; i++) {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpens[i]);
-                await Connection.receive(CARTA.OpenFileAck);
-                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels[i]);
                 await Connection.receive(CARTA.RasterTileData);
             }
