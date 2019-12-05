@@ -255,7 +255,8 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
             for (let region of assertItem.setRegion) {
                 await Connection.send(CARTA.SetRegion, region);
                 await Connection.receive(CARTA.SetRegionAck);

@@ -139,7 +139,8 @@ describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
         });
 
         describe(`Go to "${regionSubdirectory}" and send REGION_LIST_REQUEST`, () => {
