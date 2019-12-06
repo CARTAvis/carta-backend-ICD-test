@@ -1,4 +1,4 @@
-import {CARTA} from "carta-protobuf";
+import { CARTA } from "carta-protobuf";
 import * as Utility from "./testUtilityFunction";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -21,15 +21,15 @@ let assertItem: AssertItem = {
 describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an API key", () => {
     let Connection: WebSocket;
     describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
-        let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
-        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, done => {        
+        let RegisterViewerAckTemp: CARTA.RegisterViewerAck;
+        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, done => {
             // Connect to "testServerUrl"
             Connection = new WebSocket(testServerUrl);
             expect(Connection.readyState).toBe(WebSocket.CONNECTING);
 
             Connection.binaryType = "arraybuffer";
-            Connection.onopen = OnOpen;        
-            
+            Connection.onopen = OnOpen;
+
             async function OnOpen(this: WebSocket, ev: Event) {
                 expect(this.readyState).toBe(WebSocket.OPEN);
                 await Utility.setEventAsync(this, CARTA.RegisterViewer, assertItem.register);
@@ -52,7 +52,8 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
         });
 
         test("REGISTER_VIEWER_ACK.message is empty", () => {
-            expect(RegisterViewerAckTemp.message).toBe("");
+            expect(RegisterViewerAckTemp.sessionId).toBeDefined();
+            console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
         });
 
         test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
@@ -62,7 +63,7 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
     });
 
     describe(`send "FILE_LIST_REQUEST" with directory = "$BASE"`, () => {
-        let FileListResponseTemp: CARTA.FileListResponse; 
+        let FileListResponseTemp: CARTA.FileListResponse;
         test(`should get "FILE_LIST_RESPONSE" within ${connectTimeout} ms`, async () => {
             await Utility.setEventAsync(Connection, CARTA.FileListRequest, assertItem.filelist);
             FileListResponseTemp = <CARTA.FileListResponse>await Utility.getEventAsync(Connection, CARTA.FileListResponse);
@@ -94,7 +95,7 @@ describe("ACCESS_CARTA_APIKEY tests: Testing connections to the backend with an 
 
     });
 
-    afterAll( () => {
+    afterAll(() => {
         Connection.close();
     });
 });
