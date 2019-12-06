@@ -267,9 +267,14 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
 
             describe(`open the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let OpenFileAckTemp: CARTA.OpenFileAck;
-                test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms`, async () => {
+                let RegionHistogramDataTemp: CARTA.RegionHistogramData;
+                let ack: any = [];
+                test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpenGroup[index]);
-                    OpenFileAckTemp = await Connection.receive(CARTA.OpenFileAck);
+                    ack.push(await Connection.receiveAny());
+                    ack.push(await Connection.receiveAny()); // OpenFileAck | RegionHistogramData
+                    OpenFileAckTemp = ack.find(r => r.constructor.name === "OpenFileAck") as CARTA.OpenFileAck;
+                    RegionHistogramDataTemp = ack.find(r => r.constructor.name === "RegionHistogramData") as CARTA.RegionHistogramData;
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK.success = ${fileOpenAck.success}`, () => {
@@ -279,11 +284,6 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {
                     expect(OpenFileAckTemp.fileId).toEqual(fileOpenAck.fileId);
                 });
-
-                let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-                test(`REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                    RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
-                }, openFileTimeout);
 
                 test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {
                     expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);

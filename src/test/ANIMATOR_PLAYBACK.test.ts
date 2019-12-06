@@ -134,8 +134,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
             await Connection.send(CARTA.OpenFile, assertItem.fileOpens);
-            await Connection.receive(CARTA.OpenFileAck);
-            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
         });
 
         describe(`Play all images forwardly with looping`, () => {

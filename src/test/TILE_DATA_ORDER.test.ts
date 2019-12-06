@@ -162,8 +162,8 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receive(CARTA.OpenFileAck);
-                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
             });
 
             describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}" with ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {

@@ -88,8 +88,8 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.OpenFile, fileOpen);
-                await Connection.receive(CARTA.OpenFileAck);
-                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
                 await Connection.receive(CARTA.RasterTileData);
             }, connectTimeout);

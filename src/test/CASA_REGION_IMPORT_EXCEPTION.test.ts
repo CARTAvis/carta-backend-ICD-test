@@ -67,7 +67,8 @@ describe("CASA_REGION_IMPORT_EXCEPTION test: Testing import/export of CASA regio
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
         });
 
         assertItem.importRegionAck.map((regionAck, idxRegion) => {

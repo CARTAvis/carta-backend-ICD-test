@@ -194,8 +194,8 @@ describe("REGION_STATISTICS_ELLIPSE test: Testing statistics with ellipse region
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1, });
                 await Connection.send(CARTA.OpenFile, openFile);
-                await Connection.receive(CARTA.OpenFileAck);
-                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
                 await Connection.receive(CARTA.RasterTileData);
             });

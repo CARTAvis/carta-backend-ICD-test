@@ -268,8 +268,8 @@ describe("CURSOR_SPATIAL_PROFILE test: Testing if full resolution cursor spatial
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.OpenFile, fileOpen);
-                await Connection.receive(CARTA.OpenFileAck);
-                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannelGroup[index]);
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
                 await Connection.receive(CARTA.RasterTileData);

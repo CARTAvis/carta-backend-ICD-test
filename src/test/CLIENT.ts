@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 
 export class Client {
-    IcdVersion: number = 10;
+    IcdVersion: number = 11;
     CartaType = new Map<number, any>([
         [ 0, CARTA.ErrorData],
         [ 1, CARTA.RegisterViewer],
@@ -231,6 +231,7 @@ export class Client {
             RegionStatsData: [],
             RegionHistogramData: [],
             SpectralProfileData: [],
+            Responce: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -246,7 +247,7 @@ export class Client {
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
-                let _profileData;
+                let data;
                 switch (this.CartaType.get(eventNumber)) {
                     case CARTA.RasterTileData:
                         ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
@@ -261,16 +262,17 @@ export class Client {
                         ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
                         break;
                     case CARTA.SpatialProfileData:
-                        _profileData = CARTA.SpatialProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map(p => processSpatialProfile(p));
-                        ack.SpatialProfileData.push(_profileData);
+                        data = CARTA.SpatialProfileData.decode(eventData);
+                        data.profiles = data.profiles.map(p => processSpatialProfile(p));
+                        ack.SpatialProfileData.push(data);
                         break;
                     case CARTA.SpectralProfileData:
-                        _profileData = CARTA.SpectralProfileData.decode(eventData);
-                        _profileData.profiles = _profileData.profiles.map(p => processSpectralProfile(p));
-                        ack.SpectralProfileData.push(_profileData);
+                        data = CARTA.SpectralProfileData.decode(eventData);
+                        data.profiles = data.profiles.map(p => processSpectralProfile(p));
+                        ack.SpectralProfileData.push(data);
                         break;
                     default:
+                        ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
                         break;
                 }
 
@@ -290,6 +292,7 @@ export interface AckStream {
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
+    Responce: any[],
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {

@@ -120,8 +120,8 @@ describe(`TILE_DATA_REQUEST test: Testing tile requesting messages "SET_IMAGE_CH
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.receive(CARTA.OpenFileAck);
-            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
         });
 
         describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}"`, () => {

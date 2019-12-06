@@ -190,7 +190,8 @@ describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region f
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
         });
 
         describe(`Import "${assertItem.importRegion.file}"`, () => {

@@ -133,8 +133,8 @@ describe("REGION_DATA_STREAM test: Testing data streaming with regions", () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
-            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.receiveAny();
+            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
             await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
             await Connection.receive(CARTA.RasterTileData);
             await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
