@@ -193,7 +193,8 @@ export class Client {
                 }
 
                 let data;
-                switch (this.CartaType.get(eventNumber)) {
+                let type = this.CartaType.get(eventNumber);
+                switch (type) {
                     case CARTA.SpatialProfileData:
                         data = CARTA.SpatialProfileData.decode(eventData);
                         data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -203,7 +204,7 @@ export class Client {
                         data.profiles = data.profiles.map(p => processSpectralProfile(p));
                         break;
                     default:
-                        data = this.CartaType.get(eventNumber).decode(eventData);
+                        data = type.decode(eventData);
                         break;
                 }
                 resolve(data);

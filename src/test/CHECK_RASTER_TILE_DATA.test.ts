@@ -205,15 +205,15 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
 
         describe(`Open image "${assertItem.fileOpen.file}"`, () => {
             let OpenFileAckTemp: CARTA.OpenFileAck;
-            let ack: any = [];
+            let ack: any[] = [];
             test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack.push(await Connection.receiveAny());
                 ack.push(await Connection.receiveAny()); // OpenFileAck | RegionHistogramData
-                OpenFileAckTemp = ack.find(r => r.constructor.name === "OpenFileAck") as CARTA.OpenFileAck;
             }, openFileTimeout);
 
             test(`OPEN_FILE_ACK.success = ${assertItem.fileOpenAck.success}`, () => {
+                OpenFileAckTemp = ack.find(r => r.constructor.name === CARTA.OpenFileAck.name) as CARTA.OpenFileAck;
                 expect(OpenFileAckTemp.success).toBe(assertItem.fileOpenAck.success);
             });
 

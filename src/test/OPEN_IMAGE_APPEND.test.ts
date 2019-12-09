@@ -30,31 +30,31 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory,
             file: "M17_SWex.fits",
-            hdu: "0",
+            hdu: "",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
             tileSize: 256,
         },
         {
             directory: testSubdirectory,
-            file: "M17_SWex.hdf5",
-            hdu: "0",
+            file: "M17_SWex.image",
+            hdu: "",
             fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
             tileSize: 256,
         },
         {
             directory: testSubdirectory,
-            file: "M17_SWex.image",
-            hdu: "0",
+            file: "M17_SWex.miriad",
+            hdu: "",
             fileId: 2,
             renderMode: CARTA.RenderMode.RASTER,
             tileSize: 256,
         },
         {
             directory: testSubdirectory,
-            file: "M17_SWex.miriad",
-            hdu: "0",
+            file: "M17_SWex.hdf5",
+            hdu: "",
             fileId: 3,
             renderMode: CARTA.RenderMode.RASTER,
             tileSize: 256,
@@ -268,16 +268,15 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
             describe(`open the file "${assertItem.fileOpenGroup[index].file}"`, () => {
                 let OpenFileAckTemp: CARTA.OpenFileAck;
                 let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-                let ack: any = [];
+                let ack: any[] = [];
                 test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpenGroup[index]);
                     ack.push(await Connection.receiveAny());
                     ack.push(await Connection.receiveAny()); // OpenFileAck | RegionHistogramData
-                    OpenFileAckTemp = ack.find(r => r.constructor.name === "OpenFileAck") as CARTA.OpenFileAck;
-                    RegionHistogramDataTemp = ack.find(r => r.constructor.name === "RegionHistogramData") as CARTA.RegionHistogramData;
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK.success = ${fileOpenAck.success}`, () => {
+                    OpenFileAckTemp = ack.find(r => r.constructor.name === CARTA.OpenFileAck.name) as CARTA.OpenFileAck;
                     expect(OpenFileAckTemp.success).toBe(fileOpenAck.success);
                 });
 
@@ -286,6 +285,7 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
                 });
 
                 test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {
+                    RegionHistogramDataTemp = ack.find(r => r.constructor.name === CARTA.RegionHistogramData.name) as CARTA.RegionHistogramData;
                     expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);
                 });
 
