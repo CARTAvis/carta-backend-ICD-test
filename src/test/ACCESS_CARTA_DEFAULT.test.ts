@@ -47,8 +47,11 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 
-        test("REGISTER_VIEWER_ACK.message is empty", () => {
-            expect(RegisterViewerAckTemp.message).toBe("");
+        test("REGISTER_VIEWER_ACK.message is be defined ", () => {
+            expect(RegisterViewerAckTemp.message).toBeDefined();
+            if (RegisterViewerAckTemp.message !== ""){
+                console.warn(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAckTemp.message}" @${new Date()}`)
+            };
         });
 
         test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
