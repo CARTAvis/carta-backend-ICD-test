@@ -10,7 +10,7 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile; //3000
 let regionTimeout = config.timeout.region;
-let cubeHistogramTimeout = config.timeout.cubeHistogram;
+let cubeHistogramTimeout = 200000;//config.timeout.cubeHistogram;
 let messageReturnTimeout = config.timeout.readFile; //3000
 
 interface AssertItem {
@@ -228,12 +228,22 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
         });
 
         describe(`Set histogram requirements (Step 5)`, () => {
-            test(`REGION_HISTOGRAM_DATA should arrive completely within ${cubeHistogramTimeout} ms`, async () => {
+            test(`REGION_HISTOGRAM_DATA should arrive completely within ${cubeHistogramTimeout} ms:`, async () => {
                 await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram);
-                // await Connection.receive(CARTA.RegionHistogramData);
                 let RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
-                // expect(RegionHistogramDataTemp.progress).toEqual(1);
-                console.warn('progress :', RegionHistogramDataTemp.progress);
+                let ReceiveProgress: number = RegionHistogramDataTemp.progress;
+
+                if (ReceiveProgress != 1) {
+                    while (ReceiveProgress <= 1) {
+                        RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
+                        ReceiveProgress = RegionHistogramDataTemp.progress
+                        console.warn('Step 5 Region Histogram progress :', ReceiveProgress)
+                        if (ReceiveProgress == 1) {
+                            break;
+                        }
+                    };
+                    expect(ReceiveProgress).toEqual(1);
+                };
             }, cubeHistogramTimeout);
         });
 
