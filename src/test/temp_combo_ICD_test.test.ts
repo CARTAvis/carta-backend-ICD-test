@@ -234,16 +234,14 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
                 let ReceiveProgress: number = RegionHistogramDataTemp.progress;
 
                 if (ReceiveProgress != 1) {
-                    while (ReceiveProgress <= 1) {
+                    while (ReceiveProgress < 1) {
                         RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
                         ReceiveProgress = RegionHistogramDataTemp.progress
                         console.warn('Step 5 Region Histogram progress :', ReceiveProgress)
-                        if (ReceiveProgress == 1) {
-                            break;
-                        }
                     };
                     expect(ReceiveProgress).toEqual(1);
                 };
+
             }, cubeHistogramTimeout);
         });
 
@@ -264,8 +262,18 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
             test(`Step 7 should return`, async () => {
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[0]);
                 SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                console.warn(SpectralProfileDataTemp.progress)
-            });
+                let ReceiveProgress: number = SpectralProfileDataTemp.progress;
+
+                if (ReceiveProgress != 1) {
+                    while (ReceiveProgress < 1) {
+                        SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+                        ReceiveProgress = SpectralProfileDataTemp.progress
+                        console.warn('Step 7 SpectralProfileData progress :', ReceiveProgress)
+                    };
+                    expect(ReceiveProgress).toEqual(1);
+                };
+
+            }, 10000);
         });
 
         describe(`set spectral requirement 2 (Step 8)`, () => {
@@ -273,8 +281,18 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
             test(`Step 8 should return`, async () => {
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[1]);
                 SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                console.warn(SpectralProfileDataTemp.progress)
-            });
+                let ReceiveProgress: number = SpectralProfileDataTemp.progress;
+
+                if (ReceiveProgress != 1) {
+                    while (ReceiveProgress < 1) {
+                        SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+                        ReceiveProgress = SpectralProfileDataTemp.progress;
+                        console.warn('Step 8 SpectralProfileData progress :', ReceiveProgress)
+                    };
+                    expect(ReceiveProgress).toEqual(1);
+                };
+
+            }, 15000);
         });
 
         describe(`set spectral requirement 3 (Step 9)`, () => {
