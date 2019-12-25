@@ -300,15 +300,36 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
             test(`Step 9 should return`, async () => {
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[2]);
                 SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                let regionHistogramProgress = SpectralProfileDataTemp.progress;
-                console.warn(regionHistogramProgress);
-                let SpectralProfileDataTemp2: CARTA.ISetSpectralRequirements;
-                if (regionHistogramProgress > 0.01) {
-                    await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[3]);
-                    let SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
-                    console.warn(SpectralProfileDataTemp2.progress);
-                }
-            });
+                let ReceiveProgress1: number = SpectralProfileDataTemp.progress;
+                let Step9Requiest2ReceiveComplete: boolean = false;
+
+                if (ReceiveProgress1 != 1) {
+                    while (ReceiveProgress1 < 1) {
+                        SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+                        ReceiveProgress1 = SpectralProfileDataTemp.progress;
+                        console.warn('Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress:', ReceiveProgress1);
+
+                        let SpectralProfileDataTemp2: CARTA.ISetSpectralRequirements;
+                        if ((Step9Requiest2ReceiveComplete === false) && (ReceiveProgress1 > 0.5)) {
+                            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[3]);
+                            let ReceiveProgress2: number = 0;
+                            while (ReceiveProgress2 < 1) {
+                                SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
+                                if (SpectralProfileDataTemp2.regionId == assertItem.setSpectralRequirementsGroup[3].regionId) {
+                                    ReceiveProgress2 = SpectralProfileDataTemp2.progress;
+                                };
+                                console.log('Step 9 request 2 for region ' + SpectralProfileDataTemp2.regionId + ' progress:', ReceiveProgress2)
+                            };
+                            if (ReceiveProgress2 === 1) {
+                                console.log('Step 9 request 2 for region ' + SpectralProfileDataTemp2.regionId + ' complete!')
+                                Step9Requiest2ReceiveComplete = true;
+                                break;
+                            }
+                        };
+                    };
+                };
+                // console.warn('Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress: ', ReceiveProgress1)
+            }, 30000);
         });
 
         describe(`Set spatial requirements (Step 10)`, () => {
