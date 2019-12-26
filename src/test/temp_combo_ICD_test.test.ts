@@ -115,14 +115,7 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
                         CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
                     ],
                 }
             ],
@@ -134,14 +127,7 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
                         CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
                     ],
                 }
             ],
@@ -153,14 +139,7 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
                         CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
                     ],
                 }
             ],
@@ -172,14 +151,7 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
                         CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
                     ],
                 }
             ],
