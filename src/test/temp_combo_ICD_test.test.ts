@@ -1,6 +1,7 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
+import * as Long from "long";
 import { async } from "q";
 import { AckStream } from "./testUtilityFunction";
 import { AnyARecord } from "dns";
@@ -22,8 +23,13 @@ interface AssertItem {
     histogram: CARTA.ISetHistogramRequirements;
     regionGroup: CARTA.ISetRegion[];
     setSpectralRequirementsGroup: CARTA.ISetSpectralRequirements[];
-    spatial: CARTA.ISetSpatialRequirements[];
+    spatial: CARTA.ISetSpatialRequirements;
     startAnimation: CARTA.IStartAnimation[];
+    animationFlowControl: CARTA.IAnimationFlowControl;
+    stopAnimation: CARTA.IStopAnimation;
+    AnimationSetImageChannels: CARTA.ISetImageChannels[];
+    imageDataInfo: CARTA.ISetImageView;
+    AnimateImageChannels: CARTA.ISetImageChannels[];
 };
 
 let assertItem: AssertItem = {
@@ -162,6 +168,74 @@ let assertItem: AssertItem = {
         regionId: 0,
         spatialProfiles: ["x", "y"],
     },
+    startAnimation:
+        [
+            {
+                fileId: 0,
+                startFrame: { channel: 1, stokes: 0 },
+                firstFrame: { channel: 0, stokes: 0 },
+                lastFrame: { channel: 1916, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                looping: true,
+                reverse: false,
+                frameRate: 15,
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMin: 0, xMax: 1920, yMin: 0, yMax: 1920 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                    numSubsets: 4,
+                },
+            },
+        ],
+    animationFlowControl:
+    {
+        fileId: 0,
+        animationId: 0,
+    },
+    stopAnimation:
+    {
+        fileId: 0,
+        endFrame: { channel: 21, stokes: 0 },
+    },
+    AnimationSetImageChannels:
+        [
+            {
+                fileId: 0,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+        ],
+    imageDataInfo:
+    {
+        fileId: 0,
+        imageBounds: { xMin: 0, xMax: 1920, yMin: 0, yMax: 1920 },
+        mip: 4,
+        compressionType: CARTA.CompressionType.ZFP,
+        compressionQuality: 16,
+        numSubsets: 4,
+    },
+    AnimateImageChannels:
+        [
+            {
+                fileId: 0,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313], //???
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+        ],
 };
 
 describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
@@ -311,6 +385,63 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
             }, regionTimeout);
         });
 
+        describe(`Start Animation: Play all images forwardly with looping (Step 11)`, () => {
+            let RasterImageData: CARTA.RasterImageData[] = [];
+            let sequence: number[] = [];
+            let Ack: any;
+            let FirstChannelSpatialProfileData: any;
+            let lastRasterImageData: any;
+            let lastSpatialProfileData: any;
+            test(`Start animation?`, async () => {
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[0]);
+                Ack = await Connection.receive(CARTA.StartAnimationAck);
+                expect(Ack.success).toBe(true);
+
+                for (let i = 0; i < 20; i++) {
+                    RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                    if (i === 0) {
+                        await Connection.send(CARTA.SetImageView, assertItem.imageDataInfo);
+                        FirstChannelSpatialProfileData = await Connection.receive(CARTA.SpatialProfileData);
+                        console.log(FirstChannelSpatialProfileData);
+                    };
+
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: RasterImageData[i].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+
+                    sequence.push(RasterImageData[i].channel);
+                };
+
+                // console.log(RasterImageData);
+                // console.log(sequence);
+
+                await Connection.send(CARTA.StopAnimation, CARTA.StopAnimation);
+                lastRasterImageData = await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData;
+                lastSpatialProfileData = await Connection.receive(CARTA.SpatialProfileData) as CARTA.SpectralProfileData;
+                // console.log(lastRasterImageData.channel); // lastRasterImage, channel: 20
+                // console.log(lastSpatialProfileData)
+
+            }, 60000);
+
+            test(`Check the channel of last RasterImageData`, () => {
+                expect(lastRasterImageData.channel).toEqual(21);
+            });
+
+            let RasterTileDataTempTotal: any;
+            test(`Check animation set image channels:`, async () => {
+                await Connection.send(CARTA.SetImageChannels, assertItem.AnimationSetImageChannels[0]);
+                RasterTileDataTempTotal = await Connection.stream(assertItem.AnimationSetImageChannels[0].requiredTiles.tiles.length);
+                expect(RasterTileDataTempTotal.RasterTileData.length).toEqual(assertItem.AnimationSetImageChannels[0].requiredTiles.tiles.length);
+            }, 10000);
+
+        });
 
     });
     afterAll(() => Connection.close());
