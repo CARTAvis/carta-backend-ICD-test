@@ -422,7 +422,7 @@ describe(`One user, One backend, Multiple heavy actions (Step 1):`, () => {
                 // console.log(RasterImageData);
                 // console.log(sequence);
 
-                await Connection.send(CARTA.StopAnimation, CARTA.StopAnimation);
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
                 lastRasterImageData = await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData;
                 lastSpatialProfileData = await Connection.receive(CARTA.SpatialProfileData) as CARTA.SpectralProfileData;
                 // console.log(lastRasterImageData.channel); // lastRasterImage, channel: 20

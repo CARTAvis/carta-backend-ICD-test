@@ -1,5 +1,5 @@
 {
-    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
+    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketicd",
     "serverURL0": "ws://127.0.0.1:3002",
     "path": {
         "root": ".",
