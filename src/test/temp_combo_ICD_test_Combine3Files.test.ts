@@ -796,7 +796,7 @@ describe(`One user, One backend, Multiple heavy actions with Multiple large-size
                         sequence.push(RasterImageData[i].channel);
                     };
 
-                    console.log(RasterImageData);
+                    // console.log(RasterImageData);
                     console.log(sequence);
 
                     await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[FileIndex]);
