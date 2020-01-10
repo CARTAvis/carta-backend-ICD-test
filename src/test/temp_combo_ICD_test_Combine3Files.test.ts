@@ -23,7 +23,12 @@ interface AssertItem {
     regionGroup: CARTA.ISetRegion[];
     setSpectralRequirementsGroup: CARTA.ISetSpectralRequirements[];
     spatial: CARTA.ISetSpatialRequirements[];
-    // startAnimation: CARTA.IStartAnimation[];
+    startAnimation: CARTA.IStartAnimation[];
+    animationFlowControl: CARTA.IAnimationFlowControl[];
+    stopAnimation: CARTA.IStopAnimation[];
+    AnimationSetImageChannels: CARTA.ISetImageChannels[];
+    imageDataInfo: CARTA.ISetImageView[];
+    AnimateImageChannels: CARTA.ISetImageChannels[];
 };
 
 let assertItem: AssertItem = {
@@ -423,6 +428,192 @@ let assertItem: AssertItem = {
             spatialProfiles: ["x", "y"],
         },
     ],
+    startAnimation:
+        [
+            {
+                fileId: 0,
+                startFrame: { channel: 1, stokes: 0 },
+                firstFrame: { channel: 0, stokes: 0 },
+                lastFrame: { channel: 1916, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                looping: true,
+                reverse: false,
+                frameRate: 15,
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMin: 0, xMax: 1920, yMin: 0, yMax: 1920 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                    numSubsets: 4,
+                },
+            },
+            {
+                fileId: 1,
+                startFrame: { channel: 1, stokes: 0 },
+                firstFrame: { channel: 0, stokes: 0 },
+                lastFrame: { channel: 1919, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                looping: true,
+                reverse: false,
+                frameRate: 15,
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMin: 0, xMax: 2800, yMin: 0, yMax: 2800 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                    numSubsets: 4,
+                },
+            },
+            {
+                fileId: 2,
+                startFrame: { channel: 1, stokes: 0 },
+                firstFrame: { channel: 0, stokes: 0 },
+                lastFrame: { channel: 249, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                looping: true,
+                reverse: false,
+                frameRate: 15,
+                imageView: {
+                    fileId: 0,
+                    imageBounds: { xMin: 0, xMax: 8400, yMin: 0, yMax: 8400 },
+                    mip: 4,
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 16,
+                    numSubsets: 4,
+                },
+            },
+        ],
+    animationFlowControl:
+        [
+            {
+                fileId: 0,
+                animationId: 0,
+            },
+            {
+                fileId: 1,
+                animationId: 0,
+            },
+            {
+                fileId: 2,
+                animationId: 0,
+            },
+        ],
+    stopAnimation:
+        [
+            {
+                fileId: 0,
+                endFrame: { channel: 21, stokes: 0 },
+            },
+            {
+                fileId: 1,
+                endFrame: { channel: 21, stokes: 0 },
+            },
+            {
+                fileId: 2,
+                endFrame: { channel: 21, stokes: 0 },
+            },
+        ],
+    AnimationSetImageChannels:
+        [
+            {
+                fileId: 0,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+            {
+                fileId: 1,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+            {
+                fileId: 2,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+        ],
+    imageDataInfo:
+        [
+            {
+                fileId: 0,
+                imageBounds: { xMin: 0, xMax: 1920, yMin: 0, yMax: 1920 },
+                mip: 4,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 16,
+                numSubsets: 4,
+            },
+            {
+                fileId: 1,
+                imageBounds: { xMin: 0, xMax: 2800, yMin: 0, yMax: 2800 },
+                mip: 4,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 16,
+                numSubsets: 4,
+            },
+            {
+                fileId: 2,
+                imageBounds: { xMin: 0, xMax: 8400, yMin: 0, yMax: 8400 },
+                mip: 4,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 16,
+                numSubsets: 4,
+            },
+        ],
+    AnimateImageChannels:
+        [
+            {
+                fileId: 0,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313], //???
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+            {
+                fileId: 1,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313], //???
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+            {
+                fileId: 2,
+                channel: 21,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [16777216, 16781312, 16777217, 16781313], //???
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+        ],
 };
 
 describe(`One user, One backend, Multiple heavy actions with Multiple large-size data:`, () => {
@@ -544,42 +735,42 @@ describe(`One user, One backend, Multiple heavy actions with Multiple large-size
                 }, cubeHistogramTimeout);
             });
 
-            describe(`set spectral requirement 3 (Step 9)`, () => {
-                let SpectralProfileDataTemp: CARTA.ISetSpectralRequirements;
-                test(`Step 9 should return`, async () => {
-                    await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 2]);
-                    SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                    let ReceiveProgress1: number = SpectralProfileDataTemp.progress;
-                    let Step9Requiest2ReceiveComplete: boolean = false;
+            // describe(`set spectral requirement 3 (Step 9)`, () => {
+            //     let SpectralProfileDataTemp: CARTA.ISetSpectralRequirements;
+            //     test(`Step 9 should return`, async () => {
+            //         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 2]);
+            //         SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+            //         let ReceiveProgress1: number = SpectralProfileDataTemp.progress;
+            //         let Step9Requiest2ReceiveComplete: boolean = false;
 
-                    if (ReceiveProgress1 != 1) {
-                        while (ReceiveProgress1 < 1) {
-                            SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                            ReceiveProgress1 = SpectralProfileDataTemp.progress;
-                            console.warn('File #' + FileIndex + ' Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress:', ReceiveProgress1);
+            //         if (ReceiveProgress1 != 1) {
+            //             while (ReceiveProgress1 < 1) {
+            //                 SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+            //                 ReceiveProgress1 = SpectralProfileDataTemp.progress;
+            //                 console.warn('File #' + FileIndex + ' Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress:', ReceiveProgress1);
 
-                            let SpectralProfileDataTemp2: CARTA.ISetSpectralRequirements;
-                            if ((Step9Requiest2ReceiveComplete === false) && (ReceiveProgress1 > 0.5)) {
-                                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 3]);
-                                let ReceiveProgress2: number = 0;
-                                while (ReceiveProgress2 < 1) {
-                                    SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
-                                    if (SpectralProfileDataTemp2.regionId == assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 3].regionId) {
-                                        ReceiveProgress2 = SpectralProfileDataTemp2.progress;
-                                    };
-                                    console.log('File #' + FileIndex + ' Step 9 request 2 for region ' + SpectralProfileDataTemp2.regionId + ' progress:', ReceiveProgress2)
-                                };
-                                if (ReceiveProgress2 === 1) {
-                                    console.log('File #' + FileIndex + ' Step 9 request 2 for region' + SpectralProfileDataTemp2.regionId + ' complete!')
-                                    Step9Requiest2ReceiveComplete = true;
-                                    break;
-                                }
-                            };
-                        };
-                    };
-                    // console.warn('Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress: ', ReceiveProgress1)
-                }, 1000000);
-            });
+            //                 let SpectralProfileDataTemp2: CARTA.ISetSpectralRequirements;
+            //                 if ((Step9Requiest2ReceiveComplete === false) && (ReceiveProgress1 > 0.5)) {
+            //                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 3]);
+            //                     let ReceiveProgress2: number = 0;
+            //                     while (ReceiveProgress2 < 1) {
+            //                         SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
+            //                         if (SpectralProfileDataTemp2.regionId == assertItem.setSpectralRequirementsGroup[FileIndex * 4 + 3].regionId) {
+            //                             ReceiveProgress2 = SpectralProfileDataTemp2.progress;
+            //                         };
+            //                         console.log('File #' + FileIndex + ' Step 9 request 2 for region ' + SpectralProfileDataTemp2.regionId + ' progress:', ReceiveProgress2)
+            //                     };
+            //                     if (ReceiveProgress2 === 1) {
+            //                         console.log('File #' + FileIndex + ' Step 9 request 2 for region' + SpectralProfileDataTemp2.regionId + ' complete!')
+            //                         Step9Requiest2ReceiveComplete = true;
+            //                         break;
+            //                     }
+            //                 };
+            //             };
+            //         };
+            //         // console.warn('Step 9 request 1 for region ' + SpectralProfileDataTemp.regionId + ' progress: ', ReceiveProgress1)
+            //     }, 1000000);
+            // });
 
             describe(`Set spatial requirements (Step 10)`, () => {
                 test(`SPATIAL_PROFILE_DATA should arrive within ${regionTimeout} ms`, async () => {
@@ -587,6 +778,47 @@ describe(`One user, One backend, Multiple heavy actions with Multiple large-size
                     await Connection.send(CARTA.SetSpatialRequirements, assertItem.spatial[FileIndex])
                     let SpatialProfileDataTempStep10 = await Connection.receive(CARTA.SpatialProfileData);
                 }, regionTimeout);
+            });
+
+            describe(`Start Animation: Play all images forwardly with looping (Step 11)`, () => {
+                let RasterImageData: CARTA.RasterImageData[] = [];
+                let sequence: number[] = [];
+                let Ack: any;
+                let lastRasterImageData: any;
+                let lastSpatialProfileData: any;
+                test(`Start animation?`, async () => {
+                    await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[FileIndex]);
+                    Ack = await Connection.receive(CARTA.StartAnimationAck);
+                    expect(Ack.success).toBe(true);
+
+                    for (let i = 0; i < 20; i++) {
+                        RasterImageData.push(await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData);
+                        sequence.push(RasterImageData[i].channel);
+                    };
+
+                    console.log(RasterImageData);
+                    console.log(sequence);
+
+                    await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[FileIndex]);
+                    lastRasterImageData = await Connection.receive(CARTA.RasterImageData) as CARTA.RasterImageData;
+                    lastSpatialProfileData = await Connection.receive(CARTA.SpatialProfileData) as CARTA.SpectralProfileData;
+
+                    console.log(lastRasterImageData.channel); // lastRasterImage, channel: 20
+                    console.log(lastSpatialProfileData)
+
+                }, 60000);
+
+                test(`Check the channel of last RasterImageData`, () => {
+                    expect(lastRasterImageData.channel).toEqual(21);
+                });
+
+                let RasterTileDataTempTotal: any;
+                test(`Check animation set image channels:`, async () => {
+                    await Connection.send(CARTA.SetImageChannels, assertItem.AnimationSetImageChannels[FileIndex]);
+                    RasterTileDataTempTotal = await Connection.stream(assertItem.AnimationSetImageChannels[FileIndex].requiredTiles.tiles.length);
+                    expect(RasterTileDataTempTotal.RasterTileData.length).toEqual(assertItem.AnimationSetImageChannels[FileIndex].requiredTiles.tiles.length);
+                }, 10000);
+
             });
 
 
