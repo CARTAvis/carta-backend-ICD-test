@@ -6,7 +6,7 @@
         "base": "$BASE",
         "directory": ".",
         "QA": "set_QA",
-        "region": "set_QA/set_QA_regionTest",
+        "region": "set_QA_performance",
         "performance": "set_QA_performance"
     },
     "timeout": {
