@@ -10,6 +10,9 @@ describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", 
 
         // While open a Websocket
         Connection.onopen = () => {
+            if (config.log.event) {
+                console.log(testRemoteWebsocketSite + "  opened");
+            }
             Connection.close();
             done();     // Return to this test
         };
@@ -21,17 +24,24 @@ describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", 
         expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         
         Connection.onopen = OnOpen;
-        Connection.onclose = OnClose;
 
         function OnOpen (this: WebSocket, ev: Event) {
             expect(this.readyState).toBe(WebSocket.OPEN);
+            if (config.log.event) {
+                console.log(testServerUrl + "  opened");
+            }
             
             this.close();
             expect(this.readyState).toBe(WebSocket.CLOSING);
-        }
-        function OnClose (this: WebSocket, ev: CloseEvent) {
-            expect(this.readyState).toBe(WebSocket.CLOSED);
-            done();
+
+            Connection.onclose = OnClose;
+            function OnClose (this: WebSocket, ev: CloseEvent) {
+                expect(this.readyState).toBe(WebSocket.CLOSED);
+                if (config.log.event) {
+                    console.log(testServerUrl + "  closed");
+                }
+                done();
+            }
         }
 
     }, connectTimeout);
