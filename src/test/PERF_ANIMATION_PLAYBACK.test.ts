@@ -6,6 +6,7 @@ import { async } from "q";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
+let testSubdirectory2 = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 
 interface AssertItem {
@@ -15,10 +16,10 @@ interface AssertItem {
     setImageChannel: CARTA.ISetImageChannels[];
     cursor: CARTA.ISetCursor;
     startAnimation: CARTA.IStartAnimation[];
-    imageDataInfo: CARTA.ISetImageView;
+    imageDataInfo: CARTA.ISetImageView[];
     animationFlowControl: CARTA.IAnimationFlowControl;
     stopAnimation: CARTA.IStopAnimation;
-    AnimationSetImageChannels: CARTA.ISetImageChannels[];
+    imageChannels: CARTA.ISetImageChannels[];
 };
 
 let assertItem: AssertItem = {
@@ -35,9 +36,79 @@ let assertItem: AssertItem = {
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_04800_z00100.fits",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_09600_z00100.fits",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
         // {
         //     directory: testSubdirectory + "/cube_A",
-        //     file: "cube_A_04800_z00100.fits",
+        //     file: "cube_A_19200_z00100.fits",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER, //Problem getting tile layer =0 x=0 y=0
+        // },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_02400_z00100.image",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_04800_z00100.image",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_09600_z00100.image",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_19200_z00100.image",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_02400_z00100.hdf5",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_04800_z00100.hdf5",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory + "/cube_A",
+            file: "cube_A_09600_z00100.hdf5",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_19200_z00100.hdf5",
         //     hdu: "",
         //     fileId: 0,
         //     renderMode: CARTA.RenderMode.RASTER,
@@ -58,7 +129,7 @@ let assertItem: AssertItem = {
     ],
     cursor: {
         fileId: 0,
-        point: { x: 1, y: 1 },
+        point: { x: 0, y: 0 },
     },
     startAnimation:
         [
@@ -81,14 +152,16 @@ let assertItem: AssertItem = {
             },
         ],
     imageDataInfo:
-    {
-        fileId: 0,
-        imageBounds: { xMin: 0, xMax: 1600, yMin: 0, yMax: 1600 },
-        mip: 2,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 9,
-        numSubsets: 4,
-    },
+        [
+            {
+                fileId: 0,
+                imageBounds: { xMin: 0, xMax: 1600, yMin: 0, yMax: 1600 },
+                mip: 2,
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 9,
+                numSubsets: 4,
+            }
+        ],
     animationFlowControl:
     {
         fileId: 0,
@@ -99,7 +172,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         endFrame: { channel: 46, stokes: 0 },
     },
-    AnimationSetImageChannels:
+    imageChannels:
         [
             {
                 fileId: 0,
@@ -141,15 +214,12 @@ describe("PERF_CUBE_HISTOGRAM", () => {
                 expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             });
 
-            let RasterTileDataTempTotal: any;
-            let CursorResult: any;
+            let RasterImageDataTemp1: any;
             test(`(Step 1) Open file and Set "image channels" & "cursor:`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                RasterTileDataTempTotal = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length);
-                expect(RasterTileDataTempTotal.RasterTileData.length).toEqual(assertItem.setImageChannel[0].requiredTiles.tiles.length)
-
                 await Connection.send(CARTA.SetCursor, assertItem.cursor);
-                CursorResult = await Connection.receive(CARTA.SpatialProfileData);
+                RasterImageDataTemp1 = await Connection.receive(CARTA.RasterTileData);
+                // console.log(RasterImageDataTemp1);
             });
 
             describe(`(Step 2) Animation: `, () => {
@@ -161,8 +231,10 @@ describe("PERF_CUBE_HISTOGRAM", () => {
                 let lastSpatialProfileData: any;
                 let tt: any;
                 let tt2: any;
+                // let AnimationSetImageChannelsAck: any;
                 test(`send start_animation`, async () => {
                     await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[0]);
+                    await Connection.send(CARTA.SetImageView, assertItem.imageDataInfo[0]);
                     Ack = await Connection.receive(CARTA.StartAnimationAck);
                     expect(Ack.success).toBe(true);
 
@@ -185,16 +257,19 @@ describe("PERF_CUBE_HISTOGRAM", () => {
 
                     // console.log(RasterImageData);
                     // console.log(sequence);
+                    expect(sequence[sequence.length - 1]).toBe(46);
 
                     await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
-                    expect(sequence[sequence.length - 1]).toBe(46);
-                }, 60000)
+                }, 100000)
 
                 let AnimationSetImageChannelsAck: any;
+                let AnimationHistogramAck: any;
                 test(`Check animation set image channels:`, async () => {
-                    await Connection.send(CARTA.SetImageChannels, assertItem.AnimationSetImageChannels[0]);
-                    AnimationSetImageChannelsAck = await Connection.stream(1);
+                    await Connection.send(CARTA.SetImageChannels, assertItem.imageChannels[0]);
+                    AnimationSetImageChannelsAck = await Connection.receive(CARTA.RasterTileData);
+                    // AnimationHistogramAck = await Connection.receive(CARTA.RegionHistogramData);
                     console.log(AnimationSetImageChannelsAck);
+                    // console.log(AnimationHistogramAck);
                 }, 10000);
 
             });
