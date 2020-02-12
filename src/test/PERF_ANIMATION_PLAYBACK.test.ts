@@ -1,7 +1,7 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import * as Long from "long";
-import config from "./config2.json";
+import config from "./config.json";
 import { async } from "q";
 
 let testServerUrl: string = config.serverURL;

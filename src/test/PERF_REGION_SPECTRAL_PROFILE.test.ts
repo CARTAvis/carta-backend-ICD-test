@@ -1,7 +1,7 @@
 import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
-import config from "./config2.json";
+import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
