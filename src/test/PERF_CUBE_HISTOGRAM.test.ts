@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 import { async } from "q";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
@@ -37,69 +37,69 @@ let assertItem: AssertItem = {
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_09600_z00100.fits",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_19200_z00100.fits",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_02400_z00100.image",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_04800_z00100.image",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_09600_z00100.image",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_19200_z00100.image",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_02400_z00100.hdf5",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_04800_z00100.hdf5",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_09600_z00100.hdf5",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_09600_z00100.fits",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_19200_z00100.fits",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_02400_z00100.image",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_04800_z00100.image",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_09600_z00100.image",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_19200_z00100.image",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_02400_z00100.hdf5",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_04800_z00100.hdf5",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
+        // {
+        //     directory: testSubdirectory + "/cube_A",
+        //     file: "cube_A_09600_z00100.hdf5",
+        //     hdu: "",
+        //     fileId: 0,
+        //     renderMode: CARTA.RenderMode.RASTER,
+        // },
         // {
         //     directory: testSubdirectory + "/cube_A",
         //     file: "cube_A_19200_z00100.hdf5",

@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 import { async } from "q";
 
 let testServerUrl: string = config.serverURL;
@@ -144,7 +144,7 @@ describe("PERF_CONTOUR_DATA", () => {
                     while (ReceiveProgress < 1) {
                         ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
                         ReceiveProgress = ContourImageDataTemp.progress
-                        console.warn('' + assertItem.fileOpen[0].file + ' ContourImageData progress :', ReceiveProgress)
+                        // console.warn('' + assertItem.fileOpen[0].file + ' ContourImageData progress :', ReceiveProgress)
                     };
                     expect(ReceiveProgress).toEqual(1);
                 };
