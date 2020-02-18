@@ -11,12 +11,12 @@ now="$(date +'%Ss%Mm%Hh-%d-%m-%Y')"
 # npm test test-get-filelist-local.test.ts --no-color 2>output-$now.txt
 
 ## To make sure wakeUp
-npm test test-get-filelist.test.ts -- --watchAll=false --no-color 2>temp-$now.txt
+npm test GET_FILELIST.test.ts -- --watchAll=false --no-color 2>temp-$now.txt
 ExtractLine=$(grep "Tests:" temp-$now.txt)
 while [[ $ExtractLine == *"failed"* ]]
 do 
 rm -rf temp-$now.txt
-npm test test-get-filelist.test.ts -- --watchAll=false --no-color 2>temp-$now.txt
+npm test GET_FILELIST.test.ts -- --watchAll=false --no-color 2>temp-$now.txt
 ExtractLine=$(grep "Tests:" temp-$now.txt)
 echo $ExtractLine
 done
