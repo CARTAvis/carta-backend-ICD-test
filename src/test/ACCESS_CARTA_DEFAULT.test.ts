@@ -54,8 +54,8 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             };
         });
 
-        test("REGISTER_VIEWER_ACK.server_feature_flags = 0", () => {
-            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(0);
+        test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
+            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(8);
         });
     });
 });
