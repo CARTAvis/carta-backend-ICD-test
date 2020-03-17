@@ -119,6 +119,7 @@ describe("PER_CONTOUR_2D", () => {
                     RTDtemp = await Connection.receive(CARTA.RasterTileData);
                     total_RTDtemp.push(RTDtemp);
                 };
+                expect(total_RTDtemp.length).toBe(assertItem.addTilesReq[0].tiles.length);
 
             });
         });
