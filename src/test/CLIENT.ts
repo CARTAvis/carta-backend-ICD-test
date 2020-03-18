@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import config from "./config.json";
 
 export class Client {
@@ -9,7 +10,6 @@ export class Client {
         [ 2, CARTA.FileListRequest],
         [ 3, CARTA.FileInfoRequest],
         [ 4, CARTA.OpenFile],
-        [ 5, CARTA.SetImageView],
         [ 6, CARTA.SetImageChannels],
         [ 7, CARTA.SetCursor],
         [ 8, CARTA.SetSpatialRequirements],
@@ -28,7 +28,6 @@ export class Client {
         [21, CARTA.OpenFileAck],
         [22, CARTA.SetRegionAck],
         [23, CARTA.RegionHistogramData],
-        [24, CARTA.RasterImageData],
         [25, CARTA.SpatialProfileData],
         [26, CARTA.SpectralProfileData],
         [27, CARTA.RegionStatsData],
@@ -53,6 +52,7 @@ export class Client {
         [46, CARTA.ContourImageData],
         [47, CARTA.ResumeSession],
         [48, CARTA.ResumeSessionAck],
+        [49, CARTA.RasterTileSync],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
