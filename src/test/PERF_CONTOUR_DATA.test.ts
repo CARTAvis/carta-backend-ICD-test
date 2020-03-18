@@ -1,7 +1,7 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -128,6 +128,7 @@ describe("PERF_CONTOUR_DATA", () => {
             let CursorResult: any;
             test(`(Step 1) Open file and Set "image channels" & "cursor:`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
+                await Connection.receive(CARTA.RasterTileSync);
                 RasterTileDataTempTotal = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length);
                 expect(RasterTileDataTempTotal.RasterTileData.length).toEqual(assertItem.setImageChannel[0].requiredTiles.tiles.length)
 
