@@ -42,12 +42,10 @@ let assertItem: AssertItem = {
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     fileOpenAck: {
         success: true,
         fileFeatureFlags: 0,
-        tileSize: 256,
     },
     regionHistogram: {
         fileId: 0,
@@ -215,10 +213,6 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             test(`OPEN_FILE_ACK.success = ${assertItem.fileOpenAck.success}`, () => {
                 OpenFileAckTemp = ack.find(r => r.constructor.name === CARTA.OpenFileAck.name) as CARTA.OpenFileAck;
                 expect(OpenFileAckTemp.success).toBe(assertItem.fileOpenAck.success);
-            });
-
-            test(`OPEN_FILE_ACK.file_info.tile_size = ${assertItem.fileOpenAck.tileSize}`, () => {
-                expect(OpenFileAckTemp.tileSize).toEqual(assertItem.fileOpenAck.tileSize);
             });
 
         });
