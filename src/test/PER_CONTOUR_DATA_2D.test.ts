@@ -99,35 +99,20 @@ describe("PER_CONTOUR_2D", () => {
                 await Connection.receiveAny() // OpenFileAck | RegionHistogramData
             }, openFileTimeout);
 
-            test(`return SPATIAL_PROFILE_DATA *2 and check the information is corrected:`, async () => {
-                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                let SPD1 = await Connection.receive(CARTA.SpatialProfileData);
-                expect(SPD1.x).toEqual(1);
-
-                await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-                let SPD2 = await Connection.receive(CARTA.SpatialProfileData);
-                expect(SPD2.profiles[0].end).toEqual(8600);
-            });
-
-            test(`return RASTER_TILE_DATA and check total number `, async () => {
+            let Ack: AckStream;
+            test(`Initialised WCS info from frame: ADD_REQUIRED_TILES, SET_CURSOR, and SET_SPATIAL_REQUIREMENTS, then check them are all returned correctly:`, async () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
-
-                let total_RTDtemp = []
-                for (let i = 0; i < assertItem.addTilesReq[0].tiles.length; i++) {
-                    let RTDtemp: CARTA.RasterTileData;
-                    // RTDtemp = await Connection.receiveAny();
-                    RTDtemp = await Connection.receive(CARTA.RasterTileData);
-                    total_RTDtemp.push(RTDtemp);
-                };
-                expect(total_RTDtemp.length).toBe(assertItem.addTilesReq[0].tiles.length);
-
-            });
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
+                Ack = await Connection.stream(12) as AckStream;; // RasterTileData * 9 + SpatialProfileData * 1 + RasterTileSync * 2(start & end)
+                expect(Ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length);
+                // console.log(Ack)
+            }, playImageTimeout);
         });
 
         describe(`(Contour Tests)`, () => {
             test(`(Step 2) Set Default Contour Parameters:`, async () => {
                 await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
-                let total_CIDTemp = []
                 for (let i = 0; i < assertItem.setContour[0].levels.length; i++) {
                     let ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
                     let ReceiveProgress: number = ContourImageDataTemp.progress;
@@ -170,7 +155,6 @@ describe("PER_CONTOUR_2D", () => {
                 await Connection.send(CARTA.SetContourParameters,
                     { ...assertItem.setContour[1], smoothingMode: newnumber[0], smoothingFactor: newnumber2[0] }
                 );
-                let total_CIDTemp = []
                 for (let i = 0; i < assertItem.setContour[0].levels.length; i++) {
                     let ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
                     let ReceiveProgress: number = ContourImageDataTemp.progress;
