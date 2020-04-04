@@ -240,7 +240,44 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
+        describe(`(Step 5) Play images round-trip`, () => {
+            let AnimateStreamData: AckStream[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await Connection.send(CARTA.StartAnimation, {
+                    ...assertItem.startAnimation[0],
+                    reverse: true,
+                    requiredTiles: assertItem.addTilesReq[1]
+                });
+                // await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+                await Connection.receive(CARTA.StartAnimationAck);
 
+                for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
+                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl,
+                            receivedFrame: {
+                                channel: AnimateStreamData[i].RasterTileData[0].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
+                }
+                await Connection.send(CARTA.StopAnimation, CARTA.StopAnimation);
+                let lastRasterImageData = await Connection.stream(14) as AckStream;
+                // console.log(sequence);
+
+            }, playImageTimeout);
+
+            test(`Received image channels should be in sequence and then reverse:`, async () => {
+                console.log(`Channel index in roundtrip: ${sequence}`);
+                let previous: number = assertItem.startAnimation[0].lastFrame.channel;
+                expect(Math.abs(sequence[sequence.length - 1] - previous)).toEqual(0);
+            });
+        });
 
     });
 
