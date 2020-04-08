@@ -132,6 +132,10 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 animationId: 6,
             },
+            {
+                fileId: 0,
+                animationId: 7,
+            },
         ],
     setImageChannel:
         [
@@ -199,21 +203,21 @@ let assertItem: AssertItem = {
                 },
             },
         ],
-    // blinkAnimation:
-    // {
-    //     fileId: 0,
-    //     startFrame: { channel: 3, stokes: 0 },
-    //     firstFrame: { channel: 3, stokes: 0 },
-    //     lastFrame: { channel: 10, stokes: 0 },
-    //     deltaFrame: { channel: 7, stokes: 0 },
-    //     requiredTiles: {
-    //         fileId: 0,
-    //         tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
-    //         compressionType: CARTA.CompressionType.ZFP,
-    //         compressionQuality: 9,
-    //     },
-    //     looping: true,
-    // },
+    blinkAnimation:
+    {
+        fileId: 0,
+        startFrame: { channel: 3, stokes: 0 },
+        firstFrame: { channel: 3, stokes: 0 },
+        lastFrame: { channel: 10, stokes: 0 },
+        deltaFrame: { channel: 7, stokes: 0 },
+        requiredTiles: {
+            fileId: 0,
+            tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 9,
+        },
+        looping: true,
+    },
 };
 
 describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
@@ -475,6 +479,42 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     AnimateStreamData.map((imageData, index) => {
                         expect(sequence[index]).toEqual(animation.startFrame.channel - index);
                     });
+                });
+            });
+        });
+
+        describe(`Blink images bewteen ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
+            let AnimateStreamData: AckStream[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
+                for (let i = 0; i < 11; i++) {
+                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl[6],
+                            receivedFrame: {
+                                channel: AnimateStreamData[i].RasterTileData[0].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
+                }
+                await Connection.send(CARTA.StopAnimation, assertItem.startAnimation[2]);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
+                let lastRasterImageData = await Connection.stream(14) as AckStream;
+                // sequence.push(lastRasterImageData.channel);
+                // console.log(lastRasterImageData);
+                // console.log(sequence);
+            }, playImageTimeout);
+
+            test(`Received image channels should be in sequence`, async () => {
+                console.warn(`(Step 7) Blink channel index: ${sequence}`);
+                AnimateStreamData.map((imageData, index) => {
+                    expect(imageData.RasterTileData[0].channel === assertItem.blinkAnimation.firstFrame.channel || imageData.RasterTileData[0].channel === assertItem.blinkAnimation.lastFrame.channel).toBe(true);
                 });
             });
         });
