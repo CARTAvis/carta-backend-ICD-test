@@ -378,15 +378,17 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 };
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2]);
+
                 lastRasterImageData = await Connection.stream(16) as AckStream;
-                // console.log(lastRasterImageData);
+                console.log(lastRasterImageData);
                 // console.log(AnimateStreamData);
 
             }, playImageTimeout);
 
             test(`Last image on channel${JSON.stringify(assertItem.stopAnimation[2].endFrame)} should receive after stop`, async () => {
                 // console.log(lastRasterImageData.RasterTileData[0].channel);
-                expect(lastRasterImageData.RasterTileData[0].channel).toEqual(assertItem.stopAnimation[2].endFrame.channel);
+                expect(lastRasterImageData.RasterTileData[0].channel).toBeGreaterThanOrEqual(assertItem.stopAnimation[2].endFrame.channel);
+                expect(lastRasterImageData.RasterTileData[0].channel).toBeLessThan(assertItem.stopAnimation[2].endFrame.channel + 2.);
             });
         });
 
