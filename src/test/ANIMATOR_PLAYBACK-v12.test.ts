@@ -9,7 +9,7 @@ let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
-let playImageTimeout: number = config.timeout.playImages;
+let playImageTimeout: number = 10000;//config.timeout.playImages;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -234,6 +234,10 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
@@ -315,6 +319,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
+                await sleep(3000);
+                console.log('sleep!')
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[1],
                     looping: true,
@@ -364,6 +370,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let lastRasterImageData: AckStream;
             test(`Image should return one after one`, async () => {
+                await sleep(3000);
+                console.log('sleep!')
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[0],
                     looping: true,
@@ -408,6 +416,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
+                await sleep(3000);
+                console.log('sleep!')
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[0],
                     reverse: true,
@@ -451,6 +461,8 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 let AnimateStreamData: AckStream[] = [];
                 let sequence: number[] = [];
                 test(`Image should return one after one`, async () => {
+                    await sleep(3000);
+                    console.log('sleep!')
                     await Connection.send(CARTA.StartAnimation, animation);
                     await Connection.receive(CARTA.StartAnimationAck);
                     for (let i = 0; i < Math.abs(animation.lastFrame.channel - animation.firstFrame.channel); i++) {
@@ -483,10 +495,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
-        describe(`Blink images bewteen ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
+        describe(`(Step 7) Blink images bewteen ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
+                await sleep(3000);
+                console.log('sleep!')
                 await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
                 await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < 11; i++) {
