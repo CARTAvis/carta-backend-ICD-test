@@ -90,6 +90,19 @@ let assertItem: AssertItem = {
                     compressionQuality: 9,
                 },
             },
+            {
+                fileId: 0,
+                startFrame: { channel: 9, stokes: 0 },
+                firstFrame: { channel: 9, stokes: 0 },
+                lastFrame: { channel: 19, stokes: 0 },
+                deltaFrame: { channel: 1, stokes: 0 },
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 9,
+                },
+            },
         ],
     stopAnimation:
         [
@@ -103,7 +116,7 @@ let assertItem: AssertItem = {
             },
             {
                 fileId: 0,
-                endFrame: { channel: 10, stokes: 0 },
+                endFrame: { channel: 9, stokes: 0 },
             },
         ],
     animationFlowControl:
@@ -163,7 +176,7 @@ let assertItem: AssertItem = {
             },
             {
                 fileId: 0,
-                channel: 10,
+                channel: 9,
                 stokes: 0,
                 requiredTiles: {
                     fileId: 0,
@@ -366,14 +379,15 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
 
         });
 
-        describe(`(Step 4 )Play some channels until stop`, () => {
+        describe(`(Step 4 )Play some channels forwardly with looping until stop`, () => {
             let AnimateStreamData: AckStream[] = [];
             let lastRasterImageData: AckStream;
+            let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
                 await sleep(3000);
                 console.log('sleep!')
                 await Connection.send(CARTA.StartAnimation, {
-                    ...assertItem.startAnimation[0],
+                    ...assertItem.startAnimation[2],
                     looping: true,
                     reverse: false,
                     frameRate: 5,
@@ -381,7 +395,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
                 await Connection.receive(CARTA.StartAnimationAck);
 
-                for (let i = 0; i < assertItem.stopAnimation[2].endFrame.channel + 1; i++) {
+                for (let i = 0; i < 2 * Math.abs(assertItem.startAnimation[2].lastFrame.channel - assertItem.startAnimation[2].firstFrame.channel + 1); i++) {
                     // console.log(i);
                     AnimateStreamData.push(await Connection.stream(16) as AckStream);
                     await Connection.send(CARTA.AnimationFlowControl,
@@ -394,21 +408,23 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                             timestamp: Long.fromNumber(Date.now()),
                         }
                     );
+                    sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                     // console.log(AnimateStreamData[i].RasterTileData);
                 };
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2]);
 
                 lastRasterImageData = await Connection.stream(16) as AckStream;
-                console.warn('(Step 4) Last Raster Tile channel:', lastRasterImageData.RasterTileData[0].channel);
+                sequence.push(lastRasterImageData.RasterTileData[0].channel);
                 // console.log(AnimateStreamData);
+                // console.log(lastRasterImageData)
 
             }, playImageTimeout);
 
-            test(`Last image on channel should receive after stop and should be between ${JSON.stringify(assertItem.stopAnimation[2].endFrame.channel)} and ${JSON.stringify(assertItem.stopAnimation[2].endFrame.channel + 2.)}`, async () => {
-                // console.log(lastRasterImageData.RasterTileData[0].channel);
-                expect(lastRasterImageData.RasterTileData[0].channel).toBeGreaterThanOrEqual(assertItem.stopAnimation[2].endFrame.channel);
-                expect(lastRasterImageData.RasterTileData[0].channel).toBeLessThan(assertItem.stopAnimation[2].endFrame.channel + 3.);
+            test(`Last channel should be received after stop and should be ${JSON.stringify(assertItem.stopAnimation[2].endFrame.channel)}`, async () => {
+                console.warn(`(Step 4) Sequent channel index: ${sequence}`);
+                console.warn('(Step 4) Last Raster Tile channel:', lastRasterImageData.RasterTileData[0].channel);
+                expect(lastRasterImageData.RasterTileData[0].channel).toEqual(assertItem.stopAnimation[2].endFrame.channel);
             });
         });
 
@@ -479,9 +495,9 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                         );
                         sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                     }
-                    await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
-                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
-                    let lastRasterImageData = await Connection.stream(14) as AckStream;
+                    await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
+                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
+                    let lastRasterImageData = await Connection.stream(16) as AckStream;
                     // console.log(lastRasterImageData);
                     // console.log(sequence);
                 }, playImageTimeout);
@@ -495,7 +511,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
-        describe(`(Step 7) Blink images bewteen ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
+        describe(`(Step 7) Blink images between ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
@@ -517,9 +533,9 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 }
-                await Connection.send(CARTA.StopAnimation, assertItem.startAnimation[2]);
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
-                let lastRasterImageData = await Connection.stream(14) as AckStream;
+                await Connection.send(CARTA.StopAnimation, assertItem.startAnimation[0]);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
+                let lastRasterImageData = await Connection.stream(16) as AckStream;
                 // sequence.push(lastRasterImageData.channel);
                 // console.log(lastRasterImageData);
                 // console.log(sequence);
