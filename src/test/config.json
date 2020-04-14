@@ -25,7 +25,9 @@
         "region": 500,
         "import": 500,
         "export": 500,
-        "resume": 3000
+        "resume": 3000,
+        "sleep": 3000,
+        "playAnimator": 10000
     },
     "repeat": {
         "concurrent": 10,

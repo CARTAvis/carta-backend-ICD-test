@@ -10,6 +10,8 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let playImageTimeout: number = 10000;//config.timeout.playImages;
+let sleepTimeout: number = config.timeout.sleep
+let playAnimatorTimeout = config.timeout.playAnimator
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -248,7 +250,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     });
 
     function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise(resolve => setTimeout(resolve, ms)).then(() => { console.log('sleep!') });
     }
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
@@ -315,7 +317,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 // console.log(sequence); // show looping sequence
                 expect(sequence[sequence.length - 1]).toEqual(assertItem.stopAnimation[0].endFrame.channel);
 
-            }, playImageTimeout)
+            }, playAnimatorTimeout)
 
             test(`Received image channels should be in sequence`, async () => {
                 console.warn(`(Step 2) Sequent channel index: ${sequence}`);
@@ -332,8 +334,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await sleep(3000);
-                console.log('sleep!')
+                await sleep(sleepTimeout);
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[1],
                     looping: true,
@@ -366,7 +367,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 // console.log(sequence);
 
                 expect(sequence[sequence.length - 1]).toEqual(assertItem.stopAnimation[1].endFrame.channel);
-            }, playImageTimeout);
+            }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
                 console.warn(`(Step 3) Sequent channel index: ${sequence}`);
@@ -384,8 +385,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let lastRasterImageData: AckStream;
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await sleep(3000);
-                console.log('sleep!')
+                await sleep(sleepTimeout);
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[2],
                     looping: true,
@@ -419,7 +419,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 // console.log(AnimateStreamData);
                 // console.log(lastRasterImageData)
 
-            }, playImageTimeout);
+            }, playAnimatorTimeout);
 
             test(`Last channel should be received after stop and should be ${JSON.stringify(assertItem.stopAnimation[2].endFrame.channel)}`, async () => {
                 console.warn(`(Step 4) Sequent channel index: ${sequence}`);
@@ -432,8 +432,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await sleep(3000);
-                console.log('sleep!')
+                await sleep(sleepTimeout);
                 await Connection.send(CARTA.StartAnimation, {
                     ...assertItem.startAnimation[0],
                     reverse: true,
@@ -462,7 +461,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 // console.log(lastRasterImageData)
                 // console.log(sequence);
 
-            }, playImageTimeout);
+            }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence and then reverse:`, async () => {
                 console.warn(`(Step 5) Channel index in roundtrip: ${sequence}`);
@@ -477,8 +476,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 let AnimateStreamData: AckStream[] = [];
                 let sequence: number[] = [];
                 test(`Image should return one after one`, async () => {
-                    await sleep(3000);
-                    console.log('sleep!')
+                    await sleep(sleepTimeout);
                     await Connection.send(CARTA.StartAnimation, animation);
                     await Connection.receive(CARTA.StartAnimationAck);
                     for (let i = 0; i < Math.abs(animation.lastFrame.channel - animation.firstFrame.channel); i++) {
@@ -500,7 +498,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     let lastRasterImageData = await Connection.stream(16) as AckStream;
                     // console.log(lastRasterImageData);
                     // console.log(sequence);
-                }, playImageTimeout);
+                }, playAnimatorTimeout);
 
                 test(`Received image channels should be in sequence`, async () => {
                     console.warn(`(Step 6) Backward channel index with method${index + 1}: ${sequence}`);
@@ -515,8 +513,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             let AnimateStreamData: AckStream[] = [];
             let sequence: number[] = [];
             test(`Image should return one after one`, async () => {
-                await sleep(3000);
-                console.log('sleep!')
+                await sleep(sleepTimeout);
                 await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
                 await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < 11; i++) {
@@ -539,7 +536,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 // sequence.push(lastRasterImageData.channel);
                 // console.log(lastRasterImageData);
                 // console.log(sequence);
-            }, playImageTimeout);
+            }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
                 console.warn(`(Step 7) Blink channel index: ${sequence}`);
