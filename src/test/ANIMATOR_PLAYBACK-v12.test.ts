@@ -1,9 +1,7 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 import * as Long from "long";
-import { Field } from "protobufjs";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
