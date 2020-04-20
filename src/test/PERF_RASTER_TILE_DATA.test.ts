@@ -1,18 +1,18 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = 7000;//config.timeout.openFile; //7000
-let readFileTimeout: number = config.timeout.readFile; //5000
+let readFileTimeout: number = 5000;//config.timeout.readFile; //5000
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
+    addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor;
     setImageChannel: CARTA.ISetImageChannels[];
 }
@@ -108,6 +108,20 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
+    addTilesReq: [
+        {
+            fileId: 0,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
+        },
+        {
+            fileId: 0,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [67121157, 67121158, 67117061, 67117062, 67125253, 67121156, 67125254, 67117060, 67121159, 67125252, 67112965, 67117063, 67112966, 67125255, 67112964, 67121155, 67117059, 67112967, 67125251, 67121160, 67117064, 67125256, 67112963, 67112968, 67121154, 67117058, 67125250, 67112962],
+        },
+    ],
     setCursor: {
         fileId: 0,
         point: { x: 1, y: 1 },
@@ -121,10 +135,10 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 compressionType: CARTA.CompressionType.ZFP,
                 compressionQuality: 11,
-                tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
+                tiles: [0],
             },
         },
-    ]
+    ],
 }
 
 describe("PERF_LOAD_IMAGE", () => {
@@ -159,8 +173,16 @@ describe("PERF_LOAD_IMAGE", () => {
                     await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor);
 
-                    ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 3) as AckStream;
+                    ack = await Connection.stream(3) as AckStream;
                     // console.log(ack)
+                }, readFileTimeout);
+
+                let ack2: AckStream;
+                test(`(Step 2)"${assertItem.fileOpen[index].file}" RasterTileData responses should arrive within ${readFileTimeout} ms`, async () => {
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+
+                    ack2 = await Connection.stream(assertItem.addTilesReq[1].tiles.length + 2) as AckStream;
+                    // console.log(ack2)
                 }, readFileTimeout);
 
             });
