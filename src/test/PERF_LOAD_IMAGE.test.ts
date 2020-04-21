@@ -1,7 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;

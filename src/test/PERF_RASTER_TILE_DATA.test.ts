@@ -5,7 +5,7 @@ import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
-let openFileTimeout: number = 7000;//config.timeout.openFile; //7000
+let openFileTimeout: number = config.timeout.openFile; //7000
 let readFileTimeout: number = 5000;//config.timeout.readFile; //5000
 
 interface AssertItem {
@@ -25,42 +25,7 @@ let assertItem: AssertItem = {
     fileOpen: [
         {
             directory: testSubdirectory + "/cube_A",
-            file: "cube_A_02400_z00100.fits",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_04800_z00100.fits",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
             file: "cube_A_09600_z00100.fits",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_19200_z00100.fits",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_02400_z00100.image",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_04800_z00100.image",
             hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
@@ -74,35 +39,7 @@ let assertItem: AssertItem = {
         },
         {
             directory: testSubdirectory + "/cube_A",
-            file: "cube_A_19200_z00100.image",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_02400_z00100.hdf5",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_04800_z00100.hdf5",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
             file: "cube_A_09600_z00100.hdf5",
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory + "/cube_A",
-            file: "cube_A_19200_z00100.hdf5",
             hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
@@ -119,7 +56,9 @@ let assertItem: AssertItem = {
             fileId: 0,
             compressionQuality: 11,
             compressionType: CARTA.CompressionType.ZFP,
-            tiles: [67121157, 67121158, 67117061, 67117062, 67125253, 67121156, 67125254, 67117060, 67121159, 67125252, 67112965, 67117063, 67112966, 67125255, 67112964, 67121155, 67117059, 67112967, 67125251, 67121160, 67117064, 67125256, 67112963, 67112968, 67121154, 67117058, 67125250, 67112962],
+            // two tiles either works fine, the first one is the workable from KS, the second is from UI(layer=4)
+            tiles: [67141640, 67145736, 67145737, 67141641, 67137545, 67137544, 67137543, 67141639, 67145735, 67133449, 67133448, 67133447, 67133446, 67137542, 67141638, 67145734, 67129353, 67129352, 67129351, 67129350, 67129349, 67133445, 67137541, 67141637, 67145733, 67125257, 67125256, 67125255, 67125254, 67125253, 67125252, 67129348, 67133444, 67137540, 67141636, 67145732],
+            // tiles: [67121157, 67121158, 67125253, 67125254, 67117061, 67117062, 67121156, 67125252, 67121159, 67117060, 67125255, 67117063, 67121155, 67125251, 67117059, 67121160, 67125256, 67117064],
         },
     ],
     setCursor: {
@@ -185,6 +124,7 @@ describe("PERF_LOAD_IMAGE", () => {
                     // console.log(ack2)
                 }, readFileTimeout);
 
+                // console.log(assertItem.addTilesReq[1].tiles.length)
             });
 
         });
