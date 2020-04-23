@@ -122,7 +122,7 @@ describe("PERF_CONTOUR_DARA", () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, connectTimeout);
 
-            describe(`With smoothingMode of "${assertItem.setContour[index].smoothingMode}""`, () => {
+            describe(`With smoothingMode of "${assertItem.setContour[index].smoothingMode}"`, () => {
                 test(`(Step 1) smoothingMode of ${assertItem.setContour[index].smoothingMode} OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpen[index]);
                     await Connection.receiveAny()
