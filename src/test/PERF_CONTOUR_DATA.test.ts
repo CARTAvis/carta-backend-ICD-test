@@ -7,7 +7,6 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile; //5000
-let playImageTimeout: number = config.timeout.playImages;
 let playContourTimeout: number = 8000;
 
 interface AssertItem {
@@ -72,7 +71,7 @@ let assertItem: AssertItem = {
             referenceFileId: 0,
             smoothingMode: 2,
             smoothingFactor: 4,
-            levels: [0.4314895888171266, 0.32135802071359154, 0.21122645261005651, 0.10109488450652149, -0.009036683597013595],
+            levels: [0.10, 0.36, 0.72, 1.09, 1.46],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
@@ -83,7 +82,7 @@ let assertItem: AssertItem = {
             referenceFileId: 0,
             smoothingMode: 0,
             smoothingFactor: 4,
-            levels: [0.4314895888171266, 0.32135802071359154, 0.21122645261005651, 0.10109488450652149, -0.009036683597013595],
+            levels: [0.10, 0.36, 0.72, 1.09, 1.46],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
@@ -94,7 +93,7 @@ let assertItem: AssertItem = {
             referenceFileId: 0,
             smoothingMode: 1,
             smoothingFactor: 4,
-            levels: [0.4314895888171266, 0.32135802071359154, 0.21122645261005651, 0.10109488450652149, -0.009036683597013595],
+            levels: [0.10, 0.36, 0.72, 1.09, 1.46],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
