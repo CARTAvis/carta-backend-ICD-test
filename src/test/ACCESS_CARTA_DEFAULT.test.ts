@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -47,15 +48,16 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 
-        test("REGISTER_VIEWER_ACK.message is be defined ", () => {
-            expect(RegisterViewerAckTemp.message).toBeDefined();
-            if (RegisterViewerAckTemp.message !== ""){
-                console.warn(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAckTemp.message}" @${new Date()}`)
-            };
-        });
-
         test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
             expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(8);
+        });
+
+        test("REGISTER_VIEWER_ACK.user_preferences = None", () => {
+            expect(RegisterViewerAckTemp.userPreferences).toMatchObject({});
+        });
+
+        test("REGISTER_VIEWER_ACK.user_layouts = None", () => {
+            expect(RegisterViewerAckTemp.userLayouts).toMatchObject({});
         });
     });
 });
