@@ -24,8 +24,8 @@ let assertItem: AssertItem = {
     fileInfoRequest: [
         {
             directory: testSubdirectory,
-            file: "M17_SWex.fits",
-            hdu: "0",
+            file: "M17_SWex.image",
+            hdu: "",
         },
     ],
     fileInfoResponse: [
@@ -33,10 +33,10 @@ let assertItem: AssertItem = {
             success: true,
             message: "",
             fileInfo: {
-                name: "M17_SWex.fits",
-                type: CARTA.FileType.FITS,
-                size: 51393600,
-                HDUList: ["0"],
+                name: "M17_SWex.image",
+                type: CARTA.FileType.CASA,
+                size: 53009869,
+                HDUList: [""],
             },
             fileInfoExtended: {
                 dimensions: 4,
@@ -46,7 +46,7 @@ let assertItem: AssertItem = {
                 stokes: 1,
                 stokesVals: [],
                 computedEntries: [
-                    { name: "Name", value: "M17_SWex.fits" },
+                    { name: "Name", value: "M17_SWex.image" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
@@ -172,7 +172,7 @@ let assertItem: AssertItem = {
                         name: "CDELT1",
                         value: "-1.111111111111E-04",
                         entryType: 1,
-                        numericValue: -0.0001111111111111
+                        numericValue: -0.00011111111111110002
                     },
                     { name: "CRPIX1", value: "321", entryType: 1, numericValue: 321 },
                     { name: "CUNIT1", value: "deg" },
@@ -187,7 +187,7 @@ let assertItem: AssertItem = {
                         name: "CDELT2",
                         value: "1.111111111111E-04",
                         entryType: 1,
-                        numericValue: 0.0001111111111111
+                        numericValue: 0.00011111111111110002
                     },
                     { name: "CRPIX2", value: "401", entryType: 1, numericValue: 401 },
                     { name: "CUNIT2", value: "deg" },
@@ -263,7 +263,7 @@ let assertItem: AssertItem = {
                         name: "OBSGEO-X",
                         value: "2.225142180269E+06",
                         entryType: 1,
-                        numericValue: 2225142.180269
+                        numericValue: 2225142.1802689997
                     },
                     {
                         name: "OBSGEO-Y",
@@ -322,7 +322,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 expect(FileInfoResponseTemp.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse[0].fileInfo.size.toString());
             });
 
-            test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.FITS}`, () => {
+            test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.CASA}`, () => {
                 expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse[0].fileInfo.type);
             });
 
