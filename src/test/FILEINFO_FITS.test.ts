@@ -45,66 +45,6 @@ let assertItem: AssertItem = {
                 depth: 25,
                 stokes: 1,
                 stokesVals: [],
-                headerEntries: [
-                    { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
-                    { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
-                    { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
-                    { name: "NAXIS3", value: "25", entryType: 2, numericValue: 25 },
-                    { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
-                    {
-                        name: "BMAJ",
-                        value: "0.000572514",
-                        entryType: 1,
-                        numericValue: 0.0005725136068132
-                    },
-                    {
-                        name: "BMIN",
-                        value: "0.000414239",
-                        entryType: 1,
-                        numericValue: 0.00041423857212070003
-                    },
-                    {
-                        name: "BPA",
-                        value: "-74.6267",
-                        entryType: 1,
-                        numericValue: -74.62673187256
-                    },
-                    { name: "BUNIT", value: "Jy/beam" },
-                    { name: "LONPOLE", value: "180", entryType: 1, numericValue: 180 },
-                    {
-                        name: "LATPOLE",
-                        value: "-16.2028",
-                        entryType: 1,
-                        numericValue: -16.20277777779
-                    },
-                    { name: "CTYPE3", value: "FREQ" },
-                    {
-                        name: "CRVAL3",
-                        value: "8.67514e+10",
-                        entryType: 1,
-                        numericValue: 86751396188.4
-                    },
-                    {
-                        name: "CDELT3",
-                        value: "-244238",
-                        entryType: 1,
-                        numericValue: -244237.7011414
-                    },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CUNIT3", value: "Hz" },
-                    { name: "CTYPE4", value: "STOKES" },
-                    { name: "CRVAL4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CDELT4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CUNIT4" },
-                    {
-                        name: "RESTFRQ",
-                        value: "8.67543e+10",
-                        entryType: 1,
-                        numericValue: 86754290000
-                    },
-                    { name: "VELREF", value: "257", entryType: 2, numericValue: 257 },
-                ],
                 computedEntries: [
                     { name: "Name", value: "M17_SWex.fits" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
@@ -131,6 +71,212 @@ let assertItem: AssertItem = {
                     { name: "Pixel unit", value: "Jy/beam" },
                     { name: "Pixel increment", value: "-0.4\", 0.4\"" },
                     { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
+                ],
+                headerEntries: [
+                    { name: "SIMPLE", value: "T / Standard FITS", entryType: 2, numericValue: 1 },
+                    { name: "BITPIX", value: "-32 / Floating point (32 bit)", entryType: 2, numericValue: -32 },
+                    { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
+                    { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
+                    { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
+                    { name: "NAXIS3", value: "25", entryType: 2, numericValue: 25 },
+                    { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
+                    {
+                        name: "BSCALE",
+                        value: "1.000000000000E+00 / PHYSICAL = PIXEL*BSCALE + BZERO",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    {
+                        name: "BZERO",
+                        value: "0.000000000000E+00",
+                        entryType: 1,
+                    },
+                    {
+                        name: "BMAJ",
+                        value: "5.725136068132E-04",
+                        entryType: 1,
+                        numericValue: 0.0005725136068132
+                    },
+                    {
+                        name: "BMIN",
+                        value: "4.142385721207E-04",
+                        entryType: 1,
+                        numericValue: 0.0004142385721207
+                    },
+                    {
+                        name: "BPA",
+                        value: "-7.462673187256E+01",
+                        entryType: 1,
+                        numericValue: -74.62673187256
+                    },
+                    { name: "BTYPE", value: "Intensity" },
+                    { name: "OBJECT", value: "M17SW" },
+                    { name: "BUNIT", value: "Jy/beam / Brightness (pixel) unit" },
+                    { name: "RADESYS", value: "ICRS" },
+                    {
+                        name: "LONPOLE",
+                        value: "1.800000000000E+02",
+                        entryType: 1,
+                        numericValue: 180
+                    },
+                    {
+                        name: "LATPOLE",
+                        value: "-1.620277777779E+01",
+                        entryType: 1,
+                        numericValue: -16.20277777779
+                    },
+                    {
+                        name: "PC1_1",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC2_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC3_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC4_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_2", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC2_2",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC3_2", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC4_2", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_3", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC2_3", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC3_3",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC4_3", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_4", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC2_4", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC3_4", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC4_4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "CTYPE1", value: "RA---SIN" },
+                    {
+                        name: "CRVAL1",
+                        value: "2.750875000001E+02",
+                        entryType: 1,
+                        numericValue: 275.0875000001
+                    },
+                    {
+                        name: "CDELT1",
+                        value: "-1.111111111111E-04",
+                        entryType: 1,
+                        numericValue: -0.0001111111111111
+                    },
+                    { name: "CRPIX1", value: "321", entryType: 1, numericValue: 321 },
+                    { name: "CUNIT1", value: "deg" },
+                    { name: "CTYPE2", value: "DEC--SIN" },
+                    {
+                        name: "CRVAL2",
+                        value: "-1.620277777779E+01",
+                        entryType: 1,
+                        numericValue: -16.20277777779
+                    },
+                    {
+                        name: "CDELT2",
+                        value: "1.111111111111E-04",
+                        entryType: 1,
+                        numericValue: 0.0001111111111111
+                    },
+                    { name: "CRPIX2", value: "401", entryType: 1, numericValue: 401 },
+                    { name: "CUNIT2", value: "deg" },
+                    { name: "CTYPE3", value: "FREQ" },
+                    {
+                        name: "CRVAL3",
+                        value: "8.675139618840E+10",
+                        entryType: 1,
+                        numericValue: 86751396188.4
+                    },
+                    {
+                        name: "CDELT3",
+                        value: "-2.442377011414E+05",
+                        entryType: 1,
+                        numericValue: -244237.7011414
+                    },
+                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CUNIT3", value: "Hz" },
+                    { name: "CTYPE4", value: "STOKES" },
+                    {
+                        name: "CRVAL4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    {
+                        name: "CDELT4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CUNIT4" },
+                    { name: "PV2_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PV2_2", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "RESTFRQ",
+                        value: "8.675429000000E+10 / Rest Frequency (Hz)",
+                        entryType: 1,
+                        numericValue: 86754290000
+                    },
+                    { name: "SPECSYS", value: "LSRK / Spectral reference frame" },
+                    {
+                        name: "ALTRVAL",
+                        value: "9.999999914171E+03",
+                        entryType: 1,
+                        numericValue: 9999.99991417096
+                    },
+                    { name: "ALTRPIX", value: "1", entryType: 1, numericValue: 1 },
+                    {
+                        name: "VELREF",
+                        value: "257 / 1 LSR, 2 HEL, 3 OBS, +256 Radio",
+                        entryType: 2,
+                        numericValue: 257
+                    },
+                    { name: "TELESCOP", value: "ALMA" },
+                    { name: "OBSERVER", value: "sishii" },
+                    { name: "DATE-OBS", value: "2016-04-03T13:02:58.800000" },
+                    { name: "TIMESYS", value: "UTC" },
+                    {
+                        name: "OBSRA",
+                        value: "2.750875000001E+02",
+                        entryType: 1,
+                        numericValue: 275.0875000001
+                    },
+                    {
+                        name: "OBSDEC",
+                        value: "-1.620277777779E+01",
+                        entryType: 1,
+                        numericValue: -16.202777777790004
+                    },
+                    {
+                        name: "OBSGEO-X",
+                        value: "2.225142180269E+06",
+                        entryType: 1,
+                        numericValue: 2225142.180269
+                    },
+                    {
+                        name: "OBSGEO-Y",
+                        value: "-5.440307370349E+06",
+                        entryType: 1,
+                        numericValue: -5440307.370349
+                    },
+                    {
+                        name: "OBSGEO-Z",
+                        value: "-2.481029851874E+06",
+                        entryType: 1,
+                        numericValue: -2481029.851874
+                    },
                 ],
             },
         },
@@ -217,18 +363,24 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended.stokesVals);
             });
 
-            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==15`, () => {
+            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended.computedEntries.length}`, () => {
                 expect(FileInfoResponseTemp.fileInfoExtended.computedEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended.computedEntries.length);
             });
 
-            test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
+            test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    console.log(entry)
-                    console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries[index])
                     expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
-                    // expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                 });
+            });
 
+            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.length}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended.headerEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.length)
+            });
+
+            test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
+                assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
+                });
             });
         });
     });
