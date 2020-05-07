@@ -6,7 +6,7 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
-let openFileTimeout = 100;//config.timeout.openFile;
+let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
