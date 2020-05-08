@@ -45,6 +45,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         });
 
         test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, () => {
+            expect(RegisterViewerAckTemp.hasOwnProperty("sessionType")).toBe(true);
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 

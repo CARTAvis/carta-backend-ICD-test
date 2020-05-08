@@ -44,6 +44,7 @@ describe("ACCESS_CARTA_KNOWN_SESSION tests: Testing connections to the backend w
         });
 
         test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.RESUMED"`, () => {
+            expect(RegisterViewerAckTemp.hasOwnProperty("sessionType")).toBe(true);
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.RESUMED);
         });
 
