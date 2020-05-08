@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -13,7 +14,7 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
 }
-describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend with an unknown session id", () => {
+describe("ACCESS_CARTA_KNOWN_SESSION tests: Testing connections to the backend with an known session id", () => {
     describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
         let Connection: Client;
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
@@ -34,21 +35,36 @@ describe("ACCESS_CARTA_UNKNOWN_SESSION tests: Testing connections to the backend
 
         }, connectTimeout);
 
-        test("REGISTER_VIEWER_ACK.success = False", () => {
-            expect(RegisterViewerAckTemp.success).toBe(false);
+        test("REGISTER_VIEWER_ACK.success = True", () => {
+            expect(RegisterViewerAckTemp.success).toBe(true);
         });
 
-        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, () => {
+        test(`REGISTER_VIEWER_ACK.session_id is ${assertItem.register.sessionId}`, () => {
+            expect(RegisterViewerAckTemp.sessionId).toEqual(assertItem.register.sessionId);
+        });
+
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.RESUMED"`, () => {
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.RESUMED);
         });
 
-        test("REGISTER_VIEWER_ACK.message is not empty", () => {
+        test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
+            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(8);
+        });
+
+        test("REGISTER_VIEWER_ACK.user_preferences = None", () => {
+            expect(RegisterViewerAckTemp.userPreferences).toMatchObject({});
+        });
+
+        test("REGISTER_VIEWER_ACK.user_layouts = None", () => {
+            expect(RegisterViewerAckTemp.userLayouts).toMatchObject({});
+        });
+
+        test("REGISTER_VIEWER_ACK.message is a non-empty string", () => {
             expect(RegisterViewerAckTemp.message).toBeDefined();
             expect(RegisterViewerAckTemp.message).not.toEqual("");
             if ( RegisterViewerAckTemp.message !== "" ) {
                 console.warn(`"REGISTER_VIEWER_ACK.message" returns: "${RegisterViewerAckTemp.message}" @${new Date()}`);
             }
         });
-
     });
 });
