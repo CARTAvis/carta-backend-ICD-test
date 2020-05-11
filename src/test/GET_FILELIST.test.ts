@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -19,12 +20,16 @@ let assertItem: AssertItem = {
     filelistGroup: [
         { directory: expectBasePath, },
         { directory: testSubdirectory, },
+        { directory: testSubdirectory + "/empty_folder", },
     ],
     fileListResponseGroup: [
         {
             success: true,
             directory: ".",
             parent: "",
+            files: [
+                { name: "aJ.fits" },
+            ],
             subdirectories: ["set_QA"],
         },
         {
@@ -32,13 +37,16 @@ let assertItem: AssertItem = {
             directory: testSubdirectory,
             parent: ".",
             files: [
-                { name: "HH211_IQU.fits" },
                 { name: "M17_SWex.fits" },
             ],
             subdirectories: [
-                "set_QA_regionTest",
-                "images-velocity",
+                "empty_folder",
             ],
+        },
+        {
+            success: true,
+            directory: testSubdirectory + "/empty_folder",
+            parent: testSubdirectory,
         },
     ],
 }
@@ -81,6 +89,10 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                             expect(FileListResponseTempFilename).toEqual(expect.arrayContaining([file.name]));
                         })
                     })
+                } else {
+                    test("len(files) = 0", () => {
+                        expect(FileListResponseTemp.files.length).toEqual(0);
+                    })
                 };
 
                 if (assertItem.fileListResponseGroup[index].subdirectories !== undefined) {
@@ -92,6 +104,10 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                             let FileListResponseTempSubdirectories = FileListResponseTemp.subdirectories
                             expect(FileListResponseTempSubdirectories).toEqual(expect.arrayContaining([subdir]));
                         })
+                    })
+                } else {
+                    test("len(subdirectories) = 0", () => {
+                        expect(FileListResponseTemp.subdirectories.length).toEqual(0);
                     })
                 };
             });

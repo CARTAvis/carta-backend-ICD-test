@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -44,7 +45,7 @@ let assertItem: AssertItem = {
             {
                 name: "M17_SWex.hdf5",
                 type: CARTA.FileType.HDF5,
-                size: 112823720,
+                size: 185333128,
                 HDUList: ["0"],
             },
             {
