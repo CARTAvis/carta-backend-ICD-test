@@ -47,7 +47,6 @@ describe("ACCESS_CARTA_SAME_ID_TWICE tests: Testing backend connection with defa
         });
 
         test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.RESUMED"`, () => {
-            expect(RegisterViewerAckTemp.hasOwnProperty("sessionType")).toBe(true);
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.RESUMED);
         });
 
