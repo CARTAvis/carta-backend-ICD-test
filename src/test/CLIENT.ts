@@ -227,7 +227,7 @@ export class Client {
         let _count: number = 0;
         let ack: AckStream = {
             RasterTileData: [],
-            RasterImageData: [],
+            RasterTileSync: [],
             SpatialProfileData: [],
             RegionStatsData: [],
             RegionHistogramData: [],
@@ -253,8 +253,8 @@ export class Client {
                     case CARTA.RasterTileData:
                         ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                         break;
-                    case CARTA.RasterImageData:
-                        ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
+                    case CARTA.RasterTileSync:
+                        ack.RasterTileSync.push(CARTA.RasterTileSync.decode(eventData));
                         break;
                     case CARTA.RegionStatsData:
                         ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
@@ -288,7 +288,7 @@ export class Client {
 
 export interface AckStream {
     RasterTileData: CARTA.RasterTileData[];
-    RasterImageData: CARTA.RasterImageData[];
+    RasterTileSync: CARTA.RasterTileSync[];
     SpatialProfileData: CARTA.SpatialProfile[];
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
@@ -331,5 +331,22 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         coordinate: profile.coordinate,
         statsType: profile.statsType,
         values: null
+    };
+}
+interface ProcessedContourSet {
+    level: number;
+    indexOffsets: Int32Array;
+    coordinates: Float32Array;
+}
+export function processContourSet(contourSet: CARTA.IContourSet): ProcessedContourSet {
+    let floatCoordinates: Float32Array = new Float32Array(contourSet.rawCoordinates.slice().buffer);
+
+    // generate indices
+    const indexOffsets = new Int32Array(contourSet.rawStartIndices.buffer.slice(contourSet.rawStartIndices.byteOffset, contourSet.rawStartIndices.byteOffset + contourSet.rawStartIndices.byteLength));
+
+    return {
+        level: contourSet.level,
+        indexOffsets,
+        coordinates: floatCoordinates
     };
 }
