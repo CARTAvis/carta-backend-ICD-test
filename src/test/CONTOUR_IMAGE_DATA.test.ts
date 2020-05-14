@@ -8,7 +8,7 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let readTimeout: number = config.timeout.readFile;
 
-interface ContourImageData extends CARTA.IContourImageData{
+interface ContourImageData extends CARTA.IContourImageData {
     contourVertices?: number[];
 }
 interface AssertItem {
@@ -35,8 +35,7 @@ let assertItem: AssertItem = {
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq: 
-    {
+    addTilesReq: {
         tiles: [0],
         fileId: 0,
         compressionQuality: 11,
@@ -219,7 +218,7 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
                     expect(ContourImageData.contourSets[0].uncompressedCoordinatesSize).toEqual(contour.contourSets[0].uncompressedCoordinatesSize);
                 });
 
-                test(`number of contour vertices = ${contour.contourVertices.length/2}`, () => {
+                test(`number of contour vertices = ${contour.contourVertices.length / 2}`, () => {
                     expect(processContourSet(ContourImageData.contourSets[0]).coordinates.length).toEqual(contour.contourVertices.length);
                 });
 
