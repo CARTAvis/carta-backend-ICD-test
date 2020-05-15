@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+import files from "./file.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
@@ -9,7 +10,7 @@ let readFileTimeout: number = config.timeout.readLargeImage;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpenGroup: CARTA.IOpenFile[];
+    fileOpen: CARTA.IOpenFile;
     setCursor: CARTA.ISetCursor;
     addTilesReq: CARTA.IAddRequiredTiles;
 }
@@ -20,15 +21,13 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpenGroup: [
-        {
-            directory: testSubdirectory,
-            file: "cube_A/cube_A_12800_z00100.fits",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-    ],
+    fileOpen: {
+        directory: testSubdirectory,
+        file: "cube_A/cube_A_12800_z00100.fits",
+        hdu: "",
+        fileId: 0,
+        renderMode: CARTA.RenderMode.RASTER,
+    },
     setCursor: {
         fileId: 0,
         point: { x: 1.0, y: 1.0 },
@@ -56,7 +55,7 @@ let assertItem: AssertItem = {
     },
 }
 
-describe("Load Iamge action: ", () => {
+describe("Load Iamges action: ", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -72,11 +71,14 @@ describe("Load Iamge action: ", () => {
             await Connection.receive(CARTA.FileListResponse);
         }, connectTimeout);
 
-        assertItem.fileOpenGroup.map((fileOpen: CARTA.IOpenFile, index) => {
+        files.imageFilesAfits.map((file, index) => {
 
-            describe(`open the file "${fileOpen.file}"`, () => {
+            describe(`open the file "${file}"`, () => {
                 test(`messages should return`, async () => {
-                    await Connection.send(CARTA.OpenFile, fileOpen);
+                    await Connection.send(CARTA.OpenFile, {
+                        ...assertItem.fileOpen,
+                        file: file,
+                    });
                     await Connection.receiveAny(); // OpenFileAck
 
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
