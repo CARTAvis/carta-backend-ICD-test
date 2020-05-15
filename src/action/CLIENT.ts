@@ -248,6 +248,10 @@ export class Client {
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
+                }
+
                 let data;
                 switch (this.CartaType.get(eventNumber)) {
                     case CARTA.RasterTileData:
