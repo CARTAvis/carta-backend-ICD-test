@@ -21,7 +21,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 1000,
+        "mouseEvent": 200,
         "region": 500,
         "import": 500,
         "export": 500,
@@ -32,7 +32,7 @@
     },
     "repeat": {
         "concurrent": 10,
-        "cursor": 10,
+        "cursor": 20,
         "image": 10,
         "animation": 15
     },
