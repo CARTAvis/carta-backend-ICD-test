@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client} from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
@@ -11,7 +11,7 @@ interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpenGroup: CARTA.IOpenFile[];
-    setCursor: CARTA.ISetCursor;
+    setRegion: CARTA.ISetRegion;
     setSpectralRequirements: CARTA.ISetSpectralRequirements;
 }
 let assertItem: AssertItem = {
@@ -30,18 +30,17 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    setCursor: {
+    setRegion: {
         fileId: 0,
-        point: { x: 500.0, y: 500.0 },
-        spatialRequirements: {
-            fileId: 0,
-            regionId: 0,
-            spatialProfiles: []
-        },
+        regionId: 1,
+        regionName: "",
+        regionType: CARTA.RegionType.RECTANGLE,
+        controlPoints: [{ x: 400, y: 400 }, { x: 10, y: 10 }],
+        rotation: 0.0,
     },
     setSpectralRequirements: {
         fileId: 0,
-        regionId: 0,
+        regionId: 1,
         spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
     },
 }
@@ -70,21 +69,38 @@ describe("Z profile cursor: ", () => {
                     await Connection.receiveAny();
                     await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
 
+                    await Connection.send(CARTA.SetRegion, {
+                        regionId: -1,
+                        ...assertItem.setRegion,
+                    });
+                    await Connection.receiveAny();
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                    await Connection.receiveAny();
+
                     for (let idx = 0; idx < cursorRepeat; idx++) {
-                        await Connection.send(CARTA.SetCursor, {
-                            ...assertItem.setCursor,
-                            point: {
-                                x: Math.floor(assertItem.setCursor.point.x * (1 - .9 * Math.random())),
-                                y: Math.floor(assertItem.setCursor.point.y * (1 - .9 * Math.random())),
-                            },
+                        let Dx = Math.floor(assertItem.setRegion.controlPoints[0].x * .5 * Math.random());
+                        let Dy = Math.floor(assertItem.setRegion.controlPoints[0].y * .5 * Math.random());
+                        await Connection.send(CARTA.SetRegion, {
+                            ...assertItem.setRegion,
+                            controlPoints: [
+                                { 
+                                    x: assertItem.setRegion.controlPoints[0].x + Dx,
+                                    y: assertItem.setRegion.controlPoints[0].x + Dy, 
+                                },
+                                { 
+                                    x: assertItem.setRegion.controlPoints[1].x + Dx,
+                                    y: assertItem.setRegion.controlPoints[1].x + Dy, 
+                                }, 
+                            ],
                         });
-                        await Connection.stream(2);
+                        await Connection.receiveAny();
+                        await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                        await Connection.receiveAny();
                     }
 
                     await new Promise(resolve => setTimeout(resolve, 300));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat);
+                }, cursorTimeout * cursorRepeat + 1000);
             });
 
         });

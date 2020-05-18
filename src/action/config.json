@@ -21,7 +21,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 200,
+        "mouseEvent": 400,
         "region": 500,
         "import": 500,
         "export": 500,
