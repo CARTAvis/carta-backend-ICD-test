@@ -10,13 +10,13 @@
         "performance": "set_QA_performance"
     },
     "image": {
-        "singleChannel": "cube_A/cube_A_03200_z00001.fits",
-        "cube": "cube_A/cube_A_03200_z00100.fits"
+        "singleChannel": "cube_A/cube_A_01600_z00001.fits",
+        "cube": "cube_A/cube_A_01600_z00100.fits"
     },
     "timeout": {
         "connection": 500,
         "listFile": 500,
-        "openFile": 100,
+        "openFile": 500,
         "readFile": 4000,
         "readLargeImage": 60000,
         "changeChannel": 3000,
@@ -32,14 +32,16 @@
         "resume": 10000,
         "sleep": 3000,
         "playAnimator": 140000,
-        "playLargeAnimator": 600000
+        "playLargeAnimator": 600000,
+        "contour": 4000
     },
     "repeat": {
         "concurrent": 10,
         "cursor": 20,
         "image": 10,
         "animation": 10,
-        "resumeSession": 10
+        "resumeSession": 10,
+        "contour": 10
     },
     "log": {
         "error": false,

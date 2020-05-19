@@ -74,8 +74,7 @@ describe("Resume action: ", () => {
     for (let idx = 0; idx < resumeRepeat; idx++) {
 
         test(`should resume session and reopen image "${assertItem.resumeSession.images[0].file}"`, async () => {
-            let Connection: Client;
-            Connection = new Client(testServerUrl);
+            let Connection: Client = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
