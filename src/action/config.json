@@ -9,6 +9,10 @@
         "region": "set_QA/set_QA_regionTest",
         "performance": "set_QA_performance"
     },
+    "image": {
+        "singleChannel": "cube_A/cube_A_03200_z00001.fits",
+        "cube": "cube_A/cube_A_03200_z00100.fits"
+    },
     "timeout": {
         "connection": 500,
         "listFile": 500,
@@ -25,7 +29,7 @@
         "region": 500,
         "import": 500,
         "export": 500,
-        "resume": 6000,
+        "resume": 10000,
         "sleep": 3000,
         "playAnimator": 140000,
         "playLargeAnimator": 600000
@@ -34,8 +38,8 @@
         "concurrent": 10,
         "cursor": 20,
         "image": 10,
-        "animation": 15,
-        "resumeSession": 5
+        "animation": 10,
+        "resumeSession": 10
     },
     "log": {
         "error": false,

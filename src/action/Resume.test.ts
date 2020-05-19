@@ -3,6 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
+let testImage: string = config.image.cube;
 let testSubdirectory: string = config.path.performance;
 let resumeTimeout: number = config.timeout.resume;
 let resumeRepeat: number = config.repeat.resumeSession;
@@ -45,7 +46,7 @@ let assertItem: AssertItem = {
     resumeSession: {
         images: [
             {
-                file: "cube_A/cube_A_03200_z00100.fits",
+                file: testImage,
                 directory: testSubdirectory,
                 hdu: "",
                 fileId: 0,
@@ -58,7 +59,7 @@ let assertItem: AssertItem = {
                         regionInfo: {
                             regionName: "",
                             regionType: CARTA.RegionType.POINT,
-                            controlPoints: [{ x: 10, y: 10, },],
+                            controlPoints: [{ x: 1.0, y: 1.0, },],
                             rotation: 0,
                         },
                     },
@@ -70,24 +71,22 @@ let assertItem: AssertItem = {
 
 describe("Resume action: ", () => {
 
-    describe(`Prepare to resume`, () => {
-        for (let idx = 0; idx < resumeRepeat; idx++) {
+    for (let idx = 0; idx < resumeRepeat; idx++) {
 
-            test(`should resume session and reopen image "${assertItem.resumeSession.images[0].file}"`, async () => {
-                let Connection: Client;
-                Connection = new Client(testServerUrl);
-                await Connection.open();
-                await Connection.send(CARTA.RegisterViewer, assertItem.register);
-                await Connection.receive(CARTA.RegisterViewerAck);
-                await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-                await Connection.stream(3);
+        test(`should resume session and reopen image "${assertItem.resumeSession.images[0].file}"`, async () => {
+            let Connection: Client;
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
+            await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
+            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+            await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
+            await Connection.stream(3);
 
-                await new Promise(resolve => setTimeout(resolve, 200));
-                Connection.close();
-            }, resumeTimeout);
-        }
-    });
+            await new Promise(resolve => setTimeout(resolve, 200));
+            Connection.close();
+        }, resumeTimeout);
+    }
 
 });
