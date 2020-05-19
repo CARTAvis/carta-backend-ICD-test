@@ -11,13 +11,13 @@
     },
     "image": {
         "singleChannel": "cube_A/cube_A_01600_z00001.fits",
-        "cube": "cube_A/cube_A_01600_z00100.fits"
+        "cube": "cube_A/cube_A_00800_z00100.fits"
     },
     "timeout": {
-        "connection": 500,
-        "listFile": 500,
-        "openFile": 500,
-        "readFile": 4000,
+        "connection": 1000,
+        "listFile": 1000,
+        "openFile": 1000,
+        "readFile": 6100,
         "readLargeImage": 60000,
         "changeChannel": 3000,
         "playImages": 8000,
@@ -33,7 +33,8 @@
         "sleep": 3000,
         "playAnimator": 140000,
         "playLargeAnimator": 600000,
-        "contour": 4000
+        "contour": 4000,
+        "zoom": 12200
     },
     "repeat": {
         "concurrent": 10,
@@ -41,7 +42,8 @@
         "image": 10,
         "animation": 10,
         "resumeSession": 10,
-        "contour": 10
+        "contour": 10,
+        "zoom": 5
     },
     "log": {
         "error": false,

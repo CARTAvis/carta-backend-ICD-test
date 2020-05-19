@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
         spatialRequirements: {
             fileId: 0,
             regionId: 0,
-            spatialProfiles: ["x", "y"]
+            spatialProfiles: []
         },
     },
     addTilesReq:
