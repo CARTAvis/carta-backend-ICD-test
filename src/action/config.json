@@ -25,7 +25,7 @@
         "region": 500,
         "import": 500,
         "export": 500,
-        "resume": 3000,
+        "resume": 6000,
         "sleep": 3000,
         "playAnimator": 140000,
         "playLargeAnimator": 600000
@@ -34,7 +34,8 @@
         "concurrent": 10,
         "cursor": 20,
         "image": 10,
-        "animation": 15
+        "animation": 15,
+        "resumeSession": 5
     },
     "log": {
         "error": false,
