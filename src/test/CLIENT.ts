@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 
 export class Client {
-    IcdVersion: number = 12;
+    IcdVersion: number = 13;
     CartaType = new Map<number, any>([
         [ 0, CARTA.ErrorData],
         [ 1, CARTA.RegisterViewer],
@@ -53,6 +53,17 @@ export class Client {
         [47, CARTA.ResumeSession],
         [48, CARTA.ResumeSessionAck],
         [49, CARTA.RasterTileSync],
+        [50, CARTA.CatalogListRequest],
+        [51, CARTA.CatalogListResponse],
+        [52, CARTA.CatalogFileInfoRequest],
+        [53, CARTA.CatalogFileInfoResponse],
+        [54, CARTA.OpenCatalogFile],
+        [55, CARTA.OpenCatalogFileAck],
+        [56, CARTA.CloseCatalogFile],
+        [57, CARTA.CatalogFilterRequest],
+        [58, CARTA.CatalogFilterResponse],
+        [59, CARTA.ScriptingRequest],
+        [60, CARTA.ScriptingResponse],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
@@ -226,13 +237,15 @@ export class Client {
 
         let _count: number = 0;
         let ack: AckStream = {
+            Responce: [],
             RasterTileData: [],
-            RasterImageData: [],
+            RasterTileSync: [],
             SpatialProfileData: [],
             RegionStatsData: [],
             RegionHistogramData: [],
             SpectralProfileData: [],
-            Responce: [],
+            ContourImageData: [],
+            CatalogFilterResponse: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -250,11 +263,14 @@ export class Client {
                 }
                 let data;
                 switch (this.CartaType.get(eventNumber)) {
+                    default:
+                        ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
+                        break;
                     case CARTA.RasterTileData:
                         ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
                         break;
-                    case CARTA.RasterImageData:
-                        ack.RasterImageData.push(CARTA.RasterImageData.decode(eventData));
+                    case CARTA.RasterTileSync:
+                        ack.RasterTileSync.push(CARTA.RasterTileSync.decode(eventData));
                         break;
                     case CARTA.RegionStatsData:
                         ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
@@ -272,8 +288,11 @@ export class Client {
                         data.profiles = data.profiles.map(p => processSpectralProfile(p));
                         ack.SpectralProfileData.push(data);
                         break;
-                    default:
-                        ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
+                    case CARTA.ContourImageData:
+                        ack.ContourImageData.push(CARTA.ContourImageData.decode(eventData));
+                        break;
+                    case CARTA.CatalogFilterResponse:
+                        ack.CatalogFilterResponse.push(CARTA.CatalogFilterResponse.decode(eventData));
                         break;
                 }
 
@@ -287,13 +306,15 @@ export class Client {
 };
 
 export interface AckStream {
+    Responce: any[],
     RasterTileData: CARTA.RasterTileData[];
-    RasterImageData: CARTA.RasterImageData[];
+    RasterTileSync: CARTA.RasterTileSync[];
     SpatialProfileData: CARTA.SpatialProfile[];
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
-    Responce: any[],
+    ContourImageData: CARTA.ContourImageData[];
+    CatalogFilterResponse: CARTA.CatalogFilterResponse[];
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
