@@ -1,6 +1,7 @@
 {
     "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
     "serverURL0": "ws://127.0.0.1:3002",
+    "serverURL1": "ws://cartaviewer:5000",
     "path": {
         "root": ".",
         "base": "$BASE",
@@ -10,10 +11,10 @@
         "performance": "set_QA_performance"
     },
     "timeout": {
-        "connection": 500,
-        "listFile": 500,
-        "openFile": 100,
-        "readFile": 3000,
+        "connection": 1100,
+        "listFile": 1200,
+        "openFile": 1300,
+        "readFile": 2100,
         "readLargeImage": 18000,
         "changeChannel": 3000,
         "playImages": 8000,
@@ -27,7 +28,8 @@
         "export": 500,
         "resume": 3000,
         "sleep": 3000,
-        "playAnimator": 10000
+        "playAnimator": 10000,
+        "wasm": 3000
     },
     "repeat": {
         "concurrent": 10,

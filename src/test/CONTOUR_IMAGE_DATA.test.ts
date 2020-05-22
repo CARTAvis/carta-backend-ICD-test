@@ -1,8 +1,8 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, processContourSet } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-
+const ZstdCodec = require('zstd-codec').ZstdCodec;
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
@@ -43,11 +43,11 @@ let assertItem: AssertItem = {
     },
     setCursor: {
         fileId: 0,
-        point: { x: 0.5, y: 0.5 },
+        point: { x: 1.0, y: 1.0 },
         spatialRequirements: {
             fileId: 0,
             regionId: 0,
-            spatialProfiles: ["x", "y"]
+            spatialProfiles: []
         },
     },
     setContour: [
@@ -59,7 +59,7 @@ let assertItem: AssertItem = {
             smoothingMode: CARTA.SmoothingMode.GaussianBlur,
             smoothingFactor: 4,
             decimationFactor: 4,
-            compressionLevel: 0,
+            compressionLevel: 8,
             contourChunkSize: 100000,
         },
         {
@@ -70,7 +70,7 @@ let assertItem: AssertItem = {
             smoothingMode: CARTA.SmoothingMode.BlockAverage,
             smoothingFactor: 4,
             decimationFactor: 4,
-            compressionLevel: 0,
+            compressionLevel: 8,
             contourChunkSize: 100000,
         },
         {
@@ -81,7 +81,7 @@ let assertItem: AssertItem = {
             smoothingMode: CARTA.SmoothingMode.NoSmoothing,
             smoothingFactor: 4,
             decimationFactor: 4,
-            compressionLevel: 0,
+            compressionLevel: 8,
             contourChunkSize: 100000,
         },
     ],
@@ -184,11 +184,17 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
         assertItem.contourImageData.map((contour, index) => {
             describe(`SET_CONTOUR_PARAMETERS${index} with SmoothingMode:"${CARTA.SmoothingMode[assertItem.setContour[index].smoothingMode]}"`, () => {
                 let ContourImageData: CARTA.ContourImageData;
+                let floatData: Float32Array;
                 test(`should return CONTOUR_IMAGE_DATA x1`, async () => {
                     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[index]);
                     ContourImageData = await Connection.receive(CARTA.ContourImageData);
-                    // console.log(ContourImageData.contourSets.map(set => processContourSet(set))[0]);
-                });
+
+                    if (contour.contourSets[0].decimationFactor > 0) {
+                        floatData = new Float32Array(zstdSimple.decompress(ContourImageData.contourSets[0].rawCoordinates).slice().buffer);
+                    } else {
+                        floatData = new Float32Array(ContourImageData.contourSets[0].rawCoordinates.slice().buffer);
+                    }
+                }, readTimeout);
 
                 test(`fileId = ${contour.fileId}`, () => {
                     expect(ContourImageData.fileId).toEqual(contour.fileId);
@@ -219,11 +225,13 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
                 });
 
                 test(`number of contour vertices = ${contour.contourVertices.length / 2}`, () => {
-                    expect(processContourSet(ContourImageData.contourSets[0]).coordinates.length).toEqual(contour.contourVertices.length);
+                    expect(floatData.length).toEqual(2 + contour.contourVertices.length);
                 });
 
-                test(`assert contour vertices`, () => {
-                    expect(JSON.stringify(processContourSet(ContourImageData.contourSets[0]).coordinates)).toEqual(JSON.stringify(contour.contourVertices));
+                test(`assert contour vertices`, async () => {
+                    contour.contourVertices.map((f, idx) => {
+                        expect(floatData[idx]).toEqual(f);
+                    });
                 });
 
             });

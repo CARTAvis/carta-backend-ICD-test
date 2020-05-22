@@ -1,7 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
-
 export class Client {
     IcdVersion: number = 13;
     CartaType = new Map<number, any>([
@@ -352,22 +351,5 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         coordinate: profile.coordinate,
         statsType: profile.statsType,
         values: null
-    };
-}
-interface ProcessedContourSet {
-    level: number;
-    indexOffsets: Int32Array;
-    coordinates: Float32Array;
-}
-export function processContourSet(contourSet: CARTA.IContourSet): ProcessedContourSet {
-    let floatCoordinates: Float32Array = new Float32Array(contourSet.rawCoordinates.slice().buffer);
-
-    // generate indices
-    const indexOffsets = new Int32Array(contourSet.rawStartIndices.buffer.slice(contourSet.rawStartIndices.byteOffset, contourSet.rawStartIndices.byteOffset + contourSet.rawStartIndices.byteLength));
-
-    return {
-        level: contourSet.level,
-        indexOffsets,
-        coordinates: floatCoordinates
     };
 }
