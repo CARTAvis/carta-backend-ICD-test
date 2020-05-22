@@ -161,6 +161,15 @@ let assertItem: AssertItem = {
 
 describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are delivered correctly", () => {
 
+    let zstdSimple: any;
+    test(`prepare zstd`, done => {
+        ZstdCodec.run(zstd => {
+            zstdSimple = new zstd.Simple();
+            // console.log("zstd simple ready");
+            done();
+        });
+    }, config.timeout.wasm);
+
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
