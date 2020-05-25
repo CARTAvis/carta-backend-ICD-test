@@ -1,7 +1,12 @@
 {
     "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
     "serverURL0": "ws://127.0.0.1:3002",
-    "serverURL1": "ws://cartaviewer:5000",
+    "localHost": "ws://localhost",
+    "port": 5000,
+    "thread": {
+        "main": 4,
+        "openmp": 32
+    },
     "path": {
         "root": ".",
         "base": "$BASE",
@@ -12,16 +17,16 @@
     },
     "image": {
         "singleChannel": "cube_A/cube_A_01600_z00001.fits",
-        "cube": "cube_A/cube_A_00800_z00100.fits"
+        "cube": "cube_A/cube_A_01600_z00100.fits"
     },
     "timeout": {
         "connection": 1000,
-        "listFile": 1000,
+        "listFile": 1100,
         "openFile": 1000,
-        "readFile": 6100,
+        "readFile": 2200,
         "readLargeImage": 60000,
         "changeChannel": 3000,
-        "playImages": 8000,
+        "playImages": 3100,
         "cubeHistogram": 500000,
         "cancel": 5000,
         "concurrent": 4000,
@@ -32,16 +37,16 @@
         "export": 500,
         "resume": 10000,
         "sleep": 3000,
-        "playAnimator": 140000,
-        "playLargeAnimator": 600000,
+        "playAnimator": 5300,
+        "playLargeAnimator": 65000,
         "contour": 4000,
         "zoom": 12200,
-        "execute": 3000
+        "execute": 1500
     },
     "repeat": {
         "concurrent": 10,
         "cursor": 20,
-        "image": 10,
+        "image": 20,
         "animation": 10,
         "resumeSession": 10,
         "contour": 10,

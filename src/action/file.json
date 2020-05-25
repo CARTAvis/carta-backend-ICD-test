@@ -470,10 +470,7 @@
                                 "cube_A/cube_A_12800_z00100.fits",
                                 "cube_A/cube_A_06400_z00100.fits", 
                                 "cube_A/cube_A_03200_z00100.fits", 
-                                "cube_A/cube_A_01600_z00100.fits", 
-                                "cube_A/cube_A_00800_z00100.fits", 
-                                "cube_A/cube_A_00400_z00100.fits", 
-                                "cube_A/cube_A_00200_z00100.fits"
+                                "cube_A/cube_A_01600_z00100.fits"
                           ],
     "cube100FilesBfits": [
                                 "cube_B/cube_B_51200_z00100.fits",
@@ -481,10 +478,7 @@
                                 "cube_B/cube_B_12800_z00100.fits", 
                                 "cube_B/cube_B_06400_z00100.fits", 
                                 "cube_B/cube_B_03200_z00100.fits", 
-                                "cube_B/cube_B_01600_z00100.fits", 
-                                "cube_B/cube_B_00800_z00100.fits", 
-                                "cube_B/cube_B_00400_z00100.fits", 
-                                "cube_B/cube_B_00200_z00100.fits"
+                                "cube_B/cube_B_01600_z00100.fits"
                           ],
     "cube100FilesCfits": [
                                 "cube_C/cube_C_51200_z00100.fits",
@@ -492,10 +486,7 @@
                                 "cube_C/cube_C_12800_z00100.fits", 
                                 "cube_C/cube_C_06400_z00100.fits", 
                                 "cube_C/cube_C_03200_z00100.fits", 
-                                "cube_C/cube_C_01600_z00100.fits", 
-                                "cube_C/cube_C_00800_z00100.fits", 
-                                "cube_C/cube_C_00400_z00100.fits", 
-                                "cube_C/cube_C_00200_z00100.fits"
+                                "cube_C/cube_C_01600_z00100.fits"
                           ],
     "cube100FilesDfits": [
                                 "cube_D/cube_D_51200_z00100.fits",
@@ -503,10 +494,7 @@
                                 "cube_D/cube_D_12800_z00100.fits", 
                                 "cube_D/cube_D_06400_z00100.fits", 
                                 "cube_D/cube_D_03200_z00100.fits", 
-                                "cube_D/cube_D_01600_z00100.fits", 
-                                "cube_D/cube_D_00800_z00100.fits", 
-                                "cube_D/cube_D_00400_z00100.fits", 
-                                "cube_D/cube_D_00200_z00100.fits"
+                                "cube_D/cube_D_01600_z00100.fits"
                           ],
 
     "cube100FilesAimage": [
@@ -515,10 +503,7 @@
                                 "cube_A/cube_A_12800_z00100.image", 
                                 "cube_A/cube_A_06400_z00100.image", 
                                 "cube_A/cube_A_03200_z00100.image", 
-                                "cube_A/cube_A_01600_z00100.image", 
-                                "cube_A/cube_A_00800_z00100.image", 
-                                "cube_A/cube_A_00400_z00100.image", 
-                                "cube_A/cube_A_00200_z00100.image"
+                                "cube_A/cube_A_01600_z00100.image"
                           ],
     "cube100FilesBimage": [
                                 "cube_B/cube_B_51200_z00100.image",
@@ -526,10 +511,7 @@
                                 "cube_B/cube_B_12800_z00100.image", 
                                 "cube_B/cube_B_06400_z00100.image", 
                                 "cube_B/cube_B_03200_z00100.image", 
-                                "cube_B/cube_B_01600_z00100.image", 
-                                "cube_B/cube_B_00800_z00100.image", 
-                                "cube_B/cube_B_00400_z00100.image", 
-                                "cube_B/cube_B_00200_z00100.image"
+                                "cube_B/cube_B_01600_z00100.image"
                           ],
     "cube100FilesCimage": [
                                 "cube_C/cube_C_51200_z00100.image",
@@ -537,10 +519,7 @@
                                 "cube_C/cube_C_12800_z00100.image", 
                                 "cube_C/cube_C_06400_z00100.image", 
                                 "cube_C/cube_C_03200_z00100.image", 
-                                "cube_C/cube_C_01600_z00100.image", 
-                                "cube_C/cube_C_00800_z00100.image", 
-                                "cube_C/cube_C_00400_z00100.image", 
-                                "cube_C/cube_C_00200_z00100.image"
+                                "cube_C/cube_C_01600_z00100.image"
                           ],
     "cube100FilesDimage": [
                                 "cube_D/cube_D_51200_z00100.image",
@@ -548,10 +527,7 @@
                                 "cube_D/cube_D_12800_z00100.image", 
                                 "cube_D/cube_D_06400_z00100.image", 
                                 "cube_D/cube_D_03200_z00100.image", 
-                                "cube_D/cube_D_01600_z00100.image", 
-                                "cube_D/cube_D_00800_z00100.image", 
-                                "cube_D/cube_D_00400_z00100.image", 
-                                "cube_D/cube_D_00200_z00100.image"
+                                "cube_D/cube_D_01600_z00100.image"
                           ],
     
     "cube100FilesAhdf5": [
@@ -560,10 +536,7 @@
                                 "cube_A/cube_A_12800_z00100.hdf5", 
                                 "cube_A/cube_A_06400_z00100.hdf5", 
                                 "cube_A/cube_A_03200_z00100.hdf5", 
-                                "cube_A/cube_A_01600_z00100.hdf5", 
-                                "cube_A/cube_A_00800_z00100.hdf5", 
-                                "cube_A/cube_A_00400_z00100.hdf5", 
-                                "cube_A/cube_A_00200_z00100.hdf5"
+                                "cube_A/cube_A_01600_z00100.hdf5"
                           ],
     "cube100FilesBhdf5": [
                                 "cube_B/cube_B_51200_z00100.hdf5",
@@ -571,10 +544,7 @@
                                 "cube_B/cube_B_12800_z00100.hdf5", 
                                 "cube_B/cube_B_06400_z00100.hdf5", 
                                 "cube_B/cube_B_03200_z00100.hdf5", 
-                                "cube_B/cube_B_01600_z00100.hdf5", 
-                                "cube_B/cube_B_00800_z00100.hdf5", 
-                                "cube_B/cube_B_00400_z00100.hdf5", 
-                                "cube_B/cube_B_00200_z00100.hdf5"
+                                "cube_B/cube_B_01600_z00100.hdf5"
                           ],
     "cube100FilesChdf5": [
                                 "cube_C/cube_C_51200_z00100.hdf5",
@@ -582,10 +552,7 @@
                                 "cube_C/cube_C_12800_z00100.hdf5", 
                                 "cube_C/cube_C_06400_z00100.hdf5", 
                                 "cube_C/cube_C_03200_z00100.hdf5", 
-                                "cube_C/cube_C_01600_z00100.hdf5", 
-                                "cube_C/cube_C_00800_z00100.hdf5", 
-                                "cube_C/cube_C_00400_z00100.hdf5", 
-                                "cube_C/cube_C_00200_z00100.hdf5"
+                                "cube_C/cube_C_01600_z00100.hdf5"
                           ],
     "cube100FilesDhdf5": [
                                 "cube_D/cube_D_51200_z00100.hdf5",
@@ -593,9 +560,6 @@
                                 "cube_D/cube_D_12800_z00100.hdf5", 
                                 "cube_D/cube_D_06400_z00100.hdf5", 
                                 "cube_D/cube_D_03200_z00100.hdf5", 
-                                "cube_D/cube_D_01600_z00100.hdf5", 
-                                "cube_D/cube_D_00800_z00100.hdf5", 
-                                "cube_D/cube_D_00400_z00100.hdf5", 
-                                "cube_D/cube_D_00200_z00100.hdf5"
+                                "cube_D/cube_D_01600_z00100.hdf5"
                         ]
 }

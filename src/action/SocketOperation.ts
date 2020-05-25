@@ -3,10 +3,15 @@ import * as child_process from "child_process";
 import { CARTA } from "carta-protobuf";
 
 import * as Utility from "../UtilityFunction";
+
+import config from "./config.json";
 // const procfs = require("procfs-stats");
 // const nodeusage = require("usage");
-// const fs = require("fs");
+const fs = require("fs");
 
+let commandPath: string = "/usr/local/bin/pagecache-management.sh";
+let backendPath: string = "/home/hengtai/carta-backend/build/carta_backend";
+let basePath: string = "/almalustre/carta/images";
 /// Log result
 export interface Report {
     file: string;
@@ -107,37 +112,41 @@ export async function
 /// Create a new carta_backend service
 export async function
     CartaBackend(
-        baseDirectory: string,
-        port: number,
-        threadNumber: number,
-        ompThreadNumber: number,
-        timeout: number,
-        backendDirectory?: string,
-        outputFile?: string,
-        logMessage?: boolean,
+        logFile: string,
+        port: number = config.port,
+        threadNumber: number = config.thread.main,
+        ompThreadNumber: number = config.thread.openmp,
+        timeout?: number,
     ) {
-    let cartaBackend = await child_process.execFile(
-        `/usr/local/bin/pagecache-management.sh /home/hengtai/carta-backend/build/carta_backend`,
-        [
-            `root=base`, `base=${baseDirectory}`,
-            `port=${port}`, `threads=${threadNumber}`,
-            `verbose=true`, `omp_threads=${ompThreadNumber}`,
-            outputFile ? `> ${outputFile}` : "",
-        ],
-        {
-            // cwd: backendDirectory, 
-            timeout
-        }
-    );
-    cartaBackend.on("error", error => {
-        console.error(`error: \n ${error}`);
+    return new Promise(resolve => {
+        fs.writeFile(logFile, "", () => {
+            let cartaBackend = child_process.execFile(
+                commandPath,
+                [
+                    backendPath,
+                    `root=base`,
+                    `base=${basePath}`,
+                    `port=${port}`,
+                    `threads=${threadNumber}`,
+                    `omp_threads=${ompThreadNumber}`,
+                    `verbose=true`,
+                ],
+                { 
+                    timeout
+                }
+            );
+            cartaBackend.on("error", error => {
+                console.error(`error: \n ${error}`);
+            });
+            cartaBackend.stdout.on("data", data => {
+                // console.log(data);
+                fs.appendFile(logFile, data, err => {
+                    // console.log('Updated!');
+                });
+            });
+            resolve(cartaBackend);
+        });
     });
-    cartaBackend.stdout.on("data", data => {
-        if (logMessage) {
-            console.log(data);
-        }
-    });
-    return cartaBackend;
 }
 /// Create a psrecord monitor
 export async function

@@ -3,18 +3,19 @@ import { CARTA } from "carta-protobuf";
 import Long from "long";
 
 import { Client, AckStream } from "./CLIENT";
-import * as SocketOperation from "./SocketOperation";
+import * as Socket from "./SocketOperation";
 import config from "./config.json";
-let testServerUrl: string = "ws://localhost:5000";
+let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
+let testImage: string = config.image.cube;
 let execTimeout: number = config.timeout.execute;
-let connectTimeout: number = config.timeout.connection;
+let listTimeout: number = config.timeout.listFile;
 let animatorTimeout: number = config.timeout.playAnimator;
 let animatorFlame: number = config.repeat.animation;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpenGroup: CARTA.IOpenFile[];
+    fileOpen: CARTA.IOpenFile;
     setCursor: CARTA.ISetCursor;
     addTilesReq: CARTA.IAddRequiredTiles;
     startAnimation: CARTA.IStartAnimation;
@@ -27,15 +28,13 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpenGroup: [
-        {
-            directory: testSubdirectory,
-            file: "cube_A/cube_A_00800_z00100.fits",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-    ],
+    fileOpen: {
+        directory: testSubdirectory,
+        file: testImage,
+        hdu: "",
+        fileId: 0,
+        renderMode: CARTA.RenderMode.RASTER,
+    },
     setCursor: {
         fileId: 0,
         point: { x: 1.0, y: 1.0 },
@@ -86,38 +85,46 @@ let assertItem: AssertItem = {
 describe("Animator action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
-    beforeAll(async () => {
-        cartaBackend = await SocketOperation.CartaBackend(
-                "/almalustre/carta/images", // baseDirectory
-                5000, // port
-                4, // threadNumber
-                32, // ompThreadNumber
-                4000, // timeout for exec
-            );
-
+    let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/')+1).replace('.', '_') + "_animator.txt";
+    test(`CARTA is ready`, async done => {
+        cartaBackend = await Socket.CartaBackend(
+            done,
+            logFile,
+        );
     }, execTimeout);
 
-
     describe(`Start the action: animator`, () => {
-        beforeAll(async () => {
+        test(`Connection is ready`, async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
             await Connection.send(CARTA.FileListRequest, assertItem.filelist);
             await Connection.receive(CARTA.FileListResponse);
-        }, connectTimeout);
+        }, listTimeout);
 
-        assertItem.fileOpenGroup.map((fileOpen: CARTA.IOpenFile, index) => {
+        describe(`open the file "${assertItem.fileOpen.file}"`, () => {
+            test(`should play animator with ${assertItem.stopAnimation.endFrame.channel} frames`, async () => {
+                let ackStream: AckStream;
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                await Connection.receiveAny(); // OpenFileAck
 
-            describe(`open the file "${fileOpen.file}"`, () => {
-                test(`should play animator with ${assertItem.stopAnimation.endFrame.channel} frames`, async () => {
-                    let ackStream: AckStream;
-                    await Connection.send(CARTA.OpenFile, fileOpen);
-                    await Connection.receiveAny(); // OpenFileAck
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                while (true) {
+                    ackStream = await Connection.stream(1) as AckStream;
+                    if (ackStream.RasterTileSync.length > 0) {
+                        if (ackStream.RasterTileSync[0].endSync) {
+                            break;
+                        }
+                    }
+                }
 
-                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.startAnimation.requiredTiles);
+                await Connection.receive(CARTA.StartAnimationAck);
+
+                for (let channel: number = 1; channel <= assertItem.stopAnimation.endFrame.channel; channel++) {
                     while (true) {
                         ackStream = await Connection.stream(1) as AckStream;
                         if (ackStream.RasterTileSync.length > 0) {
@@ -125,46 +132,30 @@ describe("Animator action: ", () => {
                                 break;
                             }
                         }
-                    }
+                    };
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            fileId: 0,
+                            animationId: 1,
+                            receivedFrame: {
+                                channel: channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                }
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
 
-                    await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
-                    await Connection.send(CARTA.AddRequiredTiles, assertItem.startAnimation.requiredTiles);
-                    await Connection.receive(CARTA.StartAnimationAck);
-
-                    for (let channel: number = 1; channel <= assertItem.stopAnimation.endFrame.channel; channel++) {
-                        while (true) {
-                            ackStream = await Connection.stream(1) as AckStream;
-                            if (ackStream.RasterTileSync.length > 0) {
-                                if (ackStream.RasterTileSync[0].endSync) {
-                                    break;
-                                }
-                            }
-                        };
-                        await Connection.send(CARTA.AnimationFlowControl,
-                            {
-                                fileId: 0,
-                                animationId: 1,
-                                receivedFrame: {
-                                    channel: channel,
-                                    stokes: 0
-                                },
-                                timestamp: Long.fromNumber(Date.now()),
-                            }
-                        );
-                    }
-                    await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
-
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, animatorTimeout);
-            });
-
+                await new Promise(resolve => setTimeout(resolve, execTimeout));
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            }, animatorTimeout * animatorFlame + execTimeout);
         });
     });
 
     afterAll(async done => {
         await Connection.close();
-        await cartaBackend.kill();
+        cartaBackend.kill();
         cartaBackend.on("close", () => done());
-    });
+    }, execTimeout);
 });
