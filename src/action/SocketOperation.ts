@@ -111,9 +111,9 @@ export async function
         port: number,
         threadNumber: number,
         ompThreadNumber: number,
+        timeout: number,
         backendDirectory?: string,
         outputFile?: string,
-        timeout?: number,
         logMessage?: boolean,
     ) {
     let cartaBackend = await child_process.execFile(

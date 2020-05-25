@@ -92,6 +92,7 @@ describe("Animator action: ", () => {
                 5000, // port
                 4, // threadNumber
                 32, // ompThreadNumber
+                4000, // timeout for exec
             );
 
     }, execTimeout);
