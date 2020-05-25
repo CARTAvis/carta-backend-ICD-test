@@ -35,7 +35,8 @@
         "playAnimator": 140000,
         "playLargeAnimator": 600000,
         "contour": 4000,
-        "zoom": 12200
+        "zoom": 12200,
+        "execute": 3000
     },
     "repeat": {
         "concurrent": 10,
