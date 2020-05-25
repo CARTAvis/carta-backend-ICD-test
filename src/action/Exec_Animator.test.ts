@@ -5,7 +5,7 @@ import Long from "long";
 import { Client, AckStream } from "./CLIENT";
 import * as SocketOperation from "./SocketOperation";
 import config from "./config.json";
-let testServerUrl: string = config.serverURL;
+let testServerUrl: string = "ws://localhost:5000";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;

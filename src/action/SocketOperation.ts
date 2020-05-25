@@ -3,9 +3,9 @@ import * as child_process from "child_process";
 import { CARTA } from "carta-protobuf";
 
 import * as Utility from "../UtilityFunction";
-let nodeusage = require("usage");
-let procfs = require("procfs-stats");
-let fs = require("fs");
+// const procfs = require("procfs-stats");
+// const nodeusage = require("usage");
+// const fs = require("fs");
 
 /// Log result
 export interface Report {
