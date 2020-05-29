@@ -22,7 +22,7 @@
     "timeout": {
         "connection": 1000,
         "listFile": 1100,
-        "openFile": 1200,
+        "openFile": 3200,
         "readFile": 2200,
         "readLargeImage": 65000,
         "changeChannel": 3100,
