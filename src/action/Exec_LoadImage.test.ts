@@ -5,7 +5,7 @@ import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
-let testImage: string = config.image.cube;
+let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
 let listTimeout: number = config.timeout.listFile;
 let readFileTimeout: number = config.timeout.readLargeImage;
@@ -62,11 +62,12 @@ describe("Load Image action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_loadImage.txt";
-    test(`CARTA is ready`, async done => {
+    test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
-            done,
             logFile,
+            config.port,
         );
+        await new Promise(resolve => setTimeout(resolve, 100));
     }, execTimeout);
 
     describe(`Start the action: load image`, () => {
@@ -75,8 +76,6 @@ describe("Load Image action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
         }, listTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
