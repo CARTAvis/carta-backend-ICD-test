@@ -3,7 +3,6 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
-let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
@@ -49,7 +48,6 @@ let assertItem: AssertItem = {
     resumeSession: {
         images: [
             {
-                file: testImage,
                 directory: testSubdirectory,
                 hdu: "",
                 fileId: 0,
@@ -71,38 +69,65 @@ let assertItem: AssertItem = {
         ],
     },
 }
+let testFiles = [
+    "cube_A/cube_A_51200_z00100.fits",
+    "cube_A/cube_A_25600_z00100.fits",
+    "cube_A/cube_A_12800_z00100.fits",
+    "cube_A/cube_A_06400_z00100.fits",
+    "cube_A/cube_A_03200_z00100.fits",
+    "cube_A/cube_A_01600_z00100.fits",
+    "cube_A/cube_A_51200_z00100.image",
+    "cube_A/cube_A_25600_z00100.image",
+    "cube_A/cube_A_12800_z00100.image",
+    "cube_A/cube_A_06400_z00100.image",
+    "cube_A/cube_A_03200_z00100.image",
+    "cube_A/cube_A_01600_z00100.image",
 
-describe("Resume action: ", () => {
+    // "cube_A/cube_A_12800_z00100.hdf5", 
+    // "cube_A/cube_A_06400_z00100.hdf5", 
+    // "cube_A/cube_A_03200_z00100.hdf5",
+    // "cube_A/cube_A_01600_z00100.hdf5",
+];
+testFiles.map(file => {
+    let testServerUrl: string = `${config.localHost}:${config.port}`;
+    describe(`Resume action: ${file.substr(file.search('/') + 1)}`, () => {
 
-    let cartaBackend: any;
-    let logFile = testImage.substr(testImage.search('/') + 1).replace('.', '_') + "_resume.txt";
-    test(`CARTA is ready`, async () => {
-        cartaBackend = await Socket.CartaBackend(
-            logFile,
-            config.port,
-        );
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-    }, execTimeout);
+        let cartaBackend: any;
+        let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_resume.txt";
+        test(`CARTA is ready`, async () => {
+            cartaBackend = await Socket.CartaBackend(
+                logFile,
+                config.port,
+            );
+            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+        }, execTimeout);
 
-    for (let idx = 0; idx < resumeRepeat; idx++) {
+        for (let idx = 0; idx < resumeRepeat; idx++) {
+            test(`should resume session and reopen image "${file}"`, async () => {
+                let Connection: Client = new Client(testServerUrl);
+                await Connection.open();
+                await Connection.send(CARTA.RegisterViewer, assertItem.register);
+                await Connection.receive(CARTA.RegisterViewerAck);
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+                await Connection.send(CARTA.ResumeSession, {
+                    images: [
+                        {
+                            file: file,
+                            ...assertItem.resumeSession.images[0],
+                        },
+                    ],
+                });
+                await Connection.stream(3);
 
-        test(`should resume session and reopen image "${assertItem.resumeSession.images[0].file}"`, async () => {
-            let Connection: Client = new Client(testServerUrl);
-            await Connection.open();
-            await Connection.send(CARTA.RegisterViewer, assertItem.register);
-            await Connection.receive(CARTA.RegisterViewerAck);
-            await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
-            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-            await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            await Connection.stream(3);
+                await new Promise(resolve => setTimeout(resolve, resumeWait));
+                Connection.close();
+            }, resumeTimeout + resumeWait);
+        }
 
-            await new Promise(resolve => setTimeout(resolve, resumeWait));
-            Connection.close();
-        }, resumeTimeout + resumeWait);
-    }
-
-    afterAll(done => {
-        cartaBackend.kill();
-        cartaBackend.on("close", () => done());
-    }, execTimeout);
+        afterAll(done => {
+            cartaBackend.kill();
+            cartaBackend.on("close", () => done());
+        }, execTimeout);
+    });
 });

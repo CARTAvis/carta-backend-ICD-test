@@ -52,7 +52,7 @@
         "cursor": 20,
         "image": 20,
         "animation": 10,
-        "resumeSession": 20,
+        "resumeSession": 10,
         "contour": 10,
         "zoom": 5
     },

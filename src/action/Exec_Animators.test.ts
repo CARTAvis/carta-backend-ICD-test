@@ -108,7 +108,7 @@ testFiles.map(file => {
                 logFile,
                 config.port,
             );
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         }, execTimeout);
 
         describe(`Start the action: animator`, () => {
