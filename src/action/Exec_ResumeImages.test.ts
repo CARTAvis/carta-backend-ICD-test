@@ -4,7 +4,6 @@ import { Client } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
-let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
 let resumeTimeout: number = config.timeout.resume;
 let resumeRepeat: number = config.repeat.resumeSession;
