@@ -122,7 +122,8 @@ describe("Contour action: ", () => {
                         referenceFileId: 0,
                     }); // Clear contour
 
-                }, contourTimeout);
+                    await new Promise(resolve => setTimeout(resolve, config.wait.contour));
+                }, contourTimeout + config.wait.contour);
             }
 
         });

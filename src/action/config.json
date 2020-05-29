@@ -25,8 +25,8 @@
         "openFile": 1200,
         "readFile": 2200,
         "readLargeImage": 65000,
-        "changeChannel": 3000,
-        "playImages": 3100,
+        "changeChannel": 3100,
+        "playImages": 3200,
         "cubeHistogram": 500000,
         "cancel": 5000,
         "concurrent": 4000,
@@ -36,16 +36,17 @@
         "import": 500,
         "export": 500,
         "resume": 1300,
-        "sleep": 3000,
+        "sleep": 3300,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
-        "contour": 4000,
+        "contour": 3400,
         "zoom": 12200,
         "execute": 1500
     },
     "wait": {
         "exec": 150,
-        "resume": 2000
+        "resume": 2000,
+        "contour": 200
     },
     "repeat": {
         "concurrent": 10,
