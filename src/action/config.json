@@ -22,7 +22,7 @@
     "timeout": {
         "connection": 1000,
         "listFile": 1100,
-        "openFile": 1000,
+        "openFile": 1200,
         "readFile": 2200,
         "readLargeImage": 65000,
         "changeChannel": 3000,
@@ -35,7 +35,7 @@
         "region": 500,
         "import": 500,
         "export": 500,
-        "resume": 10000,
+        "resume": 1300,
         "sleep": 3000,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
@@ -43,18 +43,22 @@
         "zoom": 12200,
         "execute": 1500
     },
+    "wait": {
+        "exec": 150,
+        "resume": 2000
+    },
     "repeat": {
         "concurrent": 10,
         "cursor": 20,
         "image": 20,
         "animation": 10,
-        "resumeSession": 10,
+        "resumeSession": 20,
         "contour": 10,
         "zoom": 5
     },
     "log": {
         "error": false,
-        "warning": true,
+        "warning": false,
         "event": false
     }
 }
