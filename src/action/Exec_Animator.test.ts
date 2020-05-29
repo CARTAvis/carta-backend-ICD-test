@@ -86,11 +86,12 @@ describe("Animator action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/')+1).replace('.', '_') + "_animator.txt";
-    test(`CARTA is ready`, async done => {
+    test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
-            done,
             logFile,
+            config.port,
         );
+        await new Promise(resolve => setTimeout(resolve, 100));
     }, execTimeout);
 
     describe(`Start the action: animator`, () => {
@@ -99,8 +100,6 @@ describe("Animator action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
         }, listTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
