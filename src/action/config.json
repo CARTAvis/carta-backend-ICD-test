@@ -40,6 +40,7 @@
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
         "contour": 3400,
+        "contourLargeImage": 13400,
         "zoom": 12200,
         "execute": 1500
     },
