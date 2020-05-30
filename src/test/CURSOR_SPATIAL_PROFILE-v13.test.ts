@@ -1,7 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -107,21 +106,21 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
             expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
             let temp1 = await Connection.receive(CARTA.OpenFileAck)
-            console.log(temp1)
+            // console.log(temp1)
         }, openFileTimeout);
 
-        // test(`RegionHistogramData? | `, async () => {
-        //     let temp2 = await Connection.receiveAny() as CARTA.RegionHistogramData// 
-        //     console.log(temp2)
-        // }, openFileTimeout);
+        test(`RegionHistogramData (may pass with try several times)? | `, async () => {
+            let temp2 = await Connection.receive(CARTA.RegionHistogramData);
+            console.log(temp2)
+        }, openFileTimeout);
 
         let ack: AckStream;
-        test(`RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)`, async () => {
+        test(`RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)?`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
             ack = await Connection.stream(4) as AckStream;
-            console.log(ack);
+            // console.log(ack);
         }, readFileTimeout);
 
         assertItem.spatialProfileData.map((profileData, index) => {
@@ -133,39 +132,39 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                     console.log(SpatialProfileDataTemp)
                 }, cursorTimeout);
 
-                // test(`SPATIAL_PROFILE_DATA.value = ${profileData.value}`, () => {
-                //     expect(SpatialProfileDataTemp.value).toEqual(profileData.value);
-                // });
+                test(`SPATIAL_PROFILE_DATA.value = ${profileData.value}`, () => {
+                    expect(SpatialProfileDataTemp.value).toEqual(profileData.value);
+                });
 
-                // test(`SPATIAL_PROFILE_DATA.x = ${profileData.x} and SPATIAL_PROFILE_DATA.y = ${profileData.y}`, () => {
-                //     expect(SpatialProfileDataTemp.x).toEqual(profileData.x);
-                //     expect(SpatialProfileDataTemp.y).toEqual(profileData.y);
-                // });
+                test(`SPATIAL_PROFILE_DATA.x = ${profileData.x} and SPATIAL_PROFILE_DATA.y = ${profileData.y}`, () => {
+                    expect(SpatialProfileDataTemp.x).toEqual(profileData.x);
+                    expect(SpatialProfileDataTemp.y).toEqual(profileData.y);
+                });
 
-                // test(`Length of profile_x = ${profileData.profileLength.x} and length of profile_y = ${profileData.profileLength.y}`, () => {
-                //     expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.length).toEqual(profileData.profileLength.x);
-                //     expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.length).toEqual(profileData.profileLength.y);
-                // });
+                test(`Length of profile_x = ${profileData.profileLength.x} and length of profile_y = ${profileData.profileLength.y}`, () => {
+                    expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.length).toEqual(profileData.profileLength.x);
+                    expect(SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.length).toEqual(profileData.profileLength.y);
+                });
 
-                // test(`The #${profileData.oddPoint.x.one.idx + 1} value = ${profileData.oddPoint.x.one.value} and other values = ${profileData.oddPoint.x.others} on the profile_x`, () => {
-                //     SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map((value, index) => {
-                //         if (index === profileData.oddPoint.x.one.idx) {
-                //             expect(value).toEqual(profileData.oddPoint.x.one.value);
-                //         } else {
-                //             expect(value).toEqual(profileData.oddPoint.x.others);
-                //         }
-                //     });
-                // });
+                test(`The decoded_profile_x[${profileData.oddPoint.x.one.idx}] value = ${profileData.oddPoint.x.one.value} and other values = ${profileData.oddPoint.x.others} on the profile_x`, () => {
+                    SpatialProfileDataTemp.profiles.find(f => f.coordinate === "x").values.map((value, index) => {
+                        if (index === profileData.oddPoint.x.one.idx) {
+                            expect(value).toEqual(profileData.oddPoint.x.one.value);
+                        } else {
+                            expect(value).toEqual(profileData.oddPoint.x.others);
+                        }
+                    });
+                });
 
-                // test(`The #${profileData.oddPoint.y.one.idx + 1} value = ${profileData.oddPoint.y.one.value} and other values = ${profileData.oddPoint.y.others} on the profile_y`, () => {
-                //     SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map((value, index) => {
-                //         if (index === profileData.oddPoint.y.one.idx) {
-                //             expect(value).toEqual(profileData.oddPoint.y.one.value);
-                //         } else {
-                //             expect(value).toEqual(profileData.oddPoint.y.others);
-                //         }
-                //     });
-                // });
+                test(`The decoded_profile_y[${profileData.oddPoint.y.one.idx}] value = ${profileData.oddPoint.y.one.value} and other values = ${profileData.oddPoint.y.others} on the profile_y`, () => {
+                    SpatialProfileDataTemp.profiles.find(f => f.coordinate === "y").values.map((value, index) => {
+                        if (index === profileData.oddPoint.y.one.idx) {
+                            expect(value).toEqual(profileData.oddPoint.y.one.value);
+                        } else {
+                            expect(value).toEqual(profileData.oddPoint.y.others);
+                        }
+                    });
+                });
 
             });
         });
