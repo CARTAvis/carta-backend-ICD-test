@@ -7,7 +7,7 @@ import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
-let listTimeout: number = config.timeout.listFile;
+let connectTimeout: number = config.timeout.connection;
 let animatorTimeout: number = config.timeout.readLargeImage;
 let animatorFlame: number = config.repeat.animation;
 interface AssertItem {
@@ -98,7 +98,7 @@ let testFiles = [
     // "cube_A/cube_A_01600_z00100.hdf5",
 ];
 testFiles.map(file => {
-    let testServerUrl: string = `${config.localHost}:${config.port}`
+    let testServerUrl: string = `${config.localHost}:${config.port}`;
     describe(`Animator action: ${file.substr(file.search('/') + 1)}`, () => {
         let Connection: Client;
         let cartaBackend: any;
@@ -117,9 +117,7 @@ testFiles.map(file => {
                 await Connection.open();
                 await Connection.send(CARTA.RegisterViewer, assertItem.register);
                 await Connection.receive(CARTA.RegisterViewerAck);
-                // await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-                // await Connection.receive(CARTA.FileListResponse);
-            }, listTimeout);
+            }, connectTimeout);
 
             describe(`open the file "${file}"`, () => {
                 test(`should play animator with ${assertItem.stopAnimation.endFrame.channel} frames`, async () => {

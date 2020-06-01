@@ -27,7 +27,7 @@
         "readLargeImage": 65000,
         "changeChannel": 3100,
         "playImages": 3200,
-        "cubeHistogram": 10000,
+        "cubeHistogram": 30000,
         "cubeHistogramLarge": 500000,
         "cancel": 5000,
         "concurrent": 4000,
@@ -46,9 +46,10 @@
         "execute": 1500
     },
     "wait": {
-        "exec": 150,
+        "exec": 300,
         "resume": 2000,
-        "contour": 200
+        "contour": 200,
+        "histogram": 300
     },
     "repeat": {
         "concurrent": 10,
