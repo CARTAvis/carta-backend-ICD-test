@@ -89,7 +89,7 @@ testFiles.map(file => {
     describe("Zoom In&Out Iamge action: ", () => {
         let Connection: Client;
         let cartaBackend: any;
-        let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZoomOut.txt";
+        let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_Zoom.txt";
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
