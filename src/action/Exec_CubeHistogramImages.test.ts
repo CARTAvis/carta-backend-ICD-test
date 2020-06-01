@@ -6,6 +6,7 @@ import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
+let fileopenTimeout:number = config.timeout.readLargeImage;
 let cubeHistogramTimeout: number = config.timeout.cubeHistogramLarge;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -93,15 +94,17 @@ testFiles.map(file => {
                 await Connection.receive(CARTA.RegisterViewerAck);
             }, connectTimeout);
 
-            describe(`open the file "${file}"`, () => {
-                test(`should get cube histogram`, async () => {
+            describe(`start the action`, () => {
+                test(`should open the file "${file}"`, async () => {
                     await Connection.send(CARTA.OpenFile, {
                         file: file,
                         ...assertItem.fileOpen,
                     });
                     await Connection.receiveAny();
                     await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                }, fileopenTimeout);
 
+                test(`should get cube histogram`, async () => {
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 

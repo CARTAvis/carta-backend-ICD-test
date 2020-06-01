@@ -8,6 +8,7 @@ import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
+let fileopenTimeout:number = config.timeout.readLargeImage;
 let animatorTimeout: number = config.timeout.readLargeImage;
 let animatorFlame: number = config.repeat.animation;
 interface AssertItem {
@@ -119,15 +120,17 @@ testFiles.map(file => {
                 await Connection.receive(CARTA.RegisterViewerAck);
             }, connectTimeout);
 
-            describe(`open the file "${file}"`, () => {
-                test(`should play animator with ${assertItem.stopAnimation.endFrame.channel} frames`, async () => {
-                    let ackStream: AckStream;
+            describe(`start the action`, () => {
+                let ackStream: AckStream;
+                test(`should open the file "${file}"`, async () => {
                     await Connection.send(CARTA.OpenFile, {
                         file: file,
                         ...assertItem.fileOpen,
                     });
                     await Connection.receiveAny(); // OpenFileAck
+                }, fileopenTimeout);
 
+                test(`should play animator with ${assertItem.stopAnimation.endFrame.channel} frames`, async () => {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                     while (true) {
