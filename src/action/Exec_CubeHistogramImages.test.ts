@@ -6,7 +6,7 @@ import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let cubeHistogramTimeout: number = config.timeout.cubeHistogram;
+let cubeHistogramTimeout: number = config.timeout.cubeHistogramLarge;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
