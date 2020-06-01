@@ -62,8 +62,76 @@ let assertItem: AssertItem = {
             fileId: 0,
             point: { x: 50.00, y: 50.00 },
         },
+        {
+            fileId: 0,
+            point: { x: 49.50, y: 49.50 },
+        },
+        {
+            fileId: 0,
+            point: { x: 49.50, y: 50.49 },
+        },
+        {
+            fileId: 0,
+            point: { x: 50.49, y: 49.50 },
+        },
+        {
+            fileId: 0,
+            point: { x: 50.49, y: 50.49 },
+        },
     ],
     spatialProfileData: [
+        {
+            fileId: 0,
+            regionId: 0,
+            stokes: 0,
+            x: 50.0,
+            y: 50.0,
+            profileLength: { x: 100, y: 100 },
+            value: 1,
+            oddPoint: {
+                x: { one: { idx: 50, value: 1 }, others: 0 },
+                y: { one: { idx: 50, value: 1 }, others: 0 },
+            }
+        },
+        {
+            fileId: 0,
+            regionId: 0,
+            stokes: 0,
+            x: 50.0,
+            y: 50.0,
+            profileLength: { x: 100, y: 100 },
+            value: 1,
+            oddPoint: {
+                x: { one: { idx: 50, value: 1 }, others: 0 },
+                y: { one: { idx: 50, value: 1 }, others: 0 },
+            }
+        },
+        {
+            fileId: 0,
+            regionId: 0,
+            stokes: 0,
+            x: 50.0,
+            y: 50.0,
+            profileLength: { x: 100, y: 100 },
+            value: 1,
+            oddPoint: {
+                x: { one: { idx: 50, value: 1 }, others: 0 },
+                y: { one: { idx: 50, value: 1 }, others: 0 },
+            }
+        },
+        {
+            fileId: 0,
+            regionId: 0,
+            stokes: 0,
+            x: 50.0,
+            y: 50.0,
+            profileLength: { x: 100, y: 100 },
+            value: 1,
+            oddPoint: {
+                x: { one: { idx: 50, value: 1 }, others: 0 },
+                y: { one: { idx: 50, value: 1 }, others: 0 },
+            }
+        },
         {
             fileId: 0,
             regionId: 0,
@@ -109,7 +177,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
             // console.log(temp1)
         }, openFileTimeout);
 
-        test(`RegionHistogramData (may pass with try several times)? | `, async () => {
+        test(`RegionHistogramData (would pass over if trying several times)? | `, async () => {
             let temp2 = await Connection.receive(CARTA.RegionHistogramData);
             console.log(temp2)
         }, openFileTimeout);
