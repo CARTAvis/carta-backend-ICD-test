@@ -64,7 +64,7 @@ let testFiles = [
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
-    describe("Z profile cursor action: ", () => {
+    describe(`Z profile cursor action: ${file.substr(file.search('/') + 1)}`, () => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileRegion.txt";
