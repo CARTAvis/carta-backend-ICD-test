@@ -73,7 +73,7 @@ let testFiles = [
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
-    describe(`Cube histogram: ${file.substr(file.search('/') + 1)}`, () => {
+    describe(`Cube histogram action: ${file.substr(file.search('/') + 1)}`, () => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_cubeHistogram.txt";
