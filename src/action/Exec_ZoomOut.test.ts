@@ -1,12 +1,13 @@
 import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
+import * as Socket from "./SocketOperation";
 import config from "./config.json";
-let testServerUrl: string = config.serverURL;
-let testImage: string = config.image.cube;
+let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
+let testImage: string = config.image.cube;
+let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let listTimeout: number = config.timeout.listFile;
 let readTimeout: number = config.timeout.readFile;
 let zoomTimeout: number = config.timeout.zoom;
 let zoomRepeat: number = config.repeat.zoom;
@@ -70,21 +71,26 @@ let assertItem: AssertItem = {
 
 describe("Zoom Out Iamge action: ", () => {
     let Connection: Client;
-    beforeAll(async () => {
-        Connection = new Client(testServerUrl);
-        await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
-    }, connectTimeout);
-
+    let cartaBackend: any;
+    let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZoomOut.txt";
+    test(`CARTA is ready`, async () => {
+        cartaBackend = await Socket.CartaBackend(
+            logFile,
+            config.port,
+        );
+        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+    }, execTimeout + config.wait.exec);
+    
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
-        }, listTimeout);
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
+        }, connectTimeout);
 
-        describe(`open the file "${assertItem.fileOpen.file}"`, () => {
-            beforeAll(async () => {
+        describe(`start the action`, () => {
+            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.stream(2); // OpenFileAck | RegionHistogramData
@@ -133,5 +139,9 @@ describe("Zoom Out Iamge action: ", () => {
 
     });
 
-    afterAll(() => Connection.close());
+    afterAll(async done => {
+        await Connection.close();
+        cartaBackend.kill();
+        cartaBackend.on("close", () => done());
+    }, execTimeout);
 });

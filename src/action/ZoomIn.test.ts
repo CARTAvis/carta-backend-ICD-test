@@ -124,7 +124,7 @@ describe("Zoom In Iamge action: ", () => {
                             }
                         }
                     }
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, config.wait.zoom));
                 }, zoomTimeout);
 
                 test(`image should zoom out`, async () => {
@@ -138,7 +138,7 @@ describe("Zoom In Iamge action: ", () => {
                             }
                         }
                     }
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, config.wait.zoom));
                 }, zoomTimeout);
             }
         });

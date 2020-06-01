@@ -42,14 +42,15 @@
         "playLargeAnimator": 66000,
         "contour": 3400,
         "contourLargeImage": 13400,
-        "zoom": 12200,
+        "zoom": 6200,
         "execute": 1500
     },
     "wait": {
         "exec": 300,
         "resume": 2000,
         "contour": 200,
-        "histogram": 300
+        "histogram": 300,
+        "zoom": 200
     },
     "repeat": {
         "concurrent": 10,
