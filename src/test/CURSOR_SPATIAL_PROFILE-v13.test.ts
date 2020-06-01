@@ -273,8 +273,9 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, setCursor);
                     SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
-                    console.log(setCursor)
-                    console.log(Object.keys(SpatialProfileDataTemp))
+                    // console.log(setCursor)
+                    // console.log(SpatialProfileDataTemp)
+                    // console.log(Object.keys(SpatialProfileDataTemp))
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${assertItem.spatialProfileData2[index].value}`, () => {
@@ -309,8 +310,12 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 test(`SPATIAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, item);
                     let temp = await Connection.receive(CARTA.SpatialProfileData);
-                    console.log(item)
-                    console.log(Object.keys(temp))
+                    let tempProfileCoordinateEnd = temp.profiles.map(a => a.end)
+                    if (item.x > tempProfileCoordinateEnd[0] && item.y > tempProfileCoordinateEnd[1]) {
+                        expect(item.x).toBeGreaterThan(tempProfileCoordinateEnd[0]);
+                        expect(item.y).toBeGreaterThan(tempProfileCoordinateEnd[1]);
+                        console.warn("Returned SpatialProfileData was filtered through jest/frontend");
+                    }
                 }, cursorTimeout + connectTimeout);
 
                 test("Backend is not crashed", () => {
