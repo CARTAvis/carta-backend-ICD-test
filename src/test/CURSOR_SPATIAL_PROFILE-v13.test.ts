@@ -307,9 +307,10 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
 
         assertItem.errorPoint.map((item, index) => {
             describe(`set cursor on {${item.x}, ${item.y}}`, () => {
-                test(`SPATIAL_PROFILE_DATA should not arrive within ${cursorTimeout} ms`, async () => {
+                test(`SPATIAL_PROFILE_DATA should not have any x or y`, async () => {
                     await Connection.send(CARTA.SetCursor, item);
                     let temp = await Connection.receive(CARTA.SpatialProfileData);
+                    // console.log(temp)
                     let tempProfileCoordinateEnd = temp.profiles.map(a => a.end)
                     if (item.x > tempProfileCoordinateEnd[0] && item.y > tempProfileCoordinateEnd[1]) {
                         expect(item.x).toBeGreaterThan(tempProfileCoordinateEnd[0]);
