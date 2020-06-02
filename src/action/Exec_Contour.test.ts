@@ -8,7 +8,7 @@ let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let openfileTimeout: number = config.timeout.openFile;
+let readfileTimeout: number = config.timeout.readLargeImage;
 let contourTimeout: number = config.timeout.contour;
 let contourRepeat: number = config.repeat.contour;
 interface AssertItem {
@@ -90,15 +90,15 @@ describe("Contour action: ", () => {
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             let ackFile: CARTA.OpenFileAck;
-            beforeAll(async () => {
+            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ackFile = await Connection.receive(CARTA.OpenFileAck) as CARTA.OpenFileAck;
                 await Connection.receiveAny(); // RegionHistogramData
-
+    
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.stream(4) as AckStream;
-            }, openfileTimeout);
+            }, readfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
                 test(`should return contour data`, async () => {
@@ -125,9 +125,7 @@ describe("Contour action: ", () => {
                     await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                 }, contourTimeout + config.wait.contour);
             }
-
         });
-
     });
 
     afterAll(async done => {

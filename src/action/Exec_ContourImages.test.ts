@@ -6,7 +6,7 @@ import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let openfileTimeout: number = config.timeout.readLargeImage;
+let readfileTimeout: number = config.timeout.readLargeImage;
 let contourTimeout: number = config.timeout.contourLargeImage;
 let contourRepeat: number = config.repeat.contour;
 interface AssertItem {
@@ -107,7 +107,7 @@ testFiles.map(file => {
 
             describe(`open the file "${file}"`, () => {
                 let ackFile: CARTA.OpenFileAck;
-                beforeAll(async () => {
+                test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
                     await Connection.send(CARTA.OpenFile, {
                         file:file,
                         ...assertItem.fileOpen,
@@ -118,7 +118,7 @@ testFiles.map(file => {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                     await Connection.stream(4) as AckStream;
-                }, openfileTimeout);
+                }, readfileTimeout);
 
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
