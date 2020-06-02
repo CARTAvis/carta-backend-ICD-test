@@ -209,7 +209,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
 
         test(`RegionHistogramData (would pass over if trying several times)? | `, async () => {
             let temp2 = await Connection.receive(CARTA.RegionHistogramData);
-            console.log(temp2)
+            // console.log(temp2)
         }, openFileTimeout);
 
         let ack: AckStream;

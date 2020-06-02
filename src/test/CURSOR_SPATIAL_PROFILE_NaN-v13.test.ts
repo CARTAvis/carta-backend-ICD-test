@@ -136,7 +136,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor[index]);
                     SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
-                    console.log(SpatialProfileDataTemp)
+                    // console.log(SpatialProfileDataTemp)
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${profileData.value}`, () => {
