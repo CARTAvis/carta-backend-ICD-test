@@ -9,7 +9,7 @@ let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
 let readfileTimeout: number = config.timeout.readLargeImage;
-let contourTimeout: number = config.timeout.contour;
+let contourTimeout: number = config.timeout.contourLargeImage;
 let contourRepeat: number = config.repeat.contour;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
