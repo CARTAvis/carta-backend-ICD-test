@@ -228,6 +228,47 @@ export class Client {
             }
         });
     }
+    /// A receiving websocket message in any type async
+    /// timeout: promise will return CARTA data until time out if timeout > 0
+    /// return type only and there is no process of decoding
+    receiveAnyType(timeout?: number) {
+        return new Promise<string>((resolve, reject) => {
+            this.connection.onmessage = async (messageEvent: MessageEvent) => {
+                const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+                // const eventData = new Uint8Array(messageEvent.data, 8);
+                const eventNumber = eventHeader16[0];
+                // const eventIcdVersion = eventHeader16[1];
+                const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
+                }
+                resolve(this.CartaType.get(eventNumber));
+            };
+            if (timeout) {
+                let Timer = setTimeout(() => {
+                    clearTimeout(Timer);
+                    reject();
+                }, timeout);
+            }
+        });
+    }
+    /// A receiving websocket message in any unknown type async
+    /// timeout: promise will return CARTA data until time out if timeout > 0
+    /// return nothing so there is no process of decoding
+    receiveAnyNull(timeout?: number) {
+        return new Promise<null>((resolve, reject) => {
+            this.connection.onmessage = async () => {
+                resolve();
+            };
+            if (timeout) {
+                let Timer = setTimeout(() => {
+                    clearTimeout(Timer);
+                    reject();
+                }, timeout);
+            }
+        });
+    }
     /// Receive CARTA stream async
     /// Until the number: totalCount of mesaages have received or
     /// timeout: promise will not return CARTA data until time out if timeout > 0
@@ -308,6 +349,74 @@ export class Client {
                     let Timer = setTimeout(() => {
                         clearTimeout(Timer);
                         resolve(ack);
+                    }, timeout);
+                }
+            };
+        });
+    }
+    /// Receive CARTA stream async
+    /// Until the number: totalCount of mesaages have received or
+    /// timeout: promise will not return CARTA data until time out if timeout > 0
+    /// return a series of message types what we got
+    streamType(count?: number, timeout?: number) {
+        if (count <= 0) {
+            return Promise.resolve();
+        }
+
+        let _count: number = 0;
+        let ackMessage: string[] = [];
+
+        return new Promise<string[]>(resolve => {
+            this.connection.onmessage = (messageEvent: MessageEvent) => {
+                const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+                // const eventData = new Uint8Array(messageEvent.data, 8);
+
+                const eventNumber = eventHeader16[0];
+                const eventIcdVersion = eventHeader16[1];
+                const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
+                }
+
+                if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
+                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
+                }
+                ackMessage.push(this.CartaType.get(eventNumber));
+
+                _count++;
+                if (_count === count) {
+                    resolve(ackMessage);
+                }
+                if (timeout) {
+                    let Timer = setTimeout(() => {
+                        clearTimeout(Timer);
+                        resolve(ackMessage);
+                    }, timeout);
+                }
+            };
+        });
+    }
+    /// Receive CARTA stream unknown async
+    /// Until the number: totalCount of mesaages have received or
+    /// timeout: promise will not return CARTA data until time out if timeout > 0
+    streamNull(count?: number, timeout?: number) {
+        if (count <= 0) {
+            return Promise.resolve();
+        }
+
+        let _count: number = 0;
+
+        return new Promise<null>(resolve => {
+            this.connection.onmessage = (messageEvent: MessageEvent) => {
+                _count++;
+                if (_count === count) {
+                    resolve();
+                }
+                if (timeout) {
+                    let Timer = setTimeout(() => {
+                        clearTimeout(Timer);
+                        resolve();
                     }, timeout);
                 }
             };
