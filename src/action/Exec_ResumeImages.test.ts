@@ -5,7 +5,7 @@ import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
-let resumeTimeout: number = config.timeout.resume;
+let resumeTimeout: number = config.timeout.resumeLargeImage;
 let resumeRepeat: number = config.repeat.resumeSession;
 let resumeWait: number = config.wait.resume;
 interface AssertItem {
