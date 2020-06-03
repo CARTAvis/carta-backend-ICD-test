@@ -123,7 +123,7 @@ export class Client {
             eventHeader16[1] = this.IcdVersion;
             eventHeader32[0] = Client.eventCount.value++; // eventCounter;
             if (config.log.event) {
-                console.log(`${cartaType.name} => @ ${eventHeader32[0]}`);
+                console.log(`${cartaType.name} => #${eventHeader32[0]} @ ${performance.now()}`);
             }
 
             eventData.set(payload, 8);
@@ -147,7 +147,7 @@ export class Client {
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
                 }
 
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
@@ -200,7 +200,7 @@ export class Client {
                 // const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
                 if (config.log.event) {
-                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
                 }
 
                 let data;
@@ -229,8 +229,9 @@ export class Client {
         });
     }
     /// Receive CARTA stream async
-    /// Until the number: totalCount of mesaages have received
-    stream(count?: number) {
+    /// Until the number: totalCount of mesaages have received or
+    /// timeout: promise will not return CARTA data until time out if timeout > 0
+    stream(count?: number, timeout?: number) {
         if (count <= 0) {
             return Promise.resolve();
         }
@@ -257,6 +258,9 @@ export class Client {
                 const eventNumber = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
+                }
 
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
@@ -299,6 +303,12 @@ export class Client {
                 _count++;
                 if (_count === count) {
                     resolve(ack);
+                }
+                if (timeout) {
+                    let Timer = setTimeout(() => {
+                        clearTimeout(Timer);
+                        resolve(ack);
+                    }, timeout);
                 }
             };
         });
