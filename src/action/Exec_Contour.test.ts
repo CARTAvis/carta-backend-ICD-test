@@ -5,7 +5,7 @@ import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
-let testImage: string = config.image.singleChannel;
+let testImage: string = config.image.cube;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
 let readfileTimeout: number = config.timeout.readLargeImage;

@@ -16,7 +16,7 @@
         "performance": "set_QA_performance"
     },
     "image": {
-        "singleChannel": "cube_A/cube_A_03200_z00001.fits",
+        "singleChannel": "cube_A/cube_A_01600_z00001.fits",
         "cube": "cube_A/cube_A_01600_z00100.fits"
     },
     "timeout": {
