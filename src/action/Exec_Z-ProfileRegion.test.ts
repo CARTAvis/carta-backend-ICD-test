@@ -99,11 +99,11 @@ describe("Z profile cursor action: ", () => {
                     await Connection.receiveAny();
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                     await Connection.receiveAny();
+                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                 }
 
-                await new Promise(resolve => setTimeout(resolve, config.wait.exec));
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            }, cursorTimeout * cursorRepeat + config.wait.exec);
+            }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
         });
 
     });
