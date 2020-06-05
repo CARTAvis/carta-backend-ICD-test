@@ -54,7 +54,7 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            0.015808638865844493,
+            // 0.015808638865844493,
             2.810852870937488,
             5.605897103009132,
             8.400941335080777,
