@@ -83,11 +83,10 @@ describe("Contour action: ", () => {
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
-            let ackFile: CARTA.OpenFileAck;
+            let ack: AckStream;
             beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                ackFile = await Connection.receive(CARTA.OpenFileAck) as CARTA.OpenFileAck;
-                await Connection.receiveAny(); // RegionHistogramData
+                ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
 
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
@@ -98,8 +97,8 @@ describe("Contour action: ", () => {
                 test(`should return contour data`, async () => {
                     await Connection.send(CARTA.SetContourParameters, {
                         imageBounds: {
-                            xMin: 0, xMax: ackFile.fileInfoExtended.width,
-                            yMin: 0, yMax: ackFile.fileInfoExtended.height,
+                            xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
+                            yMin: 0, yMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.height,
                         },
                         ...assertItem.setContour,
                     });

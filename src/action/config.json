@@ -41,8 +41,8 @@
         "sleep": 3300,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
-        "contour": 3400,
-        "contourLargeImage": 13400,
+        "contour": 5400,
+        "contourLargeImage": 30200,
         "zoom": 7500,
         "execute": 1500
     },

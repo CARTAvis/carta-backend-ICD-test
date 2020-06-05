@@ -8,8 +8,8 @@ let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.cube;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let readfileTimeout: number = config.timeout.readLargeImage;
-let contourTimeout: number = config.timeout.contourLargeImage;
+let readfileTimeout: number = config.timeout.readFile;
+let contourTimeout: number = config.timeout.contour;
 let contourRepeat: number = config.repeat.contour;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
