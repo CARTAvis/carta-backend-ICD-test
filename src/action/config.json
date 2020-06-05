@@ -47,11 +47,12 @@
         "execute": 1500
     },
     "wait": {
-        "exec": 300,
+        "exec": 400,
         "resume": 2000,
-        "contour": 200,
-        "histogram": 300,
-        "zoom": 200
+        "contour": 800,
+        "histogram": 500,
+        "zoom": 400,
+        "cursor": 600
     },
     "repeat": {
         "concurrent": 10,

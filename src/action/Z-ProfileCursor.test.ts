@@ -82,9 +82,9 @@ describe("Z profile cursor: ", () => {
                         await Connection.stream(2);
                     }
 
-                    await new Promise(resolve => setTimeout(resolve, 300));
+                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat);
+                }, cursorTimeout * cursorRepeat + config.wait.cursor);
             });
 
         });

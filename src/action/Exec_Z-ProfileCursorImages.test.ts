@@ -108,9 +108,9 @@ testFiles.map(file => {
                         await Connection.stream(2);
                     }
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat + config.wait.exec);
+                }, cursorTimeout * cursorRepeat + config.wait.cursor);
             });
         });
 
