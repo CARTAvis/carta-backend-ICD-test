@@ -126,7 +126,7 @@ testFiles.map(file => {
                     }
 
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, (cursorTimeout + config.wait.cursor) * cursorRepeat;
+                }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
             });
 
         });
