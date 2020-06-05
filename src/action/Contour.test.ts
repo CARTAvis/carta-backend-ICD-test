@@ -52,11 +52,11 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            0.026764668757095933, 
-            2.817174522397773, 
-            5.60758437603845, 
-            8.397994229679128, 
-            11.188404083319805
+            2.7,
+            4.2,
+            6.0,
+            7.5,
+            9.4,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
