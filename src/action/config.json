@@ -33,7 +33,7 @@
         "concurrent": 4000,
         "messageEvent": 500,
         "mouseEvent": 700,
-        "region": 500,
+        "region": 1300,
         "import": 500,
         "export": 500,
         "resume": 2300,
@@ -42,7 +42,7 @@
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
         "contour": 5400,
-        "contourLargeImage": 30200,
+        "contourLargeImage": 110000,
         "zoom": 7500,
         "execute": 1500
     },
