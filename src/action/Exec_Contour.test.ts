@@ -91,14 +91,14 @@ describe("Contour action: ", () => {
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             let ack: AckStream;
-            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
+            beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
     
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.stream(4) as AckStream;
-                await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+                await new Promise(resolve => setTimeout(resolve, config.wait.contour));
             }, readfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
