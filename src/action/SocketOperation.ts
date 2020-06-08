@@ -149,15 +149,16 @@ export async function
                     }
                 }
             );
-            // cartaBackend.on("error", error => {
-            //     console.error(`error: \n ${error}`);
-            // });
-            // cartaBackend.stdout.on("data", data => {
-            //     // console.log(data);
-            //     fs.appendFile(logFile, data, err => {
-            //         // console.log('Updated!');
-            //     });
-            // });
+            cartaBackend.unref(); 
+            cartaBackend.on("error", error => {
+                console.error(`error: \n ${error}`);
+            });
+            cartaBackend.stdout.on("data", data => {
+                console.log(data.toString());
+                fs.appendFile(logFile, data, err => {
+                    // console.log('Updated!');
+                });
+            });
             resolve(cartaBackend);
         });
     });
