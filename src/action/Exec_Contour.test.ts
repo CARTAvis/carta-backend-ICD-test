@@ -121,7 +121,7 @@ describe("Contour action: ", () => {
                 }, contourTimeout + config.wait.contour);
             }
 
-            afterAll(async () => {
+            afterEach(async () => {
                 await Connection.send(CARTA.SetContourParameters, {
                     fileId: 0,
                     referenceFileId: 0,
