@@ -72,7 +72,7 @@ describe("Contour action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour.txt";
-    test(`CARTA is ready`, async () => {
+    beforeAll(async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
