@@ -81,7 +81,7 @@ describe("Contour action: ", () => {
     }, execTimeout);
 
     describe(`Start the action: contour`, () => {
-        test(`Connection is ready`, async () => {
+        beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
