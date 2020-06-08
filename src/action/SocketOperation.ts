@@ -139,11 +139,11 @@ export async function
                     if (config.log.verbose) {
                         console.log(stdout.toString());
                     }
-                    fs.appendFile(logFile, stdout, err => {
-                        if (err) {
-                            console.log("Write log file error: " + err);
-                        }
-                    });
+                    // fs.appendFile(logFile, stdout, err => {
+                    //     if (err) {
+                    //         console.log("Write log file error: " + err);
+                    //     }
+                    // });
                     if (config.log.error) {
                         console.log("Error: " + error);
                         console.log("STD Error: " + stderr);
