@@ -117,7 +117,7 @@ export async function
         threadNumber: number = config.thread.main,
         ompThreadNumber: number = config.thread.openmp,
         timeout?: number,
-    ) {
+) {
     return new Promise(resolve => {
         fs.writeFile(logFile, "", () => {
             let cartaBackend = child_process.execFile(
@@ -131,19 +131,33 @@ export async function
                     `omp_threads=${ompThreadNumber}`,
                     `verbose=true`,
                 ],
-                { 
+                {
                     timeout
+                },
+                (error, stdout, stderr) => {
+                    if (config.log.verbose) {
+                        console.log(stdout);
+                    }
+                    fs.appendFile(logFile, stdout, err => {
+                        if (err) {
+                            console.log("Write log file error: " + err);
+                        }
+                    });
+                    if (config.log.error) {
+                        console.log("Error: " + error);
+                        console.log("STD Error: " + stderr);
+                    }
                 }
             );
-            cartaBackend.on("error", error => {
-                console.error(`error: \n ${error}`);
-            });
-            cartaBackend.stdout.on("data", data => {
-                // console.log(data);
-                fs.appendFile(logFile, data, err => {
-                    // console.log('Updated!');
-                });
-            });
+            // cartaBackend.on("error", error => {
+            //     console.error(`error: \n ${error}`);
+            // });
+            // cartaBackend.stdout.on("data", data => {
+            //     // console.log(data);
+            //     fs.appendFile(logFile, data, err => {
+            //         // console.log('Updated!');
+            //     });
+            // });
             resolve(cartaBackend);
         });
     });

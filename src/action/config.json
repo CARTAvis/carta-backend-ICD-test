@@ -67,6 +67,7 @@
     "log": {
         "error": false,
         "warning": false,
-        "event": false
+        "event": false,
+        "verbose": false
     }
 }
