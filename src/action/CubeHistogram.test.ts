@@ -9,7 +9,7 @@ let cubeHistogramTimeout: number = config.timeout.cubeHistogram;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpenGroup: CARTA.IOpenFile[];
+    fileOpen: CARTA.IOpenFile;
     setCursor: CARTA.ISetCursor;
     addTilesReq: CARTA.IAddRequiredTiles;
     setHistogramRequirements: CARTA.ISetHistogramRequirements;
@@ -21,15 +21,13 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpenGroup: [
-        {
-            directory: testSubdirectory,
-            file: "cube_A/cube_A_00800_z00100.fits",
-            hdu: "",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-    ],
+    fileOpen: {
+        directory: testSubdirectory,
+        file: "cube_A/cube_A_00800_z00100.fits",
+        hdu: "",
+        fileId: 0,
+        renderMode: CARTA.RenderMode.RASTER,
+    },
     setCursor: {
         fileId: 0,
         point: { x: 1.0, y: 1.0 },
@@ -71,23 +69,20 @@ describe("Cube histogram: ", () => {
             await Connection.receive(CARTA.FileListResponse);
         }, connectTimeout);
 
-        assertItem.fileOpenGroup.map((fileOpen: CARTA.IOpenFile, index) => {
+        describe(`open the file "${assertItem.fileOpen.file}"`, () => {
+            test(`should get cube histogram`, async () => {
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
 
-            describe(`open the file "${fileOpen.file}"`, () => {
-                test(`should get cube histogram`, async () => {
-                    await Connection.send(CARTA.OpenFile, fileOpen);
-                    await Connection.receiveAny();
-                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+                while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 
-                    await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                    while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) {}
-
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cubeHistogramTimeout);
-            });
-
+                await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            }, cubeHistogramTimeout + config.wait.histogram);
         });
+
     });
 
     afterAll(() => Connection.close());

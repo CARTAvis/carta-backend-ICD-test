@@ -77,17 +77,19 @@ describe("Cube histogram action: ", () => {
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
-            test(`should get cube histogram`, async () => {
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            for (let index = 0; index < config.repeat.cubeHistogram; index++) {
+                test(`should get cube histogram`, async () => {
+                    await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                    await Connection.receiveAny();
+                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
 
-                await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
+                    await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+                    while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 
-                await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
-                await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            }, cubeHistogramTimeout);
+                    await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                    await Connection.send(CARTA.CloseFile, { fileId: -1 });
+                }, cubeHistogramTimeout + config.wait.histogram);
+            }
         });
     });
 
