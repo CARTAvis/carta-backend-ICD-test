@@ -7,6 +7,7 @@ let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.cube;
 let execTimeout: number = config.timeout.execute;
+let readfileTimeout: number = config.timeout.readFile;
 let connectTimeout: number = config.timeout.connection;
 let cubeHistogramTimeout: number = config.timeout.cubeHistogram;
 interface AssertItem {
@@ -77,19 +78,25 @@ describe("Cube histogram action: ", () => {
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
+
+            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                await Connection.receiveAny();
+                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            }, readfileTimeout);
+
             for (let index = 0; index < config.repeat.cubeHistogram; index++) {
                 test(`should get cube histogram`, async () => {
-                    await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                    await Connection.receiveAny();
-                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 
                     await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
-                    await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 }, cubeHistogramTimeout + config.wait.histogram);
             }
+
+            afterAll(async () => {
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            }, connectTimeout);
         });
     });
 

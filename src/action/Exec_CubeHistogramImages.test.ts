@@ -6,7 +6,7 @@ import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
-let fileopenTimeout:number = config.timeout.readLargeImage;
+let fileopenTimeout: number = config.timeout.readLargeImage;
 let cubeHistogramTimeout: number = config.timeout.cubeHistogramLarge;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -85,7 +85,7 @@ testFiles.map(file => {
             );
             await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         }, execTimeout);
-        
+
         describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
             beforeAll(async () => {
                 Connection = new Client(testServerUrl);
@@ -104,13 +104,18 @@ testFiles.map(file => {
                     await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
                 }, fileopenTimeout);
 
-                test(`should get cube histogram`, async () => {
-                    await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                    while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
+                for (let index = 0; index < config.repeat.cubeHistogram; index++) {
+                    test(`should get cube histogram`, async () => {
+                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+                        while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                        await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                    }, cubeHistogramTimeout + config.wait.histogram);
+                }
+
+                afterAll(async () => {
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cubeHistogramTimeout);
+                }, connectTimeout);
             });
         });
 

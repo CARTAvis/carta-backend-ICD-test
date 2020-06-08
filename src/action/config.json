@@ -62,7 +62,7 @@
         "resumeSession": 10,
         "contour": 10,
         "zoom": 5,
-        "cubeHistogram": 5
+        "cubeHistogram": 3
     },
     "log": {
         "error": false,
