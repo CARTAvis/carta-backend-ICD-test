@@ -136,15 +136,17 @@ testFiles.map(file => {
                             contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                             if (contourImageData.progress == 1) count++;
                         }
-                        await Connection.send(CARTA.SetContourParameters, {
-                            fileId: 0,
-                            referenceFileId: 0,
-                        }); // Clear contour
 
                         await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                     }, contourTimeout + config.wait.contour);
                 }
 
+                afterEach(async () => {
+                    await Connection.send(CARTA.SetContourParameters, {
+                        fileId: 0,
+                        referenceFileId: 0,
+                    }); // Clear contour
+                });
             });
 
         });
