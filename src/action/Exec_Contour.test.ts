@@ -86,6 +86,7 @@ describe("Contour action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
+            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
@@ -97,6 +98,7 @@ describe("Contour action: ", () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.stream(4) as AckStream;
+                await new Promise(resolve => setTimeout(resolve, config.wait.exec));
             }, readfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
