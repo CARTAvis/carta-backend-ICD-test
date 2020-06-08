@@ -133,7 +133,7 @@ export async function
                 ],
                 {
                     timeout,
-                    shell: true,
+                    maxBuffer: 128*1024*1024,
                 },
                 (error, stdout, stderr) => {
                     if (config.log.verbose) {
