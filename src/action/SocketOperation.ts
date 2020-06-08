@@ -136,13 +136,13 @@ export async function
                 },
                 (error, stdout, stderr) => {
                     if (config.log.verbose) {
-                        console.log(stdout);
+                        console.log(stdout.toString());
                     }
-                    fs.appendFile(logFile, stdout, err => {
-                        if (err) {
-                            console.log("Write log file error: " + err);
-                        }
-                    });
+                    // fs.appendFile(logFile, stdout, err => {
+                    //     if (err) {
+                    //         console.log("Write log file error: " + err);
+                    //     }
+                    // });
                     if (config.log.error) {
                         console.log("Error: " + error);
                         console.log("STD Error: " + stderr);
@@ -150,15 +150,21 @@ export async function
                 }
             );
             cartaBackend.unref(); 
-            cartaBackend.on("error", error => {
-                console.error(`error: \n ${error}`);
-            });
-            cartaBackend.stdout.on("data", data => {
-                console.log(data.toString());
-                fs.appendFile(logFile, data, err => {
-                    // console.log('Updated!');
-                });
-            });
+            // cartaBackend.on("error", error => {
+            //     if (config.log.error) {
+            //         console.log("Error: " + error);
+            //     }
+            // });
+            // cartaBackend.stdout.on("data", data => {
+            //     if (config.log.verbose) {
+            //         console.log(data.toString());
+            //     }
+            //     fs.appendFile(logFile, data, err => {
+            //         if (err) {
+            //             console.log("Write log file error: " + err);
+            //         }
+            //     });
+            // });
             resolve(cartaBackend);
         });
     });
