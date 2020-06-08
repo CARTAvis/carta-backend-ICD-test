@@ -102,11 +102,6 @@ describe("Contour action: ", () => {
             for (let idx: number = 0; idx < contourRepeat; idx++) {
                 test(`should return contour data`, async () => {
                     await Connection.send(CARTA.SetContourParameters, {
-                        fileId: 0,
-                        referenceFileId: 0,
-                    }); // Clear contour
-
-                    await Connection.send(CARTA.SetContourParameters, {
                         imageBounds: {
                             xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
                             yMin: 0, yMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.height,
@@ -125,6 +120,13 @@ describe("Contour action: ", () => {
                     await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                 }, contourTimeout + config.wait.contour);
             }
+
+            afterAll(async () => {
+                await Connection.send(CARTA.SetContourParameters, {
+                    fileId: 0,
+                    referenceFileId: 0,
+                }); // Clear contour
+            });
         });
     });
 
