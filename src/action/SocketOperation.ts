@@ -150,7 +150,7 @@ export async function
                     }
                 }
             );
-            // cartaBackend.unref(); 
+            cartaBackend.unref(); 
             // cartaBackend.on("error", error => {
             //     if (config.log.error) {
             //         console.log("Error: " + error);
