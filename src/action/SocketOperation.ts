@@ -132,7 +132,8 @@ export async function
                     `verbose=true`,
                 ],
                 {
-                    timeout
+                    timeout,
+                    shell: true,
                 },
                 (error, stdout, stderr) => {
                     if (config.log.verbose) {
