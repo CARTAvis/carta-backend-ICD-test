@@ -5,7 +5,7 @@ import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
-let testImage: string = config.image.cube;
+let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
 let readfileTimeout: number = config.timeout.readFile;
@@ -121,13 +121,14 @@ describe("Contour action: ", () => {
                         referenceFileId: 0,
                     }); // Clear contour
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.contour));
+                    // await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                 }, contourTimeout + config.wait.contour);
             }
         });
     });
 
     afterAll(async done => {
+        await new Promise(resolve => setTimeout(resolve, config.wait.contour));
         await Connection.close();
         cartaBackend.kill();
         cartaBackend.on("close", () => done());
