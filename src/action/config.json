@@ -2,7 +2,7 @@
     "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
     "serverURL0": "ws://127.0.0.1:3002",
     "localHost": "ws://localhost",
-    "port": 5000,
+    "port": 5011,
     "thread": {
         "main": 4,
         "openmp": 32
@@ -60,7 +60,7 @@
         "image": 20,
         "animation": 10,
         "resumeSession": 10,
-        "contour": 10,
+        "contour": 20,
         "zoom": 5,
         "cubeHistogram": 3
     },

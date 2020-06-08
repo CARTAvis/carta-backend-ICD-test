@@ -135,37 +135,37 @@ export async function
                     timeout,
                     maxBuffer: 128*1024*1024,
                 },
-                (error, stdout, stderr) => {
-                    if (config.log.verbose) {
-                        console.log(stdout.toString());
-                    }
-                    fs.appendFile(logFile, stdout, err => {
-                        if (err) {
-                            console.log("Write log file error: " + err);
-                        }
-                    });
-                    if (config.log.error) {
-                        console.log("Error: " + error);
-                        console.log("STD Error: " + stderr);
-                    }
-                }
+                // (error, stdout, stderr) => {
+                //     if (config.log.verbose) {
+                //         console.log(stdout.toString());
+                //     }
+                //     fs.appendFile(logFile, stdout, err => {
+                //         if (err) {
+                //             console.log("Write log file error: " + err);
+                //         }
+                //     });
+                //     if (config.log.error) {
+                //         console.log("Error: " + error);
+                //         console.log("STD Error: " + stderr);
+                //     }
+                // }
             );
             cartaBackend.unref(); 
-            // cartaBackend.on("error", error => {
-            //     if (config.log.error) {
-            //         console.log("Error: " + error);
-            //     }
-            // });
-            // cartaBackend.stdout.on("data", data => {
-            //     if (config.log.verbose) {
-            //         console.log(data.toString());
-            //     }
-            //     fs.appendFile(logFile, data, err => {
-            //         if (err) {
-            //             console.log("Write log file error: " + err);
-            //         }
-            //     });
-            // });
+            cartaBackend.on("error", error => {
+                if (config.log.error) {
+                    console.log("Error: " + error);
+                }
+            });
+            cartaBackend.stdout.on("data", data => {
+                if (config.log.verbose) {
+                    console.log(data.toString());
+                }
+                fs.appendFile(logFile, data, err => {
+                    if (err) {
+                        console.log("Write log file error: " + err);
+                    }
+                });
+            });
             resolve(cartaBackend);
         });
     });

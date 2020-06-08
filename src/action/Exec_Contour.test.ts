@@ -72,7 +72,7 @@ describe("Contour action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour.txt";
-    test(`CARTA is ready`, async () => {
+    beforeAll(async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
@@ -81,22 +81,24 @@ describe("Contour action: ", () => {
     }, execTimeout);
 
     describe(`Start the action: contour`, () => {
-        test(`Connection is ready`, async () => {
+        beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
+            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             let ack: AckStream;
-            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
+            beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
     
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.stream(4) as AckStream;
+                await new Promise(resolve => setTimeout(resolve, config.wait.contour));
             }, readfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
