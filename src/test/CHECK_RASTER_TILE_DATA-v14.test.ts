@@ -24,7 +24,6 @@ interface AssertItem {
     fileOpenAck: CARTA.IOpenFileAck;
     initTilesReq: CARTA.IAddRequiredTiles;
     initSetCursor: CARTA.ISetCursor;
-    // regionHistogram: CARTA.IRegionHistogramData;
     setImageChannel: CARTA.ISetImageChannels;
     rasterTileData: IRasterTileDataExt;
     addRequiredTilesGroup: CARTA.IAddRequiredTiles[];
@@ -86,6 +85,110 @@ let assertItem: AssertItem = {
             value: 2.72519,
         }
     },
+    addRequiredTilesGroup: [
+        {
+            fileId: 0,
+            tiles: [16781313], // Hex1001001
+            compressionType: CARTA.CompressionType.NONE,
+        },
+        {
+            fileId: 0,
+            tiles: [33566723], // Hex2003003
+            compressionType: CARTA.CompressionType.NONE,
+        },
+        {
+            fileId: 0,
+            tiles: [50360327], // Hex3007007
+            compressionType: CARTA.CompressionType.NONE,
+        },
+        {
+            fileId: 0,
+            tiles: [67170319], // Hex400F00F
+            compressionType: CARTA.CompressionType.NONE,
+        },
+    ],
+    rasterTileDataGroup: [
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            compressionType: CARTA.CompressionType.NONE,
+            tiles: [
+                {
+                    x: 1,
+                    y: 1,
+                    layer: 1,
+                    height: 256,
+                    width: 256,
+                },
+            ],
+            assert: {
+                lengthTiles: 1,
+                index: { x: 256, y: 256 },
+                value: 2.85753,
+            }
+        },
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            compressionType: CARTA.CompressionType.NONE,
+            tiles: [
+                {
+                    x: 3,
+                    y: 3,
+                    layer: 2,
+                    height: 256,
+                    width: 256,
+                },
+            ],
+            assert: {
+                lengthTiles: 1,
+                index: { x: 256, y: 256 },
+                value: 2.40348,
+            }
+        },
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            compressionType: CARTA.CompressionType.NONE,
+            tiles: [
+                {
+                    x: 7,
+                    y: 7,
+                    layer: 3,
+                    height: 256,
+                    width: 256,
+                },
+            ],
+            assert: {
+                lengthTiles: 1,
+                index: { x: 256, y: 256 },
+                value: 2.99947,
+            }
+        },
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            compressionType: CARTA.CompressionType.NONE,
+            tiles: [
+                {
+                    x: 15,
+                    y: 15,
+                    layer: 4,
+                    height: 256,
+                    width: 256,
+                },
+            ],
+            assert: {
+                lengthTiles: 1,
+                index: { x: 256, y: 256 },
+                value: 3.74704,
+            }
+        },
+    ],
 };
 
 describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {
@@ -125,7 +228,6 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             ack = await Connection.stream(4) as AckStream;
             RasterTileDataTemp = ack.RasterTileData
-            console.log(RasterTileDataTemp[0].compressionType);
         }, readFileTimeout);
 
         describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}"`, () => {
@@ -182,6 +284,68 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 expect(_dataView.getFloat32(0, true)).toBeCloseTo(assertItem.rasterTileData.assert.value, assertItem.precisionDigit);
             });
 
+        });
+
+
+        assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
+            describe(`ADD_REQUIRED_TILES [${assertItem.addRequiredTilesGroup[index].tiles}]`, () => {
+                let RasterTileDataTemp: CARTA.RasterTileData;
+                let ack2: AckStream;
+                test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+                    let ack2 = await Connection.stream(3) as AckStream;
+                    RasterTileDataTemp = ack2.RasterTileData[0];
+                    // console.log(RasterTileDataTemp)
+                }, readFileTimeout);
+
+                test(`RASTER_TILE_DATA.file_id = ${rasterTileData.fileId}`, () => {
+                    expect(RasterTileDataTemp.fileId).toEqual(rasterTileData.fileId);
+                });
+
+                test(`RASTER_TILE_DATA.channel = ${rasterTileData.channel}`, () => {
+                    expect(RasterTileDataTemp.channel).toEqual(rasterTileData.channel);
+                });
+
+                test(`RASTER_TILE_DATA.stokes = ${rasterTileData.stokes}`, () => {
+                    expect(RasterTileDataTemp.stokes).toEqual(rasterTileData.stokes);
+                });
+
+                test(`RASTER_TILE_DATA.compression_type = ${rasterTileData.compressionType}`, () => {
+                    expect(RasterTileDataTemp.compressionType).toEqual(rasterTileData.compressionType);
+                });
+
+                test(`RASTER_TILE_DATA.tiles.length = ${rasterTileData.assert.lengthTiles}`, () => {
+                    expect(RasterTileDataTemp.tiles.length).toEqual(rasterTileData.assert.lengthTiles);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].x = ${rasterTileData.tiles[0].x}`, () => {
+                    expect(RasterTileDataTemp.tiles[0].x).toEqual(rasterTileData.tiles[0].x);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].y = ${rasterTileData.tiles[0].y}`, () => {
+                    expect(RasterTileDataTemp.tiles[0].y).toEqual(rasterTileData.tiles[0].y);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].layer = ${rasterTileData.tiles[0].layer}`, () => {
+                    expect(RasterTileDataTemp.tiles[0].layer).toEqual(rasterTileData.tiles[0].layer);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].height = ${rasterTileData.tiles[0].height}`, () => {
+                    expect(RasterTileDataTemp.tiles[0].height).toEqual(rasterTileData.tiles[0].height);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].width = ${rasterTileData.tiles[0].width}`, () => {
+                    expect(RasterTileDataTemp.tiles[0].width).toEqual(rasterTileData.tiles[0].width);
+                });
+
+                test(`RASTER_TILE_DATA.tiles[0].image_data${JSON.stringify(rasterTileData.assert.index)} = ${rasterTileData.assert.value}`, () => {
+                    const _x = assertItem.rasterTileData.assert.index.x;
+                    const _y = assertItem.rasterTileData.assert.index.y;
+                    const _dataView = new DataView(RasterTileDataTemp.tiles[0].imageData.slice((_x * _y - 1) * 4, _x * _y * 4).buffer);
+                    expect(_dataView.getFloat32(0, true)).toBeCloseTo(rasterTileData.assert.value, assertItem.precisionDigit);
+                });
+
+            });
         });
 
 
