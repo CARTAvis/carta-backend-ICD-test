@@ -27,8 +27,8 @@
         "readLargeImage": 65000,
         "changeChannel": 3100,
         "playImages": 3200,
-        "cubeHistogram": 30000,
-        "cubeHistogramLarge": 500000,
+        "cubeHistogram": 35000,
+        "cubeHistogramLarge": 600000,
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
@@ -62,7 +62,7 @@
         "resumeSession": 10,
         "contour": 20,
         "zoom": 5,
-        "cubeHistogram": 3
+        "cubeHistogram": 10
     },
     "log": {
         "error": false,
