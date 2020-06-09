@@ -58,10 +58,10 @@ let testFiles = [
     "cube_A/cube_A_03200_z00100.image",
     "cube_A/cube_A_01600_z00100.image",
 
-    // "cube_A/cube_A_12800_z00100.hdf5", 
-    // "cube_A/cube_A_06400_z00100.hdf5", 
-    // "cube_A/cube_A_03200_z00100.hdf5",
-    // "cube_A/cube_A_01600_z00100.hdf5",
+    "cube_A/cube_A_12800_z00100.hdf5", 
+    "cube_A/cube_A_06400_z00100.hdf5", 
+    "cube_A/cube_A_03200_z00100.hdf5",
+    "cube_A/cube_A_01600_z00100.hdf5",
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
