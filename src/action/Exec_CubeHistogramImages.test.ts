@@ -95,27 +95,24 @@ testFiles.map(file => {
             }, connectTimeout);
 
             describe(`start the action`, () => {
-                test(`should open the file "${file}"`, async () => {
-                    await Connection.send(CARTA.OpenFile, {
-                        file: file,
-                        ...assertItem.fileOpen,
-                    });
-                    await Connection.receiveAny();
-                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                }, fileopenTimeout);
-
                 for (let index = 0; index < config.repeat.cubeHistogram; index++) {
+                    test(`should open the file "${file}"`, async () => {
+                        await Connection.send(CARTA.OpenFile, {
+                            file: file,
+                            ...assertItem.fileOpen,
+                        });
+                        await Connection.receiveAny();
+                        await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                    }, fileopenTimeout);
+
                     test(`should get cube histogram`, async () => {
                         await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                         while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
 
                         await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                        await Connection.send(CARTA.CloseFile, { fileId: -1 });
                     }, cubeHistogramTimeout + config.wait.histogram);
                 }
-
-                afterAll(async () => {
-                    await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, connectTimeout);
             });
         });
 
