@@ -52,7 +52,6 @@ let assertItem: AssertItem = {
     setContour: {
         fileId: 0,
         referenceFileId: 0,
-        imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
             2.7,
             4.2,
