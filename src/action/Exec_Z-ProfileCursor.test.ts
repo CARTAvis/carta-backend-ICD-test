@@ -8,6 +8,7 @@ let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.cube;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
+let readfileTimeout: number = config.timeout.readFile;
 let cursorTimeout: number = config.timeout.mouseEvent;
 let cursorRepeat: number = config.repeat.cursor;
 interface AssertItem {
@@ -68,11 +69,13 @@ describe("Z profile cursor action: ", () => {
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
-            test(`should get z-profile`, async () => {
+            test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 await Connection.receiveAny();
                 await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            }, readfileTimeout);
 
+            test(`should get z-profile`, async () => {
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                 for (let idx = 0; idx < cursorRepeat; idx++) {
                     await Connection.send(CARTA.SetCursor, {
