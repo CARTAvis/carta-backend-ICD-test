@@ -1,7 +1,7 @@
 import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
-
+import { async } from "q";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
@@ -11,12 +11,7 @@ let readFileTimeout = config.timeout.readFile;
 interface IRasterTileDataExt extends CARTA.IRasterTileData {
     assert: {
         lengthTiles: number,
-        index: {
-            x: number,
-            y: number
-        },
-        value: number,
-    };
+    }[];
 }
 interface AssertItem {
     precisionDigit: number;
@@ -61,7 +56,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         channel: 0,
         stokes: 0,
-        compressionType: CARTA.CompressionType.ZFP,
+        compressionType: CARTA.CompressionType.NONE,
         compressionQuality: 11,
         tiles: [
             { x: 0, y: 0, layer: 1, },
@@ -76,110 +71,38 @@ let assertItem: AssertItem = {
             { lengthTiles: 1, },
         ],
     },
-    // addRequiredTilesGroup: [
-    //     {
-    //         fileId: 0,
-    //         tiles: [16781313], // Hex1001001
-    //         compressionType: CARTA.CompressionType.NONE,
-    //     },
-    //     {
-    //         fileId: 0,
-    //         tiles: [33566723], // Hex2003003
-    //         compressionType: CARTA.CompressionType.NONE,
-    //     },
-    //     {
-    //         fileId: 0,
-    //         tiles: [50360327], // Hex3007007
-    //         compressionType: CARTA.CompressionType.NONE,
-    //     },
-    //     {
-    //         fileId: 0,
-    //         tiles: [67170319], // Hex400F00F
-    //         compressionType: CARTA.CompressionType.NONE,
-    //     },
-    // ],
-    // rasterTileDataGroup: [
-    //     {
-    //         fileId: 0,
-    //         channel: 0,
-    //         stokes: 0,
-    //         compressionType: CARTA.CompressionType.NONE,
-    //         tiles: [
-    //             {
-    //                 x: 1,
-    //                 y: 1,
-    //                 layer: 1,
-    //                 height: 256,
-    //                 width: 256,
-    //             },
-    //         ],
-    //         assert: {
-    //             lengthTiles: 1,
-    //             index: { x: 256, y: 256 },
-    //             value: 2.85753,
-    //         }
-    //     },
-    //     {
-    //         fileId: 0,
-    //         channel: 0,
-    //         stokes: 0,
-    //         compressionType: CARTA.CompressionType.NONE,
-    //         tiles: [
-    //             {
-    //                 x: 3,
-    //                 y: 3,
-    //                 layer: 2,
-    //                 height: 256,
-    //                 width: 256,
-    //             },
-    //         ],
-    //         assert: {
-    //             lengthTiles: 1,
-    //             index: { x: 256, y: 256 },
-    //             value: 2.40348,
-    //         }
-    //     },
-    //     {
-    //         fileId: 0,
-    //         channel: 0,
-    //         stokes: 0,
-    //         compressionType: CARTA.CompressionType.NONE,
-    //         tiles: [
-    //             {
-    //                 x: 7,
-    //                 y: 7,
-    //                 layer: 3,
-    //                 height: 256,
-    //                 width: 256,
-    //             },
-    //         ],
-    //         assert: {
-    //             lengthTiles: 1,
-    //             index: { x: 256, y: 256 },
-    //             value: 2.99947,
-    //         }
-    //     },
-    //     {
-    //         fileId: 0,
-    //         channel: 0,
-    //         stokes: 0,
-    //         compressionType: CARTA.CompressionType.NONE,
-    //         tiles: [
-    //             {
-    //                 x: 15,
-    //                 y: 15,
-    //                 layer: 4,
-    //                 height: 256,
-    //                 width: 256,
-    //             },
-    //         ],
-    //         assert: {
-    //             lengthTiles: 1,
-    //             index: { x: 256, y: 256 },
-    //             value: 3.74704,
-    //         }
-    //     },
-    // ],
+    addRequiredTilesGroup: [
+        {
+            fileId: 0,
+            tiles: [33558529, 33562626, 33566723],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+        },
+        {
+            fileId: 0,
+            tiles: [33570820],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+        },
+    ],
+    rasterTileDataGroup: [
+        {
+            fileId: 0,
+            channel: 0,
+            stokes: 0,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [
+                { x: 1, y: 1, layer: 2, },
+                { x: 2, y: 2, layer: 2, },
+                { x: 3, y: 3, layer: 2, },
+            ],
+            assert: [
+                { lengthTiles: 1, },
+                { lengthTiles: 1, },
+                { lengthTiles: 1, },
+            ],
+        },
+    ],
 };
 
 describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {
@@ -196,6 +119,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
     });
 
     let RasterTileDataTemp: CARTA.RasterTileData;
+    let RasterTileDataTemp2: CARTA.RasterTileData;
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
@@ -224,7 +148,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         }, readFileTimeout);
 
         assertItem.rasterTileData.tiles.map((tiles, index) => {
-            describe(`Check each RASTER_TILE_DATA`, () => {
+            describe(`(Step1-3) Check each RASTER_TILE_DATA`, () => {
                 test(`(#${index})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
                     expect(RasterTileDataTemp[index].tiles.length).toBe(assertItem.rasterTileData.assert[index].lengthTiles);
                 });
@@ -237,8 +161,32 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             });
         })
 
+        let ack2: AckStream;
+        test(`RasterTileData * 3 + RasterTileSync *2 (start & end)? |`, async () => {
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[0]);
+            ack2 = await Connection.stream(5) as AckStream;
+            // console.log(ack2);
+            RasterTileDataTemp2 = ack.RasterTileData
+            // console.log(RasterTileDataTemp2)
+        }, readFileTimeout);
 
+        assertItem.rasterTileDataGroup[0].tiles.map((tiles, index) => {
+            describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
+                test(`(#${index})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
+                    expect(RasterTileDataTemp[index].tiles.length).toBe(assertItem.rasterTileData.assert[index].lengthTiles);
+                });
 
+                test(`(#${index})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
+                    let TempTiles = assertItem.rasterTileData.tiles.filter(f => f.x === RasterTileDataTemp[index].tiles[0].x && f.y === RasterTileDataTemp[index].tiles[0].y && f.layer === RasterTileDataTemp[index].tiles[0].layer)
+                    // console.log(TempTiles);
+                    expect(TempTiles).toBeDefined();
+                });
+
+                test(`Backend still alive? | `, () => {
+                    expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+                });
+            });
+        })
 
     });
 
