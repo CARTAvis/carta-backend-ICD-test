@@ -80,17 +80,32 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 0,
+            tiles: [33558529, 33562626, 33566723, 33570820],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+        },
+        {
+            fileId: 0,
             tiles: [33570820],
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
+            // Mean filter 0x0 raster data to 0x0 in 0.01 ms at 0 MPix / s 
+            // Segmentation fault(core dumped)
+        },
+        {
+            fileId: 0,
+            tiles: [50364424],
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+            // Mean filter 0x0 raster data to 0x0 in 0.012 ms at 0 MPix / s 
+            // Segmentation fault(core dumped)
+            // or
+            // Mean filter 0x0 raster data to 0x0 in 0.002 ms at 0 MPix / s 
+            // Bus error(core dumped)
         },
     ],
     rasterTileDataGroup: [
         {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            compressionType: CARTA.CompressionType.ZFP,
             tiles: [
                 { x: 1, y: 1, layer: 2, },
                 { x: 2, y: 2, layer: 2, },
@@ -101,6 +116,26 @@ let assertItem: AssertItem = {
                 { lengthTiles: 1, },
                 { lengthTiles: 1, },
             ],
+        },
+        {
+            tiles: [
+                { x: 1, y: 1, layer: 2, },
+                { x: 2, y: 2, layer: 2, },
+                { x: 3, y: 3, layer: 2, },
+            ],
+            assert: [
+                { lengthTiles: 1, },
+                { lengthTiles: 1, },
+                { lengthTiles: 1, },
+            ],
+        },
+        {
+            tiles: [],
+            assert: [],
+        },
+        {
+            tiles: [],
+            assert: [],
         },
     ],
 };
@@ -159,34 +194,82 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                     expect(TempTiles).toBeDefined();
                 })
             });
-        })
+        });
 
-        let ack2: AckStream;
-        test(`RasterTileData * 3 + RasterTileSync *2 (start & end)? |`, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[0]);
-            ack2 = await Connection.stream(5) as AckStream;
-            // console.log(ack2);
-            RasterTileDataTemp2 = ack.RasterTileData
-            // console.log(RasterTileDataTemp2)
-        }, readFileTimeout);
+        assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
+            describe(`ADD_REQUIRED_TILES [${assertItem.addRequiredTilesGroup[index].tiles}]`, () => {
+                let ack2: AckStream;
+                if (rasterTileData.tiles.length) {
+                    test(`RASTER_TILE_DATA x${rasterTileData.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
+                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+                        ack2 = await Connection.stream(5) as AckStream;
+                        // console.log(ack2) //RasterTileData * 3 + RasterTileSync *2 (start & end)?
+                        // ack2 = await Connection.stream(assertItem.rasterTileData.tiles.length) as AckStream;
+                        expect(ack2.RasterTileData.length).toEqual(rasterTileData.tiles.length);
+                        RasterTileDataTemp2 = ack2.RasterTileData
+                    }, readFileTimeout);
 
-        assertItem.rasterTileDataGroup[0].tiles.map((tiles, index) => {
-            describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
-                test(`(#${index})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
-                    expect(RasterTileDataTemp[index].tiles.length).toBe(assertItem.rasterTileData.assert[index].lengthTiles);
-                });
+                    if (index == 0) {
+                        assertItem.rasterTileDataGroup[index].tiles.map((tiles, index2) => {
+                            describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
+                                test(`(#${index2})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
+                                    expect(RasterTileDataTemp2[index2].tiles.length).toBe(assertItem.rasterTileDataGroup[index].assert[index2].lengthTiles);
+                                });
 
-                test(`(#${index})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
-                    let TempTiles = assertItem.rasterTileData.tiles.filter(f => f.x === RasterTileDataTemp[index].tiles[0].x && f.y === RasterTileDataTemp[index].tiles[0].y && f.layer === RasterTileDataTemp[index].tiles[0].layer)
-                    // console.log(TempTiles);
-                    expect(TempTiles).toBeDefined();
-                });
+                                test(`(#${index2})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
+                                    let TempTiles = assertItem.rasterTileDataGroup[index].tiles.filter(f => f.x === RasterTileDataTemp2[index2].tiles[0].x && f.y === RasterTileDataTemp2[index2].tiles[0].y && f.layer === RasterTileDataTemp2[index2].tiles[0].layer)
+                                    console.log(TempTiles);
+                                    expect(TempTiles).toBeDefined();
+                                });
 
-                test(`Backend still alive? | `, () => {
-                    expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+                            });
+                        });
+                    }
+
+                } else {
+                    test(`RASTER_TILE_DATA should not arrive within ${readFileTimeout} ms`, async () => {
+                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+                        await Connection.receive(CARTA.RasterTileData, readFileTimeout * .5, false);
+                    }, readFileTimeout);
+                }
+
+                test("Backend be still alive", () => {
+                    expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
                 });
             });
-        })
+        });
+
+        // let ack2: AckStream;
+        // test(`RasterTileData * 3 + RasterTileSync *2 (start & end)? |`, async () => {
+        //     await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[0]);
+        //     ack2 = await Connection.stream(5) as AckStream;
+        //     // console.log(ack2);
+        //     RasterTileDataTemp2 = ack.RasterTileData
+        //     // console.log(RasterTileDataTemp2)
+        // }, readFileTimeout);
+
+        // assertItem.rasterTileDataGroup[0].tiles.map((tiles, index) => {
+        //     describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
+        //         test(`(#${index})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
+        //             expect(RasterTileDataTemp[index].tiles.length).toBe(assertItem.rasterTileData.assert[index].lengthTiles);
+        //         });
+
+        //         test(`(#${index})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
+        //             let TempTiles = assertItem.rasterTileData.tiles.filter(f => f.x === RasterTileDataTemp[index].tiles[0].x && f.y === RasterTileDataTemp[index].tiles[0].y && f.layer === RasterTileDataTemp[index].tiles[0].layer)
+        //             // console.log(TempTiles);
+        //             expect(TempTiles).toBeDefined();
+        //         });
+
+        //     });
+        // });
+
+        // let ack3: AckStream;
+        // test(`RasterTileData * 0, nothing return? |`, async () => {
+        //     await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[1]);
+        //     ack3 = await Connection.stream(1) as AckStream;
+        //     console.log(ack3);
+        // }, readFileTimeout);
+
 
     });
 
