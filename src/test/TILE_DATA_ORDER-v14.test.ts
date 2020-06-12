@@ -39,7 +39,7 @@ let assertItem: AssertItem = {
     initTilesReq: {
         fileId: 0,
         compressionQuality: 11,
-        compressionType: CARTA.CompressionType.NONE,
+        compressionType: CARTA.CompressionType.ZFP,
         tiles: [50343939,
             50348035,
             50348036,
