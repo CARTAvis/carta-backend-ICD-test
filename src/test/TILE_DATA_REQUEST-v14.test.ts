@@ -237,7 +237,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                     }
 
                 } else {
-                    test(`RASTER_TILE_DATA should not arrive within ${readFileTimeout} ms`, async () => {
+                    test(`RASTER_TILE_DATA should NOT arrive within ${readFileTimeout} ms`, async () => {
                         await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
                         await Connection.receive(CARTA.RasterTileData, readFileTimeout * .5, false);
                     }, readFileTimeout);
