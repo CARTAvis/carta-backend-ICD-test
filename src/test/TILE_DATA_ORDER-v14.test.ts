@@ -114,16 +114,6 @@ let assertItem: AssertItem = {
                     33558531,
                     33554435]
             },
-            {
-                fileId: 0,
-                compressionQuality: 11,
-                compressionType: CARTA.CompressionType.ZFP,
-                rank: 2,
-                tiles: [16777216,
-                    16781312,
-                    16781313,
-                    16777217]
-            },
         ],
     initSetCursor: {
         fileId: 0,
