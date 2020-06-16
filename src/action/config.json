@@ -24,7 +24,7 @@
         "listFile": 1100,
         "openFile": 3200,
         "readFile": 5200,
-        "readLargeImage": 65000,
+        "readLargeImage": 81000,
         "changeChannel": 3100,
         "playImages": 3200,
         "cubeHistogram": 35000,
@@ -42,7 +42,7 @@
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
         "contour": 5400,
-        "contourLargeImage": 110000,
+        "contourLargeImage": 85000,
         "zoom": 7500,
         "execute": 1500
     },
