@@ -124,8 +124,9 @@ testFiles.map(file => {
                         while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
                     }
 
+                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat);
+                }, cursorTimeout * cursorRepeat + config.wait.cursor);
             });
 
         });

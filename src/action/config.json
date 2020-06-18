@@ -33,7 +33,7 @@
         "concurrent": 4000,
         "messageEvent": 500,
         "mouseEvent": 500,
-        "region": 6100,
+        "region": 12100,
         "import": 500,
         "export": 500,
         "resume": 2300,
