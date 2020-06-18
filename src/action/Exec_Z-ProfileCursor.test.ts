@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -68,27 +68,28 @@ describe("Z profile cursor action: ", () => {
             await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
 
-        describe(`open the file "${assertItem.fileOpen.file}"`, () => {
+        describe(`start the action`, () => {
+            let ack: AckStream;
             test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
             }, readfileTimeout);
 
             test(`should get z-profile`, async () => {
+                const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                 for (let idx = 0; idx < cursorRepeat; idx++) {
                     await Connection.send(CARTA.SetCursor, {
                         ...assertItem.setCursor,
                         point: {
-                            x: Math.floor(assertItem.setCursor.point.x * (1 - .9 * Math.random())),
-                            y: Math.floor(assertItem.setCursor.point.y * (1 - .9 * Math.random())),
+                            x: Math.floor(width * (.3 + .4 * Math.random())),
+                            y: Math.floor(width * (.3 + .4 * Math.random())),
                         },
                     });
-                    await Connection.stream(2);
-                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
+                    await Connection.receiveAny();
                 }
-
+                
+                await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
         });

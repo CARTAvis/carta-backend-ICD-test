@@ -1,11 +1,12 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client} from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
-let cursorTimeout: number = config.timeout.mouseEvent;
+let fileopenTimeout: number = config.timeout.readFile;
+let cursorTimeout: number = config.timeout.region;
 let cursorRepeat: number = config.repeat.cursor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -24,7 +25,7 @@ let assertItem: AssertItem = {
     fileOpenGroup: [
         {
             directory: testSubdirectory,
-            file: "cube_A/cube_A_03200_z00100.fits",
+            file: "cube_A/cube_A_01600_z00100.fits",
             hdu: "",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
@@ -35,7 +36,7 @@ let assertItem: AssertItem = {
         regionId: 1,
         regionName: "",
         regionType: CARTA.RegionType.RECTANGLE,
-        controlPoints: [{ x: 400, y: 400 }, { x: 10, y: 10 }],
+        controlPoints: [{ x: 400, y: 400 }, { x: 0, y: 0 }],
         rotation: 0.0,
     },
     setSpectralRequirements: {
@@ -63,12 +64,14 @@ describe("Z profile cursor: ", () => {
 
         assertItem.fileOpenGroup.map((fileOpen: CARTA.IOpenFile, index) => {
 
-            describe(`open the file "${fileOpen.file}"`, () => {
-                test(`should get z-profile`, async () => {
+            describe(`start the action`, () => {
+                let ack: AckStream;
+                test(`should open the file "${fileOpen.file}"`, async () => {
                     await Connection.send(CARTA.OpenFile, fileOpen);
-                    await Connection.receiveAny();
-                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                    ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
+                }, fileopenTimeout);
 
+                test(`should get z-profile`, async () => {
                     await Connection.send(CARTA.SetRegion, {
                         regionId: -1,
                         ...assertItem.setRegion,
@@ -78,24 +81,24 @@ describe("Z profile cursor: ", () => {
                     await Connection.receiveAny();
 
                     for (let idx = 0; idx < cursorRepeat; idx++) {
-                        let Dx = Math.floor(assertItem.setRegion.controlPoints[0].x * .5 * Math.random());
-                        let Dy = Math.floor(assertItem.setRegion.controlPoints[0].y * .5 * Math.random());
+                        let Dx = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width * (.3 + .4 * Math.random()));
+                        let Dy = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.height * (.3 + .4 * Math.random()));
                         await Connection.send(CARTA.SetRegion, {
                             ...assertItem.setRegion,
                             controlPoints: [
-                                { 
-                                    x: assertItem.setRegion.controlPoints[0].x + Dx,
-                                    y: assertItem.setRegion.controlPoints[0].x + Dy, 
+                                {
+                                    x: Dx - assertItem.setRegion.controlPoints[0].x * .5,
+                                    y: Dy - assertItem.setRegion.controlPoints[0].y * .5,
                                 },
-                                { 
-                                    x: assertItem.setRegion.controlPoints[1].x + Dx,
-                                    y: assertItem.setRegion.controlPoints[1].x + Dy, 
-                                }, 
+                                {
+                                    x: Dx + assertItem.setRegion.controlPoints[0].x * .5,
+                                    y: Dy + assertItem.setRegion.controlPoints[0].y * .5,
+                                },
                             ],
                         });
                         await Connection.receiveAny();
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                        await Connection.receiveAny();
+                        while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
                     }
 
                     await new Promise(resolve => setTimeout(resolve, 300));

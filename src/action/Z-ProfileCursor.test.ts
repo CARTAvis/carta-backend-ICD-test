@@ -1,10 +1,11 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
+let fileopenTimeout:number = config.timeout.readFile;
 let cursorTimeout: number = config.timeout.mouseEvent;
 let cursorRepeat: number = config.repeat.cursor;
 interface AssertItem {
@@ -63,25 +64,27 @@ describe("Z profile cursor: ", () => {
         }, connectTimeout);
 
         assertItem.fileOpenGroup.map((fileOpen: CARTA.IOpenFile, index) => {
-
-            describe(`open the file "${fileOpen.file}"`, () => {
-                test(`should get z-profile`, async () => {
+            let ack: AckStream;
+            describe(`start the action`, () => {
+                test(`should open the file "${fileOpen.file}"`, async () => {
                     await Connection.send(CARTA.OpenFile, fileOpen);
-                    await Connection.receiveAny();
-                    await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                    ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
+                }, fileopenTimeout);
 
+                test(`should get z-profile`, async () => {
+                    const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                     for (let idx = 0; idx < cursorRepeat; idx++) {
                         await Connection.send(CARTA.SetCursor, {
                             ...assertItem.setCursor,
                             point: {
-                                x: Math.floor(assertItem.setCursor.point.x * (1 - .9 * Math.random())),
-                                y: Math.floor(assertItem.setCursor.point.y * (1 - .9 * Math.random())),
+                                x: Math.floor(width * (.3 + .4 * Math.random())),
+                                y: Math.floor(width * (.3 + .4 * Math.random())),
                             },
                         });
-                        await Connection.stream(2);
+                        await Connection.receiveAny();
                     }
-
+                    
                     await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 }, cursorTimeout * cursorRepeat + config.wait.cursor);
