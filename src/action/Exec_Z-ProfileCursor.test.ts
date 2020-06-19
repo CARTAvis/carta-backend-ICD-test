@@ -28,7 +28,7 @@ let assertItem: AssertItem = {
     fileOpen: {
         file: testImage,
         directory: testSubdirectory,
-        hdu: "",
+        hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
