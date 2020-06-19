@@ -122,11 +122,11 @@ testFiles.map(file => {
                         await Connection.receiveAny();
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                         while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
+                        await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     }
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat + config.wait.cursor);
+                }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
             });
 
         });

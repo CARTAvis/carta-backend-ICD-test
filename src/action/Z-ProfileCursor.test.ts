@@ -5,7 +5,7 @@ import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
-let fileopenTimeout:number = config.timeout.readFile;
+let fileopenTimeout: number = config.timeout.readFile;
 let cursorTimeout: number = config.timeout.mouseEvent;
 let cursorRepeat: number = config.repeat.cursor;
 interface AssertItem {
@@ -83,11 +83,11 @@ describe("Z profile cursor: ", () => {
                             },
                         });
                         await Connection.receiveAny();
+                        await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                     }
-                    
-                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
+
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                }, cursorTimeout * cursorRepeat + config.wait.cursor);
+                }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
             });
 
         });
