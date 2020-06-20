@@ -7,7 +7,7 @@ let testSubdirectory: string = config.path.performance;
 let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
 let fileopenTimeout: number = config.timeout.readLargeImage;
-let cursorTimeout: number = config.timeout.region;
+let cursorTimeout: number = config.timeout.regionLargeImage;
 let cursorRepeat: number = config.repeat.cursor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
