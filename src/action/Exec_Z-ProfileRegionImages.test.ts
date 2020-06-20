@@ -8,7 +8,7 @@ let execTimeout: number = config.timeout.execute;
 let connectTimeout: number = config.timeout.connection;
 let fileopenTimeout: number = config.timeout.readLargeImage;
 let cursorTimeout: number = config.timeout.regionLargeImage;
-let cursorRepeat: number = config.repeat.cursor;
+let cursorRepeat: number = config.repeat.region;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
