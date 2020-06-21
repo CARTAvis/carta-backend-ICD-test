@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
         regionId: 1,
         regionName: "",
         regionType: CARTA.RegionType.RECTANGLE,
-        controlPoints: [{ x: 400, y: 400 }, { x: 0, y: 0 }],
+        controlPoints: [{ x: 100, y: 100 }, { x: 0, y: 0 }],
         rotation: 0.0,
     },
     setSpectralRequirements: {
@@ -104,8 +104,8 @@ testFiles.map(file => {
                     await Connection.receiveAny();
 
                     for (let idx = 0; idx < cursorRepeat; idx++) {
-                        let Dx = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width * (.3 + .4 * Math.random()));
-                        let Dy = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.height * (.3 + .4 * Math.random()));
+                        let Dx = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width * (.4 + .2 * Math.random()));
+                        let Dy = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.height * (.4 + .2 * Math.random()));
                         await Connection.send(CARTA.SetRegion, {
                             ...assertItem.setRegion,
                             controlPoints: [
