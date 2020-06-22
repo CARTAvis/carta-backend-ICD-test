@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
         regionId: 1,
         regionName: "",
         regionType: CARTA.RegionType.RECTANGLE,
-        controlPoints: [{ x: 100, y: 100 }, { x: 0, y: 0 }],
+        controlPoints: [{ x: 50, y: 50 }, { x: 0, y: 0 }],
         rotation: 0.0,
     },
     setSpectralRequirements: {
