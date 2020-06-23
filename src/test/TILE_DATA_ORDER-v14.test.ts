@@ -19,6 +19,7 @@ interface AssertItem {
     fileOpenAck: CARTA.IOpenFileAck;
     initTilesReq: CARTA.IAddRequiredTilesExt[];
     initSetCursor: CARTA.ISetCursor;
+    initSpatialReq: CARTA.ISetSpatialRequirements;
 };
 
 let assertItem: AssertItem = {
@@ -119,6 +120,11 @@ let assertItem: AssertItem = {
         fileId: 0,
         point: { x: 1, y: 1 },
     },
+    initSpatialReq: {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"]
+    },
 };
 
 describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
@@ -160,6 +166,7 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
                 test(`RasterTileData * ${initTilesReq.tiles.length} + SpatialProfileData * 1 + RasterTileSync *2 (start & end)? |`, async () => {
                     await Connection.send(CARTA.AddRequiredTiles, initTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                    await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
                     ack = await Connection.stream(initTilesReq.tiles.length + 3) as AckStream;
                     // console.log(ack);
                 }, readFileTimeout);
@@ -187,4 +194,5 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
             });
         });
     });
+    afterAll(() => Connection.close());
 });

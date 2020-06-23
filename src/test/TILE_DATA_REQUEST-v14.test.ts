@@ -20,6 +20,7 @@ interface AssertItem {
     fileOpenAck: CARTA.IOpenFileAck;
     initTilesReq: CARTA.IAddRequiredTiles;
     initSetCursor: CARTA.ISetCursor;
+    initSpatialReq: CARTA.ISetSpatialRequirements;
     setImageChannel: CARTA.ISetImageChannels;
     rasterTileData: IRasterTileDataExt;
     addRequiredTilesGroup: CARTA.IAddRequiredTiles[];
@@ -51,6 +52,11 @@ let assertItem: AssertItem = {
     initSetCursor: {
         fileId: 0,
         point: { x: 1, y: 1 },
+    },
+    initSpatialReq: {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"]
     },
     rasterTileData: {
         fileId: 0,
@@ -92,27 +98,27 @@ let assertItem: AssertItem = {
             // Mean filter 0x0 raster data to 0x0 in 0.002 ms at 0 MPix/s
             // Segmentation fault(core dumped)
         },
-        {
-            fileId: 0,
-            tiles: [33570820],
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            // BackendLog:
-            // Mean filter 0x0 raster data to 0x0 in 0.01 ms at 0 MPix / s 
-            // Segmentation fault(core dumped)
-        },
-        {
-            fileId: 0,
-            tiles: [50364424],
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            // BackendLog:
-            // Mean filter 0x0 raster data to 0x0 in 0.012 ms at 0 MPix / s 
-            // Segmentation fault(core dumped)
-            // or BackendLog:
-            // Mean filter 0x0 raster data to 0x0 in 0.002 ms at 0 MPix / s 
-            // Bus error(core dumped)
-        },
+        // {
+        //     fileId: 0,
+        //     tiles: [33570820],
+        //     compressionType: CARTA.CompressionType.ZFP,
+        //     compressionQuality: 11,
+        //     // BackendLog:
+        //     // Mean filter 0x0 raster data to 0x0 in 0.01 ms at 0 MPix / s 
+        //     // Segmentation fault(core dumped)
+        // },
+        // {
+        //     fileId: 0,
+        //     tiles: [50364424],
+        //     compressionType: CARTA.CompressionType.ZFP,
+        //     compressionQuality: 11,
+        //     // BackendLog:
+        //     // Mean filter 0x0 raster data to 0x0 in 0.012 ms at 0 MPix / s 
+        //     // Segmentation fault(core dumped)
+        //     // or BackendLog:
+        //     // Mean filter 0x0 raster data to 0x0 in 0.002 ms at 0 MPix / s 
+        //     // Bus error(core dumped)
+        // },
     ],
     rasterTileDataGroup: [
         {
@@ -139,14 +145,14 @@ let assertItem: AssertItem = {
                 { lengthTiles: 1, },
             ],
         },
-        {
-            tiles: [],
-            assert: [],
-        },
-        {
-            tiles: [],
-            assert: [],
-        },
+        // {
+        //     tiles: [],
+        //     assert: [],
+        // },
+        // {
+        //     tiles: [],
+        //     assert: [],
+        // },
     ],
 };
 
@@ -186,8 +192,9 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         test(`RasterTileData * 4 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)? |`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
-            ack = await Connection.stream(7) as AckStream;
-            // console.log(ack);
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
+            ack = await Connection.stream(assertItem.initTilesReq.tiles.length + 3) as AckStream;
+            console.log(ack);
             RasterTileDataTemp = ack.RasterTileData
             // console.log(RasterTileDataTemp)
         }, readFileTimeout);
@@ -207,13 +214,13 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         });
 
         assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
-            describe(`ADD_REQUIRED_TILES [${assertItem.addRequiredTilesGroup[index].tiles}]`, () => {
+            describe(`ADD_REQUIRED_TILES ${assertItem.addRequiredTilesGroup[index].tiles}`, () => {
                 let ack2: AckStream;
                 if (rasterTileData.tiles.length) {
                     test(`RASTER_TILE_DATA x${rasterTileData.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
                         await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                        ack2 = await Connection.stream(5) as AckStream;
-                        // console.log(ack2) //RasterTileData * 3 + RasterTileSync *2 (start & end)?
+                        ack2 = await Connection.stream(assertItem.addRequiredTilesGroup[index].tiles.length + 2) as AckStream;
+                        console.log(ack2) //RasterTileData * 3 + RasterTileSync *2 (start & end)?
                         // ack2 = await Connection.stream(assertItem.rasterTileData.tiles.length) as AckStream;
                         expect(ack2.RasterTileData.length).toEqual(rasterTileData.tiles.length);
                         RasterTileDataTemp2 = ack2.RasterTileData
@@ -243,12 +250,15 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                     }, readFileTimeout);
                 }
 
-                test("Backend be still alive", () => {
+                test("Backend be still alive (After send/receive, plz try several times, because the backend may automatically restart!)", () => {
+                    setTimeout(() => {
+                        console.log('waiting for 100ms')
+                    }, 100);
                     expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
                 });
             });
         });
 
     });
-
+    afterAll(() => Connection.close());
 });

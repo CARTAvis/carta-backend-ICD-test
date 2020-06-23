@@ -24,6 +24,7 @@ interface AssertItem {
     fileOpenAck: CARTA.IOpenFileAck;
     initTilesReq: CARTA.IAddRequiredTiles;
     initSetCursor: CARTA.ISetCursor;
+    initSpatialReq: CARTA.ISetSpatialRequirements;
     setImageChannel: CARTA.ISetImageChannels;
     rasterTileData: IRasterTileDataExt;
     addRequiredTilesGroup: CARTA.IAddRequiredTiles[];
@@ -55,6 +56,11 @@ let assertItem: AssertItem = {
     initSetCursor: {
         fileId: 0,
         point: { x: 1, y: 1 },
+    },
+    initSpatialReq: {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"]
     },
     setImageChannel: {
         fileId: 0,
@@ -226,7 +232,9 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         test(`RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)?`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
             ack = await Connection.stream(4) as AckStream;
+            console.log(ack)
             RasterTileDataTemp = ack.RasterTileData
         }, readFileTimeout);
 
@@ -350,4 +358,5 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
 
 
     });
+    afterAll(() => Connection.close());
 });
