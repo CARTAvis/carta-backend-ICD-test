@@ -202,7 +202,7 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
                     } else {
                         floatData = Array.from(new Float32Array(ContourImageData.contourSets[0].rawCoordinates.slice().buffer));
                     }
-                    console.log(unshuffle(new Uint8Array(zstdSimple.decompress(ContourImageData.contourSets[0].rawCoordinates).slice().buffer), 4.0));
+                    // console.log(unshuffle(new Uint8Array(zstdSimple.decompress(ContourImageData.contourSets[0].rawCoordinates).slice().buffer), 4.0));
                 }, readTimeout);
 
                 test(`fileId = ${contour.fileId}`, () => {
