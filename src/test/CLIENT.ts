@@ -4,15 +4,15 @@ import config from "./config.json";
 export class Client {
     IcdVersion: number = 14;
     CartaType = new Map<number, any>([
-        [ 0, CARTA.ErrorData],
-        [ 1, CARTA.RegisterViewer],
-        [ 2, CARTA.FileListRequest],
-        [ 3, CARTA.FileInfoRequest],
-        [ 4, CARTA.OpenFile],
-        [ 6, CARTA.SetImageChannels],
-        [ 7, CARTA.SetCursor],
-        [ 8, CARTA.SetSpatialRequirements],
-        [ 9, CARTA.SetHistogramRequirements],
+        [0, CARTA.ErrorData],
+        [1, CARTA.RegisterViewer],
+        [2, CARTA.FileListRequest],
+        [3, CARTA.FileInfoRequest],
+        [4, CARTA.OpenFile],
+        [6, CARTA.SetImageChannels],
+        [7, CARTA.SetCursor],
+        [8, CARTA.SetSpatialRequirements],
+        [9, CARTA.SetHistogramRequirements],
         [10, CARTA.SetStatsRequirements],
         [11, CARTA.SetRegion],
         [12, CARTA.RemoveRegion],
@@ -352,4 +352,98 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         statsType: profile.statsType,
         values: null
     };
+}
+interface ProcessedContourSet {
+    level: number;
+    indexOffsets: Int32Array;
+    coordinates: Float32Array;
+}
+function ProcessContourSet(contourSet: CARTA.IContourSet, zstdSimple): ProcessedContourSet {
+    const isCompressed = contourSet.decimationFactor >= 1;
+
+    let floatCoordinates: Float32Array;
+    if (isCompressed) {
+        // Decode raw coordinates from Zstd-compressed binary to a float array
+        floatCoordinates = unshuffle(new Uint8Array(zstdSimple.decompress(contourSet.rawCoordinates).slice().buffer), contourSet.decimationFactor);
+    } else {
+        const u8Copy = contourSet.rawCoordinates.slice();
+        floatCoordinates = new Float32Array(u8Copy.buffer);
+    }
+    // generate indices
+    const indexOffsets = new Int32Array(contourSet.rawStartIndices.buffer.slice(contourSet.rawStartIndices.byteOffset, contourSet.rawStartIndices.byteOffset + contourSet.rawStartIndices.byteLength));
+
+    return {
+        level: contourSet.level,
+        indexOffsets,
+        coordinates: floatCoordinates.map((f: number) => f = f - 0.5),
+    };
+}
+interface ProcessedContourData {
+    fileId: number;
+    imageBounds?: CARTA.IImageBounds;
+    channel: number;
+    stokes: number;
+    progress: number;
+    contourSets: ProcessedContourSet[];
+}
+export function ProcessContourData(contourData: CARTA.IContourImageData, zstdSimple): ProcessedContourData {
+    return {
+        fileId: contourData.fileId,
+        channel: contourData.channel,
+        stokes: contourData.stokes,
+        imageBounds: contourData.imageBounds,
+        progress: contourData.progress,
+        contourSets: contourData.contourSets ? contourData.contourSets.map(contourSet => ProcessContourSet(contourSet, zstdSimple)) : null
+    };
+}
+function unshuffle(raw: Uint8Array, decimationFactor: number): Float32Array {
+    const numIntegers: number = raw.length / 4;
+    const blockedLength: number = 4 * Math.floor(numIntegers / 4);
+    const scale: number = 1.0 / decimationFactor;
+    let buffer: number[] = new Array(16);
+    let rawInt32: Int32Array = new Int32Array(new Uint8Array(raw).buffer);
+    let data: number[] = new Array(numIntegers);
+    let v: number = 0;
+    for (; v < blockedLength; v += 4) {
+        const i = 4 * v;
+
+        buffer[0] = raw[i];
+        buffer[1] = raw[i + 4];
+        buffer[2] = raw[i + 8];
+        buffer[3] = raw[i + 12];
+        buffer[4] = raw[i + 1];
+        buffer[5] = raw[i + 5];
+        buffer[6] = raw[i + 9];
+        buffer[7] = raw[i + 13];
+        buffer[8] = raw[i + 2];
+        buffer[9] = raw[i + 6];
+        buffer[10] = raw[i + 10];
+        buffer[11] = raw[i + 14];
+        buffer[12] = raw[i + 3];
+        buffer[13] = raw[i + 7];
+        buffer[14] = raw[i + 11];
+        buffer[15] = raw[i + 15];
+
+        let bufferInt32 = new Int32Array(new Uint8Array(buffer).buffer);
+        data[v] = bufferInt32[0] * scale;
+        data[v + 1] = bufferInt32[1] * scale;
+        data[v + 2] = bufferInt32[2] * scale;
+        data[v + 3] = bufferInt32[3] * scale;
+
+    }
+    for (; v < numIntegers; v++) {
+        data[v] = rawInt32[v] * scale;
+    }
+    let lastX: number = 0;
+    let lastY: number = 0;
+
+    for (let i = 0; i < numIntegers - 1; i += 2) {
+        let deltaX: number = data[i];
+        let deltaY: number = data[i + 1];
+        lastX += deltaX;
+        lastY += deltaY;
+        data[i] = lastX;
+        data[i + 1] = lastY;
+    }
+    return new Float32Array(data);
 }

@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, ProcessContourData } from "./CLIENT";
 import config from "./config.json";
 const ZstdCodec = require('zstd-codec').ZstdCodec;
 let testServerUrl: string = config.serverURL;
@@ -195,17 +195,12 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
         assertItem.contourImageData.map((contour, index) => {
             describe(`SET_CONTOUR_PARAMETERS${index} with SmoothingMode:"${CARTA.SmoothingMode[assertItem.setContour[index].smoothingMode]}"`, () => {
                 let ContourImageData: CARTA.ContourImageData;
-                let floatData: Number[];
+                let floatData: Float32Array;
                 test(`should return CONTOUR_IMAGE_DATA x1`, async () => {
                     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[index]);
                     ContourImageData = await Connection.receive(CARTA.ContourImageData);
 
-                    if (contour.contourSets[0].decimationFactor > 0) {
-                        floatData = unshuffle(new Uint8Array(zstdSimple.decompress(ContourImageData.contourSets[0].rawCoordinates).slice().buffer), 4.0);
-                    } else {
-                        floatData = Array.from(new Float32Array(ContourImageData.contourSets[0].rawCoordinates.slice().buffer));
-                    }
-                    // console.log(floatData.map((f: number) => f = f - 0.5));
+                    floatData = ProcessContourData(ContourImageData, zstdSimple).contourSets[0].coordinates;
                 }, readTimeout);
 
                 test(`fileId = ${contour.fileId}`, () => {
@@ -242,7 +237,7 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
 
                 test(`assert contour vertices`, async () => {
                     contour.contourVertices.map((f, idx) => {
-                        expect(floatData[idx] - 0.5).toEqual(f);
+                        expect(floatData[idx]).toEqual(f);
                     });
                 });
 
@@ -253,54 +248,3 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
 
     afterAll(() => Connection.close());
 });
-function unshuffle(raw, decimationFactor) {
-    const numIntegers = raw.length / 4;
-    const blockedLength = 4 * Math.floor(numIntegers / 4);
-    const scale = 1.0 / decimationFactor;
-    let buffer: number[] = new Array(16);
-    let rawInt32 = new Int32Array(new Uint8Array(raw).buffer);
-    let data = new Array(numIntegers);
-    let v = 0;
-    for (; v < blockedLength; v += 4) {
-        const i = 4 * v;
-
-        buffer[0] = raw[i];
-        buffer[1] = raw[i + 4];
-        buffer[2] = raw[i + 8];
-        buffer[3] = raw[i + 12];
-        buffer[4] = raw[i + 1];
-        buffer[5] = raw[i + 5];
-        buffer[6] = raw[i + 9];
-        buffer[7] = raw[i + 13];
-        buffer[8] = raw[i + 2];
-        buffer[9] = raw[i + 6];
-        buffer[10] = raw[i + 10];
-        buffer[11] = raw[i + 14];
-        buffer[12] = raw[i + 3];
-        buffer[13] = raw[i + 7];
-        buffer[14] = raw[i + 11];
-        buffer[15] = raw[i + 15];
-
-        let bufferInt32 = new Int32Array(new Uint8Array(buffer).buffer);
-        data[v] = bufferInt32[0] * scale;
-        data[v + 1] = bufferInt32[1] * scale;
-        data[v + 2] = bufferInt32[2] * scale;
-        data[v + 3] = bufferInt32[3] * scale;
-
-    }
-    for (; v < numIntegers; v++) {
-        data[v] = rawInt32[v] * scale;
-    }
-    let lastX = 0;
-    let lastY = 0;
-
-    for (let i = 0; i < numIntegers - 1; i += 2) {
-        let deltaX = data[i];
-        let deltaY = data[i + 1];
-        lastX += deltaX;
-        lastY += deltaY;
-        data[i] = lastX;
-        data[i + 1] = lastY;
-    }
-    return data;
-}
