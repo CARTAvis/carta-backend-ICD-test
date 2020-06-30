@@ -14,7 +14,7 @@
         "connection": 1100,
         "listFile": 1200,
         "openFile": 1300,
-        "readFile": 2100,
+        "readFile": 4100,
         "readLargeImage": 18000,
         "changeChannel": 3000,
         "playImages": 8000,

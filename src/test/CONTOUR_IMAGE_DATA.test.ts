@@ -98,18 +98,19 @@ let assertItem: AssertItem = {
             ],
             progress: 1,
             contourVertices: [
-                10.00,  11.25,
-                10.75,  11.00,
-                11.00,  10.75,
-                11.25,  10.00,
-                11.00,  9.25,
-                10.75,  9.00,
-                10.00,  8.75,
-                9.25,   9.00,
-                9.00,   9.25,
-                8.75,   10.00,
-                9.00,   10.75,
-                9.25,   11.00,
+                9.25, 9.00,
+                9.00, 9.25,
+                8.75, 10.00,
+                9.00, 10.75,
+                9.25, 11.00,
+                10.00, 11.25,
+                10.75, 11.00,
+                11.00, 10.75,
+                11.25, 10.00,
+                11.00, 9.25,
+                10.75, 9.00,
+                10.00, 8.75,
+                9.25, 9.00,
             ],
         },
         {
@@ -124,10 +125,11 @@ let assertItem: AssertItem = {
             ],
             progress: 1,
             contourVertices: [
-                9.50,   10.75,
-                10.75,  9.50,
-                9.50,   8.50,
-                8.50,   9.50,
+                8.50, 9.50,
+                9.50, 10.75,
+                10.75, 9.50,
+                9.50, 8.50,
+                8.50, 9.50,
             ],
         },
         {
@@ -142,18 +144,19 @@ let assertItem: AssertItem = {
             ],
             progress: 1,
             contourVertices: [
-                10.00,  11.25,
-                10.50,  11.00,
-                11.00,  10.50,
-                11.25,  10.00,
-                11.00,  9.50,
-                10.50,  9.00,
-                10.00,  8.75,
-                9.50,   9.00,
-                9.00,   9.50,
-                8.75,   10.00,
-                9.00,   10.50,
-                9.50,   11.00,
+                9.50, 9.00,
+                9.00, 9.50,
+                8.75, 10.00,
+                9.00, 10.50,
+                9.50, 11.00,
+                10.00, 11.25,
+                10.50, 11.00,
+                11.00, 10.50,
+                11.25, 10.00,
+                11.00, 9.50,
+                10.50, 9.00,
+                10.00, 8.75,
+                9.50, 9.00,
             ],
         },
     ],
@@ -185,8 +188,8 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
 
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            // REGION_HISTOGRAM_DATA RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_DATA RASTER_TILE_SYNC
-            await Connection.stream(6) as AckStream;
+            // REGION_HISTOGRAM_DATA OPEN_FILE_ACK RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_SYNC
+            await Connection.stream(5) as AckStream;
         }, readTimeout);
 
         assertItem.contourImageData.map((contour, index) => {
@@ -202,7 +205,7 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
                     } else {
                         floatData = Array.from(new Float32Array(ContourImageData.contourSets[0].rawCoordinates.slice().buffer));
                     }
-                    // console.log(unshuffle(new Uint8Array(zstdSimple.decompress(ContourImageData.contourSets[0].rawCoordinates).slice().buffer), 4.0));
+                    // console.log(floatData.map((f: number) => f = f - 0.5));
                 }, readTimeout);
 
                 test(`fileId = ${contour.fileId}`, () => {
@@ -234,12 +237,12 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
                 });
 
                 test(`number of contour vertices = ${contour.contourVertices.length / 2}`, () => {
-                    expect(floatData.length).toEqual(2 + contour.contourVertices.length);
+                    expect(floatData.length).toEqual(contour.contourVertices.length);
                 });
 
                 test(`assert contour vertices`, async () => {
                     contour.contourVertices.map((f, idx) => {
-                        expect(floatData[idx]).toEqual(f);
+                        expect(floatData[idx] - 0.5).toEqual(f);
                     });
                 });
 
