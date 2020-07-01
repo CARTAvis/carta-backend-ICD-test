@@ -1,20 +1,24 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
-let readFileTimeout: number = 80000;//config.timeout.readFile;
+let readFileTimeout: number = config.timeout.readFile;
 let readRegionTimeout: number = config.timeout.region;
+let spectralProfileTimeout: number = 120000;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
-    setImageChannel: CARTA.ISetImageChannels[];
-    setCursor: CARTA.ISetCursor[];
+    // setImageChannel: CARTA.ISetImageChannels[];
+    // setCursor: CARTA.ISetCursor[];
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialRequirements: CARTA.ISetSpatialRequirements;
     setRegion: CARTA.ISetRegion[];
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
 };
@@ -29,42 +33,42 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z01000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z02000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z04000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z01000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z02000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z04000.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
@@ -78,100 +82,116 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z02000.image",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z04000.image",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z01000.image",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z02000.image",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z04000.image",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z01000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z02000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_01600_z04000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z01000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z02000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_03200_z04000.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    setImageChannel: [
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            requiredTiles: {
-                fileId: 0,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
-                tiles: [0],
-            },
-        },
-    ],
-    setCursor: [
-        {
-            fileId: 0,
-            point: { x: 0, y: 0 },
-        },
-    ],
+    // setImageChannel: [
+    //     {
+    //         fileId: 0,
+    //         channel: 0,
+    //         stokes: 0,
+    //         requiredTiles: {
+    //             fileId: 0,
+    //             compressionType: CARTA.CompressionType.ZFP,
+    //             compressionQuality: 11,
+    //             tiles: [0],
+    //         },
+    //     },
+    // ],
+    // setCursor: [
+    //     {
+    //         fileId: 0,
+    //         point: { x: 0, y: 0 },
+    //     },
+    // ],
+    initTilesReq: {
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [0],
+    },
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialRequirements:
+    {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"],
+    },
     setRegion: [
         {
             controlPoints: [{ x: 800, y: 800 }, { x: 400, y: 400 }],
@@ -338,26 +358,32 @@ describe("PERF_REGION_SPECTRAL_PROFILE", () => {
             await Connection.receive(CARTA.RegisterViewerAck);
         }, connectTimeout);
 
-
         describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, connectTimeout);
 
+            // test(`(Step 0) Connection open? | `, () => {
+            //     expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+            // });
+
             describe(`open the file "${fileOpen.directory}/${assertItem.fileOpen[index].file}"`, () => {
                 test(`(Step 1)"${assertItem.fileOpen[index].file}" OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile, fileOpen);
-                    await Connection.receiveAny()
-                    await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                    let temp = await Connection.receiveAny()
+                    // console.log(temp);
+                    let temp2 = await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                    // console.log(temp2);
                 }, openFileTimeout);
 
                 let ack: AckStream;
                 test(`(Step 1)"${assertItem.fileOpen[index].file}" SetImageChannels & SetCursor responses should arrive within ${readFileTimeout} ms`, async () => {
-                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                    await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
-                    // await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length);
-                    ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 2) as AckStream;
-                    // console.log(ack)
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+                    await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                    await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
+
+                    ack = await Connection.stream(assertItem.initTilesReq.tiles.length + 3) as AckStream;
+                    console.log(ack)
                 }, readFileTimeout);
 
                 test(`(Step 2)"${assertItem.fileOpen[index].file}" SET_REGION_ACK should arrive within ${readRegionTimeout} ms`, async () => {
@@ -366,7 +392,8 @@ describe("PERF_REGION_SPECTRAL_PROFILE", () => {
                 }, readRegionTimeout);
 
                 let ack3: AckStream;
-                test(`(Step 3)"${assertItem.fileOpen[index].file}" SPECTRAL_PROFILE_DATA stream should arrive within ${readFileTimeout} ms`, async () => {
+                test(`(Step 3)"${assertItem.fileOpen[index].file}" SPECTRAL_PROFILE_DATA stream should arrive within ${spectralProfileTimeout} ms`, async () => {
+                    // await sleep(sleepTimeout);
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[0]);
 
                     let SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
@@ -382,7 +409,7 @@ describe("PERF_REGION_SPECTRAL_PROFILE", () => {
                         };
                         expect(ReceiveProgress).toEqual(1);
                     };
-                }, readFileTimeout);
+                }, spectralProfileTimeout);
 
             });
 

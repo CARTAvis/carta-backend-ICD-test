@@ -1,21 +1,25 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = 7000;//config.timeout.openFile; //7000
 let readFileTimeout: number = 5000;//config.timeout.readFile; //5000
-let cubeHistogramTimeout: number = 5000000;
+// let cubeHistogramTimeout: number = 1000000;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
-    setImageChannel: CARTA.ISetImageChannels[];
-    cursor: CARTA.ISetCursor;
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialRequirements: CARTA.ISetSpatialRequirements;
+    // setImageChannel: CARTA.ISetImageChannels[];
+    // cursor: CARTA.ISetCursor;
     histogram: CARTA.ISetHistogramRequirements;
+    cubeHistogramTimeout: number[];
 };
 
 let assertItem: AssertItem = {
@@ -84,54 +88,72 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_02400_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_04800_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_09600_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_19200_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    setImageChannel: [
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            requiredTiles: {
-                fileId: 0,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
-                tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
-            },
-        },
-    ],
-    cursor: {
+    initTilesReq: {
         fileId: 0,
-        point: { x: 0, y: 0 },
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
     },
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialRequirements:
+    {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"],
+    },
+    // setImageChannel: [
+    //     {
+    //         fileId: 0,
+    //         channel: 0,
+    //         stokes: 0,
+    //         requiredTiles: {
+    //             fileId: 0,
+    //             compressionType: CARTA.CompressionType.ZFP,
+    //             compressionQuality: 11,
+    //             tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
+    //         },
+    //     },
+    // ],
+    // cursor: {
+    //     fileId: 0,
+    //     point: { x: 0, y: 0 },
+    // },
     histogram: {
         fileId: 0,
         regionId: -2,
         histograms: [{ channel: -2, numBins: -1 }],
     },
+    // cubeHistogramTimeout: [12000],
+    cubeHistogramTimeout: [12000, 60000, 300000, 1000000, 12000, 60000, 300000, 1000000, 500, 500, 500, 500],
 };
 
 describe("PERF_CUBE_HISTOGRAM", () => {
@@ -155,21 +177,24 @@ describe("PERF_CUBE_HISTOGRAM", () => {
 
             test(`(Step 1)"${assertItem.fileOpen[index].file}" OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                 await Connection.send(CARTA.OpenFile, fileOpen);
-                await Connection.receiveAny()
-                await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                let temp = await Connection.receiveAny()
+                // console.log(temp);
+                let temp2 = await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                // console.log(temp2);
             }, openFileTimeout);
 
             let ack: AckStream;
             test(`(Step 1)"${assertItem.fileOpen[index].file}" SetImageChannels & SetCursor responses should arrive within ${readFileTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                await Connection.send(CARTA.SetCursor, assertItem.cursor);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+                await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
 
-                ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 2) as AckStream;
-                // console.log(ack)
+                ack = await Connection.stream(assertItem.initTilesReq.tiles.length + 3) as AckStream;
+                console.log(ack)
             }, readFileTimeout);
 
             describe(`Set histogram requirements:`, () => {
-                test(`(Step 2)"${assertItem.fileOpen[index].file}" REGION_HISTOGRAM_DATA should arrive completely within ${cubeHistogramTimeout} ms:`, async () => {
+                test(`(Step 2)"${assertItem.fileOpen[index].file}" REGION_HISTOGRAM_DATA should arrive completely within ${assertItem.cubeHistogramTimeout[index]} ms:`, async () => {
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram);
                     let RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
                     let ReceiveProgress: number = RegionHistogramDataTemp.progress;
@@ -182,7 +207,7 @@ describe("PERF_CUBE_HISTOGRAM", () => {
                         };
                         expect(ReceiveProgress).toEqual(1);
                     };
-                }, cubeHistogramTimeout);
+                }, assertItem.cubeHistogramTimeout[index]);
             });
 
 

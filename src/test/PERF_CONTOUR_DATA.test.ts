@@ -1,20 +1,23 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
-let readFileTimeout: number = config.timeout.readFile; //5000
-let playContourTimeout: number = 8000;
+let readFileTimeout: number = config.timeout.readFile;
+let playContourTimeout: number = 5000;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
-    setImageChannel: CARTA.ISetImageChannels[];
-    setCursor: CARTA.ISetCursor;
+    // setImageChannel: CARTA.ISetImageChannels[];
+    // setCursor: CARTA.ISetCursor;
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialRequirements: CARTA.ISetSpatialRequirements;
     setContour: CARTA.ISetContourParameters[];
 };
 
@@ -48,22 +51,38 @@ let assertItem: AssertItem = {
                 renderMode: CARTA.RenderMode.RASTER,
             },
         ],
-    setImageChannel: [
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            requiredTiles: {
-                fileId: 0,
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
-                tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
-            },
-        },
-    ],
-    setCursor: {
+    // setImageChannel: [
+    //     {
+    //         fileId: 0,
+    //         channel: 0,
+    //         stokes: 0,
+    //         requiredTiles: {
+    //             fileId: 0,
+    //             compressionType: CARTA.CompressionType.ZFP,
+    //             compressionQuality: 11,
+    //             tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
+    //         },
+    //     },
+    // ],
+    // setCursor: {
+    //     fileId: 0,
+    //     point: { x: 0, y: 0 },
+    // },
+    initTilesReq: {
         fileId: 0,
-        point: { x: 0, y: 0 },
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [33558529, 33558528, 33554433, 33554432, 33562625, 33558530, 33562624, 33554434, 33562626],
+    },
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialRequirements:
+    {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"],
     },
     setContour: [
         {
@@ -124,17 +143,20 @@ describe("PERF_CONTOUR_DARA", () => {
             describe(`With smoothingMode of "${assertItem.setContour[index].smoothingMode}"`, () => {
                 test(`(Step 1) smoothingMode of ${assertItem.setContour[index].smoothingMode} OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpen[index]);
-                    await Connection.receiveAny()
-                    await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                    let temp1 = await Connection.receiveAny()
+                    // console.log(temp1);
+                    let temp2 = await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                    // console.log(temp2)
                 }, openFileTimeout);
 
                 let ack: AckStream;
                 test(`(Step 1) smoothingMode of ${assertItem.setContour[index].smoothingMode} SetImageChannels & SetCursor responses should arrive within ${readFileTimeout} ms`, async () => {
-                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                    await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+                    await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                    await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
 
-                    ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 2) as AckStream;
-                    // console.log(ack)
+                    ack = await Connection.stream(assertItem.initTilesReq.tiles.length + 3) as AckStream;
+                    console.log(ack)
                 }, readFileTimeout);
 
                 let ack2: AckStream;

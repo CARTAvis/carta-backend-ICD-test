@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
-import config from "./config.json";
+import config from "./config2.json";
 import * as Long from "long";
 
 let testServerUrl: string = config.serverURL;
@@ -10,12 +10,15 @@ let openFileTimeout: number = 7000;//config.timeout.openFile;
 let readFileTimeout: number = 7000;//config.timeout.readFile; //5000
 let playImageTimeout: number = config.timeout.playImages;
 let sleepTimeout: number = config.timeout.sleep;
-let playAnimatorTimeout = 5000000;//config.timeout.playAnimator
+// let playAnimatorTimeout = 500000;//config.timeout.playAnimator
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialRequirements: CARTA.ISetSpatialRequirements;
     addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
@@ -23,6 +26,7 @@ interface AssertItem {
     stopAnimation: CARTA.IStopAnimation[];
     animationFlowControl: CARTA.IAnimationFlowControl[];
     setImageChannel: CARTA.ISetImageChannels[];
+    playAnimatorTimeout: number[];
 };
 
 let assertItem: AssertItem = {
@@ -91,32 +95,48 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_02400_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_04800_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_09600_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory + "/cube_A",
             file: "cube_A_19200_z00100.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
+    initTilesReq: {
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [0],
+    },
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialRequirements:
+    {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"],
+    },
     addTilesReq: [
         {
             fileId: 0,
@@ -127,7 +147,7 @@ let assertItem: AssertItem = {
     ],
     setCursor: {
         fileId: 0,
-        point: { x: 0, y: 0 },
+        point: { x: 1, y: 1 },
     },
     setSpatialReq: {
         fileId: 0,
@@ -178,6 +198,9 @@ let assertItem: AssertItem = {
                 },
             },
         ],
+    // playAnimatorTimeout: [20000],
+    // playAnimatorTimeout: [20000, 40000, 200000, 400000, 20000, 40000, 200000, 400000],
+    playAnimatorTimeout: [20000, 40000, 200000, 600000, 20000, 40000, 200000, 600000, 20000, 40000, 200000, 600000],
 };
 
 
@@ -206,23 +229,30 @@ describe("PERF_CUBE_HISTOGRAM", () => {
 
             test(`(Step 1)"${assertItem.fileOpen[index].file}" OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                 await Connection.send(CARTA.OpenFile, fileOpen);
-                await Connection.receiveAny()
-                await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                let temp1 = await Connection.receiveAny()
+                let temp2 = await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                expect(temp1.success).toBe(true)
+                console.log(temp2)
             }, openFileTimeout);
 
             let ack: AckStream;
             test(`(Step 1)"${assertItem.fileOpen[index].file}" SetImageChannels & SetCursor responses should arrive within ${readFileTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                // await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
+                // await Connection.send(CARTA.SetCursor, assertItem.setCursor);
 
-                ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 2) as AckStream;
+                // ack = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 4) as AckStream;
                 // console.log(ack)
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+                await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
+                ack = await Connection.stream(assertItem.initTilesReq.tiles.length + 3) as AckStream;
+                console.log(ack)
             }, readFileTimeout);
 
-            describe(`(Step 2):Play some channels forwardly`, () => {
+            describe(`Play some channels forwardly`, () => {
                 let AnimateStreamData: AckStream[] = [];
                 let sequence: number[] = [];
-                test(`Image should return one after one and the last channel is correct:`, async () => {
+                test(`(Step 2)"${assertItem.fileOpen[index].file}" Image should return:`, async () => {
                     await sleep(sleepTimeout);
                     await Connection.send(CARTA.StartAnimation, {
                         ...assertItem.startAnimation[0],
@@ -235,7 +265,9 @@ describe("PERF_CUBE_HISTOGRAM", () => {
                     expect(SAAck.success).toBe(true);
 
                     for (let i = 0; i < assertItem.stopAnimation[0].endFrame.channel; i++) {
-                        AnimateStreamData.push(await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length + 5) as AckStream);
+                        let ttt = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length + 4) as AckStream
+                        console.log(ttt)
+                        AnimateStreamData.push(ttt);
                         await Connection.send(CARTA.AnimationFlowControl,
                             {
                                 ...assertItem.animationFlowControl[0],
@@ -246,20 +278,21 @@ describe("PERF_CUBE_HISTOGRAM", () => {
                                 timestamp: Long.fromNumber(Date.now()),
                             }
                         );
-                        // console.log(AnimateStreamData[i].RasterTileData[0].channel) // In principle, each channel should have RasterTileSync *2 (start & end)
+                        console.log(AnimateStreamData[i].RasterTileData[0].channel) // In principle, each channel should have RasterTileSync *2 (start & end)
                         sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                     };
-
+                    let lastTile = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length + 4) as AckStream
+                    console.log(lastTile)
                     await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                     await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-                    let lastRasterImageData = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 2) as AckStream;
+                    let lastRasterImageData = await Connection.stream(assertItem.setImageChannel[0].requiredTiles.tiles.length + 4) as AckStream;
                     console.log(lastRasterImageData); // RasterTileData * 1 + RasterTileSync *2 (start & end)
-                    console.log(AnimateStreamData[40]); // RasterTileData * 1 + SpatialProfileData * 2 + RegionHistogramData * 1 + RasterTileSync *2 (start & end)
+                    // console.log(AnimateStreamData[40]); // RasterTileData * 1 + SpatialProfileData * 2 + RegionHistogramData * 1 + RasterTileSync *2 (start & end)
                     console.log(sequence); // show looping sequence
 
                     expect(sequence[sequence.length - 1]).toEqual(assertItem.stopAnimation[0].endFrame.channel);
 
-                }, playAnimatorTimeout);
+                }, assertItem.playAnimatorTimeout[index]);
             });
 
         });
