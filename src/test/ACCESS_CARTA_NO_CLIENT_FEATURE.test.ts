@@ -11,11 +11,11 @@ let assertItem: AssertItem = {
     register: {
         sessionId: 0,
         apiKey: "",
-        clientFeatureFlags: 5,
+        clientFeatureFlags: 0,
     },
 }
-describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () => {
-    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
+describe("ACCESS_CARTA_NO_CLIENT_FEATURE tests: Testing backend connection without any client feature", () => {
+    describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey} & client_feature_flags="${assertItem.register.clientFeatureFlags}"`, () => {
         let Connection: Client;
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
         test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, async () => {
@@ -39,7 +39,7 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             expect(RegisterViewerAckTemp.success).toBe(true);
         });
 
-        test("REGISTER_VIEWER_ACK.session_id is not None", () => {
+        test("REGISTER_VIEWER_ACK.session_id is non-empty string", () => {
             expect(RegisterViewerAckTemp.sessionId).toBeDefined();
             console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
         });

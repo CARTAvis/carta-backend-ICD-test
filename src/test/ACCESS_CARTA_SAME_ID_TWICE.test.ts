@@ -9,27 +9,30 @@ interface AssertItem {
 }
 let assertItem: AssertItem = {
     register: {
-        sessionId: 0,
+        sessionId: 12345,
         apiKey: "",
         clientFeatureFlags: 5,
     },
 }
-describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () => {
+describe("ACCESS_CARTA_SAME_ID_TWICE tests: Testing backend connection with default parameters", () => {
     describe(`send "REGISTER_VIEWER" to "${testServerUrl}" with session_id=${assertItem.register.sessionId} & api_key="${assertItem.register.apiKey}"`, () => {
         let Connection: Client;
-        let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
-        test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, async () => {
+        let RegisterViewerAckTemp: CARTA.RegisterViewerAck;
+        
+        beforeAll(async () => {
             Connection = new Client(testServerUrl);
-            expect(Connection.connection.readyState).toBe(WebSocket.CONNECTING);
+            await Connection.open();
+        });
 
-            await Connection.open().then( () => {
-                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
-            });
+        test(`should get "REGISTER_VIEWER_ACK"x2 within ${connectTimeout} ms`, async () => {
+
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
 
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
 
-            await Connection.close().then( () => {
+            await Connection.close().then(()=>{
                 expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
             });
 
@@ -39,13 +42,12 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
             expect(RegisterViewerAckTemp.success).toBe(true);
         });
 
-        test("REGISTER_VIEWER_ACK.session_id is not None", () => {
-            expect(RegisterViewerAckTemp.sessionId).toBeDefined();
-            console.log(`Registered session ID is ${RegisterViewerAckTemp.sessionId} @${new Date()}`);
+        test(`REGISTER_VIEWER_ACK.session_id is ${assertItem.register.sessionId}`, () => {
+            expect(RegisterViewerAckTemp.sessionId).toEqual(assertItem.register.sessionId);
         });
 
-        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.NEW"`, () => {
-            expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
+        test(`REGISTER_VIEWER_ACK.session_type = "CARTA.SessionType.RESUMED"`, () => {
+            expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.RESUMED);
         });
 
         test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
@@ -59,5 +61,6 @@ describe("ACCESS_CARTA_DEFAULT tests: Testing connections to the backend", () =>
         test("REGISTER_VIEWER_ACK.user_layouts = None", () => {
             expect(RegisterViewerAckTemp.userLayouts).toMatchObject({});
         });
+
     });
 });
