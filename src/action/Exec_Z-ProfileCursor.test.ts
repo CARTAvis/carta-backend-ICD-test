@@ -87,6 +87,8 @@ describe("Z profile cursor action: ", () => {
                         },
                     });
                     await Connection.receiveAny();
+                    await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                    while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
                     await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
                 }
                 

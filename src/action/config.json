@@ -32,7 +32,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 500,
+        "mouseEvent": 1200,
         "region": 20100,
         "regionLargeImage": 610000,
         "import": 500,
@@ -53,7 +53,7 @@
         "contour": 800,
         "histogram": 1000,
         "zoom": 400,
-        "cursor": 200
+        "cursor": 500
     },
     "repeat": {
         "concurrent": 10,
