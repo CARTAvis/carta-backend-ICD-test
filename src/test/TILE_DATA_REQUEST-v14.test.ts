@@ -213,52 +213,52 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             });
         });
 
-        assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
-            describe(`ADD_REQUIRED_TILES ${assertItem.addRequiredTilesGroup[index].tiles}`, () => {
-                let ack2: AckStream;
-                if (rasterTileData.tiles.length) {
-                    test(`RASTER_TILE_DATA x${rasterTileData.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
-                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                        ack2 = await Connection.stream(assertItem.addRequiredTilesGroup[index].tiles.length + 2) as AckStream;
-                        console.log(ack2) //RasterTileData * 3 + RasterTileSync *2 (start & end)?
-                        // ack2 = await Connection.stream(assertItem.rasterTileData.tiles.length) as AckStream;
-                        expect(ack2.RasterTileData.length).toEqual(rasterTileData.tiles.length);
-                        RasterTileDataTemp2 = ack2.RasterTileData
-                    }, readFileTimeout);
-
-                    if (index == 0) {
-                        assertItem.rasterTileDataGroup[index].tiles.map((tiles, index2) => {
-                            describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
-                                test(`(#${index2})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
-                                    expect(RasterTileDataTemp2[index2].tiles.length).toBe(assertItem.rasterTileDataGroup[index].assert[index2].lengthTiles);
-                                });
-
-                                test(`(#${index2})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
-                                    let TempTiles = assertItem.rasterTileDataGroup[index].tiles.filter(f => f.x === RasterTileDataTemp2[index2].tiles[0].x && f.y === RasterTileDataTemp2[index2].tiles[0].y && f.layer === RasterTileDataTemp2[index2].tiles[0].layer)
-                                    // console.log(TempTiles);
-                                    expect(TempTiles).toBeDefined();
-                                });
-
-                            });
-                        });
-                    }
-
-                } else {
-                    test(`RASTER_TILE_DATA should NOT arrive within ${readFileTimeout} ms`, async () => {
-                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                        await Connection.receive(CARTA.RasterTileData, readFileTimeout * .5, false);
-                    }, readFileTimeout);
-                }
-
-                test("Backend be still alive (After send/receive, plz try several times, because the backend may automatically restart!)", () => {
-                    setTimeout(() => {
-                        console.log('waiting for 100ms')
-                    }, 100);
-                    expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
-                });
-            });
-        });
-
+//        assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
+//            describe(`ADD_REQUIRED_TILES ${assertItem.addRequiredTilesGroup[index].tiles}`, () => {
+//                let ack2: AckStream;
+//                if (rasterTileData.tiles.length) {
+//                    test(`RASTER_TILE_DATA x${rasterTileData.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
+//                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+//                        ack2 = await Connection.stream(assertItem.addRequiredTilesGroup[index].tiles.length + 2) as AckStream;
+//                        console.log(ack2) //RasterTileData * 3 + RasterTileSync *2 (start & end)?
+//                        // ack2 = await Connection.stream(assertItem.rasterTileData.tiles.length) as AckStream;
+//                        expect(ack2.RasterTileData.length).toEqual(rasterTileData.tiles.length);
+//                        RasterTileDataTemp2 = ack2.RasterTileData
+//                    }, readFileTimeout);
+//
+//                    if (index == 0) {
+//                        assertItem.rasterTileDataGroup[index].tiles.map((tiles, index2) => {
+//                            describe(`(Step4-7) Check each RASTER_TILE_DATA`, () => {
+//                                test(`(#${index2})RASTER_TILE_DATA.tiles.length = 1 |`, () => {
+//                                    expect(RasterTileDataTemp2[index2].tiles.length).toBe(assertItem.rasterTileDataGroup[index].assert[index2].lengthTiles);
+//                                });
+//
+//                                test(`(#${index2})RASTER_TILE_DATA.tiles[0].x = ${tiles.x} & RASTER_TILE_DATA.tiles[0].y = ${tiles.y} & RASTER_TILE_DATA.tiles[0].layer = ${tiles.layer}|`, () => {
+//                                    let TempTiles = assertItem.rasterTileDataGroup[index].tiles.filter(f => f.x === RasterTileDataTemp2[index2].tiles[0].x && f.y === RasterTileDataTemp2[index2].tiles[0].y && f.layer === RasterTileDataTemp2[index2].tiles[0].layer)
+//                                    // console.log(TempTiles);
+//                                    expect(TempTiles).toBeDefined();
+//                                });
+//
+//                            });
+//                        });
+//                    }
+//
+//                } else {
+//                    test(`RASTER_TILE_DATA should NOT arrive within ${readFileTimeout} ms`, async () => {
+//                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
+//                        await Connection.receive(CARTA.RasterTileData, readFileTimeout * .5, false);
+//                    }, readFileTimeout);
+//                }
+//
+//                test("Backend be still alive (After send/receive, plz try several times, because the backend may automatically restart!)", () => {
+//                    setTimeout(() => {
+//                        console.log('waiting for 100ms')
+//                    }, 100);
+//                    expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
+//                });
+//            });
+//        });
+//
     });
     afterAll(() => Connection.close());
 });
