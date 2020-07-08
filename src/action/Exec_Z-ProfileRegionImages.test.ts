@@ -50,8 +50,8 @@ let testFiles = [
     "cube_A/cube_A_03200_z00100.fits",
     "cube_A/cube_A_03200_z00100.image",
     "cube_A/cube_A_03200_z00100.hdf5",
-    "cube_A/cube_A_01600_z01000.fits",
 
+    "cube_A/cube_A_01600_z01000.fits",
     "cube_A/cube_A_01600_z01000.image",
     "cube_A/cube_A_01600_z01000.hdf5",
     "cube_A/cube_A_01600_z02000.fits",
