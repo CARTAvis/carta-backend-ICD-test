@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -28,9 +29,8 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
-    precisionDigits: 4,
+    precisionDigits: 0,
     importRegion:
         [
             {
@@ -92,16 +92,16 @@ let assertItem: AssertItem = {
                         regionId: 6,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 90,
-                            controlPoints: [{ x: 749.2734375, y: 486.2314147949219 }, { x: 69.90299987792969, y: 29.773500442504883 }],
+                            rotation: 0,
+                            controlPoints: [{ x: 749.2734375, y: 486.2314147949219 }, { x: 29.773500442504883, y: 69.90299987792969, }],
                         },
                     },
                     {
                         regionId: 7,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 135,
-                            controlPoints: [{ x: 745.3899536132812, y: 369.7265319824219 }, { x: 78.9645004272461, y: 18.12299919128418 }],
+                            rotation: 45,
+                            controlPoints: [{ x: 745.3899536132812, y: 369.7265319824219 }, { x: 18.12299919128418, y: 78.9645004272461, }],
                         },
                     },
                     {
@@ -152,16 +152,16 @@ let assertItem: AssertItem = {
                         regionId: 14,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 90,
-                            controlPoints: [{ x: 533.0922241210938, y: 435.74591064453125 }, { x: 69.90299987792969, y: 25.889999389648438 }],
+                            rotation: 0,
+                            controlPoints: [{ x: 533.0922241210938, y: 435.74591064453125 }, { x: 25.889999389648438, y: 69.90299987792969, }],
                         },
                     },
                     {
                         regionId: 15,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 135,
-                            controlPoints: [{ x: 522.7362670898438, y: 307.5906066894531 }, { x: 80.25900268554688, y: 22.006500244140625 }],
+                            rotation: 45,
+                            controlPoints: [{ x: 522.7362670898438, y: 307.5906066894531 }, { x: 22.006500244140625, y: 80.25900268554688, }],
                         },
                     },
                     {
@@ -216,16 +216,16 @@ let assertItem: AssertItem = {
                         regionId: 22,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 90,
-                            controlPoints: [{ x: 749.2734375, y: 486.2314147949219 }, { x: 69.90299987792969, y: 29.773500442504883 }],
+                            rotation: 0,
+                            controlPoints: [{ x: 749.2734375, y: 486.2314147949219 }, { x: 29.773500442504883, y: 69.90299987792969, }],
                         },
                     },
                     {
                         regionId: 23,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 135,
-                            controlPoints: [{ x: 745.3899536132812, y: 369.7265319824219 }, { x: 78.9645004272461, y: 18.12299919128418 }],
+                            rotation: 45,
+                            controlPoints: [{ x: 745.3899536132812, y: 369.7265319824219 }, { x: 18.12299919128418, y: 78.9645004272461, }],
                         },
                     },
                     {
@@ -276,16 +276,16 @@ let assertItem: AssertItem = {
                         regionId: 30,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 90,
-                            controlPoints: [{ x: 533.0922241210938, y: 435.74591064453125 }, { x: 69.90299987792969, y: 25.889999389648438 }],
+                            rotation: 0,
+                            controlPoints: [{ x: 533.0922241210938, y: 435.74591064453125 }, { x: 25.889999389648438, y: 69.90299987792969, }],
                         },
                     },
                     {
                         regionId: 31,
                         regionInfo: {
                             regionType: CARTA.RegionType.ELLIPSE,
-                            rotation: 135,
-                            controlPoints: [{ x: 522.7362670898438, y: 307.5906066894531 }, { x: 80.25900268554688, y: 22.006500244140625 }],
+                            rotation: 45,
+                            controlPoints: [{ x: 522.7362670898438, y: 307.5906066894531 }, { x: 22.006500244140625, y: 80.25900268554688, }],
                         },
                     },
                     {
@@ -300,7 +300,7 @@ let assertItem: AssertItem = {
         ],
 };
 
-describe("CASA_REGION_IMPORT_INTERNAL test: Testing import of CASA region files made with CARTA", () => {
+describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made with CARTA", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -338,9 +338,13 @@ describe("CASA_REGION_IMPORT_INTERNAL test: Testing import of CASA region files 
                     test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
                         expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
                         expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
-                        if (region.regionInfo.rotation)
-                            expect(importRegionAck.regions[index].regionInfo.rotation).toEqual(region.regionInfo.rotation);
-                        expect(importRegionAck.regions[index].regionInfo.controlPoints).toEqual(region.regionInfo.controlPoints);
+                        if (region.regionInfo.rotation) {
+                            expect(importRegionAck.regions[index].regionInfo.rotation).toBeCloseTo(region.regionInfo.rotation);
+                        }
+                        importRegionAck.regions[index].regionInfo.controlPoints.map((point, idx) => {
+                            expect(point.x).toBeCloseTo(region.regionInfo.controlPoints[idx].x, assertItem.precisionDigits);
+                            expect(point.y).toBeCloseTo(region.regionInfo.controlPoints[idx].y, assertItem.precisionDigits);
+                        });
                     });
                 });
             });
