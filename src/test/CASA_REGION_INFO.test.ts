@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -31,7 +32,6 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     precisionDigits: 4,
     regionListRequest:
@@ -125,7 +125,7 @@ let assertItem: AssertItem = {
         ],
 };
 
-describe("CASA_REGION_INFO test: Testing CASA region list and info", () => {
+describe("CASA_REGION_INFO: Testing CASA region list and info", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
