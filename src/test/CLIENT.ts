@@ -256,6 +256,9 @@ export class Client {
                 const eventNumber = eventHeader16[0];
                 const eventIcdVersion = eventHeader16[1];
                 const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} @ ${eventId}`);
+                }
 
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
