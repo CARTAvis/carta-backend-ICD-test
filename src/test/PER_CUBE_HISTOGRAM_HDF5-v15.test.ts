@@ -156,5 +156,5 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
 
         });
     });
-
+    afterAll(() => Connection.close());
 });
