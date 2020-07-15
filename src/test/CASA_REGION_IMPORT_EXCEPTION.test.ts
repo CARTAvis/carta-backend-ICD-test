@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -28,22 +29,23 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     precisionDigits: 4,
     importRegion:
         [
             {
-                groupId: 0,
-                type: CARTA.FileType.CRTF,
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_regionSet2_pix.crtf",
-            },
-            {
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
+            },
+            {
+                contents: [],
                 directory: regionSubdirectory,
-                file: "M17_SWex_regionSet3_world.crtf",
+                file: "M17_SWex_regionSet2_world.crtf",
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
             },
         ],
     importRegionAck:
