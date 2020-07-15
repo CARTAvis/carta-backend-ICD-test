@@ -113,7 +113,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
                 // await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
 
                 ack = await Connection.stream(assertItem.addTilesReq.tiles.length + 3) as AckStream;
-                console.log(ack); // RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)
+                // console.log(ack); // RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)
                 expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq.tiles.length);
             }, readFileTimeout);
 
