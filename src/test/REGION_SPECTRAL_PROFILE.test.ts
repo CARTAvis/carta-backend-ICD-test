@@ -109,6 +109,24 @@ let assertItem: AssertItem = {
                 rotation: 30.0,
             }
         },
+        {
+            fileId: 0,
+            regionId: -1,
+            regionInfo: {
+                regionType: CARTA.RegionType.POLYGON,
+                controlPoints: [{x: 547, y: 284}, {x: 543, y: 279}, {x: 551, y: 275}],
+                rotation: 0.0,
+            }
+        },
+        {
+            fileId: 0,
+            regionId: -1,
+            regionInfo: {
+                regionType: CARTA.RegionType.POLYGON,
+                controlPoints: [{x: 647, y: 272}, {x: 630, y: 262}, {x: 648, y: 253}],
+                rotation: 0.0,
+            }
+        },
     ],
     regionAck: [
         {
@@ -131,6 +149,14 @@ let assertItem: AssertItem = {
             success: true,
             regionId: 5,
         },
+        {
+            success: true,
+            regionId: 6,
+        },
+        {
+            success: true,
+            regionId: 7,
+        },
     ],
     setSpectralRequirements: [
         {
@@ -142,6 +168,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -161,6 +188,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -180,6 +208,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -199,6 +228,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -218,6 +248,47 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
+        },
+        {
+            fileId: 0,
+            regionId: 6,
+            spectralProfiles: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max
+                    ],
+                }
+            ],
+        },
+        {
+            fileId: 0,
+            regionId: 7,
+            spectralProfiles: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -238,6 +309,11 @@ let assertItem: AssertItem = {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Sum,
                     assertValues: [{ index: 10, value: 0.86641663 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: 0.03980531  }],
                 },
                 {
                     coordinate: "z",
@@ -283,6 +359,11 @@ let assertItem: AssertItem = {
                 },
                 {
                     coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: -0.01545912  }],
+                },
+                {
+                    coordinate: "z",
                     profileLength: 25,
                     statsType: CARTA.StatsType.Mean,
                     assertValues: [{ index: 10, value: -0.02103055 }],
@@ -322,6 +403,11 @@ let assertItem: AssertItem = {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Sum,
                     assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 0, value: NaN  }],
                 },
                 {
                     coordinate: "z",
@@ -367,6 +453,11 @@ let assertItem: AssertItem = {
                 },
                 {
                     coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: 0.01155484  }],
+                },
+                {
+                    coordinate: "z",
                     profileLength: 25,
                     statsType: CARTA.StatsType.Mean,
                     assertValues: [{ index: 10, value: 0.01143213 }],
@@ -406,6 +497,105 @@ let assertItem: AssertItem = {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Sum,
                     assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 0, value: NaN  }],
+                },
+                {
+                    coordinate: "z",
+                    profileLength: 25,
+                    statsType: CARTA.StatsType.Mean,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.RMS,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sigma,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.SumSq,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Min,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Max,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+            ],
+        },
+        {
+            regionId: 6,
+            progress: 1,
+            profile: [
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sum,
+                    assertValues: [{ index: 10, value: 0.3020695  }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: 0.01387782  }],
+                },
+                {
+                    coordinate: "z",
+                    profileLength: 25,
+                    statsType: CARTA.StatsType.Mean,
+                    assertValues: [{ index: 10, value: 0.01313346 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.RMS,
+                    assertValues: [{ index: 10, value: 0.01345087 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sigma,
+                    assertValues: [{ index: 10, value: 0.00297016 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.SumSq,
+                    assertValues: [{ index: 10, value: 0.0041613 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Min,
+                    assertValues: [{ index: 10, value: 0.00871281 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Max,
+                    assertValues: [{ index: 10, value: 0.02121421 }],
+                },
+            ],
+        },
+        {
+            regionId: 7,
+            progress: 1,
+            profile: [
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sum,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 0, value: NaN  }],
                 },
                 {
                     coordinate: "z",
