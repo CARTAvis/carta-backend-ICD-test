@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
 export class Client {
-    IcdVersion: number = 15;
+    IcdVersion: number = 17;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -63,6 +63,8 @@ export class Client {
         [58, CARTA.CatalogFilterResponse],
         [59, CARTA.ScriptingRequest],
         [60, CARTA.ScriptingResponse],
+        [67, CARTA.SpectralLineRequest],
+        [68, CARTA.SpectralLineResponse],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
