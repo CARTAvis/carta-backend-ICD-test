@@ -2,11 +2,13 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 import { isNull } from "util";
+
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let cursorTimeout = config.timeout.mouseEvent;
+
 interface ISpatialProfileDataExt extends CARTA.ISpatialProfileData {
     value?: number,
     profileLength?: { x: number, y: number },
@@ -19,8 +21,9 @@ interface AssertItem {
     precisionDigits: number;
     register: CARTA.IRegisterViewer;
     fileOpen: CARTA.IOpenFile;
-    setImageChannel: CARTA.ISetImageChannels;
-    setSpatialRequirements: CARTA.ISetSpatialRequirements;
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialRequirements: CARTA.ISetSpatialRequirements;
     setCursor: CARTA.ISetCursor[];
     spatialProfileData: ISpatialProfileDataExt[];
 }
@@ -28,7 +31,6 @@ let assertItem: AssertItem = {
     precisionDigits: 4,
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     fileOpen:
@@ -38,21 +40,18 @@ let assertItem: AssertItem = {
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
-    setImageChannel:
-    {
+    initTilesReq: {
         fileId: 0,
-        channel: 0,
-        stokes: 0,
-        requiredTiles: {
-            fileId: 0,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            tiles: [0],
-        },
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [0],
     },
-    setSpatialRequirements:
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 321, y: 401 },
+    },
+    initSpatialRequirements:
     {
         fileId: 0,
         regionId: 0,
@@ -109,16 +108,27 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
+    test(`(Step 0) Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
+
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
+        let ack: AckStream;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
             await Connection.receiveAny();
             await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-            await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialRequirements);
-            await Connection.receive(CARTA.RasterTileData);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+            await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
+            ack = await Connection.stream(4) as AckStream;
+            // console.log(ack);
         }, readFileTimeout);
+
+        test(`(Step 0) Connection open? | `, () => {
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        });
 
         assertItem.spatialProfileData.map((profileData, index) => {
             describe(`set cursor on {${assertItem.setCursor[index].point.x}, ${assertItem.setCursor[index].point.y}}`, () => {
@@ -126,6 +136,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor[index]);
                     SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
+                    // console.log(SpatialProfileDataTemp)
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${profileData.value}`, () => {
@@ -177,7 +188,6 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
 
             });
         });
-
 
     });
 
