@@ -43,20 +43,6 @@ let assertItem: AssertItem = {
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
-        {
-            directory: testSubdirectory,
-            file: "HH211_IQU.fits",
-            fileId: 2,
-            hdu: "",
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory,
-            file: "HH211_IQU.hdf5",
-            hdu: "",
-            fileId: 3,
-            renderMode: CARTA.RenderMode.RASTER,
-        },
     ],
     addRequiredTiles: [
         {
@@ -67,18 +53,6 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 1,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            tiles: [0],
-        },
-        {
-            fileId: 2,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            tiles: [0],
-        },
-        {
-            fileId: 3,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
             tiles: [0],
@@ -113,18 +87,6 @@ let assertItem: AssertItem = {
             //     point: { x: -10, y: -10 },
             // },
         ],
-        [
-            {
-                fileId: 2,
-                point: { x: 1006, y: 478 },
-            },
-        ],
-        [
-            {
-                fileId: 3,
-                point: { x: 1006, y: 478 },
-            },
-        ],
     ],
     setSpectralRequirements: [
         {
@@ -134,16 +96,6 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 1,
-            regionId: 0,
-            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
-        },
-        {
-            fileId: 2,
-            regionId: 0,
-            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
-        },
-        {
-            fileId: 3,
             regionId: 0,
             spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
         },
@@ -202,32 +154,6 @@ let assertItem: AssertItem = {
             // {
             //     progress: -1,
             // },
-        ],
-        [
-            {
-                fileId: 2,
-                regionId: 0,
-                progress: 1,
-                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
-                profileLength: 5,
-                assertProfile: [
-                    { idx: 0, value: NaN },
-                    { idx: 2, value: -1.186280068476e-03 },
-                ],
-            },
-        ],
-        [
-            {
-                fileId: 3,
-                regionId: 0,
-                progress: 1,
-                profiles: [{ coordinate: "z", statsType: CARTA.StatsType.Sum }],
-                profileLength: 5,
-                assertProfile: [
-                    { idx: 0, value: NaN },
-                    { idx: 2, value: -1.186280068476e-03 },
-                ],
-            },
         ],
     ],
     precisionDigits: 4,
