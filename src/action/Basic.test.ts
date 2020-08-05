@@ -56,24 +56,28 @@ async function CleanHistory(pid, time) {
 describe(`node-usage test`, () => {
     test(`should read CPU usage`,
         async () => {
+            await Wait(10);
+            await NullRun(100000);
             let info: any = await Usage(process.pid);
-            expect(info.cpu).toBeGreaterThanOrEqual(0);
+            expect(info.cpu).toBeGreaterThan(0);
         });
 
     test(`should read RAM usage`,
         async () => {
+            await Wait(10);
+            await NullRun(100000);
             let info: any = await Usage(process.pid);
             expect(info.memory).toBeGreaterThan(0);
         });
     test(`should monitor CPU usage`,
         async () => {
             let data = [];
-            const end = 1000;
-            const step = 100;
+            const end = 200;
+            const step = 20;
             // nodeusage.clearHistory(process.pid);
             for (let t = 0; t < end; t += step) {
+                await Wait(step);
                 await NullRun(10000*t);
-                // await Wait(step);
                 data.push(await Usage(process.pid));
             }
             let cpuUsage = [], ramUsage = [];
@@ -91,23 +95,27 @@ const pidusage = require('pidusage');
 describe(`pidusage test`, () => {
     test(`should read CPU usage`,
         async () => {
+            await Wait(10);
+            await NullRun(100000);
             let info: any = await pidusage(process.pid);
-            expect(info.cpu).toBeGreaterThanOrEqual(0);
+            expect(info.cpu).toBeGreaterThan(0);
         });
 
     test(`should read RAM usage`,
         async () => {
+            await Wait(10);
+            await NullRun(100000);
             let info: any = await pidusage(process.pid);
             expect(info.memory).toBeGreaterThan(0);
         });
     test(`should monitor CPU usage`,
         async () => {
             let data = [];
-            const end = 1000;
-            const step = 100;
+            const end = 200;
+            const step = 20;
             for (let t = 0; t < end; t += step) {
+                await Wait(step);
                 await NullRun(10000*t);
-                // await Wait(step);
                 data.push(await pidusage(process.pid, { usePs: false }));
             }
             let cpuUsage = [], ramUsage = [];
