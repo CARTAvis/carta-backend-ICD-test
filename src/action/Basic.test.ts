@@ -61,6 +61,7 @@ describe(`node-usage test`, () => {
             const end = 1000;
             const step = 100;
             for (let t = 0; t < end; t += step) {
+                // nodeusage.clearHistory(process.pid);
                 await Wait(step);
                 data.push(await Usage(process.pid));
             }
@@ -69,8 +70,40 @@ describe(`node-usage test`, () => {
                 cpuUsage.push(" "+d.cpu+"%");
                 ramUsage.push(" "+d.memory/1024/1024+"MB");
             });
-            console.log("CPU usage: "+cpuUsage);
-            console.log("RAM usage: "+ramUsage);
-            CleanHistory(process.pid, step);
+            console.log("CPU node-usage: "+cpuUsage);
+            console.log("RAM node-usage: "+ramUsage);
+        });
+});
+
+const pidusage = require('pidusage');
+
+describe(`pidusage test`, () => {
+    test(`should read CPU usage`,
+        async () => {
+            let info: any = await pidusage(process.pid);
+            expect(info.cpu).toBeGreaterThan(0);
+        });
+
+    test(`should read RAM usage`,
+        async () => {
+            let info: any = await pidusage(process.pid);
+            expect(info.memory).toBeGreaterThan(0);
+        });
+    test(`should monitor CPU usage`,
+        async () => {
+            let data = [];
+            const end = 1000;
+            const step = 100;
+            for (let t = 0; t < end; t += step) {
+                await Wait(step);
+                data.push(await pidusage(process.pid));
+            }
+            let cpuUsage = [], ramUsage = [];
+            data.forEach( d => {
+                cpuUsage.push(" "+d.cpu+"%");
+                ramUsage.push(" "+d.memory/1024/1024+"MB");
+            });
+            console.log("CPU pidusage: "+cpuUsage);
+            console.log("RAM pidusage: "+ramUsage);
         });
 });
