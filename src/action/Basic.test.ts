@@ -10,7 +10,7 @@ function updateUsage(t, timeout, step, done) {
                     updateUsage(t + step, timeout, step, done);
                 } else {
                     setTimeout(() => {
-                        nodeusage.clearHistory(process.pid); //clean history for all pids
+                        nodeusage.clearHistory(process.pid); //clear history for the given pid
                     }, step);
                     done();
                 }
@@ -18,26 +18,59 @@ function updateUsage(t, timeout, step, done) {
         );
     }, step);
 }
+async function Usage(pid) {
+    return new Promise((resolve, reject) => {
+        nodeusage.lookup(
+            pid, { keepHistory: true },
+            (err, info) => {
+                resolve(info);
+            }
+        );
+    });
+}
+async function Wait(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+            resolve();
+        }, time);
+    });
+}
+async function CleanHistory(pid, time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+            nodeusage.clearHistory(pid); //clear history for the given pid
+            resolve();
+        }, time);
+    });
+}
 describe(`node-usage test`, () => {
     test(`should read CPU usage`,
-        done => {
-            nodeusage.lookup(
-                process.pid,
-                (err, info) => {
-                    expect(info.cpu).toBeGreaterThan(0);
-                    updateUsage(0, 400, 100, done);
-                }
-            );
+        async () => {
+            let info: any = await Usage(process.pid);
+            expect(info.cpu).toBeGreaterThan(0);
         });
 
     test(`should read RAM usage`,
-        done => {
-            nodeusage.lookup(
-                process.pid,
-                (err, info) => {
-                    expect(info.memory).toBeGreaterThan(0);
-                    done();
-                }
-            );
+        async () => {
+            let info: any = await Usage(process.pid);
+            expect(info.memory).toBeGreaterThan(0);
+        });
+    test(`should monitor CPU usage`,
+        async () => {
+            let data = [];
+            const end = 1000;
+            const step = 100;
+            for (let t = 0; t < end; t += step) {
+                await Wait(step);
+                data.push(await Usage(process.pid));
+            }
+            let cpuUsage = [], ramUsage = [];
+            data.forEach( d => {
+                cpuUsage.push(" "+d.cpu+"%");
+                ramUsage.push(" "+d.memory/1024/1024+"MB");
+            });
+            console.log("CPU usage: "+cpuUsage);
+            console.log("RAM usage: "+ramUsage);
+            CleanHistory(process.pid, step);
         });
 });
