@@ -7,10 +7,10 @@ function updateUsage(t, timeout, step, done) {
             (err, info) => {
                 console.log(info);
                 if (t < timeout) {
-                    updateUsage(t + step, timeout, done);
+                    updateUsage(t + step, timeout, step, done);
                 } else {
                     setTimeout(() => {
-                        nodeusage.clearHistory(); //clean history for all pids
+                        nodeusage.clearHistory(process.pid); //clean history for all pids
                     }, step);
                     done();
                 }
