@@ -75,6 +75,7 @@ describe(`node-usage test`, () => {
             const end = 200;
             const step = 20;
             // nodeusage.clearHistory(process.pid);
+            await Usage(process.pid)
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
                 await NullRun(10000*t);
@@ -93,7 +94,7 @@ describe(`node-usage test`, () => {
 const pidusage = require('pidusage');
 
 describe(`pidusage test`, () => {
-    test(`should read CPU usage`,
+    test.skip(`should read CPU usage`,
         async () => {
             await Wait(10);
             await NullRun(100000);
