@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -62,7 +62,7 @@ let assertItem: AssertItem = {
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
         decimationFactor: 4,
-        compressionLevel: 8,
+        compressionLevel: 0,
         contourChunkSize: 100000,
     },
 }
@@ -71,13 +71,14 @@ describe("Contour action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour.txt";
+    let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour_usage.txt";
     beforeAll(async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
         await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-    }, execTimeout);
+    }, execTimeout + config.wait.exec);
 
     describe(`Start the action: contour`, () => {
         beforeAll(async () => {
@@ -86,23 +87,23 @@ describe("Contour action: ", () => {
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
             await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-        }, connectTimeout);
+        }, connectTimeout + config.wait.exec);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             let ack: AckStream;
             beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
-    
+
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.stream(4) as AckStream;
+                while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
                 await new Promise(resolve => setTimeout(resolve, config.wait.contour));
-            }, readfileTimeout);
+                await EmptyTxt(usageFile);
+            }, readfileTimeout + config.wait.contour);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
                 test(`should return contour data`, async () => {
-                    console.log(await Usage(cartaBackend.pid));
                     await Connection.send(CARTA.SetContourParameters, {
                         imageBounds: {
                             xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
@@ -110,6 +111,7 @@ describe("Contour action: ", () => {
                         },
                         ...assertItem.setContour,
                     });
+
                     let contourImageData: CARTA.ContourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                     let count: number = 0;
                     if (contourImageData.progress == 1) count++;
@@ -117,8 +119,8 @@ describe("Contour action: ", () => {
                     while (count < assertItem.setContour.levels.length) {
                         contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                         if (contourImageData.progress == 1) count++;
-                        console.log(await Usage(cartaBackend.pid));
                     }
+                    await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
                     await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                 }, contourTimeout + config.wait.contour);
@@ -134,9 +136,9 @@ describe("Contour action: ", () => {
     });
 
     afterAll(async done => {
-        await new Promise(resolve => setTimeout(resolve, config.timeout.connection));
+        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         await Connection.close();
         cartaBackend.kill();
         cartaBackend.on("close", () => done());
-    }, execTimeout);
+    }, execTimeout + config.wait.exec);
 });

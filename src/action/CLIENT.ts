@@ -2,19 +2,20 @@ import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
 let nodeusage = require("usage");
+const fs = require("fs");
 
 export class Client {
     IcdVersion: number = 17;
     CartaType = new Map<number, any>([
-        [ 0, CARTA.ErrorData],
-        [ 1, CARTA.RegisterViewer],
-        [ 2, CARTA.FileListRequest],
-        [ 3, CARTA.FileInfoRequest],
-        [ 4, CARTA.OpenFile],
-        [ 6, CARTA.SetImageChannels],
-        [ 7, CARTA.SetCursor],
-        [ 8, CARTA.SetSpatialRequirements],
-        [ 9, CARTA.SetHistogramRequirements],
+        [0, CARTA.ErrorData],
+        [1, CARTA.RegisterViewer],
+        [2, CARTA.FileListRequest],
+        [3, CARTA.FileInfoRequest],
+        [4, CARTA.OpenFile],
+        [6, CARTA.SetImageChannels],
+        [7, CARTA.SetCursor],
+        [8, CARTA.SetSpatialRequirements],
+        [9, CARTA.SetHistogramRequirements],
         [10, CARTA.SetStatsRequirements],
         [11, CARTA.SetRegion],
         [12, CARTA.RemoveRegion],
@@ -377,5 +378,22 @@ export async function Wait(time) {
         setTimeout(async () => {
             resolve();
         }, time);
+    });
+}
+export async function EmptyTxt(file) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(file, "", async () => {
+            resolve();
+        });
+    });
+}
+export async function AppendTxt(file, txt) {
+    return new Promise((resolve, reject) => {
+        fs.appendFile(file, JSON.stringify(txt), err => {
+            if (err) {
+                console.log("Write log file error: " + err);
+            }
+            resolve();
+        });
     });
 }

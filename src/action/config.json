@@ -20,10 +20,10 @@
         "cube": "cube_A/cube_A_01600_z00100.fits"
     },
     "timeout": {
-        "connection": 1000,
-        "listFile": 1100,
-        "openFile": 3100,
-        "readFile": 5200,
+        "connection": 2000,
+        "listFile": 3100,
+        "openFile": 5100,
+        "readFile": 10200,
         "readLargeImage": 91000,
         "changeChannel": 3200,
         "playImages": 3300,
@@ -42,7 +42,7 @@
         "sleep": 3500,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
-        "contour": 5400,
+        "contour": 8400,
         "contourLargeImage": 85000,
         "zoom": 7500,
         "execute": 1500
