@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -90,13 +90,14 @@ testFiles.map(file => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_contour.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') +  "_contour_usage.txt";
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
                 config.port,
             );
             await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-        }, execTimeout);
+        }, execTimeout + config.wait.exec);
 
         describe(`Start the action: contour`, () => {
             test(`Connection is ready`, async () => {
@@ -104,21 +105,22 @@ testFiles.map(file => {
                 await Connection.open();
                 await Connection.send(CARTA.RegisterViewer, assertItem.register);
                 await Connection.receive(CARTA.RegisterViewerAck);
-            }, connectTimeout);
+                await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+            }, connectTimeout + config.wait.exec);
 
             describe(`open the file "${file}"`, () => {
                 let ack: AckStream;
-                test(`should open the file "${assertItem.fileOpen.file}"`, async () => {
+                test(`should return contour data`, async () => {
                     await Connection.send(CARTA.OpenFile, {
-                        file:file,
+                        file: file,
                         ...assertItem.fileOpen,
                     });
                     ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
 
-                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                    await Connection.stream(4) as AckStream;
-                }, readfileTimeout);
+                    while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
+                    await new Promise(resolve => setTimeout(resolve, config.wait.contour));
+                    await EmptyTxt(usageFile);
+                }, readfileTimeout + config.wait.contour);
 
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
@@ -137,6 +139,7 @@ testFiles.map(file => {
                             contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                             if (contourImageData.progress == 1) count++;
                         }
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
                         await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                     }, contourTimeout + config.wait.contour);
@@ -153,9 +156,10 @@ testFiles.map(file => {
         });
 
         afterAll(async done => {
+            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
             await Connection.close();
             cartaBackend.kill();
             cartaBackend.on("close", () => done());
-        }, execTimeout);
+        }, execTimeout + config.wait.exec);
     });
 });
