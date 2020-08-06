@@ -124,6 +124,7 @@ testFiles.map(file => {
 
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
+                        await Usage(cartaBackend.pid)
                         await Connection.send(CARTA.SetContourParameters, {
                             imageBounds: {
                                 xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
