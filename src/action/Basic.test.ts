@@ -117,7 +117,7 @@ describe(`pidusage test`, () => {
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
                 await NullRun(10000*t);
-                data.push(await pidusage(process.pid, { usePs: false }));
+                data.push(await pidusage(process.pid, { usePs: true }));
             }
             let cpuUsage = [], ramUsage = [];
             data.forEach(d => {

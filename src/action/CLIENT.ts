@@ -1,6 +1,7 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
+let nodeusage = require("usage");
 
 export class Client {
     IcdVersion: number = 14;
@@ -357,4 +358,21 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         statsType: profile.statsType,
         values: null
     };
+}
+export async function Usage(pid): Promise<any> {
+    return new Promise((resolve, reject) => {
+        nodeusage.lookup(
+            pid, { keepHistory: true },
+            (err, info) => {
+                resolve(info);
+            }
+        );
+    });
+}
+export async function Wait(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+            resolve();
+        }, time);
+    });
 }
