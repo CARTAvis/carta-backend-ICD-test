@@ -389,7 +389,7 @@ export async function EmptyTxt(file) {
 }
 export async function AppendTxt(file, txt) {
     return new Promise((resolve, reject) => {
-        fs.appendFile(file, JSON.stringify(txt), err => {
+        fs.appendFile(file, JSON.stringify(txt)+"\n", err => {
             if (err) {
                 console.log("Write log file error: " + err);
             }
