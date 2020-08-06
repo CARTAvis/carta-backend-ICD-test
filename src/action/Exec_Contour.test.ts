@@ -112,9 +112,8 @@ describe("Contour action: ", () => {
                         ...assertItem.setContour,
                     });
 
-                    let contourImageData: CARTA.ContourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
+                    let contourImageData: CARTA.ContourImageData;
                     let count: number = 0;
-                    if (contourImageData.progress == 1) count++;
 
                     while (count < assertItem.setContour.levels.length) {
                         contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
