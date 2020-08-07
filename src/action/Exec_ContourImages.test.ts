@@ -49,9 +49,8 @@ let assertItem: AssertItem = {
     setContour: {
         fileId: 0,
         referenceFileId: 0,
-        imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            1.27, 2.51, 3.75, 4.99,
+            // 1.27, 2.51, 3.75, 4.99,
             6.23, 7.47, 8.71, 9.95,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
@@ -127,11 +126,11 @@ testFiles.map(file => {
                             },
                             ...assertItem.setContour,
                         });
-                        let contourImageData: CARTA.ContourImageData;
+                        
                         let count: number = 0;
 
                         while (count < assertItem.setContour.levels.length) {
-                            contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
+                            let contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                             if (contourImageData.progress == 1) count++;
                         }
                         await AppendTxt(usageFile, await Usage(cartaBackend.pid));

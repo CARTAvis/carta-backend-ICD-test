@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
-let testImage: string = config.image.cube;
+let testImage: string = config.image.singleChannel;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
 let openfileTimeout: number = config.timeout.openFile;
@@ -52,7 +52,7 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            1.27, 2.51, 3.75, 4.99,
+            // 1.27, 2.51, 3.75, 4.99,
             6.23, 7.47, 8.71, 9.95,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
