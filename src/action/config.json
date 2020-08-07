@@ -22,7 +22,7 @@
     "timeout": {
         "connection": 2000,
         "listFile": 3100,
-        "openFile": 5100,
+        "openFile": 9100,
         "readFile": 10200,
         "readLargeImage": 91000,
         "changeChannel": 3200,
@@ -42,7 +42,7 @@
         "sleep": 3500,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
-        "contour": 12400,
+        "contour": 20600,
         "contourLargeImage": 99000,
         "zoom": 7500,
         "execute": 1500
