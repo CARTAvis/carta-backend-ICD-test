@@ -52,13 +52,15 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            1.27, 2.51, 3.75, 
-            4.99, 6.23, // 7.47, 8.71, 9.95,
+            1.27, 2.0, 2.51, 3.0,
+            3.75, 4.0, 4.99, 5.2,
+            6.23, 6.6, 7.47, 7.8,
+            8.71, 9.0, 9.95, 10.2,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
         decimationFactor: 4,
-        compressionLevel: 8,
+        compressionLevel: 0,
         contourChunkSize: 100000,
     },
 }

@@ -50,8 +50,10 @@ let assertItem: AssertItem = {
         fileId: 0,
         referenceFileId: 0,
         levels: [
-            1.27, 2.51, 3.75, 
-            4.99, 6.23, // 7.47, 8.71, 9.95,
+            1.27, 2.0, 2.51, 3.0,
+            3.75, 4.0, 4.99, 5.2,
+            6.23, 6.6, 7.47, 7.8,
+            8.71, 9.0, 9.95, 10.2,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
