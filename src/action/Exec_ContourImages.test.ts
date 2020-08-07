@@ -51,11 +51,14 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            2.7,
-            4.2,
-            6.0,
-            7.5,
-            9.4,
+            2.0, 2.25, 2.5, 2.75,
+            3.0, 3.25, 3.5, 3.75,
+            4.0, 4.25, 4.5, 4.75,
+            5.0, 5.25, 5.5, 5.75,
+            6.0, 6.25, 6.5, 6.75,
+            7.0, 7.25, 7.5, 7.75,
+            8.0, 8.25, 8.5, 8.75,
+            9.0, 9.25, 9.5, 9.75,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
@@ -90,7 +93,7 @@ testFiles.map(file => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_contour.txt";
-        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') +  "_contour_usage.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_contour_usage.txt";
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -139,14 +142,12 @@ testFiles.map(file => {
                         }
                         await AppendTxt(usageFile, await Usage(cartaBackend.pid));
                     }, contourTimeout);
+
+                    test(`should wit ${config.wait.contour} ms`, async () => {
+                        await Wait(config.wait.contour);
+                    }, config.wait.contour + 500);
                 }
 
-                afterEach(async () => {
-                    await Connection.send(CARTA.SetContourParameters, {
-                        fileId: 0,
-                        referenceFileId: 0,
-                    }); // Clear contour
-                });
             });
 
         });

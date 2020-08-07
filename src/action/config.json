@@ -48,9 +48,9 @@
         "execute": 1500
     },
     "wait": {
-        "exec": 400,
+        "exec": 2000,
         "resume": 2000,
-        "contour": 800,
+        "contour": 2000,
         "histogram": 1000,
         "zoom": 400,
         "cursor": 500
