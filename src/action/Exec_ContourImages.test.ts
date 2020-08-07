@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -96,7 +96,7 @@ testFiles.map(file => {
                 logFile,
                 config.port,
             );
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+            await Wait(config.wait.exec);
         }, execTimeout + config.wait.exec);
 
         describe(`Start the action: contour`, () => {
@@ -105,8 +105,7 @@ testFiles.map(file => {
                 await Connection.open();
                 await Connection.send(CARTA.RegisterViewer, assertItem.register);
                 await Connection.receive(CARTA.RegisterViewerAck);
-                await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-            }, connectTimeout + config.wait.exec);
+            }, connectTimeout);
 
             describe(`open the file "${file}"`, () => {
                 let ack: AckStream;
@@ -118,9 +117,8 @@ testFiles.map(file => {
                     ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
 
                     while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
-                    await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                     await EmptyTxt(usageFile);
-                }, readfileTimeout + config.wait.contour);
+                }, readfileTimeout);
 
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
@@ -140,9 +138,7 @@ testFiles.map(file => {
                             if (contourImageData.progress == 1) count++;
                         }
                         await AppendTxt(usageFile, await Usage(cartaBackend.pid));
-
-                        await new Promise(resolve => setTimeout(resolve, config.wait.contour));
-                    }, contourTimeout + config.wait.contour);
+                    }, contourTimeout);
                 }
 
                 afterEach(async () => {
@@ -156,10 +152,9 @@ testFiles.map(file => {
         });
 
         afterAll(async done => {
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
             await Connection.close();
             cartaBackend.kill();
             cartaBackend.on("close", () => done());
-        }, execTimeout + config.wait.exec);
+        }, execTimeout);
     });
 });

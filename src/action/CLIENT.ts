@@ -363,7 +363,7 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         values: null
     };
 }
-export async function Usage(pid): Promise<any> {
+export function Usage(pid): Promise<any> {
     return new Promise((resolve, reject) => {
         nodeusage.lookup(
             pid, { keepHistory: true },
@@ -373,21 +373,17 @@ export async function Usage(pid): Promise<any> {
         );
     });
 }
-export async function Wait(time) {
-    return new Promise((resolve, reject) => {
-        setTimeout(async () => {
-            resolve();
-        }, time);
-    });
+export function Wait(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
 }
-export async function EmptyTxt(file) {
+export function EmptyTxt(file) {
     return new Promise((resolve, reject) => {
         fs.writeFile(file, "", async () => {
             resolve();
         });
     });
 }
-export async function AppendTxt(file, txt) {
+export function AppendTxt(file, txt) {
     return new Promise((resolve, reject) => {
         fs.appendFile(file, JSON.stringify(txt)+"\n", err => {
             if (err) {

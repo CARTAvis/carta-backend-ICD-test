@@ -86,8 +86,7 @@ describe("Contour action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-        }, connectTimeout + config.wait.exec);
+        }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             let ack: AckStream;
@@ -98,9 +97,8 @@ describe("Contour action: ", () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
-                await new Promise(resolve => setTimeout(resolve, config.wait.contour));
                 await EmptyTxt(usageFile);
-            }, readfileTimeout + config.wait.contour);
+            }, readfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
                 test(`should return contour data`, async () => {
@@ -122,8 +120,7 @@ describe("Contour action: ", () => {
                     }
                     await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.contour));
-                }, contourTimeout + config.wait.contour);
+                }, contourTimeout);
             }
 
             afterEach(async () => {
@@ -136,9 +133,8 @@ describe("Contour action: ", () => {
     });
 
     afterAll(async done => {
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
         await Connection.close();
         cartaBackend.kill();
         cartaBackend.on("close", () => done());
-    }, execTimeout + config.wait.exec);
+    }, execTimeout);
 });
