@@ -52,11 +52,8 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            2.7,
-            4.2,
-            6.0,
-            7.5,
-            9.4,
+            1.27, 2.51, 3.75, 4.99,
+            6.23, 7.47, 8.71, 9.95,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
@@ -87,10 +84,9 @@ describe("Contour action: ", () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
-
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.stream(4) as AckStream;
+                while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
             }, openfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
@@ -102,12 +98,11 @@ describe("Contour action: ", () => {
                         },
                         ...assertItem.setContour,
                     });
-                    let contourImageData = await Connection.receive(CARTA.ContourImageData);
+
                     let count: number = 0;
-                    if (contourImageData.progress == 1) count++;
 
                     while (count < assertItem.setContour.levels.length) {
-                        contourImageData = await Connection.receive(CARTA.ContourImageData);
+                        let contourImageData = await Connection.receive(CARTA.ContourImageData);
                         if (contourImageData.progress == 1) count++;
                     }
                     await Connection.send(CARTA.SetContourParameters, {
