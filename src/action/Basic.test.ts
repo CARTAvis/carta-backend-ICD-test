@@ -1,5 +1,5 @@
 
-async function NullRun(N) {
+function NullRun(N) {
     return new Promise((resolve, reject) => {
         let x = 0.3;
         let c = 2.0;
@@ -28,7 +28,7 @@ function updateUsage(t, timeout, step, done) {
         );
     }, step);
 }
-async function Usage(pid) {
+function Usage(pid) {
     return new Promise((resolve, reject) => {
         nodeusage.lookup(
             pid, { keepHistory: true },
@@ -38,14 +38,14 @@ async function Usage(pid) {
         );
     });
 }
-async function Wait(time) {
+function Wait(time) {
     return new Promise((resolve, reject) => {
         setTimeout(async () => {
             resolve();
         }, time);
     });
 }
-async function CleanHistory(pid, time) {
+function CleanHistory(pid, time) {
     return new Promise((resolve, reject) => {
         setTimeout(async () => {
             nodeusage.clearHistory(pid); //clear history for the given pid
@@ -78,7 +78,7 @@ describe(`node-usage test`, () => {
             await Usage(process.pid)
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
-                await NullRun(10000*t);
+                await NullRun(10000 * t);
                 data.push(await Usage(process.pid));
             }
             let cpuUsage = [], ramUsage = [];
@@ -116,7 +116,7 @@ describe(`pidusage test`, () => {
             const step = 20;
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
-                await NullRun(10000*t);
+                await NullRun(10000 * t);
                 data.push(await pidusage(process.pid, { usePs: true }));
             }
             let cpuUsage = [], ramUsage = [];
@@ -134,10 +134,10 @@ function DiskUsage(pid) {
     return new Promise((resolve, reject) => {
         if (procfs.works) {
             procfs(pid).io((err, io) => {
-                resolve(io.read_bytes);
+                resolve(parseInt(io.read_bytes));
             });
         } else {
-            reject();
+            resolve(-1);
         }
     });
 }
@@ -145,8 +145,8 @@ describe(`procfs-stats test`, () => {
     test(`should read disk usage`,
         async () => {
             await Wait(10);
-            let DiskUsage: any = await DiskUsage(process.pid);
-            expect(DiskUsage).toBeGreaterThan(0);
+            let diskUsage: any = await DiskUsage(process.pid);
+            expect(diskUsage).toBeGreaterThan(0);
         });
 
 });

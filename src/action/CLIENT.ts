@@ -406,10 +406,10 @@ export function DiskUsage(pid) {
     return new Promise((resolve, reject) => {
         if (procfs.works) {
             procfs(pid).io((err, io) => {
-                resolve(io.read_bytes);
+                resolve(parseInt(io.read_bytes));
             });
         } else {
-            reject();
+            resolve(-1);
         }
     });
 }
@@ -420,7 +420,7 @@ export function ThreadNumber(pid) {
                 resolve(task.length);
             });
         } else {
-            reject();
+            resolve(-1);
         }
     });
 }
