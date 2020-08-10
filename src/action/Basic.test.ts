@@ -146,7 +146,7 @@ describe(`procfs-stats test`, () => {
         async () => {
             await Wait(10);
             let diskUsage: any = await DiskUsage(process.pid);
-            expect(diskUsage).toBeGreaterThan(0);
+            expect(diskUsage).toBeGreaterThanOrEqual(0);
         });
 
 });

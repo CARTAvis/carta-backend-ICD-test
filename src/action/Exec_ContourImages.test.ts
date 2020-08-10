@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, DiskUsage, ThreadNumber } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -120,7 +120,9 @@ testFiles.map(file => {
 
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
-                        await Usage(cartaBackend.pid)
+                        await Usage(cartaBackend.pid);
+                        await DiskUsage(cartaBackend.pid);
+                        await ThreadNumber(cartaBackend.pid);
                         await Connection.send(CARTA.SetContourParameters, {
                             imageBounds: {
                                 xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
@@ -128,14 +130,22 @@ testFiles.map(file => {
                             },
                             ...assertItem.setContour,
                         });
-                        
+
                         let count: number = 0;
 
                         while (count < assertItem.setContour.levels.length) {
                             let contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                             if (contourImageData.progress == 1) count++;
                         }
-                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                        await AppendTxt(usageFile, await {
+                            ...Usage(cartaBackend.pid),
+                            DiskUsage: DiskUsage(cartaBackend.pid),
+                            ThreadNumber: ThreadNumber(cartaBackend.pid),
+                        });
+                        await Connection.send(CARTA.SetContourParameters, {
+                            fileId: 0,
+                            referenceFileId: 0,
+                        }); // Clear contour
                     }, contourTimeout);
 
                     test(`should wit ${config.wait.contour} ms`, async () => {
