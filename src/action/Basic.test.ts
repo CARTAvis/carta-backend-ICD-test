@@ -128,3 +128,25 @@ describe(`pidusage test`, () => {
             console.log("RAM pidusage: " + ramUsage);
         });
 });
+
+const procfs = require("procfs-stats");
+function DiskUsage(pid) {
+    return new Promise((resolve, reject) => {
+        if (procfs.works) {
+            procfs(pid).io((err, io) => {
+                resolve(io.read_bytes);
+            });
+        } else {
+            reject();
+        }
+    });
+}
+describe(`procfs-stats test`, () => {
+    test(`should read disk usage`,
+        async () => {
+            await Wait(10);
+            let DiskUsage: any = await DiskUsage(process.pid);
+            expect(DiskUsage).toBeGreaterThan(0);
+        });
+
+});

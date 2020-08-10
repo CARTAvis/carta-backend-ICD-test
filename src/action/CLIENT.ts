@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 let nodeusage = require("usage");
 const fs = require("fs");
-
+const procfs = require("procfs-stats");
 export class Client {
     IcdVersion: number = 17;
     CartaType = new Map<number, any>([
@@ -368,6 +368,10 @@ export function Usage(pid): Promise<any> {
         nodeusage.lookup(
             pid, { keepHistory: true },
             (err, info) => {
+                if (err) {
+                    console.log("Pid usage error: " + err);
+                    reject();
+                }
                 resolve(info);
             }
         );
@@ -378,18 +382,45 @@ export function Wait(time) {
 }
 export function EmptyTxt(file) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(file, "", async () => {
+        fs.writeFile(file, "", err => {
+            if (err) {
+                console.log("Empty log file error: " + err);
+                reject();
+            }
             resolve();
         });
     });
 }
 export function AppendTxt(file, txt) {
     return new Promise((resolve, reject) => {
-        fs.appendFile(file, JSON.stringify(txt)+"\n", err => {
+        fs.appendFile(file, JSON.stringify(txt) + "\n", err => {
             if (err) {
                 console.log("Write log file error: " + err);
+                reject();
             }
             resolve();
         });
+    });
+}
+export function DiskUsage(pid) {
+    return new Promise((resolve, reject) => {
+        if (procfs.works) {
+            procfs(pid).io((err, io) => {
+                resolve(io.read_bytes);
+            });
+        } else {
+            reject();
+        }
+    });
+}
+export function ThreadNumber(pid) {
+    return new Promise((resolve, reject) => {
+        if (procfs.works) {
+            procfs(pid).threads((err, task) => {
+                resolve(task.length);
+            });
+        } else {
+            reject();
+        }
     });
 }
