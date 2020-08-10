@@ -363,7 +363,7 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         values: null
     };
 }
-export function Usage(pid): Promise<any> {
+export function CpuUsage(pid): Promise<any> {
     return new Promise((resolve, reject) => {
         nodeusage.lookup(
             pid, { keepHistory: true },
@@ -419,4 +419,10 @@ export function ThreadNumber(pid) {
             resolve(-1);
         }
     });
+}
+export async function Usage(pid) {
+    let cpu = await CpuUsage(pid);
+    let disk = await DiskUsage(pid);
+    let thread = await ThreadNumber(pid);
+    return ({ ...cpu, disk, thread });
 }

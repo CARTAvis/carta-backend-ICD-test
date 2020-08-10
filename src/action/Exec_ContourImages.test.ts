@@ -121,8 +121,6 @@ testFiles.map(file => {
                 for (let idx: number = 0; idx < contourRepeat; idx++) {
                     test(`should return contour data`, async () => {
                         await Usage(cartaBackend.pid);
-                        await DiskUsage(cartaBackend.pid);
-                        await ThreadNumber(cartaBackend.pid);
                         await Connection.send(CARTA.SetContourParameters, {
                             imageBounds: {
                                 xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
@@ -137,11 +135,8 @@ testFiles.map(file => {
                             let contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                             if (contourImageData.progress == 1) count++;
                         }
-                        await AppendTxt(usageFile, await {
-                            ...Usage(cartaBackend.pid),
-                            DiskUsage: DiskUsage(cartaBackend.pid),
-                            ThreadNumber: ThreadNumber(cartaBackend.pid),
-                        });
+
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
                         await Connection.send(CARTA.SetContourParameters, {
                             fileId: 0,
                             referenceFileId: 0,
