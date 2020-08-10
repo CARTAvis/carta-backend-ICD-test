@@ -118,11 +118,14 @@ describe("Contour action: ", () => {
                         let contourImageData = await Connection.receive(CARTA.ContourImageData) as CARTA.ContourImageData;
                         if (contourImageData.progress == 1) count++;
                     }
-                    await AppendTxt(usageFile, await {
-                        ...Usage(cartaBackend.pid),
-                        DiskUsage: DiskUsage(cartaBackend.pid),
-                        ThreadNumber: ThreadNumber(cartaBackend.pid),
-                    });
+                    let cpuUsage = await Usage(cartaBackend.pid);
+                    let diskUsage = await DiskUsage(cartaBackend.pid);
+                    let threadNumber = await ThreadNumber(cartaBackend.pid);
+                    let info = {...cpuUsage, 
+                        diskRead: diskUsage,
+                        threadNumber: threadNumber,
+                    };
+                    await AppendTxt(usageFile, info);
 
                     await Connection.send(CARTA.SetContourParameters, {
                         fileId: 0,

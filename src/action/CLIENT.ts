@@ -368,10 +368,6 @@ export function Usage(pid): Promise<any> {
         nodeusage.lookup(
             pid, { keepHistory: true },
             (err, info) => {
-                if (err) {
-                    console.log("Pid usage error: " + err);
-                    reject();
-                }
                 resolve(info);
             }
         );
