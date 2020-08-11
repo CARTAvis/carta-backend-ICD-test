@@ -73,8 +73,8 @@ testFiles.map(file => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_loadImage.txt";
-        let usageFile_openFile = file.substr(file.search('/') + 1).replace('.', '_') + "_openFile.txt";
-        let usageFile_tile = file.substr(file.search('/') + 1).replace('.', '_') + "_tile.txt";
+        let usageFile_openFile = file.substr(file.search('/') + 1).replace('.', '_') + "_openfile_usage.txt";
+        let usageFile_tile = file.substr(file.search('/') + 1).replace('.', '_') + "_tile_usage.txt";
         beforeAll(async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,

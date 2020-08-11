@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import Long from "long";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -85,14 +85,15 @@ let assertItem: AssertItem = {
 describe("Animator action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
-    let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/')+1).replace('.', '_') + "_animator.txt";
+    let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_animator.txt";
+    let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_animator_usage.txt";
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-    }, execTimeout);
+        await Wait(config.wait.exec);
+    }, execTimeout + config.wait.exec);
 
     describe(`Start the action: animator`, () => {
         test(`Connection is ready`, async () => {
@@ -100,6 +101,7 @@ describe("Animator action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
+            await EmptyTxt(usageFile);
         }, listTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
@@ -122,10 +124,12 @@ describe("Animator action: ", () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.startAnimation.requiredTiles);
                 await Connection.receive(CARTA.StartAnimationAck);
+                await Usage(cartaBackend.pid);
 
                 for (let channel: number = 1; channel <= assertItem.stopAnimation.endFrame.channel; channel++) {
                     while (true) {
                         ackStream = await Connection.stream(1) as AckStream;
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
                         if (ackStream.RasterTileSync.length > 0) {
                             if (ackStream.RasterTileSync[0].endSync) {
                                 break;
@@ -146,7 +150,7 @@ describe("Animator action: ", () => {
                 }
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
 
-                await new Promise(resolve => setTimeout(resolve, execTimeout));
+                await Wait(execTimeout);
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, animatorTimeout * animatorFlame + execTimeout);
         });
