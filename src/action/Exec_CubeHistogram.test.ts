@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -61,12 +61,13 @@ describe("Cube histogram action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_cubeHistogram.txt";
+    let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_histogram_usage.txt";
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+        await Wait(config.wait.exec);
     }, execTimeout + config.wait.exec);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
@@ -75,6 +76,7 @@ describe("Cube histogram action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
+            await EmptyTxt(usageFile);
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
@@ -84,13 +86,16 @@ describe("Cube histogram action: ", () => {
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                     await Connection.receiveAny();
                     await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                    await Usage(cartaBackend.pid);
                 }, readfileTimeout);
 
                 test(`should get cube histogram`, async () => {
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                    while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
+                    while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) {
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    }
 
-                    await new Promise(resolve => setTimeout(resolve, config.wait.histogram));
+                    await Wait(config.wait.histogram);
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 }, cubeHistogramTimeout + config.wait.histogram);
             }
