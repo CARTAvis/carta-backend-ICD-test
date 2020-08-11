@@ -83,7 +83,7 @@ testFiles.map(file => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_cubeHistogram.txt";
-        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_histogram_usage.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_cubeHistogram_usage.txt";
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -108,16 +108,14 @@ testFiles.map(file => {
                             file: file,
                             ...assertItem.fileOpen,
                         });
-                        await Connection.receiveAny();
-                        await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                        await Usage(cartaBackend.pid);
+                        await Connection.stream(2) // OpenFileAck | RegionHistogramData
                     }, fileopenTimeout);
 
                     test(`should get cube histogram`, async () => {
+                        await Usage(cartaBackend.pid);
                         await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                        while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) {
-                            await AppendTxt(usageFile, await Usage(cartaBackend.pid));
-                        }
+                        while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
                         await Wait(config.wait.histogram);
                         await Connection.send(CARTA.CloseFile, { fileId: -1 });
