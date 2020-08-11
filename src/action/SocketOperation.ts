@@ -136,7 +136,7 @@ export async function
                     maxBuffer: 128*1024*1024,
                 },
             );
-            cartaBackend.unref(); 
+            // cartaBackend.unref(); 
             cartaBackend.on("error", error => {
                 if (config.log.error) {
                     console.log("Error: " + error);

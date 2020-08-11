@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -42,9 +42,9 @@ let assertItem: AssertItem = {
     },
     addTilesReq:
     {
-        tiles: [33558529, 33562625, 33558528, 33558530, 
-            33554433, 33562624, 33562626, 33554432, 
-            33554434, 33566721, 33558531, 33566720, 
+        tiles: [33558529, 33562625, 33558528, 33558530,
+            33554433, 33562624, 33562626, 33554432,
+            33554434, 33566721, 33558531, 33566720,
             33566722, 33562627, 33554435, 33566723],
         fileId: 0,
         compressionQuality: 11,
@@ -56,13 +56,15 @@ describe("Load Image action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_loadImage.txt";
+    let usageFile_openFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_openFile.txt";
+    let usageFile_tile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_tile.txt";
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-    }, execTimeout);
+        await Wait(config.wait.exec);
+    }, execTimeout + config.wait.exec);
 
     describe(`Start the action: load image`, () => {
         test(`Connection is ready`, async () => {
@@ -70,13 +72,17 @@ describe("Load Image action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
+            await EmptyTxt(usageFile_openFile);
+            await EmptyTxt(usageFile_tile);
         }, listTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             test(`${imageReload} images data should return`, async () => {
                 for (let index: number = 0; index < imageReload; index++) {
+                    await Usage(cartaBackend.pid);
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                     await Connection.receiveAny(); // OpenFileAck
+                    await AppendTxt(usageFile_openFile, await Usage(cartaBackend.pid));
 
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor);
@@ -89,10 +95,11 @@ describe("Load Image action: ", () => {
                             }
                         }
                     }
+                    await AppendTxt(usageFile_tile, await Usage(cartaBackend.pid));
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 }
-                await new Promise(resolve => setTimeout(resolve, execTimeout));
-            }, readFileTimeout);
+                await Wait(execTimeout);
+            }, readFileTimeout + execTimeout);
         });
 
     });
