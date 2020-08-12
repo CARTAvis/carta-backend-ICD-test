@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -40,16 +41,15 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     precisionDigits: 4,
     importRegion:
     {
-        groupId: 0,
-        type: CARTA.FileType.CRTF,
+        contents: [],
         directory: regionSubdirectory,
         file: "M17_SWex_testRegions_pix.crtf",
-        contents: [],
+        groupId: 0,
+        type: CARTA.FileType.CRTF,
     },
     importRegionAck:
     {
@@ -111,48 +111,48 @@ let assertItem: AssertItem = {
     exportRegion:
         [
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.WORLD,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7],
                 directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_world.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionId: [1, 2, 3, 4, 5, 6, 7],
             },
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.PIXEL,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7],
                 directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionId: [1, 2, 3, 4, 5, 6, 7],
             },
         ],
     exportRegionAck:
         [
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
         ],
     importRegion2:
         [
             {
-                groupId: 0,
-                type: CARTA.FileType.CRTF,
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_world.crtf",
-                contents: [],
-            },
-            {
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
+            },
+            {
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
-                contents: [],
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
             },
         ],
     importRegionAck2:
@@ -176,7 +176,7 @@ let assertItem: AssertItem = {
         ],
 };
 
-describe("CASA_REGION_IMPORT_EXPORT test: Testing import/export of CASA region format", () => {
+describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);

@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -39,7 +40,6 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     precisionDigits: 4,
     setRegion:
@@ -176,48 +176,48 @@ let assertItem: AssertItem = {
     exportRegion:
         [
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.WORLD,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.PIXEL,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
         ],
     exportRegionAck:
         [
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
         ],
     importRegion:
         [
             {
-                groupId: 0,
-                type: CARTA.FileType.CRTF,
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.crtf",
-                contents: [],
-            },
-            {
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
+            },
+            {
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.crtf",
-                contents: [],
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
             },
         ],
     importRegionAck:

@@ -5,16 +5,17 @@
     "dependencies": {
         "pidusage": "^2.0.21",
         "procfs-stats": "^1.0.2",
-        "react-scripts": "^3.2.0",
-        "usage": "^0.7.1"
+        "react-scripts": "^3.4.1",
+        "usage": "^0.7.1",
+        "zstd-codec": "^0.1.2"
     },
     "scripts": {
         "test": "react-scripts test --env=jsdom --maxWorkers=1 --verbose --no-cache --forceExit"
     },
     "devDependencies": {
         "@types/jest": "^23.3.14",
-        "@types/node": "^10.17.6",
-        "protobufjs": "^6.8.8",
-        "typescript": "^3.7.2"
+        "@types/node": "^10.17.24",
+        "protobufjs": "6.9.0",
+        "typescript": "^3.9.3"
     }
 }
