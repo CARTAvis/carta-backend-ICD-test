@@ -29,7 +29,6 @@ let assertItem: AssertItem = {
     register:
     {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     openFile:
