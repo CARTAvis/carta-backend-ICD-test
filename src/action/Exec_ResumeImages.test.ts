@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -82,8 +82,8 @@ let testFiles = [
     "cube_A/cube_A_03200_z00100.image",
     "cube_A/cube_A_01600_z00100.image",
 
-    "cube_A/cube_A_12800_z00100.hdf5", 
-    "cube_A/cube_A_06400_z00100.hdf5", 
+    "cube_A/cube_A_12800_z00100.hdf5",
+    "cube_A/cube_A_06400_z00100.hdf5",
     "cube_A/cube_A_03200_z00100.hdf5",
     "cube_A/cube_A_01600_z00100.hdf5",
 ];
@@ -93,22 +93,25 @@ testFiles.map(file => {
 
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_resume.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_resume_usage.txt";
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
                 config.port,
             );
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-        }, execTimeout);
+            await Wait(config.wait.exec);
+        }, execTimeout + config.wait.exec);
 
         for (let idx = 0; idx < resumeRepeat; idx++) {
             test(`should resume session and reopen image "${file}"`, async () => {
+                await EmptyTxt(usageFile);
                 let Connection: Client = new Client(testServerUrl);
                 await Connection.open();
                 await Connection.send(CARTA.RegisterViewer, assertItem.register);
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+                await Usage(cartaBackend.pid);
                 await Connection.send(CARTA.ResumeSession, {
                     images: [
                         {
@@ -118,8 +121,9 @@ testFiles.map(file => {
                     ],
                 });
                 await Connection.stream(3);
+                await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
-                await new Promise(resolve => setTimeout(resolve, resumeWait));
+                await Wait(resumeWait);
                 Connection.close();
             }, resumeTimeout + resumeWait);
         }
