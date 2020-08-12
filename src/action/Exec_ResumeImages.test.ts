@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -29,16 +29,7 @@ let assertItem: AssertItem = {
         channel: 0,
         stokes: 0,
         requiredTiles: {
-            tiles: [50343939, 50343938, 50339843, 50339842, 50348035,
-                50343940, 50348034, 50339844, 50343937, 50335747,
-                50339841, 50335746, 50348036, 50348033, 50335748,
-                50335745, 50352131, 50343941, 50352130, 50339845,
-                50343936, 50331651, 50339840, 50331650, 50352132,
-                50348037, 50352129, 50335749, 50348032, 50331652,
-                50335744, 50331649, 50352133, 50356227, 50343942,
-                50356226, 50339846, 50352128, 50331653, 50356228,
-                50348038, 50331648, 50356225, 50335750, 50356229,
-                50352134, 50356224, 50331654, 50356230],
+            tiles: [0],
             fileId: 0,
             compressionQuality: 11,
             compressionType: CARTA.CompressionType.ZFP,
@@ -47,23 +38,36 @@ let assertItem: AssertItem = {
     resumeSession: {
         images: [
             {
+                file: testImage,
                 directory: testSubdirectory,
                 hdu: "",
                 fileId: 0,
                 renderMode: CARTA.RenderMode.RASTER,
                 channel: 0,
                 stokes: 0,
-                regions: [
-                    {
-                        regionId: 0,
-                        regionInfo: {
-                            regionName: "",
-                            regionType: CARTA.RegionType.POINT,
-                            controlPoints: [{ x: 1.0, y: 1.0, },],
-                            rotation: 0,
-                        },
+                regions: {
+                    "region0": {
+                        regionType: CARTA.RegionType.POINT,
+                        controlPoints: [{ x: 1.0, y: 1.0, },],
+                        rotation: 0,
                     },
-                ],
+                },
+                contourSettings: {
+                    fileId: 0,
+                    referenceFileId: 0,
+                    imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
+                    levels: [
+                        1.27, 2.0, 2.51, 3.0,
+                        3.75, 4.0, 4.99, 5.2,
+                        6.23, 6.6, 7.47, 7.8,
+                        8.71, 9.0, 9.95, 10.2,
+                    ],
+                    smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+                    smoothingFactor: 4,
+                    decimationFactor: 4,
+                    compressionLevel: 8,
+                    contourChunkSize: 100000,
+                },
             },
         ],
     },
@@ -120,7 +124,7 @@ testFiles.map(file => {
                         },
                     ],
                 });
-                await Connection.stream(3);
+                while ((await Connection.receiveAny() as CARTA.ResumeSessionAck).success) { };
                 await AppendTxt(usageFile, await Usage(cartaBackend.pid));
 
                 await Wait(resumeWait);
