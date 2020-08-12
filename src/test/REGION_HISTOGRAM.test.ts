@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -9,6 +9,8 @@ let regionTimeout = config.timeout.region;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
+    setCursor: CARTA.ISetCursor;
+    addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     cursor?: CARTA.ISetCursor;
     regionGroup: CARTA.ISetRegion[];
@@ -16,12 +18,11 @@ interface AssertItem {
     stats?: CARTA.ISetStatsRequirements;
     histogramGroup: CARTA.ISetHistogramRequirements[];
     histogramDataGroup: CARTA.IRegionHistogramData[];
-    setImageChannels?: CARTA.ISetImageChannels;
-}
+};
+
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     openFile:
@@ -32,7 +33,6 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 hdu: "",
                 renderMode: CARTA.RenderMode.RASTER,
-                tileSize: 256,
             },
             {
                 directory: testSubdirectory,
@@ -40,45 +40,47 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 hdu: "",
                 renderMode: CARTA.RenderMode.RASTER,
-                tileSize: 256,
             },
         ],
-    setImageChannels: {
+    setCursor: {
         fileId: 0,
-        channel: 0,
-        stokes: 0,
-        requiredTiles: {
-            fileId: 0,
-            tiles: [0],
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-        },
+        point: { x: 1.0, y: 1.0 },
+    },
+    addTilesRequire:
+    {
+        tiles: [0],
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
     },
     precisionDigits: 4,
     regionGroup: [
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 98, y: 541 }, { x: 7, y: 7 }],
-            rotation: 0,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 98, y: 541 }, { x: 7, y: 7 }],
+                rotation: 0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 98, y: 541 }, { x: 7, y: 7 }],
-            rotation: 90,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 98, y: 541 }, { x: 7, y: 7 }],
+                rotation: 90,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 0, y: 524 }, { x: 7, y: 7 }],
-            rotation: 45,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 0, y: 524 }, { x: 7, y: 7 }],
+                rotation: 45,
+            },
         },
     ],
     histogramGroup: [
@@ -134,7 +136,7 @@ let assertItem: AssertItem = {
             progress: 1,
         },
     ],
-}
+};
 
 describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () => {
     let Connection: Client;
@@ -145,16 +147,25 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
+    test(`Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
+
     assertItem.openFile.map(openFile => {
         describe(`Go to "${testSubdirectory}" folder and open image "${openFile.file}" to set region`, () => {
 
             beforeAll(async () => {
-                await Connection.send(CARTA.CloseFile, { fileId: -1, });
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            });
+
+            test(`OpenFileAck & RegionHistogramData? | `, async () => {
                 await Connection.send(CARTA.OpenFile, openFile);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
-                await Connection.receive(CARTA.RasterTileData);
+                await Connection.receive(CARTA.OpenFileAck)
+                await Connection.receive(CARTA.RegionHistogramData);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                let temp1 = await Connection.stream(4) as AckStream;
+                // console.log(temp1)
             });
 
             assertItem.histogramDataGroup.map((histogramData, index) => {
@@ -190,6 +201,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                     });
 
                     test("Assert REGION_HISTOGRAM_DATA.histograms", () => {
+                        console.log(RegionHistogramDataTemp.histograms[0])
                         if (RegionHistogramDataTemp.histograms[0].binWidth !== 0) {
                             expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
                         }
@@ -206,4 +218,5 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
     });
 
     afterAll(() => Connection.close());
+
 });
