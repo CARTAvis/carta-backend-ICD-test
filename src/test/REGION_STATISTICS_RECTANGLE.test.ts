@@ -56,34 +56,42 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: -1,
-            regionName: "rectangle_1",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 212, y: 464 }, { x: 10, y: 10 }],
-            rotation: 0.0,
+            regionInfo: {
+                // regionName: "rectangle_1",
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 212, y: 464 }, { x: 10, y: 10 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "rectangle_2",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 103, y: 549 }, { x: 5, y: 7 }],
-            rotation: 0.0,
+            regionInfo: {
+                // regionName: "rectangle_2",
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 103, y: 549 }, { x: 5, y: 7 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "rectangle_3",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 115, y: 544 }, { x: 5, y: 7 }],
-            rotation: 300.0,
+            regionInfo: {
+                // regionName: "rectangle_3",
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 115, y: 544 }, { x: 5, y: 7 }],
+                rotation: 300.0,
+            }
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "rectangle_4",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 0, y: 544 }, { x: 5, y: 7 }],
-            rotation: 300.0,
+            regionInfo: {
+                // regionName: "rectangle_4",
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 0, y: 544 }, { x: 5, y: 7 }],
+                rotation: 300.0,
+            }
         },
         {
             fileId: 0,
