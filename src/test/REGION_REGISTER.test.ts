@@ -1,5 +1,6 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -9,9 +10,10 @@ let returnTimeout = config.timeout.messageEvent;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     fileOpen: CARTA.IOpenFile;
-    setImageChannels: CARTA.ISetImageChannels;
-    setRegionGroup: CARTA.ISetRegion[];
-    regionAckGroup: CARTA.ISetRegionAck[];
+    addRequiredTiles: CARTA.IAddRequiredTiles;
+    setCursor: CARTA.ISetCursor;
+    setRegion: CARTA.ISetRegion[];
+    regionAck: CARTA.ISetRegionAck[];
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
@@ -26,20 +28,18 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
-    setImageChannels: {
+    addRequiredTiles: {
+        tiles: [0],
         fileId: 0,
-        channel: 0,
-        stokes: 0,
-        requiredTiles: {
-            fileId: 0,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            tiles: [0],
-        },
+        compressionType: CARTA.CompressionType.ZFP,
+        compressionQuality: 11,
     },
-    setRegionGroup: [
+    setCursor: {
+        fileId: 0,
+        point: { x: 1.0, y: 1.0 },
+    },
+    setRegion: [
         {
             fileId: 0,
             regionId: -1,
@@ -137,7 +137,7 @@ let assertItem: AssertItem = {
             regionName: "",
         },
     ],
-    regionAckGroup: [
+    regionAck: [
         { regionId: 1 },
         { regionId: 2 },
         { regionId: 3 },
@@ -154,7 +154,7 @@ let assertItem: AssertItem = {
     precisionDigits: 4,
 }
 
-describe("REGION_OPERATIONS test: Testing region creation and modification", () => {
+describe("REGION_REGISTER: Testing region creation and modification", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -170,13 +170,16 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
             await Connection.receiveAny();
             await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
-            await Connection.receive(CARTA.RasterTileData);
+
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+            // RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_DATA RASTER_TILE_SYNC
+            await Connection.stream(4) as AckStream;
         });
 
-        assertItem.setRegionGroup.map((region, index) => {
+        assertItem.setRegion.map((region, index) => {
 
-            describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
+            describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, region);
@@ -187,8 +190,8 @@ describe("REGION_OPERATIONS test: Testing region creation and modification", () 
                     expect(SetRegionAckTemp.success).toBe(true);
                 });
 
-                test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
-                    expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAckGroup[index].regionId);
+                test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[index].regionId}`, () => {
+                    expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck[index].regionId);
                 });
 
             });

@@ -1,5 +1,6 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -15,11 +16,12 @@ interface ISpectralProfileData extends CARTA.ISpectralProfileData {
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
-    setImageChannels: CARTA.ISetImageChannels;
-    setRegionGroup: CARTA.ISetRegion[];
-    regionAckGroup: CARTA.ISetRegionAck[];
-    setSpectralRequirementsGroup: CARTA.ISetSpectralRequirements[];
-    spectralProfileDataGroup: ISpectralProfileData[];
+    setCursor: CARTA.ISetCursor;
+    addTilesRequire: CARTA.IAddRequiredTiles;
+    setRegion: CARTA.ISetRegion[];
+    regionAck: CARTA.ISetRegionAck[];
+    setSpectralRequirements: CARTA.ISetSpectralRequirements[];
+    spectralProfileData: ISpectralProfileData[];
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
@@ -36,7 +38,6 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 hdu: "",
                 renderMode: CARTA.RenderMode.RASTER,
-                tileSize: 256,
             },
             {
                 directory: testSubdirectory,
@@ -44,63 +45,54 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 hdu: "",
                 renderMode: CARTA.RenderMode.RASTER,
-                tileSize: 256,
             },
         ],
-    setImageChannels: {
+    setCursor: {
         fileId: 0,
-        channel: 0,
-        stokes: 0,
-        requiredTiles: {
+        point: { x: 1.0, y: 1.0 },
+        spatialRequirements: {
             fileId: 0,
-            tiles: [0],
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
+            regionId: 0,
+            spatialProfiles: []
         },
     },
-    setRegionGroup: [
+    addTilesRequire:
+    {
+        tiles: [0],
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+    },
+    setRegion: [
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 83, y: 489 }, { x: 4, y: 6 }],
-            rotation: 0.0,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 83, y: 489 }, { x: 4, y: 6 }],
+                rotation: 0.0,
+            }
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 92, y: 522 }, { x: 4, y: 6 }],
-            rotation: 50.0,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 92, y: 522 }, { x: 4, y: 6 }],
+                rotation: 50.0,
+            }
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 0, y: 522 }, { x: 4, y: 6 }],
-            rotation: 50.0,
-        },
-        {
-            fileId: 0,
-            regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 89, y: 516 }, { x: 5, y: 3 }],
-            rotation: 30.0,
-        },
-        {
-            fileId: 0,
-            regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 0, y: 516 }, { x: 5, y: 3 }],
-            rotation: 30.0,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 0, y: 522 }, { x: 4, y: 6 }],
+                rotation: 50.0,
+            }
         },
     ],
-    regionAckGroup: [
+    regionAck: [
         {
             success: true,
             regionId: 1,
@@ -113,16 +105,8 @@ let assertItem: AssertItem = {
             success: true,
             regionId: 3,
         },
-        {
-            success: true,
-            regionId: 4,
-        },
-        {
-            success: true,
-            regionId: 5,
-        },
     ],
-    setSpectralRequirementsGroup: [
+    setSpectralRequirements: [
         {
             fileId: 0,
             regionId: 1,
@@ -132,6 +116,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -151,6 +136,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -170,44 +156,7 @@ let assertItem: AssertItem = {
                     statsTypes: [
                         CARTA.StatsType.NumPixels,
                         CARTA.StatsType.Sum,
-                        CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
-                    ],
-                }
-            ],
-        },
-        {
-            fileId: 0,
-            regionId: 4,
-            spectralProfiles: [
-                {
-                    coordinate: "z",
-                    statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
-                        CARTA.StatsType.Mean,
-                        CARTA.StatsType.RMS,
-                        CARTA.StatsType.Sigma,
-                        CARTA.StatsType.SumSq,
-                        CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
-                    ],
-                }
-            ],
-        },
-        {
-            fileId: 0,
-            regionId: 5,
-            spectralProfiles: [
-                {
-                    coordinate: "z",
-                    statsTypes: [
-                        CARTA.StatsType.NumPixels,
-                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
                         CARTA.StatsType.Mean,
                         CARTA.StatsType.RMS,
                         CARTA.StatsType.Sigma,
@@ -219,7 +168,7 @@ let assertItem: AssertItem = {
             ],
         },
     ],
-    spectralProfileDataGroup: [
+    spectralProfileData: [
         {
             regionId: 1,
             progress: 1,
@@ -228,6 +177,11 @@ let assertItem: AssertItem = {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Sum,
                     assertValues: [{ index: 10, value: 0.86641663 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: 0.03980531  }],
                 },
                 {
                     coordinate: "z",
@@ -273,6 +227,11 @@ let assertItem: AssertItem = {
                 },
                 {
                     coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: -0.01545912  }],
+                },
+                {
+                    coordinate: "z",
                     profileLength: 25,
                     statsType: CARTA.StatsType.Mean,
                     assertValues: [{ index: 10, value: -0.02103055 }],
@@ -315,87 +274,8 @@ let assertItem: AssertItem = {
                 },
                 {
                     coordinate: "z",
-                    profileLength: 25,
-                    statsType: CARTA.StatsType.Mean,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.RMS,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Sigma,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.SumSq,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Min,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Max,
-                    assertValues: [{ index: 0, value: NaN }],
-                },
-            ],
-        },
-        {
-            regionId: 4,
-            progress: 1,
-            profile: [
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Sum,
-                    assertValues: [{ index: 10, value: 0.2515069 }],
-                },
-                {
-                    coordinate: "z",
-                    profileLength: 25,
-                    statsType: CARTA.StatsType.Mean,
-                    assertValues: [{ index: 10, value: 0.01143213 }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.RMS,
-                    assertValues: [{ index: 10, value: 0.01610695 }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Sigma,
-                    assertValues: [{ index: 10, value: 0.01161338 }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.SumSq,
-                    assertValues: [{ index: 10, value: 0.00570754 }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Min,
-                    assertValues: [{ index: 10, value: -0.01199045 }],
-                },
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Max,
-                    assertValues: [{ index: 10, value: 0.02959144 }],
-                },
-            ],
-        },
-        {
-            regionId: 5,
-            progress: 1,
-            profile: [
-                {
-                    coordinate: "z",
-                    statsType: CARTA.StatsType.Sum,
-                    assertValues: [{ index: 0, value: NaN }],
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 0, value: NaN  }],
                 },
                 {
                     coordinate: "z",
@@ -434,7 +314,7 @@ let assertItem: AssertItem = {
     precisionDigits: 4,
 }
 
-describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions", () => {
+describe("REGION_SPECTRAL_PROFILE_RECTANGLE: Testing spectral profiler with rectangle regions", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -451,46 +331,47 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                 await Connection.send(CARTA.OpenFile, openFile);
                 await Connection.receiveAny();
                 await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
-                await Connection.receive(CARTA.RasterTileData);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                await Connection.stream(4) as AckStream;
             });
 
-            assertItem.setRegionGroup.map((region, index) => {
-                describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
+            assertItem.setRegion.map((region, index) => {
+                describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.regionInfo.controlPoints)}`, () => {
                     let SetRegionAckTemp: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetRegion, region);
                         SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
                     }, regionTimeout);
 
-                    test(`SET_REGION_ACK.success = ${assertItem.regionAckGroup[index].success}`, () => {
-                        expect(SetRegionAckTemp.success).toBe(assertItem.regionAckGroup[index].success);
+                    test(`SET_REGION_ACK.success = ${assertItem.regionAck[index].success}`, () => {
+                        expect(SetRegionAckTemp.success).toBe(assertItem.regionAck[index].success);
                     });
 
-                    test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
-                        expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAckGroup[index].regionId);
+                    test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[index].regionId}`, () => {
+                        expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck[index].regionId);
                     });
 
                 });
 
-                describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId}`, () => {
+                describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId}`, () => {
                     let SpectralProfileDataTemp: any;
                     test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
-                        await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirementsGroup[index]);
+                        await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[index]);
                         SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
                     }, regionTimeout);
 
-                    test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileDataGroup[index].regionId}`, () => {
-                        expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.spectralProfileDataGroup[index].regionId);
+                    test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileData[index].regionId}`, () => {
+                        expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.spectralProfileData[index].regionId);
                     });
 
-                    test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileDataGroup[index].progress}`, () => {
-                        expect(SpectralProfileDataTemp.progress).toEqual(assertItem.spectralProfileDataGroup[index].progress);
+                    test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileData[index].progress}`, () => {
+                        expect(SpectralProfileDataTemp.progress).toEqual(assertItem.spectralProfileData[index].progress);
                     });
 
                     test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
                         let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
-                        let _assertProfile = assertItem.spectralProfileDataGroup[index].profile.find(f => f.statsType === CARTA.StatsType.Mean);
+                        let _assertProfile = assertItem.spectralProfileData[index].profile.find(f => f.statsType === CARTA.StatsType.Mean);
                         expect(_meanProfile.coordinate).toEqual(_assertProfile.coordinate);
                         expect(_meanProfile.values.length).toEqual(_assertProfile.profileLength);
                         expect(_meanProfile.statsType).toEqual(_assertProfile.statsType);
@@ -514,7 +395,7 @@ describe("REGION_SPECTRAL_PROFILE test: Testing spectral profiler with regions",
                     });
 
                     test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
-                        assertItem.spectralProfileDataGroup[index].profile.map(profile => {
+                        assertItem.spectralProfileData[index].profile.map(profile => {
                             let _returnedProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsType);
                             profile.assertValues.map(assertVal => {
                                 if (isNaN(assertVal.value)) {
