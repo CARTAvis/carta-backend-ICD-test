@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -11,6 +11,7 @@ let connectTimeout: number = config.timeout.connection;
 let readfileTimeout: number = config.timeout.readFile;
 let contourTimeout: number = config.timeout.contour;
 let contourRepeat: number = config.repeat.contour;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -101,7 +102,7 @@ describe("Contour action: ", () => {
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
                 test(`should return contour data`, async () => {
-                    await Usage(cartaBackend.pid);
+                    let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     await Connection.send(CARTA.SetContourParameters, {
                         imageBounds: {
                             xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
@@ -117,7 +118,12 @@ describe("Contour action: ", () => {
                         if (contourImageData.progress == 1) count++;
                     }
 
-                    await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile, monitor.data);
+                    }
 
                     await Connection.send(CARTA.SetContourParameters, {
                         fileId: 0,
