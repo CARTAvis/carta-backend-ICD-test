@@ -201,14 +201,20 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                     });
 
                     test("Assert REGION_HISTOGRAM_DATA.histograms", () => {
-                        console.log(RegionHistogramDataTemp.histograms[0])
                         if (RegionHistogramDataTemp.histograms[0].binWidth !== 0) {
                             expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
-                        }
+                        };
                         if (RegionHistogramDataTemp.histograms[0].firstBinCenter !== 0) {
                             expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
-                        }
-                        expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
+                        };
+
+                        let filterZero = RegionHistogramDataTemp.histograms[0].bins.filter(value => value === 0);
+                        if (filterZero.length === RegionHistogramDataTemp.histograms[0].bins.length) {
+                            expect(RegionHistogramDataTemp.histograms[0].bins.length).toEqual(histogramData.histograms[0].numBins);
+                        } else {
+                            expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
+                        };
+                        // console.log(RegionHistogramDataTemp.histograms[0])
                         expect(RegionHistogramDataTemp.histograms[0].bins).toEqual(histogramData.histograms[0].bins);
                     });
                 });
