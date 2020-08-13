@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -9,6 +9,7 @@ let connectTimeout: number = config.timeout.connection;
 let fileopenTimeout: number = config.timeout.readLargeImage;
 let cursorTimeout: number = config.timeout.mouseEvent;
 let cursorRepeat: number = config.repeat.cursor;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -121,11 +122,16 @@ testFiles.map(file => {
                             },
                         });
                         await Connection.receiveAny();
-                        await Usage(cartaBackend.pid);
+                        let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                         while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
+                        clearInterval(monitor.id);
+                        if (monitor.data.cpu.length === 0) {
+                            await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                        } else {
+                            await AppendTxt(usageFile, monitor.data);
+                        }
                         await Wait(config.wait.cursor);
-                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
                     }
 
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
