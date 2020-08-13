@@ -337,7 +337,7 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
                     exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
-                    console.log(exportRegionAck)
+                    // console.log(exportRegionAck)
                 }, exportTimeout);
 
                 test(`EXPORT_REGION_ACK.success = ${exRegion.success}`, () => {
