@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -8,6 +8,7 @@ let execTimeout: number = config.timeout.execute;
 let listTimeout: number = config.timeout.listFile;
 let readFileTimeout: number = config.timeout.readLargeImage;
 let imageReload: number = config.repeat.image;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -49,23 +50,23 @@ let assertItem: AssertItem = {
     },
 }
 let testFiles = [
-    "cube_A/cube_A_51200_z00100.fits",
-    "cube_A/cube_A_25600_z00100.fits",
-    "cube_A/cube_A_12800_z00100.fits",
-    "cube_A/cube_A_06400_z00100.fits",
+    // "cube_A/cube_A_51200_z00100.fits",
+    // "cube_A/cube_A_25600_z00100.fits",
+    // "cube_A/cube_A_12800_z00100.fits",
+    // "cube_A/cube_A_06400_z00100.fits",
     "cube_A/cube_A_03200_z00100.fits",
     "cube_A/cube_A_01600_z00100.fits",
-    "cube_A/cube_A_51200_z00100.image",
-    "cube_A/cube_A_25600_z00100.image",
-    "cube_A/cube_A_12800_z00100.image",
-    "cube_A/cube_A_06400_z00100.image",
-    "cube_A/cube_A_03200_z00100.image",
-    "cube_A/cube_A_01600_z00100.image",
+    // "cube_A/cube_A_51200_z00100.image",
+    // "cube_A/cube_A_25600_z00100.image",
+    // "cube_A/cube_A_12800_z00100.image",
+    // "cube_A/cube_A_06400_z00100.image",
+    // "cube_A/cube_A_03200_z00100.image",
+    // "cube_A/cube_A_01600_z00100.image",
 
-    "cube_A/cube_A_12800_z00100.hdf5",
-    "cube_A/cube_A_06400_z00100.hdf5",
-    "cube_A/cube_A_03200_z00100.hdf5",
-    "cube_A/cube_A_01600_z00100.hdf5",
+    // "cube_A/cube_A_12800_z00100.hdf5",
+    // "cube_A/cube_A_06400_z00100.hdf5",
+    // "cube_A/cube_A_03200_z00100.hdf5",
+    // "cube_A/cube_A_01600_z00100.hdf5",
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
@@ -81,7 +82,7 @@ testFiles.map(file => {
                 config.port,
             );
             await Wait(config.wait.exec);
-        }, execTimeout);
+        }, execTimeout + config.wait.exec);
 
         describe(`CARTA is ready`, () => {
             beforeAll(async () => {
@@ -98,14 +99,20 @@ testFiles.map(file => {
             describe(`open the file "${file}"`, () => {
                 test(`${imageReload} images data should return`, async () => {
                     for (let index: number = 0; index < imageReload; index++) {
-                        await Usage(cartaBackend.pid);
+                        let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                         await Connection.send(CARTA.OpenFile, {
                             file: file,
                             ...assertItem.fileOpen,
                         });
                         await Connection.receiveAny(); // OpenFileAck
-                        await AppendTxt(usageFile_openFile, await Usage(cartaBackend.pid));
+                        clearInterval(monitor.id);
+                        if (monitor.data.cpu.length === 0) {
+                            await AppendTxt(usageFile_openFile, await Usage(cartaBackend.pid));
+                        } else {
+                            await AppendTxt(usageFile_openFile, monitor.data);
+                        }
 
+                        monitor = Monitor(cartaBackend.pid, monitorPeriod);
                         await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                         let ack: AckStream;
@@ -117,7 +124,12 @@ testFiles.map(file => {
                                 }
                             }
                         }
-                        await AppendTxt(usageFile_tile, await Usage(cartaBackend.pid));
+                        clearInterval(monitor.id);
+                        if (monitor.data.cpu.length === 0) {
+                            await AppendTxt(usageFile_tile, await Usage(cartaBackend.pid));
+                        } else {
+                            await AppendTxt(usageFile_tile, monitor.data);
+                        }
                         await Connection.send(CARTA.CloseFile, { fileId: -1 });
                     }
                     // await Wait(300);

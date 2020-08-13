@@ -40,7 +40,7 @@ function Usage(pid) {
 }
 function Wait(time) {
     return new Promise((resolve, reject) => {
-        setTimeout(async () => {
+        setTimeout(() => {
             resolve();
         }, time);
     });
@@ -52,6 +52,11 @@ function CleanHistory(pid, time) {
             resolve();
         }, time);
     });
+}
+function RecordUsage(flag: boolean, time: number, pid) {
+    let record = [];
+
+    return record;
 }
 describe(`node-usage test`, () => {
     test(`should read CPU usage`,
@@ -69,16 +74,16 @@ describe(`node-usage test`, () => {
             let info: any = await Usage(process.pid);
             expect(info.memory).toBeGreaterThan(0);
         });
-    test(`should monitor CPU usage`,
+    test(`should collect CPU usages`,
         async () => {
             let data = [];
-            const end = 200;
+            const end = 100;
             const step = 20;
             // nodeusage.clearHistory(process.pid);
             await Usage(process.pid)
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
-                await NullRun(10000 * t);
+                // await NullRun(10000 * t);
                 data.push(await Usage(process.pid));
             }
             let cpuUsage = [], ramUsage = [];
@@ -88,6 +93,21 @@ describe(`node-usage test`, () => {
             });
             console.log("CPU node-usage: " + cpuUsage);
             console.log("RAM node-usage: " + ramUsage);
+        });
+    test(`should monitor CPU usage`,
+        async () => {
+            let data = { cpu: [], memory: [] };
+            let inte = setInterval(async () => {
+                await Usage(process.pid).then(d => {
+                    data.cpu.push(d.cpu);
+                    data.cpu.push(d.memory);
+                })
+            }, 10);
+            await Wait(200).then(() => {
+                clearInterval(inte);
+            });
+            console.log("CPU node-usage interval : " + data.cpu);
+            console.log("RAM node-usage interval : " + data.memory);
         });
 });
 
@@ -116,7 +136,7 @@ describe(`pidusage test`, () => {
             const step = 20;
             for (let t = 0; t < end; t += step) {
                 await Wait(step);
-                await NullRun(10000 * t);
+                // await NullRun(10000 * t);
                 data.push(await pidusage(process.pid, { usePs: true }));
             }
             let cpuUsage = [], ramUsage = [];

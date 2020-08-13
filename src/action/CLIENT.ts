@@ -426,3 +426,19 @@ export async function Usage(pid) {
     let thread = await ThreadNumber(pid);
     return ({ ...cpu, disk, thread });
 }
+export interface IUsage { cpu: number[], memory: number[], disk: number[], thread: number[] };
+/// return setInterval id
+export function Monitor(pid, time: number) {
+    let data: IUsage = {cpu: [], memory: [], disk: [], thread: [] };
+    return {
+        id: setInterval(async () => {
+            await CpuUsage(pid)
+                .then(cpuUsage => {
+                    data.cpu.push(cpuUsage.cpu);
+                    data.memory.push(cpuUsage.memory);
+                });
+            data.disk.push(await DiskUsage(pid) as number);
+            data.thread.push(await ThreadNumber(pid) as number);
+        }, time), data: data
+    };
+}

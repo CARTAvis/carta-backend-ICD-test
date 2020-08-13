@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -10,6 +10,7 @@ let execTimeout: number = config.timeout.execute;
 let listTimeout: number = config.timeout.listFile;
 let readFileTimeout: number = config.timeout.readLargeImage;
 let imageReload: number = config.repeat.image;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -79,11 +80,17 @@ describe("Load Image action: ", () => {
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {
             test(`${imageReload} images data should return`, async () => {
                 for (let index: number = 0; index < imageReload; index++) {
-                    await Usage(cartaBackend.pid);
+                    let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                     await Connection.receiveAny(); // OpenFileAck
-                    await AppendTxt(usageFile_openFile, await Usage(cartaBackend.pid));
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile_openFile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile_openFile, monitor.data);
+                    }
 
+                    monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                     let ack: AckStream;
@@ -95,7 +102,13 @@ describe("Load Image action: ", () => {
                             }
                         }
                     }
-                    await AppendTxt(usageFile_tile, await Usage(cartaBackend.pid));
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile_tile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile_tile, monitor.data);
+                    }
+
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 }
                 await Wait(execTimeout);
