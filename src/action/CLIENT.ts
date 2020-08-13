@@ -439,6 +439,6 @@ export function Monitor(pid, time: number) {
                 });
             data.disk.push(await DiskUsage(pid) as number);
             data.thread.push(await ThreadNumber(pid) as number);
-        }, time), data: data
+        }, time), data: {...data, period: time},
     };
 }

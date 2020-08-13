@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import Long from "long";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -12,6 +12,7 @@ let execTimeout: number = config.timeout.execute;
 let listTimeout: number = config.timeout.listFile;
 let animatorTimeout: number = config.timeout.playAnimator;
 let animatorFlame: number = config.repeat.animation;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -124,18 +125,25 @@ describe("Animator action: ", () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.startAnimation.requiredTiles);
                 await Connection.receive(CARTA.StartAnimationAck);
-                await Usage(cartaBackend.pid);
 
+                let monitor;
                 for (let channel: number = 1; channel <= assertItem.stopAnimation.endFrame.channel; channel++) {
+                    monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     while (true) {
                         ackStream = await Connection.stream(1) as AckStream;
-                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+
                         if (ackStream.RasterTileSync.length > 0) {
                             if (ackStream.RasterTileSync[0].endSync) {
                                 break;
                             }
                         }
                     };
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile, monitor.data);
+                    }
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             fileId: 0,
