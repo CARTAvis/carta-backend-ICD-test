@@ -53,7 +53,8 @@
         "contour": 2000,
         "histogram": 1000,
         "zoom": 400,
-        "cursor": 500
+        "cursor": 500,
+        "monitor": 50
     },
     "repeat": {
         "concurrent": 10,
