@@ -213,7 +213,25 @@ let assertItem: AssertItem = {
                 file: "M17_SWex_handMadeRegions_world.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                regionStyles: {
+                    '1': {},
+                    '2': {},
+                    '3': {},
+                    '4': {},
+                    '5': {},
+                    '6': {},
+                    '7': {},
+                    '8': {},
+                    '9': {},
+                    '10': {},
+                    '11': {},
+                    '12': {},
+                    '13': {},
+                    '14': {},
+                    '15': {},
+                    '16': {},
+                },
+                // regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
             {
                 coordType: CARTA.CoordinateType.PIXEL,
@@ -221,7 +239,25 @@ let assertItem: AssertItem = {
                 file: "M17_SWex_handMadeRegions_pix.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                regionStyles: {
+                    '1': {},
+                    '2': {},
+                    '3': {},
+                    '4': {},
+                    '5': {},
+                    '6': {},
+                    '7': {},
+                    '8': {},
+                    '9': {},
+                    '10': {},
+                    '11': {},
+                    '12': {},
+                    '13': {},
+                    '14': {},
+                    '15': {},
+                    '16': {},
+                },
+                // regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
         ],
     exportRegionAck:
@@ -301,6 +337,7 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
                     exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
+                    console.log(exportRegionAck)
                 }, exportTimeout);
 
                 test(`EXPORT_REGION_ACK.success = ${exRegion.success}`, () => {
