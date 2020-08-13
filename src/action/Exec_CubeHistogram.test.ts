@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -10,6 +10,7 @@ let execTimeout: number = config.timeout.execute;
 let readfileTimeout: number = config.timeout.readFile;
 let connectTimeout: number = config.timeout.connection;
 let cubeHistogramTimeout: number = config.timeout.cubeHistogram;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -88,10 +89,15 @@ describe("Cube histogram action: ", () => {
                 }, readfileTimeout);
 
                 test(`should get cube histogram`, async () => {
-                    await Usage(cartaBackend.pid);
+                    let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     while ((await Connection.stream(1) as AckStream).RegionHistogramData[0].progress < 1) { }
-                    await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile, monitor.data);
+                    }
 
                     await Wait(config.wait.histogram);
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });
