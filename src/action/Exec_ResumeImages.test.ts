@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, Usage, AppendTxt, EmptyTxt, Wait } from "./CLIENT";
+import { Client, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -8,6 +8,7 @@ let execTimeout: number = config.timeout.execute;
 let resumeTimeout: number = config.timeout.resumeLargeImage;
 let resumeRepeat: number = config.repeat.resumeSession;
 let resumeWait: number = config.wait.resume;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     stopAnomator: CARTA.IStopAnimation;
@@ -115,7 +116,7 @@ testFiles.map(file => {
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                await Usage(cartaBackend.pid);
+                let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                 await Connection.send(CARTA.ResumeSession, {
                     images: [
                         {
@@ -125,7 +126,12 @@ testFiles.map(file => {
                     ],
                 });
                 while ((await Connection.receiveAny() as CARTA.ResumeSessionAck).success) { };
-                await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                clearInterval(monitor.id);
+                if (monitor.data.cpu.length === 0) {
+                    await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                } else {
+                    await AppendTxt(usageFile, monitor.data);
+                }
 
                 await Wait(resumeWait);
                 Connection.close();
