@@ -1,6 +1,5 @@
 import { CARTA } from "carta-protobuf";
-
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -9,17 +8,23 @@ let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
 let importTimeout = config.timeout.import;
 
+interface ImportRegionAckExt extends CARTA.ImportRegionAck {
+    regionId?: number;
+}
+
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
+    setCursor: CARTA.ISetCursor;
+    addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion[];
-    importRegionAck: CARTA.IImportRegionAck[];
+    importRegionAck: CARTA.ImportRegionAckExt[];
 };
+
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     openFile:
@@ -29,6 +34,17 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
+    },
+    setCursor: {
+        fileId: 0,
+        point: { x: 1.0, y: 1.0 },
+    },
+    addTilesRequire:
+    {
+        tiles: [0],
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
     },
     precisionDigits: 0,
     importRegion:
@@ -309,46 +325,60 @@ describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made 
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
+    test(`Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
 
+    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
         beforeAll(async () => {
-            await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
         });
 
-        assertItem.importRegionAck.map((regionAck, idxRegion) => {
+        test(`OpenFileAck & RegionHistogramData? | `, async () => {
+            await Connection.send(CARTA.OpenFile, assertItem.openFile);
+            await Connection.receive(CARTA.OpenFileAck)
+            await Connection.receive(CARTA.RegionHistogramData);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+            await Connection.stream(4) as AckStream;
+        });
+
+        assertItem.importRegion.map((regionAck, idxRegion) => {
             describe(`Import "${assertItem.importRegion[idxRegion].file}"`, () => {
                 let importRegionAck: CARTA.ImportRegionAck;
+                let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, assertItem.importRegion[idxRegion]);
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                    importRegionAckProperties = Object.keys(importRegionAck.regions)
                 }, importTimeout);
 
-                test(`IMPORT_REGION_ACK.success = ${regionAck.success}`, () => {
-                    expect(importRegionAck.success).toBe(regionAck.success);
+                test(`IMPORT_REGION_ACK.success = ${assertItem.importRegionAck[idxRegion].success}`, () => {
+                    expect(importRegionAck.success).toBe(assertItem.importRegionAck[idxRegion].success);
                 });
 
-                test(`Length of IMPORT_REGION_ACK.region = ${regionAck.regions.length}`, () => {
-                    expect(importRegionAck.regions.length).toEqual(regionAck.regions.length);
+                test(`Length of IMPORT_REGION_ACK.region = ${assertItem.importRegionAck[idxRegion].regions.length}`, () => {
+                    expect(importRegionAckProperties.length).toEqual(assertItem.importRegionAck[idxRegion].regions.length);
                 });
 
-                regionAck.regions.map((region, index) => {
+                assertItem.importRegionAck[idxRegion].regions.map((region, index) => {
                     test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
-                        expect(importRegionAck.regions[index].regionId).toEqual(region.regionId);
-                        expect(importRegionAck.regions[index].regionInfo.regionType).toEqual(region.regionInfo.regionType);
+                        expect(importRegionAckProperties[index]).toEqual(String(region.regionId));
+                        expect(importRegionAck.regions.[importRegionAckProperties[index]].regionType).toEqual(region.regionInfo.regionType);
                         if (region.regionInfo.rotation) {
-                            expect(importRegionAck.regions[index].regionInfo.rotation).toBeCloseTo(region.regionInfo.rotation);
-                        }
-                        importRegionAck.regions[index].regionInfo.controlPoints.map((point, idx) => {
+                            expect(importRegionAck.regions.[importRegionAckProperties[index]].rotation).toBeCloseTo(region.regionInfo.rotation);
+                        };
+                        importRegionAck.regions.[importRegionAckProperties[index]].controlPoints.map((point, idx) => {
                             expect(point.x).toBeCloseTo(region.regionInfo.controlPoints[idx].x, assertItem.precisionDigits);
                             expect(point.y).toBeCloseTo(region.regionInfo.controlPoints[idx].y, assertItem.precisionDigits);
                         });
                     });
                 });
+
             });
         });
+
+
     });
 
     afterAll(() => Connection.close());
