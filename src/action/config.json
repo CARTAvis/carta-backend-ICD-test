@@ -50,7 +50,7 @@
     "wait": {
         "exec": 2000,
         "resume": 2000,
-        "contour": 3000,
+        "contour": 500,
         "histogram": 1000,
         "zoom": 400,
         "cursor": 500,
