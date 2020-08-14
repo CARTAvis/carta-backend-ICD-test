@@ -114,7 +114,8 @@ testFiles.map(file => {
                         ...assertItem.fileOpen,
                     });
                     ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
-
+                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+                    await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                     while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
                     await EmptyTxt(usageFile);
                 }, readfileTimeout);
@@ -149,7 +150,7 @@ testFiles.map(file => {
                         }); // Clear contour
                     }, contourTimeout);
 
-                    test(`should wit ${config.wait.contour} ms`, async () => {
+                    test(`should wait ${config.wait.contour} ms`, async () => {
                         await Wait(config.wait.contour);
                     }, config.wait.contour + 500);
                 }
