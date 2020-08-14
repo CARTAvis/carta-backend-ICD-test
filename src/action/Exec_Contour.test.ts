@@ -3,7 +3,6 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
-let testServerUrl: string = config.localHost + ":" + config.port;
 let testSubdirectory: string = config.path.performance;
 let testImage: string = config.image.singleChannel;
 let execTimeout: number = config.timeout.execute;
@@ -78,11 +77,13 @@ describe("Contour action: ", () => {
     });
 
     for (let idx: number = 0; idx < contourRepeat; idx++) {
+        let port = config.port + idx;
+        let testServerUrl: string = config.localHost + ":" + port;
         describe(`Repeat ${idx + 1}`, () => {
             test(`CARTA is ready`, async () => {
                 cartaBackend = await Socket.CartaBackend(
                     logFile,
-                    config.port,
+                    port,
                 );
                 await Wait(config.wait.exec);
             }, execTimeout + config.wait.exec);

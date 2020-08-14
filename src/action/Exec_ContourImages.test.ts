@@ -84,7 +84,6 @@ let testFiles = [
     "cube_A/cube_A_01600_z00001.hdf5",
 ];
 testFiles.map(file => {
-    let testServerUrl: string = `${config.localHost}:${config.port}`
     describe(`Contour action: ${file.substr(file.search('/') + 1)}`, () => {
         let Connection: Client;
         let cartaBackend: any;
@@ -95,11 +94,13 @@ testFiles.map(file => {
             await EmptyTxt(usageFile);
         });
         for (let idx: number = 0; idx < contourRepeat; idx++) {
+            let port = config.port + idx;
+            let testServerUrl: string = `${config.localHost}:${port}`
             describe(`Repeat ${idx + 1}`, () => {
                 test(`CARTA is ready`, async () => {
                     cartaBackend = await Socket.CartaBackend(
                         logFile,
-                        config.port,
+                        port,
                     );
                     await Wait(config.wait.exec);
                 }, execTimeout + config.wait.exec);
