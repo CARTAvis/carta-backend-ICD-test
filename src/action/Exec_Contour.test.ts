@@ -72,76 +72,82 @@ describe("Contour action: ", () => {
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour.txt";
     let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_contour_usage.txt";
-    test(`CARTA is ready`, async () => {
-        cartaBackend = await Socket.CartaBackend(
-            logFile,
-            config.port,
-        );
-        await Wait(config.wait.exec);
-    }, execTimeout + config.wait.exec);
-
-    describe(`Start the action: contour`, () => {
-        test(`Connection is ready`, async () => {
-            Connection = new Client(testServerUrl);
-            await Connection.open();
-            await Connection.send(CARTA.RegisterViewer, assertItem.register);
-            await Connection.receive(CARTA.RegisterViewerAck);
-        }, connectTimeout);
-
-        describe(`open the file "${assertItem.fileOpen.file}"`, () => {
-            let ack: AckStream;
-            beforeAll(async () => {
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
-
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
-                await EmptyTxt(usageFile);
-            }, readfileTimeout);
-
-            for (let idx: number = 0; idx < contourRepeat; idx++) {
-                test(`should return contour data`, async () => {
-                    let monitor = Monitor(cartaBackend.pid, monitorPeriod);
-                    await Connection.send(CARTA.SetContourParameters, {
-                        imageBounds: {
-                            xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
-                            yMin: 0, yMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.height,
-                        },
-                        ...assertItem.setContour,
-                    });
-
-                    let count: number = 0;
-                    while (count < assertItem.setContour.levels.length) {
-                        await Connection.receive(CARTA.ContourImageData)
-                            .then((contourImageData: CARTA.ContourImageData) => {
-                                if (contourImageData.progress == 1) count++;
-                            });
-                    }
-
-                    clearInterval(monitor.id);
-                    if (monitor.data.cpu.length === 0) {
-                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
-                    } else {
-                        await AppendTxt(usageFile, monitor.data);
-                    }
-
-                    await Connection.send(CARTA.SetContourParameters, {
-                        fileId: 0,
-                        referenceFileId: 0,
-                    }); // Clear contour
-                }, contourTimeout);
-
-                test(`should wait ${config.wait.contour} ms`, async () => {
-                    await Wait(config.wait.contour);
-                }, config.wait.contour + 500);
-            }
-        });
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
     });
 
-    afterAll(async done => {
-        await Connection.close();
-        cartaBackend.kill();
-        cartaBackend.on("close", () => done());
-    }, execTimeout);
+    for (let idx: number = 0; idx < contourRepeat; idx++) {
+        describe(`Repeat ${idx + 1}`, () => {
+            test(`CARTA is ready`, async () => {
+                cartaBackend = await Socket.CartaBackend(
+                    logFile,
+                    config.port,
+                );
+                await Wait(config.wait.exec);
+            }, execTimeout + config.wait.exec);
+
+            describe(`Start the action: contour`, () => {
+                test(`Connection is ready`, async () => {
+                    Connection = new Client(testServerUrl);
+                    await Connection.open();
+                    await Connection.send(CARTA.RegisterViewer, assertItem.register);
+                    await Connection.receive(CARTA.RegisterViewerAck);
+                }, connectTimeout);
+
+                describe(`open the file "${assertItem.fileOpen.file}"`, () => {
+                    let ack: AckStream;
+                    beforeAll(async () => {
+                        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                        ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
+
+                        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+                        await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                        while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
+                    }, readfileTimeout);
+
+                    test(`should return contour data`, async () => {
+                        let monitor = Monitor(cartaBackend.pid, monitorPeriod);
+                        await Connection.send(CARTA.SetContourParameters, {
+                            imageBounds: {
+                                xMin: 0, xMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.width,
+                                yMin: 0, yMax: <CARTA.OpenFile>(ack.Responce[0]).fileInfoExtended.height,
+                            },
+                            ...assertItem.setContour,
+                        });
+
+                        let count: number = 0;
+                        while (count < assertItem.setContour.levels.length) {
+                            await Connection.receive(CARTA.ContourImageData)
+                                .then((contourImageData: CARTA.ContourImageData) => {
+                                    if (contourImageData.progress == 1) count++;
+                                });
+                        }
+
+                        clearInterval(monitor.id);
+                        if (monitor.data.cpu.length === 0) {
+                            await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                        } else {
+                            await AppendTxt(usageFile, monitor.data);
+                        }
+
+                        await Connection.send(CARTA.SetContourParameters, {
+                            fileId: 0,
+                            referenceFileId: 0,
+                        }); // Clear contour
+                    }, contourTimeout);
+
+                    test(`should wait ${config.wait.contour} ms`, async () => {
+                        await Wait(config.wait.contour);
+                    }, config.wait.contour + 500);
+                });
+
+                afterAll(async done => {
+                    await Connection.close();
+                    cartaBackend.kill();
+                    cartaBackend.on("close", () => done());
+                }, execTimeout);
+            });
+        });
+    }
 });
