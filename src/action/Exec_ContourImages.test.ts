@@ -108,7 +108,7 @@ testFiles.map(file => {
 
             describe(`open the file "${file}"`, () => {
                 let ack: AckStream;
-                test(`should return contour data`, async () => {
+                beforeAll(async () => {
                     await Connection.send(CARTA.OpenFile, {
                         file: file,
                         ...assertItem.fileOpen,
