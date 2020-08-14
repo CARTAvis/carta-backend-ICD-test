@@ -25,7 +25,7 @@ interface AssertItem {
     addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion;
-    importRegionAck: CARTA.ImportRegionAckExt;
+    importRegionAck: ImportRegionAckExt;
     exportRegion: CARTA.IExportRegion[];
     exportRegionAck: CARTA.IExportRegionAck[];
     importRegion2: CARTA.IImportRegion[];
