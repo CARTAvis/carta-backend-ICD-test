@@ -119,41 +119,39 @@ export async function
         timeout?: number,
 ) {
     return new Promise(resolve => {
-        fs.writeFile(logFile, "", () => {
-            let cartaBackend = child_process.execFile(
-                commandPath,
-                [
-                    backendPath,
-                    `root=base`,
-                    `base=${basePath}`,
-                    `port=${port}`,
-                    `threads=${threadNumber}`,
-                    `omp_threads=${ompThreadNumber}`,
-                    `verbose=true`,
-                ],
-                {
-                    timeout,
-                    maxBuffer: 128*1024*1024,
-                },
-            );
-            // cartaBackend.unref(); 
-            cartaBackend.on("error", error => {
-                if (config.log.error) {
-                    console.log("Error: " + error);
-                }
-            });
-            cartaBackend.stdout.on("data", data => {
-                if (config.log.verbose) {
-                    console.log(data.toString());
-                }
-                fs.appendFile(logFile, data, err => {
-                    if (err) {
-                        console.log("Write log file error: " + err);
-                    }
-                });
-            });
-            resolve(cartaBackend);
+        let cartaBackend = child_process.execFile(
+            commandPath,
+            [
+                backendPath,
+                `root=base`,
+                `base=${basePath}`,
+                `port=${port}`,
+                `threads=${threadNumber}`,
+                `omp_threads=${ompThreadNumber}`,
+                `verbose=true`,
+            ],
+            {
+                timeout,
+                maxBuffer: 128 * 1024 * 1024,
+            },
+        );
+        // cartaBackend.unref(); 
+        cartaBackend.on("error", error => {
+            if (config.log.error) {
+                console.log("Error: " + error);
+            }
         });
+        cartaBackend.stdout.on("data", data => {
+            if (config.log.verbose) {
+                console.log(data.toString());
+            }
+            fs.appendFile(logFile, data, err => {
+                if (err) {
+                    console.log("Write log file error: " + err);
+                }
+            });
+        });
+        resolve(cartaBackend);
     });
 }
 /// Create a psrecord monitor
