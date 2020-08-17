@@ -236,7 +236,7 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 expect(importRegionAck.success).toBe(assertItem.importRegionAck.success);
             });
 
-            test(`Length of IMPORT_REGION_ACK.region = ${assertItem.importRegionAck.regions.length}`, () => {
+            test(`Length of IMPORT_REGION_ACK.region = ${Object.keys(assertItem.importRegionAck.regions).length}`, () => {
                 expect(importRegionAckProperties.length).toEqual(Object.keys(assertItem.importRegionAck.regions).length);
             });
 
