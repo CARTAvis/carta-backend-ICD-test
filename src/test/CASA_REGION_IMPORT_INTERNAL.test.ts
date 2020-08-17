@@ -8,10 +8,6 @@ let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
 let importTimeout = config.timeout.import;
 
-// interface ImportRegionAckExt extends CARTA.ImportRegionAck {
-//     regionId?: number;
-// }
-
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
@@ -216,7 +212,7 @@ let assertItem: AssertItem = {
                 },
             },
         },
-    ],
+    ], g
 };
 
 describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made with CARTA", () => {
