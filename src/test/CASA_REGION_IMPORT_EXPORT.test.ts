@@ -228,8 +228,8 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 await Connection.send(CARTA.ImportRegion, assertItem.importRegion);
                 importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                 importRegionAckProperties = Object.keys(importRegionAck.regions)
-                console.log(importRegionAck)
-                console.log(importRegionAckProperties)
+                // console.log(importRegionAck)
+                // console.log(importRegionAckProperties)
             }, importTimeout);
 
             test(`IMPORT_REGION_ACK.success = ${assertItem.importRegionAck.success}`, () => {
