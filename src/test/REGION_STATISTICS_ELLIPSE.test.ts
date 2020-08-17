@@ -56,26 +56,32 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: -1,
-            regionName: "ellipse_1",
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 114, y: 545 }, { x: 4, y: 2 }],
-            rotation: 0.0,
+            regionInfo: {
+                // regionName: "ellipse_1",
+                regionType: CARTA.RegionType.ELLIPSE,
+                controlPoints: [{ x: 114, y: 545 }, { x: 4, y: 2 }],
+                rotation: 0.0,
+            }
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "ellipse_2",
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 83, y: 489 }, { x: 4, y: 3 }],
-            rotation: 30.0,
+            regionInfo: {
+                // regionName: "ellipse_2",
+                regionType: CARTA.RegionType.ELLIPSE,
+                controlPoints: [{ x: 83, y: 489 }, { x: 4, y: 3 }],
+                rotation: 30.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionName: "ellipse_3",
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 0, y: 486 }, { x: 4, y: 3 }],
-            rotation: 30.0,
+            regionInfo: {
+                // regionName: "ellipse_3",
+                regionType: CARTA.RegionType.ELLIPSE,
+                controlPoints: [{ x: 0, y: 486 }, { x: 4, y: 3 }],
+                rotation: 30.0,
+            },
         },
     ],
     regionAckGroup: [

@@ -19,7 +19,6 @@ interface AssertItem {
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     fileOpen: {
@@ -43,98 +42,110 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 197.0, y: 489.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 197.0, y: 489.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 306.0, y: 670.0 }, { x: 20.0, y: 48.0 }],
-            rotation: 27.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 306.0, y: 670.0 }, { x: 20.0, y: 48.0 }],
+                rotation: 27.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.ELLIPSE,
-            controlPoints: [{ x: 551.0, y: 330.0 }, { x: 30.0, y: 15.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.ELLIPSE,
+                controlPoints: [{ x: 551.0, y: 330.0 }, { x: 30.0, y: 15.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 580.0, y: 240.0 }, { x: 35.0, y: 35.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 580.0, y: 240.0 }, { x: 35.0, y: 35.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 552.0, y: 184.0 }, { x: 350.0, y: 18.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 552.0, y: 184.0 }, { x: 350.0, y: 18.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 635.0, y: 128.0 }, { x: 25.0, y: 48.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 635.0, y: 128.0 }, { x: 25.0, y: 48.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: -1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 694.0, y: 80.0 }, { x: 25.0, y: 33.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 694.0, y: 80.0 }, { x: 25.0, y: 33.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: 1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 84.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 84.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: 1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 43.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 43.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: 1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: -1.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: -1.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: 1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: -14.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: -14.0, y: 491.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
         {
             fileId: 0,
             regionId: 1,
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 197.0, y: 489.0 }, { x: 10.0, y: 10.0 }],
-            rotation: 0.0,
-            regionName: "",
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 197.0, y: 489.0 }, { x: 10.0, y: 10.0 }],
+                rotation: 0.0,
+            },
         },
     ],
     regionAck: [
@@ -152,7 +163,7 @@ let assertItem: AssertItem = {
         { regionId: 1 },
     ],
     precisionDigits: 4,
-}
+};
 
 describe("REGION_REGISTER: Testing region creation and modification", () => {
     let Connection: Client;
@@ -162,6 +173,10 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
         await Connection.send(CARTA.RegisterViewer, assertItem.register);
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
+
+    test(`Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.fileOpen.file}" to set image view`, () => {
 
@@ -179,7 +194,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
 
         assertItem.setRegion.map((region, index) => {
 
-            describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
+            describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.regionInfo.controlPoints)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, region);
@@ -215,10 +230,12 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
                         {
                             fileId: 0,
                             regionId: 3,
-                            regionName: "",
-                            regionType: CARTA.RegionType.ELLIPSE,
-                            controlPoint: [{ x: 551.0, y: 330.0 }, { x: 30.0, y: 15.0 }],
-                            rotation: 30.0,
+                            regionInfo: {
+                                regionName: "",
+                                regionType: CARTA.RegionType.ELLIPSE,
+                                controlPoint: [{ x: 551.0, y: 330.0 }, { x: 30.0, y: 15.0 }],
+                                rotation: 30.0,
+                            }
                         }
                     );
                     SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
