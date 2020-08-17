@@ -9,8 +9,7 @@ let connectTimeout = config.timeout.connection;
 let importTimeout = config.timeout.import;
 let exportTimeout = config.timeout.export;
 
-interface ImportRegionAckExt extends CARTA.IImportRegionAck {
-    regionId?: number;
+interface ImportRegionAckExt2 extends CARTA.IImportRegionAck {
     lengthOfRegions?: number;
     assertRegionId?: {
         index: number,
@@ -25,11 +24,11 @@ interface AssertItem {
     addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion;
-    importRegionAck: ImportRegionAckExt;
+    importRegionAck: CARTA.ImportRegionAck;
     exportRegion: CARTA.IExportRegion[];
     exportRegionAck: CARTA.IExportRegionAck[];
     importRegion2: CARTA.IImportRegion[];
-    importRegionAck2: ImportRegionAckExt[];
+    importRegionAck2: ImportRegionAckExt2[];
 };
 let assertItem: AssertItem = {
     register: {
@@ -67,59 +66,47 @@ let assertItem: AssertItem = {
     importRegionAck:
     {
         success: true,
-        regions: [
-            {
-                regionId: 1,
-                regionInfo: {
-                    regionType: CARTA.RegionType.RECTANGLE,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 40, y: 100 }],
-                },
+        regions: {
+            '1': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 40, y: 100 }],
+                regionType: CARTA.RegionType.RECTANGLE,
             },
-            {
-                regionId: 2,
-                regionInfo: {
-                    regionType: CARTA.RegionType.RECTANGLE,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 40 }],
-                },
+            '2': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 40 }],
+                regionType: CARTA.RegionType.RECTANGLE,
             },
-            {
-                regionId: 3,
-                regionInfo: {
-                    regionType: CARTA.RegionType.RECTANGLE,
-                    rotation: 45,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 40 }],
-                },
+            '3': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 40 }],
+                rotation: 45,
+                regionType: CARTA.RegionType.RECTANGLE,
             },
-            {
-                regionId: 4,
-                regionInfo: {
-                    regionType: CARTA.RegionType.POLYGON,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
-                },
+            '4': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
+                regionType: CARTA.RegionType.POLYGON,
             },
-            {
-                regionId: 5,
-                regionInfo: {
-                    regionType: CARTA.RegionType.ELLIPSE,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 200 }],
-                },
+            '5': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 200 }],
+                regionType: CARTA.RegionType.ELLIPSE,
             },
-            {
-                regionId: 6,
-                regionInfo: {
-                    regionType: CARTA.RegionType.ELLIPSE,
-                    rotation: 45,
-                    controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 20 }],
-                },
+            '6': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 20 }],
+                regionType: CARTA.RegionType.ELLIPSE,
+                rotation: 45,
             },
-            {
-                regionId: 7,
-                regionInfo: {
-                    regionType: CARTA.RegionType.POINT,
-                    controlPoints: [{ x: 320, y: 300 }],
-                },
+            '7': {
+                controlPoints: [{ x: 320, y: 300 }],
+                regionType: CARTA.RegionType.POINT,
             },
-        ],
+        },
+        regionStyles: {
+            '1': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '2': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '3': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '4': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '5': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '6': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '7': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+        },
     },
     exportRegion:
         [
@@ -236,12 +223,13 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
 
         describe(`Import "${assertItem.importRegion.file}"`, () => {
             let importRegionAck: CARTA.ImportRegionAck;
-            let importRegionAckProperties: any;
+            let importRegionAckProperties: any[];
             test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                 await Connection.send(CARTA.ImportRegion, assertItem.importRegion);
                 importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                 importRegionAckProperties = Object.keys(importRegionAck.regions)
-                // console.log(importRegionAck)
+                console.log(importRegionAck)
+                console.log(importRegionAckProperties)
             }, importTimeout);
 
             test(`IMPORT_REGION_ACK.success = ${assertItem.importRegionAck.success}`, () => {
@@ -249,16 +237,16 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
             });
 
             test(`Length of IMPORT_REGION_ACK.region = ${assertItem.importRegionAck.regions.length}`, () => {
-                expect(importRegionAckProperties.length).toEqual(assertItem.importRegionAck.regions.length);
+                expect(importRegionAckProperties.length).toEqual(Object.keys(assertItem.importRegionAck.regions).length);
             });
 
-            assertItem.importRegionAck.regions.map((region, index) => {
-                test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region.regionId}, Type:${CARTA.RegionType[region.regionInfo.regionType]}"`, () => {
-                    expect(importRegionAckProperties[index]).toEqual(String(region.regionId));
-                    expect(importRegionAck.regions.[importRegionAckProperties[index]].regionType).toEqual(region.regionInfo.regionType);
-                    if (region.regionInfo.rotation)
-                        expect(importRegionAck.regions.[importRegionAckProperties[index]].rotation).toEqual(region.regionInfo.rotation);
-                    expect(importRegionAck.regions.[importRegionAckProperties[index]].controlPoints).toEqual(region.regionInfo.controlPoints);
+            Object.keys(assertItem.importRegionAck.regions).map((region, index) => {
+                test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region}, Type:${CARTA.RegionType[assertItem.importRegionAck.regions[region].regionType]}"`, () => {
+                    expect(importRegionAckProperties[index]).toEqual(String(region));
+                    expect(importRegionAck.regions.[importRegionAckProperties[index]].regionType).toEqual(assertItem.importRegionAck.regions[region].regionType);
+                    if (assertItem.importRegionAck.regions[region].rotation)
+                        expect(importRegionAck.regions.[importRegionAckProperties[index]].rotation).toEqual(assertItem.importRegionAck.regions[region].rotation);
+                    expect(importRegionAck.regions.[importRegionAckProperties[index]].controlPoints).toEqual(assertItem.importRegionAck.regions[region].controlPoints);
                 });
             });
         });
@@ -289,7 +277,6 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                     await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                     importRegionAckProperties = Object.keys(importRegionAck.regions)
-                    // console.log(importRegionAck)
                 }, importTimeout);
 
                 test(`IMPORT_REGION_ACK.success = ${Region.success}`, () => {
