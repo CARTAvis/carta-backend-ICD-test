@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
@@ -15,7 +16,7 @@ interface AssertItem {
     addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion[];
-    importRegionAck: CARTA.ImportRegionAck;
+    importRegionAck: CARTA.IImportRegionAck[];
 };
 
 let assertItem: AssertItem = {
@@ -263,11 +264,11 @@ describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made 
                 Object.keys(assertItem.importRegionAck[idxRegion].regions).map((region, index) => {
                     test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region}, Type:${CARTA.RegionType[assertItem.importRegionAck[idxRegion].regions[region].regionType]}"`, () => {
                         expect(importRegionAckProperties[index]).toEqual(String(region));
-                        expect(importRegionAck.regions.[importRegionAckProperties[index]].regionType).toEqual(assertItem.importRegionAck[idxRegion].regions[region].regionType);
+                        expect(importRegionAck.regions[importRegionAckProperties[index]].regionType).toEqual(assertItem.importRegionAck[idxRegion].regions[region].regionType);
                         if (assertItem.importRegionAck[idxRegion].regions[region].rotation) {
-                            expect(importRegionAck.regions.[importRegionAckProperties[index]].rotation).toBeCloseTo(assertItem.importRegionAck[idxRegion].regions[region].rotation);
+                            expect(importRegionAck.regions[importRegionAckProperties[index]].rotation).toBeCloseTo(assertItem.importRegionAck[idxRegion].regions[region].rotation);
                         };
-                        importRegionAck.regions.[importRegionAckProperties[index]].controlPoints.map((point, idx) => {
+                        importRegionAck.regions[importRegionAckProperties[index]].controlPoints.map((point, idx) => {
                             expect(point.x).toBeCloseTo(assertItem.importRegionAck[idxRegion].regions[region].controlPoints[idx].x, assertItem.precisionDigits);
                             expect(point.y).toBeCloseTo(assertItem.importRegionAck[idxRegion].regions[region].controlPoints[idx].y, assertItem.precisionDigits);
                         });

@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
@@ -24,7 +25,7 @@ interface AssertItem {
     addTilesRequire: CARTA.IAddRequiredTiles;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion;
-    importRegionAck: CARTA.ImportRegionAck;
+    importRegionAck: CARTA.IImportRegionAck;
     exportRegion: CARTA.IExportRegion[];
     exportRegionAck: CARTA.IExportRegionAck[];
     importRegion2: CARTA.IImportRegion[];
@@ -243,10 +244,10 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
             Object.keys(assertItem.importRegionAck.regions).map((region, index) => {
                 test(`IMPORT_REGION_ACK.region[${index}] = "Id:${region}, Type:${CARTA.RegionType[assertItem.importRegionAck.regions[region].regionType]}"`, () => {
                     expect(importRegionAckProperties[index]).toEqual(String(region));
-                    expect(importRegionAck.regions.[importRegionAckProperties[index]].regionType).toEqual(assertItem.importRegionAck.regions[region].regionType);
+                    expect(importRegionAck.regions[importRegionAckProperties[index]].regionType).toEqual(assertItem.importRegionAck.regions[region].regionType);
                     if (assertItem.importRegionAck.regions[region].rotation)
-                        expect(importRegionAck.regions.[importRegionAckProperties[index]].rotation).toEqual(assertItem.importRegionAck.regions[region].rotation);
-                    expect(importRegionAck.regions.[importRegionAckProperties[index]].controlPoints).toEqual(assertItem.importRegionAck.regions[region].controlPoints);
+                        expect(importRegionAck.regions[importRegionAckProperties[index]].rotation).toEqual(assertItem.importRegionAck.regions[region].rotation);
+                    expect(importRegionAck.regions[importRegionAckProperties[index]].controlPoints).toEqual(assertItem.importRegionAck.regions[region].controlPoints);
                 });
             });
         });
