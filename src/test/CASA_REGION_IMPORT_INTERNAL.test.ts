@@ -212,7 +212,7 @@ let assertItem: AssertItem = {
                 },
             },
         },
-    ], g
+    ],
 };
 
 describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made with CARTA", () => {
