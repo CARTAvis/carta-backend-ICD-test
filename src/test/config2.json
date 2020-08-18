@@ -1,0 +1,45 @@
+{
+    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketicd",
+    "serverURLUbantu": "wss://cartaviewer.asiaa.sinica.edu.tw/socketicd",
+    "serverURLMac": "wss://almac.asiaa.sinica.edu.tw/socketicd",
+    "serverURL0": "ws://127.0.0.1:3002",
+    "path": {
+        "root": ".",
+        "base": "$BASE",
+        "directory": ".",
+        "QA": "set_QA",
+        "region": "set_QA/set_QA_regionTest",
+        "performance": "set_QA_performance"
+    },
+    "timeout": {
+        "connection": 500,
+        "listFile": 500,
+        "openFile": 3000,
+        "readFile": 3000,
+        "readLargeImage": 18000,
+        "changeChannel": 3000,
+        "playImages": 8000,
+        "cubeHistogram": 60000,
+        "cancel": 5000,
+        "concurrent": 4000,
+        "messageEvent": 500,
+        "mouseEvent": 1000,
+        "region": 500,
+        "import": 500,
+        "export": 500,
+        "resume": 3000,
+        "sleep":3000,
+        "playAnimator":10000
+    },
+    "repeat": {
+        "concurrent": 10,
+        "cursor": 10,
+        "image": 10,
+        "animation": 100
+    },
+    "log": {
+        "error": true,
+        "warning": true,
+        "event": true
+    }
+}
