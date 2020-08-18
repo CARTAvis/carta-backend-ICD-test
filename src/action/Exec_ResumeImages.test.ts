@@ -39,7 +39,6 @@ let assertItem: AssertItem = {
     resumeSession: {
         images: [
             {
-                file: testImage,
                 directory: testSubdirectory,
                 hdu: "",
                 fileId: 0,
