@@ -58,7 +58,8 @@ let assertItem: AssertItem = {
         deltaFrame: { channel: 1, stokes: 0 },
         requiredTiles: {
             fileId: 0,
-            tiles: [50343939, 50343938, 50339843, 50339842, 50348035,
+            tiles: [
+                50343939, 50343938, 50339843, 50339842, 50348035,
                 50343940, 50348034, 50339844, 50343937, 50335747,
                 50339841, 50335746, 50348036, 50348033, 50335748,
                 50335745, 50352131, 50343941, 50352130, 50339845,
@@ -67,7 +68,8 @@ let assertItem: AssertItem = {
                 50335744, 50331649, 50352133, 50356227, 50343942,
                 50356226, 50339846, 50352128, 50331653, 50356228,
                 50348038, 50331648, 50356225, 50335750, 50356229,
-                50352134, 50356224, 50331654, 50356230],
+                50352134, 50356224, 50331654, 50356230
+            ],
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 9,
         },
@@ -81,23 +83,27 @@ let assertItem: AssertItem = {
     },
 }
 let testFiles = [
-    "cube_A/cube_A_51200_z00100.fits",
-    "cube_A/cube_A_25600_z00100.fits",
-    "cube_A/cube_A_12800_z00100.fits",
-    "cube_A/cube_A_06400_z00100.fits",
-    "cube_A/cube_A_03200_z00100.fits",
     "cube_A/cube_A_01600_z00100.fits",
-    "cube_A/cube_A_51200_z00100.image",
-    "cube_A/cube_A_25600_z00100.image",
-    "cube_A/cube_A_12800_z00100.image",
-    "cube_A/cube_A_06400_z00100.image",
-    "cube_A/cube_A_03200_z00100.image",
     "cube_A/cube_A_01600_z00100.image",
-
-    "cube_A/cube_A_12800_z00100.hdf5",
-    "cube_A/cube_A_06400_z00100.hdf5",
-    "cube_A/cube_A_03200_z00100.hdf5",
     "cube_A/cube_A_01600_z00100.hdf5",
+
+    "cube_A/cube_A_03200_z00100.fits",
+    "cube_A/cube_A_03200_z00100.image",
+    "cube_A/cube_A_03200_z00100.hdf5",
+
+    "cube_A/cube_A_06400_z00100.fits",
+    "cube_A/cube_A_06400_z00100.image",
+    "cube_A/cube_A_06400_z00100.hdf5",
+
+    "cube_A/cube_A_12800_z00100.fits",
+    "cube_A/cube_A_12800_z00100.image",
+    "cube_A/cube_A_12800_z00100.hdf5",
+
+    "cube_A/cube_A_25600_z00100.fits",
+    "cube_A/cube_A_25600_z00100.image",
+
+    "cube_A/cube_A_51200_z00100.fits",
+    "cube_A/cube_A_51200_z00100.image",
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
