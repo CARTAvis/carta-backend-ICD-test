@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -39,7 +40,6 @@ let assertItem: AssertItem = {
         fileId: 0,
         hdu: "",
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
     precisionDigits: 4,
     setRegion:
@@ -47,177 +47,245 @@ let assertItem: AssertItem = {
             {
                 fileId: 0,
                 regionId: -1,   // 1
-                regionName: "",
-                regionType: CARTA.RegionType.POINT,
-                rotation: 0,
-                controlPoints: [{ x: -109.579, y: 618.563 }],
+                // regionName: "",
+                regionInfo: {
+                    regionType: CARTA.RegionType.POINT,
+                    rotation: 0,
+                    controlPoints: [{ x: -109.579, y: 618.563 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 2
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 0,
-                controlPoints: [{ x: -114.748, y: 508.708 }, { x: 90.468, y: 90.468 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 0,
+                    controlPoints: [{ x: -114.748, y: 508.708 }, { x: 90.468, y: 90.468 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 3
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 0,
-                controlPoints: [{ x: -114.748, y: 332.941 }, { x: 170.597, y: 64.620 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 0,
+                    controlPoints: [{ x: -114.748, y: 332.941 }, { x: 170.597, y: 64.620 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 4
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 45,
-                controlPoints: [{ x: -126.380, y: 167.512 }, { x: 149.919, y: 38.772 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 45,
+                    controlPoints: [{ x: -126.380, y: 167.512 }, { x: 149.919, y: 38.772 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 5
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 0,
-                controlPoints: [{ x: 758.918, y: 634.071 }, { x: 62.035, y: 62.035 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 0,
+                    controlPoints: [{ x: 758.918, y: 634.071 }, { x: 62.035, y: 62.035 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 6
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 0,
-                controlPoints: [{ x: 751.163, y: 444.088 }, { x: 29.725, y: 93.053 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 0,
+                    controlPoints: [{ x: 751.163, y: 444.088 }, { x: 29.725, y: 93.053 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 7
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 45,
-                controlPoints: [{ x: 749.871, y: 290.291 }, { x: 25.848, y: 84.006 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 45,
+                    controlPoints: [{ x: 749.871, y: 290.291 }, { x: 25.848, y: 84.006 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 8
-                regionName: "",
-                regionType: CARTA.RegionType.POLYGON,
-                rotation: 0,
-                controlPoints: [{ x: 757.626, y: 184.314 }, { x: 698.175, y: 66.7051 }, { x: 831.293, y: 106.769 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.POLYGON,
+                    rotation: 0,
+                    controlPoints: [{ x: 757.626, y: 184.314 }, { x: 698.175, y: 66.7051 }, { x: 831.293, y: 106.769 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 9
-                regionName: "",
-                regionType: CARTA.RegionType.POINT,
-                rotation: 0,
-                controlPoints: [{ x: 199.306, y: 565.574 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.POINT,
+                    rotation: 0,
+                    controlPoints: [{ x: 199.306, y: 565.574 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 10
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 0,
-                controlPoints: [{ x: 192.844, y: 473.813 }, { x: 67.205, y: 67.205 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 0,
+                    controlPoints: [{ x: 192.844, y: 473.813 }, { x: 67.205, y: 67.205 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 11
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 0,
-                controlPoints: [{ x: 174.750, y: 360.081 }, { x: 118.901, y: 46.526 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 0,
+                    controlPoints: [{ x: 174.750, y: 360.081 }, { x: 118.901, y: 46.526 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 12
-                regionName: "",
-                regionType: CARTA.RegionType.RECTANGLE,
-                rotation: 45,
-                controlPoints: [{ x: 204.475, y: 254.104 }, { x: 121.486, y: 46.526 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.RECTANGLE,
+                    rotation: 45,
+                    controlPoints: [{ x: 204.475, y: 254.104 }, { x: 121.486, y: 46.526 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 13
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 0,
-                controlPoints: [{ x: 415.138, y: 553.942 }, { x: 45.234, y: 45.234 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 0,
+                    controlPoints: [{ x: 415.138, y: 553.942 }, { x: 45.234, y: 45.234 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 14
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 0,
-                controlPoints: [{ x: 406.091, y: 423.409 }, { x: 20.678, y: 68.497 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 0,
+                    controlPoints: [{ x: 406.091, y: 423.409 }, { x: 20.678, y: 68.497 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 15
-                regionName: "",
-                regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 45,
-                controlPoints: [{ x: 399.629, y: 331.648 }, { x: 19.386, y: 71.082 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.ELLIPSE,
+                    rotation: 45,
+                    controlPoints: [{ x: 399.629, y: 331.648 }, { x: 19.386, y: 71.082 }],
+                },
             },
             {
                 fileId: 0,
                 regionId: -1,   // 16
-                regionName: "",
-                regionType: CARTA.RegionType.POLYGON,
-                rotation: 0,
-                controlPoints: [{ x: 416.430, y: 229.548 }, { x: 335.008, y: 92.553 }, { x: 513.361, y: 135.202 }],
+                regionInfo: {
+                    // regionName: "",
+                    regionType: CARTA.RegionType.POLYGON,
+                    rotation: 0,
+                    controlPoints: [{ x: 416.430, y: 229.548 }, { x: 335.008, y: 92.553 }, { x: 513.361, y: 135.202 }],
+                },
             },
         ],
     exportRegion:
         [
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.WORLD,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionStyles: {
+                    '1': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '2': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '3': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '4': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '5': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '10': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '11': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '12': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '13': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '14': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '15': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '16': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                },
+                // regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
             {
-                type: CARTA.FileType.CRTF,
                 coordType: CARTA.CoordinateType.PIXEL,
-                fileId: 0,
-                regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.crtf",
+                fileId: 0,
+                type: CARTA.FileType.CRTF,
+                regionStyles: {
+                    '1': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '2': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '3': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '4': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '5': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '10': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '11': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '12': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '13': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '14': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '15': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '16': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                },
+                // regionId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             },
         ],
     exportRegionAck:
         [
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
             {
                 success: true,
-                contents: [""],
+                contents: [],
             },
         ],
     importRegion:
         [
             {
-                groupId: 0,
-                type: CARTA.FileType.CRTF,
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.crtf",
-                contents: [],
-            },
-            {
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
+            },
+            {
+                contents: [],
                 directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.crtf",
-                contents: [],
+                groupId: 0,
+                type: CARTA.FileType.CRTF,
             },
         ],
     importRegionAck:
@@ -269,6 +337,7 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
                     exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
+                    // console.log(exportRegionAck)
                 }, exportTimeout);
 
                 test(`EXPORT_REGION_ACK.success = ${exRegion.success}`, () => {
@@ -284,9 +353,11 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
         assertItem.importRegionAck.map((Region, idxRegion) => {
             describe(`Import "${assertItem.importRegion[idxRegion].file}"`, () => {
                 let importRegionAck: CARTA.ImportRegionAck;
+                let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                    importRegionAckProperties = Object.keys(importRegionAck.regions)
                 }, importTimeout);
 
                 test(`IMPORT_REGION_ACK.success = ${Region.success}`, () => {
@@ -294,11 +365,11 @@ describe("CASA_REGION_EXPORT test: Testing export of CASA region to a file", () 
                 });
 
                 test(`Length of IMPORT_REGION_ACK.regions = ${Region.lengthOfRegions}`, () => {
-                    expect(importRegionAck.regions.length).toEqual(Region.lengthOfRegions);
+                    expect(importRegionAckProperties.length).toEqual(Region.lengthOfRegions);
                 });
 
                 test(`IMPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
-                    expect(importRegionAck.regions[Region.assertRegionId.index].regionId).toEqual(Region.assertRegionId.id);
+                    expect(importRegionAckProperties[importRegionAckProperties.length - 1]).toEqual(String(Region.assertRegionId.id));
                 });
             });
         });

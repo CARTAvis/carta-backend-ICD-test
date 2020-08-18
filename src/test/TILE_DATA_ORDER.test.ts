@@ -1,50 +1,49 @@
 import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
+let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
-interface SetImageChannelsExt extends CARTA.ISetImageChannels {
+
+interface SetIAddRequiredTilesExt extends CARTA.IAddRequiredTiles {
     rank: number;
-}
+};
 interface AssertItem {
     precisionDigit: number;
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     fileOpenAck: CARTA.IOpenFileAck;
-    regionHistogram: CARTA.IRegionHistogramData;
-    setImageChannel: SetImageChannelsExt[];
-}
+    initTilesReq: CARTA.IAddRequiredTilesExt[];
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialReq: CARTA.ISetSpatialRequirements;
+};
+
 let assertItem: AssertItem = {
     precisionDigit: 4,
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
     fileOpen: {
         directory: testSubdirectory,
         file: "cluster_04096.fits",
-        hdu: "",
+        hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
-        tileSize: 256,
     },
-    fileOpenAck: {},
-    regionHistogram: {},
-    setImageChannel: [
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            rank: 9,
-            requiredTiles: {
+    initTilesReq:
+        [
+            {
                 fileId: 0,
-                tiles: [
-                    50343939,
+                compressionQuality: 11,
+                compressionType: CARTA.CompressionType.ZFP,
+                rank: 9,
+                tiles: [50343939,
                     50348035,
                     50348036,
                     50343940,
@@ -92,21 +91,14 @@ let assertItem: AssertItem = {
                     50343936,
                     50348032,
                     50352128,
-                    50356224,
-                ],
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
+                    50356224]
             },
-        },
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            rank: 9,
-            requiredTiles: {
+            {
                 fileId: 0,
-                tiles: [
-                    33558529,
+                compressionQuality: 11,
+                compressionType: CARTA.CompressionType.ZFP,
+                rank: 9,
+                tiles: [33558529,
                     33562625,
                     33562626,
                     33558530,
@@ -121,33 +113,21 @@ let assertItem: AssertItem = {
                     33566723,
                     33562627,
                     33558531,
-                    33554435,
-                ],
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
+                    33554435]
             },
-        },
-        {
-            fileId: 0,
-            channel: 0,
-            stokes: 0,
-            rank: 2,
-            requiredTiles: {
-                fileId: 0,
-                tiles: [
-                    16777216,
-                    16781312,
-                    16781313,
-                    16777217,
-                ],
-                compressionType: CARTA.CompressionType.ZFP,
-                compressionQuality: 11,
-            },
-        },
-    ],
-}
+        ],
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialReq: {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"]
+    },
+};
 
-describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
+describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -156,32 +136,54 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
-    assertItem.setImageChannel.map(setImageChannel => {
+    test(`(Step 0) Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
+    assertItem.initTilesReq.map((initTilesReq, index) => {
         describe(`Go to "${testSubdirectory}" folder`, () => {
 
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
             });
 
-            describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}" with ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {
+            test(`OpenFileAck? | `, async () => {
+                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+                let temp1 = await Connection.receive(CARTA.OpenFileAck)
+                // console.log(temp1)
+            }, openFileTimeout);
+
+            test(`RegionHistogramData? | `, async () => {
+                let temp2 = await Connection.receive(CARTA.RegionHistogramData);
+                // console.log(temp2)
+            }, openFileTimeout);
+
+            let RasterTileDataTemp: CARTA.RasterTileData;
+
+            describe(`RASTER_TILE_DATA on the file "${assertItem.fileOpen.file}"`, () => {
+
                 let ack: AckStream;
-                test(`RASTER_TILE_DATA x${setImageChannel.requiredTiles.tiles.length} should arrive within ${readFileTimeout} ms`, async () => {
-                    await Connection.send(CARTA.SetImageChannels, setImageChannel);
-                    ack = await Connection.stream(setImageChannel.requiredTiles.tiles.length) as AckStream;
-                    expect(ack.RasterTileData.length).toEqual(setImageChannel.requiredTiles.tiles.length);
+                test(`RasterTileData * ${initTilesReq.tiles.length} + SpatialProfileData * 1 + RasterTileSync *2 (start & end)? |`, async () => {
+                    await Connection.send(CARTA.AddRequiredTiles, initTilesReq);
+                    await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+                    await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
+                    ack = await Connection.stream(initTilesReq.tiles.length + 3) as AckStream;
+                    // console.log(ack);
                 }, readFileTimeout);
 
-                test(`Tile "${setImageChannel.requiredTiles.tiles[0]}" should return within the ${setImageChannel.rank > 2 ? setImageChannel.rank + "th" : setImageChannel.rank > 1 ? setImageChannel.rank + "nd" : setImageChannel.rank + "st"} rank`, () => {
-                    let _encodeTile = (ack.RasterTileData[0].tiles[0].layer << 24) | (ack.RasterTileData[0].tiles[0].y << 12) | ack.RasterTileData[0].tiles[0].x;
-                    expect(setImageChannel.requiredTiles.tiles.slice(0, setImageChannel.rank).findIndex(f => f === _encodeTile) >= 0).toBe(true);
+                test(`Check len(RasterTileData) = ${initTilesReq.tiles.length} ? |`, () => {
+                    let RasterTileDataTemp = ack.RasterTileData
+                    expect(RasterTileDataTemp.length).toBe(initTilesReq.tiles.length)
                 });
 
-                test(`RASTER_TILE_DATA.tiles should contain ${setImageChannel.requiredTiles.tiles.length} tiles`, () => {
+                test(`Tile "${initTilesReq.tiles[0]}" should return within the ${initTilesReq.rank > 2 ? initTilesReq.rank + "th" : initTilesReq.rank > 1 ? initTilesReq.rank + "nd" : initTilesReq.rank + "st"} rank`, () => {
+                    let _encodeTile = (ack.RasterTileData[0].tiles[0].layer << 24) | (ack.RasterTileData[0].tiles[0].y << 12) | ack.RasterTileData[0].tiles[0].x;
+                    expect(initTilesReq.tiles.slice(0, initTilesReq.rank).findIndex(f => f === _encodeTile) >= 0).toBe(true);
+                });
+
+                test(`RASTER_TILE_DATA.tiles should contain ${initTilesReq.tiles.length} tiles`, () => {
                     let _seq: number[] = [];
-                    setImageChannel.requiredTiles.tiles.map(tile => {
+                    initTilesReq.tiles.map(tile => {
                         let _index: number = ack.RasterTileData.findIndex(data => ((data.tiles[0].layer << 24) | (data.tiles[0].y << 12) | data.tiles[0].x) === tile);
                         expect(_index).toBeGreaterThanOrEqual(0);
                         _seq.push(_index + 1);
@@ -192,6 +194,5 @@ describe(`TILE_DATA_ORDER test: Testing the order of returning tiles`, () => {
             });
         });
     });
-
     afterAll(() => Connection.close());
 });

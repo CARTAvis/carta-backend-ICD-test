@@ -1,5 +1,6 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -18,6 +19,8 @@ interface ISpectralProfileData extends CARTA.ISpectralProfileData {
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
+    setCursor: CARTA.ISetCursor;
+    addTilesRequire: CARTA.IAddRequiredTiles;
     setImageChannels: CARTA.ISetImageChannels[];
     setRegion: CARTA.ISetRegion[];
     regionAck: CARTA.ISetRegionAck[];
@@ -38,7 +41,6 @@ let assertItem: AssertItem = {
             fileId: 0,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -46,9 +48,24 @@ let assertItem: AssertItem = {
             fileId: 0,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
     ],
+    setCursor: {
+        fileId: 0,
+        point: { x: 1.0, y: 1.0 },
+        spatialRequirements: {
+            fileId: 0,
+            regionId: 0,
+            spatialProfiles: []
+        },
+    },
+    addTilesRequire:
+    {
+        tiles: [0],
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+    },
     setImageChannels: [
         {
             fileId: 0,
@@ -76,10 +93,11 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: -1,
-            regionName: "",
-            regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 522, y: 522 }, { x: 10, y: 10 }],
-            rotation: 0.0,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 522, y: 522 }, { x: 10, y: 10 }],
+                rotation: 0.0,
+            },
         },
     ],
     regionAck: [
@@ -173,7 +191,7 @@ let assertItem: AssertItem = {
             profile: [
                 {
                     coordinate: "Vz",
-                    message: "Spectral requirements for region id 1 failed to validate ",
+                    message: "Spectral requirements not valid for region id 1",
                     severity: 3,
                     tags: ["spectral"],
                 },
@@ -200,11 +218,12 @@ describe("REGION_SPECTRAL_PROFILE_STOKES test: Testing spectral profiler with re
                 await Connection.send(CARTA.OpenFile, openFile);
                 await Connection.receiveAny();
                 await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels[0]);
-                await Connection.receive(CARTA.RasterTileData);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                await Connection.stream(4) as AckStream;
             });
 
-            describe(`${assertItem.setRegion[0].regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[assertItem.setRegion[0].regionType]} region #${assertItem.regionAck[0].regionId} on ${JSON.stringify(assertItem.setRegion[0].controlPoints)}`, () => {
+            describe(`${assertItem.setRegion[0].regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[assertItem.setRegion[0].regionInfo.regionType]} region #${assertItem.regionAck[0].regionId} on ${JSON.stringify(assertItem.setRegion[0].regionInfo.controlPoints)}`, () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);

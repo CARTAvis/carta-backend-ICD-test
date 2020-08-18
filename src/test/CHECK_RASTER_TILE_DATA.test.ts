@@ -6,6 +6,7 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
+
 interface IRasterTileDataExt extends CARTA.IRasterTileData {
     assert: {
         lengthTiles: number,
@@ -19,10 +20,11 @@ interface IRasterTileDataExt extends CARTA.IRasterTileData {
 interface AssertItem {
     precisionDigit: number;
     register: CARTA.IRegisterViewer;
-    filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     fileOpenAck: CARTA.IOpenFileAck;
-    regionHistogram: CARTA.IRegionHistogramData;
+    initTilesReq: CARTA.IAddRequiredTiles;
+    initSetCursor: CARTA.ISetCursor;
+    initSpatialReq: CARTA.ISetSpatialRequirements;
     setImageChannel: CARTA.ISetImageChannels;
     rasterTileData: IRasterTileDataExt;
     addRequiredTilesGroup: CARTA.IAddRequiredTiles[];
@@ -32,26 +34,33 @@ let assertItem: AssertItem = {
     precisionDigit: 4,
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
-    filelist: { directory: testSubdirectory },
     fileOpen: {
         directory: testSubdirectory,
         file: "cluster_04096.fits",
-        hdu: "",
+        hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
-        // tileSize: 256,
     },
     fileOpenAck: {
         success: true,
         fileFeatureFlags: 0,
-        // tileSize: 256,
     },
-    regionHistogram: {
+    initTilesReq: {
         fileId: 0,
-        stokes: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.NONE,
+        tiles: [0],
+    },
+    initSetCursor: {
+        fileId: 0,
+        point: { x: 1, y: 1 },
+    },
+    initSpatialReq: {
+        fileId: 0,
+        regionId: 0,
+        spatialProfiles: ["x", "y"]
     },
     setImageChannel: {
         fileId: 0,
@@ -186,7 +195,7 @@ let assertItem: AssertItem = {
             }
         },
     ],
-}
+};
 
 describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {
     let Connection: Client;
@@ -197,31 +206,37 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         await Connection.receive(CARTA.RegisterViewerAck);
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder`, () => {
+    test(`(Step 0) Connection open? | `, () => {
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+    });
 
+    describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
         });
 
-        describe(`Open image "${assertItem.fileOpen.file}"`, () => {
-            let OpenFileAckTemp: CARTA.OpenFileAck;
-            let ack: any[] = [];
-            test(`OPEN_FILE_ACK should arrive within ${openFileTimeout} ms.`, async () => {
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                ack.push(await Connection.receiveAny());
-                ack.push(await Connection.receiveAny()); // OpenFileAck | RegionHistogramData
-            }, openFileTimeout);
+        test(`OpenFileAck? | `, async () => {
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+            let temp1 = await Connection.receive(CARTA.OpenFileAck)
+            // console.log(temp1)
+        }, openFileTimeout);
 
-            test(`OPEN_FILE_ACK.success = ${assertItem.fileOpenAck.success}`, () => {
-                OpenFileAckTemp = ack.find(r => r.constructor.name === CARTA.OpenFileAck.name) as CARTA.OpenFileAck;
-                expect(OpenFileAckTemp.success).toBe(assertItem.fileOpenAck.success);
-            });
+        test(`RegionHistogramData (would pass over if trying several times)? | `, async () => {
+            let temp2 = await Connection.receive(CARTA.RegionHistogramData);
+            // console.log(temp2)
+        }, openFileTimeout);
 
-            // test(`OPEN_FILE_ACK.file_info.tile_size = ${assertItem.fileOpenAck.tileSize}`, () => {
-            //     expect(OpenFileAckTemp.tileSize).toEqual(assertItem.fileOpenAck.tileSize);
-            // });
-
-        });
+        let ack: AckStream;
+        let RasterTileDataTemp: CARTA.RasterTileData;
+        test(`RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)?`, async () => {
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+            await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
+            ack = await Connection.stream(4) as AckStream;
+            console.log(ack)
+            RasterTileDataTemp = ack.RasterTileData
+        }, readFileTimeout);
 
         describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}"`, () => {
             let RasterTileDataTemp: CARTA.RasterTileData;
@@ -279,12 +294,16 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
 
         });
 
+
         assertItem.rasterTileDataGroup.map((rasterTileData, index) => {
             describe(`ADD_REQUIRED_TILES [${assertItem.addRequiredTilesGroup[index].tiles}]`, () => {
                 let RasterTileDataTemp: CARTA.RasterTileData;
+                let ack2: AckStream;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                    RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                    let ack2 = await Connection.stream(3) as AckStream;
+                    RasterTileDataTemp = ack2.RasterTileData[0];
+                    // console.log(RasterTileDataTemp)
                 }, readFileTimeout);
 
                 test(`RASTER_TILE_DATA.file_id = ${rasterTileData.fileId}`, () => {
@@ -336,7 +355,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
 
             });
         });
-    });
 
+
+    });
     afterAll(() => Connection.close());
 });
