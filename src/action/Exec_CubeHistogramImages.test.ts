@@ -85,6 +85,11 @@ testFiles.map(file => {
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_cubeHistogram.txt";
         let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_cubeHistogram_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile);
+        });
+
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -99,7 +104,6 @@ testFiles.map(file => {
                 await Connection.open();
                 await Connection.send(CARTA.RegisterViewer, assertItem.register);
                 await Connection.receive(CARTA.RegisterViewerAck);
-                await EmptyTxt(usageFile);
             }, connectTimeout);
 
             describe(`start the action`, () => {

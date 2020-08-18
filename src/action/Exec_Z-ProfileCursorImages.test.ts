@@ -83,6 +83,11 @@ testFiles.map(file => {
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileCursor.txt";
         let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileCursor_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile);
+        });
+
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -112,7 +117,6 @@ testFiles.map(file => {
                 test(`should get z-profile`, async () => {
                     const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                    await EmptyTxt(usageFile);
                     for (let idx = 0; idx < cursorRepeat; idx++) {
                         await Connection.send(CARTA.SetCursor, {
                             ...assertItem.setCursor,

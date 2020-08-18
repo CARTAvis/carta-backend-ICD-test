@@ -79,6 +79,11 @@ describe("Zoom Out Iamge action: ", () => {
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZoomOut.txt";
     let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZoomOut_usage.txt";
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
+    });
+
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
@@ -86,7 +91,7 @@ describe("Zoom Out Iamge action: ", () => {
         );
         await Wait(config.wait.exec);
     }, execTimeout + config.wait.exec);
-    
+
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
             Connection = new Client(testServerUrl);
@@ -110,7 +115,6 @@ describe("Zoom Out Iamge action: ", () => {
                         }
                     }
                 }
-                await EmptyTxt(usageFile);
             }, readTimeout);;
 
             for (let idx: number = 0; idx < zoomRepeat; idx++) {

@@ -81,13 +81,17 @@ describe("Resume action: ", () => {
     let cartaBackend: any;
     let logFile = testImage.substr(testImage.search('/') + 1).replace('.', '_') + "_resume.txt";
     let usageFile = testImage.substr(testImage.search('/') + 1).replace('.', '_') + "_resume_usage.txt";
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
+    });
+
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
         await Wait(config.wait.exec);
-        await EmptyTxt(usageFile);
     }, execTimeout + config.wait.exec);
 
     for (let idx = 0; idx < resumeRepeat; idx++) {

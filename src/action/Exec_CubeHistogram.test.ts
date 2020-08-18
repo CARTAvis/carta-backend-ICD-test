@@ -63,6 +63,11 @@ describe("Cube histogram action: ", () => {
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_cubeHistogram.txt";
     let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_cubeHistogram_usage.txt";
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
+    });
+
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
@@ -77,7 +82,6 @@ describe("Cube histogram action: ", () => {
             await Connection.open();
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             await Connection.receive(CARTA.RegisterViewerAck);
-            await EmptyTxt(usageFile);
         }, connectTimeout);
 
         describe(`open the file "${assertItem.fileOpen.file}"`, () => {

@@ -83,6 +83,11 @@ testFiles.map(file => {
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileRegion.txt";
         let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileRegion_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile);
+        });
+
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -117,7 +122,6 @@ testFiles.map(file => {
                     await Connection.receiveAny();
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                     await Connection.receiveAny();
-                    await EmptyTxt(usageFile);
 
                     for (let idx = 0; idx < cursorRepeat; idx++) {
                         let Dx = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width * (.4 + .2 * Math.random()));

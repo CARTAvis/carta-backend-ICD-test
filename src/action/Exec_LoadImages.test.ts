@@ -40,10 +40,12 @@ let assertItem: AssertItem = {
     },
     addTilesReq:
     {
-        tiles: [33558529, 33562625, 33558528, 33558530,
+        tiles: [
+            33558529, 33562625, 33558528, 33558530,
             33554433, 33562624, 33562626, 33554432,
             33554434, 33566721, 33558531, 33566720,
-            33566722, 33562627, 33554435, 33566723],
+            33566722, 33562627, 33554435, 33566723
+        ],
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
@@ -76,6 +78,12 @@ testFiles.map(file => {
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_loadImage.txt";
         let usageFile_openFile = file.substr(file.search('/') + 1).replace('.', '_') + "_openfile_usage.txt";
         let usageFile_tile = file.substr(file.search('/') + 1).replace('.', '_') + "_tile_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile_openFile);
+            await EmptyTxt(usageFile_tile);
+        });
+
         beforeAll(async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
@@ -92,8 +100,6 @@ testFiles.map(file => {
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.FileListRequest, assertItem.filelist);
                 await Connection.receive(CARTA.FileListResponse);
-                await EmptyTxt(usageFile_openFile);
-                await EmptyTxt(usageFile_tile);
             }, listTimeout);
 
             describe(`open the file "${file}"`, () => {

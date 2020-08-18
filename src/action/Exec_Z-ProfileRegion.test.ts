@@ -54,6 +54,11 @@ describe("Z profile cursor action: ", () => {
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZProfileRegion.txt";
     let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZProfileRegion_usage.txt";
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
+    });
+
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
@@ -85,7 +90,6 @@ describe("Z profile cursor action: ", () => {
                 await Connection.receiveAny();
                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                 await Connection.receiveAny();
-                await EmptyTxt(usageFile);
 
                 for (let idx = 0; idx < cursorRepeat; idx++) {
                     let Dx = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width * (.4 + .2 * Math.random()));
