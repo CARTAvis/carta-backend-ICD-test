@@ -32,7 +32,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 1200,
+        "mouseEvent": 4200,
         "region": 20100,
         "regionLargeImage": 610000,
         "import": 500,
@@ -50,20 +50,20 @@
     "wait": {
         "exec": 2000,
         "resume": 2000,
-        "contour": 500,
+        "contour": 1000,
         "histogram": 1000,
         "zoom": 400,
         "cursor": 500,
-        "monitor": 50
+        "monitor": 20
     },
     "repeat": {
         "concurrent": 10,
-        "cursor": 20,
+        "cursor": 10,
         "region": 10,
         "image": 20,
         "animation": 10,
         "resumeSession": 10,
-        "contour": 20,
+        "contour": 10,
         "zoom": 5,
         "cubeHistogram": 10
     },
