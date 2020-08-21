@@ -61,7 +61,7 @@ let assertItem: AssertItem = {
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
         decimationFactor: 4,
-        compressionLevel: 8,
+        compressionLevel: 0,
         contourChunkSize: 100000,
     },
 }

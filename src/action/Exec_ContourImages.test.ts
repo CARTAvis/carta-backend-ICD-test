@@ -59,7 +59,7 @@ let assertItem: AssertItem = {
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
         decimationFactor: 4,
-        compressionLevel: 8,
+        compressionLevel: 0,
         contourChunkSize: 100000,
     },
 }
@@ -128,7 +128,6 @@ testFiles.map(file => {
                             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                             while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
-                            await EmptyTxt(usageFile);
                         }, readfileTimeout);
 
                         test(`should return contour data`, async () => {
