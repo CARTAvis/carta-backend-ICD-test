@@ -58,13 +58,13 @@
     },
     "repeat": {
         "concurrent": 10,
-        "cursor": 10,
+        "cursor": 20,
         "region": 10,
         "image": 20,
         "animation": 10,
         "resumeSession": 10,
         "contour": 10,
-        "zoom": 5,
+        "zoom": 20,
         "cubeHistogram": 10
     },
     "log": {
