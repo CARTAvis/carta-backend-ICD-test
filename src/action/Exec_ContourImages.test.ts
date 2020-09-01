@@ -160,9 +160,9 @@ testFiles.map(file => {
                             }); // Clear contour
                         }, contourTimeout);
 
-                        test(`should wait ${config.wait.contour} ms`, async () => {
-                            await Wait(config.wait.contour);
-                        }, config.wait.contour + 500);
+                        // test(`should wait ${config.wait.contour} ms`, async () => {
+                        //     await Wait(config.wait.contour);
+                        // }, config.wait.contour + 500);
 
                     });
 
