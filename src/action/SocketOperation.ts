@@ -128,7 +128,7 @@ export async function
                 `port=${port}`,
                 `threads=${threadNumber}`,
                 `omp_threads=${ompThreadNumber}`,
-                `verbose=true`,
+                `perflog=true`,
             ],
             {
                 timeout,
