@@ -70,15 +70,15 @@ let assertItem: AssertItem = {
 }
 let testMainThreads = [
     2, 4,
-    // 6, 8,
-    // 10, 12,
-    // 14, 16,
+    6, 8,
+    10, 12,
+    14, 16,
 ];
 let testOmpThreads = [
     4, 8,
-    // 12, 16,
-    // 20, 24,
-    // 28, 32,
+    12, 16,
+    20, 24,
+    28, 32,
 ];
 testMainThreads.map(mainThread => {
     testOmpThreads.map(ompThread => {
