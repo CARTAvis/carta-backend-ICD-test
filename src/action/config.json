@@ -2,9 +2,9 @@
     "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
     "serverURL0": "ws://127.0.0.1:3002",
     "localHost": "ws://localhost",
-    "port": 5011,
+    "port": 5050,
     "thread": {
-        "main": 4,
+        "main": 8,
         "openmp": 32
     },
     "path": {
@@ -20,10 +20,10 @@
         "cube": "cube_A/cube_A_01600_z00100.fits"
     },
     "timeout": {
-        "connection": 1000,
-        "listFile": 1100,
-        "openFile": 3100,
-        "readFile": 5200,
+        "connection": 2000,
+        "listFile": 3100,
+        "openFile": 9100,
+        "readFile": 10200,
         "readLargeImage": 91000,
         "changeChannel": 3200,
         "playImages": 3300,
@@ -32,7 +32,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 1200,
+        "mouseEvent": 4200,
         "region": 20100,
         "regionLargeImage": 610000,
         "import": 500,
@@ -42,18 +42,19 @@
         "sleep": 3500,
         "playAnimator": 5300,
         "playLargeAnimator": 66000,
-        "contour": 5400,
-        "contourLargeImage": 85000,
+        "contour": 20600,
+        "contourLargeImage": 250000,
         "zoom": 7500,
         "execute": 1500
     },
     "wait": {
-        "exec": 400,
+        "exec": 2000,
         "resume": 2000,
-        "contour": 800,
+        "contour": 1000,
         "histogram": 1000,
         "zoom": 400,
-        "cursor": 500
+        "cursor": 500,
+        "monitor": 20
     },
     "repeat": {
         "concurrent": 10,
@@ -62,8 +63,8 @@
         "image": 20,
         "animation": 10,
         "resumeSession": 10,
-        "contour": 20,
-        "zoom": 5,
+        "contour": 10,
+        "zoom": 20,
         "cubeHistogram": 10
     },
     "log": {

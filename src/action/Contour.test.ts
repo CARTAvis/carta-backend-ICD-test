@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
-let testImage: string = config.image.cube;
+let testImage: string = config.image.singleChannel;
 let testSubdirectory: string = config.path.performance;
 let connectTimeout: number = config.timeout.connection;
 let openfileTimeout: number = config.timeout.openFile;
@@ -52,11 +52,10 @@ let assertItem: AssertItem = {
         referenceFileId: 0,
         imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
         levels: [
-            2.7,
-            4.2,
-            6.0,
-            7.5,
-            9.4,
+            1.27, 2.0, 2.2, 3.0,
+            3.75, 4.0, 4.99, 5.2,
+            6.23, 6.6, 7.47, 7.8,
+            8.71, 9.0, 9.95, 10.2,
         ],
         smoothingMode: CARTA.SmoothingMode.GaussianBlur,
         smoothingFactor: 4,
@@ -87,10 +86,9 @@ describe("Contour action: ", () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 ack = await Connection.stream(2) as AckStream; // OpenFileAck | RegionHistogramData
-
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.stream(4) as AckStream;
+                while ((await Connection.receiveAny() as CARTA.RasterTileSync).endSync) { }
             }, openfileTimeout);
 
             for (let idx: number = 0; idx < contourRepeat; idx++) {
@@ -102,12 +100,11 @@ describe("Contour action: ", () => {
                         },
                         ...assertItem.setContour,
                     });
-                    let contourImageData = await Connection.receive(CARTA.ContourImageData);
+
                     let count: number = 0;
-                    if (contourImageData.progress == 1) count++;
 
                     while (count < assertItem.setContour.levels.length) {
-                        contourImageData = await Connection.receive(CARTA.ContourImageData);
+                        let contourImageData = await Connection.receive(CARTA.ContourImageData);
                         if (contourImageData.progress == 1) count++;
                     }
                     await Connection.send(CARTA.SetContourParameters, {

@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -9,6 +9,7 @@ let connectTimeout: number = config.timeout.connection;
 let fileopenTimeout: number = config.timeout.readLargeImage;
 let cursorTimeout: number = config.timeout.regionLargeImage;
 let cursorRepeat: number = config.repeat.region;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -32,10 +33,11 @@ let assertItem: AssertItem = {
     setRegion: {
         fileId: 0,
         regionId: 1,
-        regionName: "",
-        regionType: CARTA.RegionType.RECTANGLE,
-        controlPoints: [{ x: 50, y: 50 }, { x: 0, y: 0 }],
-        rotation: 0.0,
+        regionInfo: {
+            regionType: CARTA.RegionType.RECTANGLE,
+            controlPoints: [{ x: 50, y: 50 }, { x: 0, y: 0 }],
+            rotation: 0.0,
+        },
     },
     setSpectralRequirements: {
         fileId: 0,
@@ -68,7 +70,7 @@ let testFiles = [
 
     "cube_A/cube_A_12800_z00100.fits",
     "cube_A/cube_A_12800_z00100.image",
-    "cube_A/cube_A_12800_z00100.hdf5", 
+    "cube_A/cube_A_12800_z00100.hdf5",
     "cube_A/cube_A_25600_z00100.fits",
     "cube_A/cube_A_25600_z00100.image",
     "cube_A/cube_A_51200_z00100.fits",
@@ -80,12 +82,18 @@ testFiles.map(file => {
         let Connection: Client;
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileRegion.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_ZProfileRegion_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile);
+        });
+
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
                 config.port,
             );
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+            await Wait(config.wait.exec);
         }, execTimeout + config.wait.exec);
 
         describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
@@ -120,21 +128,31 @@ testFiles.map(file => {
                         let Dy = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.height * (.4 + .2 * Math.random()));
                         await Connection.send(CARTA.SetRegion, {
                             ...assertItem.setRegion,
-                            controlPoints: [
-                                {
-                                    x: Dx + assertItem.setRegion.controlPoints[0].x * .5,
-                                    y: Dy + assertItem.setRegion.controlPoints[0].y * .5,
-                                },
-                                {
-                                    x: Dx - assertItem.setRegion.controlPoints[0].x * .5,
-                                    y: Dy - assertItem.setRegion.controlPoints[0].y * .5,
-                                },
-                            ],
+                            regionInfo: {
+                                ...assertItem.setRegion.regionInfo,
+                                controlPoints: [
+                                    {
+                                        x: Dx - assertItem.setRegion.regionInfo.controlPoints[0].x * .5,
+                                        y: Dy - assertItem.setRegion.regionInfo.controlPoints[0].y * .5,
+                                    },
+                                    {
+                                        x: Dx + assertItem.setRegion.regionInfo.controlPoints[0].x * .5,
+                                        y: Dy + assertItem.setRegion.regionInfo.controlPoints[0].y * .5,
+                                    },
+                                ],
+                            },
                         });
                         await Connection.receiveAny();
+                        let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                         while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
-                        await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
+                        clearInterval(monitor.id);
+                        if (monitor.data.cpu.length === 0) {
+                            await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                        } else {
+                            await AppendTxt(usageFile, monitor.data);
+                        }
+                        await Wait(config.wait.cursor);
                     }
 
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });

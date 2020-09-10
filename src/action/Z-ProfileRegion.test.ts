@@ -34,10 +34,11 @@ let assertItem: AssertItem = {
     setRegion: {
         fileId: 0,
         regionId: 1,
-        regionName: "",
-        regionType: CARTA.RegionType.RECTANGLE,
-        controlPoints: [{ x: 50, y: 50 }, { x: 0, y: 0 }],
-        rotation: 0.0,
+        regionInfo: {
+            regionType: CARTA.RegionType.RECTANGLE,
+            controlPoints: [{ x: 50, y: 50 }, { x: 0, y: 0 }],
+            rotation: 0.0,
+        },
     },
     setSpectralRequirements: {
         fileId: 0,
@@ -73,8 +74,8 @@ describe("Z profile cursor: ", () => {
 
                 test(`should get z-profile`, async () => {
                     await Connection.send(CARTA.SetRegion, {
-                        regionId: -1,
                         ...assertItem.setRegion,
+                        regionId: -1,
                     });
                     await Connection.receiveAny();
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
@@ -85,16 +86,19 @@ describe("Z profile cursor: ", () => {
                         let Dy = Math.floor((ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.height * (.4 + .2 * Math.random()));
                         await Connection.send(CARTA.SetRegion, {
                             ...assertItem.setRegion,
-                            controlPoints: [
-                                {
-                                    x: Dx - assertItem.setRegion.controlPoints[0].x * .5,
-                                    y: Dy - assertItem.setRegion.controlPoints[0].y * .5,
-                                },
-                                {
-                                    x: Dx + assertItem.setRegion.controlPoints[0].x * .5,
-                                    y: Dy + assertItem.setRegion.controlPoints[0].y * .5,
-                                },
-                            ],
+                            regionInfo: {
+                                ...assertItem.setRegion.regionInfo,
+                                controlPoints: [
+                                    {
+                                        x: Dx - assertItem.setRegion.regionInfo.controlPoints[0].x * .5,
+                                        y: Dy - assertItem.setRegion.regionInfo.controlPoints[0].y * .5,
+                                    },
+                                    {
+                                        x: Dx + assertItem.setRegion.regionInfo.controlPoints[0].x * .5,
+                                        y: Dy + assertItem.setRegion.regionInfo.controlPoints[0].y * .5,
+                                    },
+                                ],
+                            },
                         });
                         await Connection.receiveAny();
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);

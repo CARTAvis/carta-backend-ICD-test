@@ -6,7 +6,7 @@ import * as Utility from "../UtilityFunction";
 
 import config from "./config.json";
 // const procfs = require("procfs-stats");
-// const nodeusage = require("usage");
+const nodeusage = require("usage");
 const fs = require("fs");
 
 let commandPath: string = "/usr/local/bin/pagecache-management.sh";
@@ -119,55 +119,39 @@ export async function
         timeout?: number,
 ) {
     return new Promise(resolve => {
-        fs.writeFile(logFile, "", () => {
-            let cartaBackend = child_process.execFile(
-                commandPath,
-                [
-                    backendPath,
-                    `root=base`,
-                    `base=${basePath}`,
-                    `port=${port}`,
-                    `threads=${threadNumber}`,
-                    `omp_threads=${ompThreadNumber}`,
-                    `verbose=true`,
-                ],
-                {
-                    timeout,
-                    maxBuffer: 128*1024*1024,
-                },
-                // (error, stdout, stderr) => {
-                //     if (config.log.verbose) {
-                //         console.log(stdout.toString());
-                //     }
-                //     fs.appendFile(logFile, stdout, err => {
-                //         if (err) {
-                //             console.log("Write log file error: " + err);
-                //         }
-                //     });
-                //     if (config.log.error) {
-                //         console.log("Error: " + error);
-                //         console.log("STD Error: " + stderr);
-                //     }
-                // }
-            );
-            cartaBackend.unref(); 
-            cartaBackend.on("error", error => {
-                if (config.log.error) {
-                    console.log("Error: " + error);
-                }
-            });
-            cartaBackend.stdout.on("data", data => {
-                if (config.log.verbose) {
-                    console.log(data.toString());
-                }
-                fs.appendFile(logFile, data, err => {
-                    if (err) {
-                        console.log("Write log file error: " + err);
-                    }
-                });
-            });
-            resolve(cartaBackend);
+        let cartaBackend = child_process.execFile(
+            commandPath,
+            [
+                backendPath,
+                `root=base`,
+                `base=${basePath}`,
+                `port=${port}`,
+                `threads=${threadNumber}`,
+                `omp_threads=${ompThreadNumber}`,
+                `verbose=true`,
+            ],
+            {
+                timeout,
+                maxBuffer: 128 * 1024 * 1024,
+            },
+        );
+        // cartaBackend.unref(); 
+        cartaBackend.on("error", error => {
+            if (config.log.error) {
+                console.log("Error: " + error);
+            }
         });
+        cartaBackend.stdout.on("data", data => {
+            if (config.log.verbose) {
+                console.log(data.toString());
+            }
+            fs.appendFile(logFile, data, err => {
+                if (err) {
+                    console.log("Write log file error: " + err);
+                }
+            });
+        });
+        resolve(cartaBackend);
     });
 }
 /// Create a psrecord monitor
@@ -208,252 +192,4 @@ export async function
     Connection.binaryType = "arraybuffer";
 
     return Connection;
-}
-/// Send CARTA.RegisterViewer then get CARTA.RegisterViewerAck
-export async function
-    RegisterViewer(
-        Connection: WebSocket,
-        CallbackFunc: () => Promise<void> = undefined,
-) {
-    let RegisterViewerAckTemp: CARTA.RegisterViewerAck;
-    await Utility.setEvent(Connection, CARTA.RegisterViewer,
-        {
-            sessionId: 0,
-            apiKey: "1234"
-        }
-    );
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.RegisterViewerAck,
-            async RegisterViewerAck => {
-                expect(RegisterViewerAck.success).toBe(true);
-                if (CallbackFunc) {
-                    await CallbackFunc();
-                }
-                resolve();
-            }
-        );
-    });
-    return RegisterViewerAckTemp;
-}
-/// Send CARTA.OpenFile then get CARTA.OpenFileAck
-export async function
-    OpenFile(
-        Connection: WebSocket,
-        directory: string,
-        file: string,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let OpenFileAckTemp: CARTA.OpenFileAck;
-    await Utility.setEvent(Connection, CARTA.OpenFile,
-        {
-            directory,
-            file,
-            hdu: "0",
-            fileId: 0,
-            renderMode: CARTA.RenderMode.RASTER,
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.OpenFileAck,
-            async (OpenFileAck: CARTA.OpenFileAck) => {
-                if (!OpenFileAck.success) {
-                    console.error(OpenFileAck.fileInfo.name + " : " + OpenFileAck.message);
-                }
-                expect(OpenFileAck.success).toBe(true);
-                OpenFileAckTemp = OpenFileAck;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return OpenFileAckTemp;
-}
-/// Send CARTA.SetImageView then get CARTA.RasterImageData
-export async function
-    SetImageView(
-        Connection: WebSocket,
-        OpenFileAck: CARTA.OpenFileAck,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, CARTA.SetImageView,
-        {
-            fileId: 0,
-            imageBounds: {
-                xMin: 0, xMax: OpenFileAck.fileInfoExtended.width,
-                yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
-            },
-            mip: 16,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            numSubsets: 4,
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.RasterImageData,
-            async (RasterImageData: CARTA.RasterImageData) => {
-                expect(RasterImageData.fileId).toEqual(0);
-                RasterImageDataTemp = RasterImageData;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return RasterImageDataTemp;
-}
-/// Send CARTA.SetImageView & CARTA.SetSpatialRequirements then get CARTA.RasterImageData
-export async function
-    SetSpatialRequirements(
-        Connection: WebSocket,
-        OpenFileAck: CARTA.OpenFileAck,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, CARTA.SetImageView,
-        {
-            fileId: 0,
-            imageBounds: {
-                xMin: 0, xMax: OpenFileAck.fileInfoExtended.width,
-                yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
-            },
-            mip: 16,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            numSubsets: 4,
-        }
-    );
-    await Utility.setEvent(Connection, CARTA.SetSpatialRequirements,
-        {
-            fileId: 0,
-            regionId: 0,
-            spatialProfiles: ["x", "y"],
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.RasterImageData,
-            async (RasterImageData: CARTA.RasterImageData) => {
-                expect(RasterImageData.fileId).toEqual(0);
-                RasterImageDataTemp = RasterImageData;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return RasterImageDataTemp;
-}
-/// Send CARTA.SetCursor then get CARTA.SpatialProfileData
-export async function
-    CursorSpatialProfileData(
-        Connection: WebSocket,
-        RasterImageData: CARTA.RasterImageData,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let SpatialProfileDataTemp: CARTA.SpatialProfileData;
-    await Utility.setEvent(Connection, CARTA.SetCursor,
-        {
-            fileId: 0,
-            point: {
-                x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax),
-                y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)
-            },
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.SpatialProfileData,
-            async (SpatialProfileData: CARTA.SpatialProfileData) => {
-                expect(SpatialProfileData.profiles.length).not.toEqual(0);
-                SpatialProfileDataTemp = SpatialProfileData;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return SpatialProfileDataTemp;
-}
-/// Send CARTA.SetImageView & CARTA.SetSpectralRequirements then get CARTA.RasterImageData
-export async function
-    SetSpectralRequirements(
-        Connection: WebSocket,
-        OpenFileAck: CARTA.OpenFileAck,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let RasterImageDataTemp: CARTA.RasterImageData;
-    await Utility.setEvent(Connection, CARTA.SetImageView,
-        {
-            fileId: 0,
-            imageBounds: {
-                xMin: 0, xMax: OpenFileAck.fileInfoExtended.width,
-                yMin: 0, yMax: OpenFileAck.fileInfoExtended.height
-            },
-            mip: 16,
-            compressionType: CARTA.CompressionType.ZFP,
-            compressionQuality: 11,
-            numSubsets: 4,
-        }
-    );
-    await Utility.setEvent(Connection, CARTA.SetSpectralRequirements,
-        {
-            fileId: 0,
-            regionId: 0,
-            spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.None] }],
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.RasterImageData,
-            async (RasterImageData: CARTA.RasterImageData) => {
-                expect(RasterImageData.fileId).toEqual(0);
-                RasterImageDataTemp = RasterImageData;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return RasterImageDataTemp;
-}
-/// Send CARTA.SetCursor then get CARTA.SpectralProfileData
-export async function
-    CursorSpectralProfileData(
-        Connection: WebSocket,
-        RasterImageData: CARTA.RasterImageData,
-        CallbackFunc: (timer: number) => Promise<void> = undefined,
-) {
-    let SpectralProfileDataTemp: CARTA.SpectralProfileData;
-    await Utility.setEvent(Connection, CARTA.SetCursor,
-        {
-            fileId: 0,
-            point: {
-                x: Math.floor(Math.random() * RasterImageData.imageBounds.xMax),
-                y: Math.floor(Math.random() * RasterImageData.imageBounds.yMax)
-            },
-        }
-    );
-    let timer = await performance.now();
-    await new Promise(resolve => {
-        Utility.getEvent(Connection, CARTA.SpectralProfileData,
-            async (SpectralProfileData: CARTA.SpectralProfileData) => {
-                expect(SpectralProfileData.profiles.length).not.toEqual(0);
-                SpectralProfileDataTemp = SpectralProfileData;
-                if (CallbackFunc) {
-                    await CallbackFunc(timer);
-                }
-                resolve();
-            }
-        );
-    });
-    return SpectralProfileDataTemp;
 }

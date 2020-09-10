@@ -1,19 +1,21 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
-
+let nodeusage = require("usage");
+const fs = require("fs");
+const procfs = require("procfs-stats");
 export class Client {
-    IcdVersion: number = 14;
+    IcdVersion: number = 17;
     CartaType = new Map<number, any>([
-        [ 0, CARTA.ErrorData],
-        [ 1, CARTA.RegisterViewer],
-        [ 2, CARTA.FileListRequest],
-        [ 3, CARTA.FileInfoRequest],
-        [ 4, CARTA.OpenFile],
-        [ 6, CARTA.SetImageChannels],
-        [ 7, CARTA.SetCursor],
-        [ 8, CARTA.SetSpatialRequirements],
-        [ 9, CARTA.SetHistogramRequirements],
+        [0, CARTA.ErrorData],
+        [1, CARTA.RegisterViewer],
+        [2, CARTA.FileListRequest],
+        [3, CARTA.FileInfoRequest],
+        [4, CARTA.OpenFile],
+        [6, CARTA.SetImageChannels],
+        [7, CARTA.SetCursor],
+        [8, CARTA.SetSpatialRequirements],
+        [9, CARTA.SetHistogramRequirements],
         [10, CARTA.SetStatsRequirements],
         [11, CARTA.SetRegion],
         [12, CARTA.RemoveRegion],
@@ -64,6 +66,9 @@ export class Client {
         [58, CARTA.CatalogFilterResponse],
         [59, CARTA.ScriptingRequest],
         [60, CARTA.ScriptingResponse],
+        [67, CARTA.SpectralLineRequest],
+        [68, CARTA.SpectralLineResponse],
+
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
@@ -356,5 +361,84 @@ function processSpectralProfile(profile: CARTA.ISpectralProfile): ProcessedSpect
         coordinate: profile.coordinate,
         statsType: profile.statsType,
         values: null
+    };
+}
+export function CpuUsage(pid): Promise<any> {
+    return new Promise((resolve, reject) => {
+        nodeusage.lookup(
+            pid, { keepHistory: true },
+            (err, info) => {
+                resolve(info);
+            }
+        );
+    });
+}
+export function Wait(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+export function EmptyTxt(file) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(file, "", err => {
+            if (err) {
+                console.log("Empty log file error: " + err);
+                reject();
+            }
+            resolve();
+        });
+    });
+}
+export function AppendTxt(file, txt) {
+    return new Promise((resolve, reject) => {
+        fs.appendFile(file, JSON.stringify(txt) + "\n", err => {
+            if (err) {
+                console.log("Write log file error: " + err);
+                reject();
+            }
+            resolve();
+        });
+    });
+}
+export function DiskUsage(pid) {
+    return new Promise((resolve, reject) => {
+        if (procfs.works) {
+            procfs(pid).io((err, io) => {
+                resolve(parseInt(io.read_bytes));
+            });
+        } else {
+            resolve(-1);
+        }
+    });
+}
+export function ThreadNumber(pid) {
+    return new Promise((resolve, reject) => {
+        if (procfs.works) {
+            procfs(pid).threads((err, task) => {
+                resolve(task.length);
+            });
+        } else {
+            resolve(-1);
+        }
+    });
+}
+export async function Usage(pid) {
+    let cpu = await CpuUsage(pid);
+    let disk = await DiskUsage(pid);
+    let thread = await ThreadNumber(pid);
+    return ({ ...cpu, disk, thread });
+}
+export interface IUsage { cpu: number[], memory: number[], disk: number[], thread: number[] };
+/// return setInterval id
+export function Monitor(pid, time: number) {
+    let data: IUsage = {cpu: [], memory: [], disk: [], thread: [] };
+    return {
+        id: setInterval(async () => {
+            await CpuUsage(pid)
+                .then(cpuUsage => {
+                    data.cpu.push(cpuUsage.cpu);
+                    data.memory.push(cpuUsage.memory);
+                });
+            data.disk.push(await DiskUsage(pid) as number);
+            data.thread.push(await ThreadNumber(pid) as number);
+        }, time), data: {...data, period: time},
     };
 }

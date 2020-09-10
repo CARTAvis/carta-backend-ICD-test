@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testServerUrl: string = config.localHost + ":" + config.port;
@@ -11,6 +11,7 @@ let connectTimeout: number = config.timeout.connection;
 let readfileTimeout: number = config.timeout.readFile;
 let cursorTimeout: number = config.timeout.mouseEvent;
 let cursorRepeat: number = config.repeat.cursor;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
@@ -52,12 +53,18 @@ describe("Z profile cursor action: ", () => {
     let Connection: Client;
     let cartaBackend: any;
     let logFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZProfileCursor.txt";
+    let usageFile = assertItem.fileOpen.file.substr(assertItem.fileOpen.file.search('/') + 1).replace('.', '_') + "_ZProfileCursor_usage.txt";
+    test(`Empty the record files`, async () => {
+        await EmptyTxt(logFile);
+        await EmptyTxt(usageFile);
+    });
+
     test(`CARTA is ready`, async () => {
         cartaBackend = await Socket.CartaBackend(
             logFile,
             config.port,
         );
-        await new Promise(resolve => setTimeout(resolve, config.wait.exec));
+        await Wait(config.wait.exec);
     }, execTimeout + config.wait.exec);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
@@ -87,11 +94,18 @@ describe("Z profile cursor action: ", () => {
                         },
                     });
                     await Connection.receiveAny();
+                    let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                     await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                     while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
-                    await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
+                    clearInterval(monitor.id);
+                    if (monitor.data.cpu.length === 0) {
+                        await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                    } else {
+                        await AppendTxt(usageFile, monitor.data);
+                    }
+                    await Wait(config.wait.cursor);
                 }
-                
+
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, (cursorTimeout + config.wait.cursor) * cursorRepeat);
         });

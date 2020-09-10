@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, Usage, AppendTxt, EmptyTxt, Wait, Monitor } from "./CLIENT";
 import * as Socket from "./SocketOperation";
 import config from "./config.json";
 let testSubdirectory: string = config.path.performance;
@@ -8,6 +8,7 @@ let execTimeout: number = config.timeout.execute;
 let resumeTimeout: number = config.timeout.resumeLargeImage;
 let resumeRepeat: number = config.repeat.resumeSession;
 let resumeWait: number = config.wait.resume;
+let monitorPeriod: number = config.wait.monitor;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     stopAnomator: CARTA.IStopAnimation;
@@ -29,16 +30,7 @@ let assertItem: AssertItem = {
         channel: 0,
         stokes: 0,
         requiredTiles: {
-            tiles: [50343939, 50343938, 50339843, 50339842, 50348035,
-                50343940, 50348034, 50339844, 50343937, 50335747,
-                50339841, 50335746, 50348036, 50348033, 50335748,
-                50335745, 50352131, 50343941, 50352130, 50339845,
-                50343936, 50331651, 50339840, 50331650, 50352132,
-                50348037, 50352129, 50335749, 50348032, 50331652,
-                50335744, 50331649, 50352133, 50356227, 50343942,
-                50356226, 50339846, 50352128, 50331653, 50356228,
-                50348038, 50331648, 50356225, 50335750, 50356229,
-                50352134, 50356224, 50331654, 50356230],
+            tiles: [0],
             fileId: 0,
             compressionQuality: 11,
             compressionType: CARTA.CompressionType.ZFP,
@@ -53,39 +45,55 @@ let assertItem: AssertItem = {
                 renderMode: CARTA.RenderMode.RASTER,
                 channel: 0,
                 stokes: 0,
-                regions: [
-                    {
-                        regionId: 0,
-                        regionInfo: {
-                            regionName: "",
-                            regionType: CARTA.RegionType.POINT,
-                            controlPoints: [{ x: 1.0, y: 1.0, },],
-                            rotation: 0,
-                        },
+                regions: {
+                    "region0": {
+                        regionType: CARTA.RegionType.POINT,
+                        controlPoints: [{ x: 1.0, y: 1.0, },],
+                        rotation: 0,
                     },
-                ],
+                },
+                contourSettings: {
+                    fileId: 0,
+                    referenceFileId: 0,
+                    imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
+                    levels: [
+                        1.27, 2.0, 2.51, 3.0,
+                        3.75, 4.0, 4.99, 5.2,
+                        6.23, 6.6, 7.47, 7.8,
+                        8.71, 9.0, 9.95, 10.2,
+                    ],
+                    smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+                    smoothingFactor: 4,
+                    decimationFactor: 4,
+                    compressionLevel: 8,
+                    contourChunkSize: 100000,
+                },
             },
         ],
     },
 }
 let testFiles = [
-    "cube_A/cube_A_51200_z00100.fits",
-    "cube_A/cube_A_25600_z00100.fits",
-    "cube_A/cube_A_12800_z00100.fits",
-    "cube_A/cube_A_06400_z00100.fits",
-    "cube_A/cube_A_03200_z00100.fits",
     "cube_A/cube_A_01600_z00100.fits",
-    "cube_A/cube_A_51200_z00100.image",
-    "cube_A/cube_A_25600_z00100.image",
-    "cube_A/cube_A_12800_z00100.image",
-    "cube_A/cube_A_06400_z00100.image",
-    "cube_A/cube_A_03200_z00100.image",
     "cube_A/cube_A_01600_z00100.image",
-
-    "cube_A/cube_A_12800_z00100.hdf5", 
-    "cube_A/cube_A_06400_z00100.hdf5", 
-    "cube_A/cube_A_03200_z00100.hdf5",
     "cube_A/cube_A_01600_z00100.hdf5",
+
+    "cube_A/cube_A_03200_z00100.fits",
+    "cube_A/cube_A_03200_z00100.image",
+    "cube_A/cube_A_03200_z00100.hdf5",
+
+    "cube_A/cube_A_06400_z00100.fits",
+    "cube_A/cube_A_06400_z00100.image",
+    "cube_A/cube_A_06400_z00100.hdf5",
+
+    "cube_A/cube_A_12800_z00100.fits",
+    "cube_A/cube_A_12800_z00100.image",
+    "cube_A/cube_A_12800_z00100.hdf5",
+
+    "cube_A/cube_A_25600_z00100.fits",
+    "cube_A/cube_A_25600_z00100.image",
+
+    "cube_A/cube_A_51200_z00100.fits",
+    "cube_A/cube_A_51200_z00100.image",
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
@@ -93,13 +101,19 @@ testFiles.map(file => {
 
         let cartaBackend: any;
         let logFile = file.substr(file.search('/') + 1).replace('.', '_') + "_resume.txt";
+        let usageFile = file.substr(file.search('/') + 1).replace('.', '_') + "_resume_usage.txt";
+        test(`Empty the record files`, async () => {
+            await EmptyTxt(logFile);
+            await EmptyTxt(usageFile);
+        });
+
         test(`CARTA is ready`, async () => {
             cartaBackend = await Socket.CartaBackend(
                 logFile,
                 config.port,
             );
-            await new Promise(resolve => setTimeout(resolve, config.wait.exec));
-        }, execTimeout);
+            await Wait(config.wait.exec);
+        }, execTimeout + config.wait.exec);
 
         for (let idx = 0; idx < resumeRepeat; idx++) {
             test(`should resume session and reopen image "${file}"`, async () => {
@@ -109,6 +123,7 @@ testFiles.map(file => {
                 await Connection.receive(CARTA.RegisterViewerAck);
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnomator);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+                let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                 await Connection.send(CARTA.ResumeSession, {
                     images: [
                         {
@@ -117,9 +132,15 @@ testFiles.map(file => {
                         },
                     ],
                 });
-                await Connection.stream(3);
+                while ((await Connection.receiveAny() as CARTA.ResumeSessionAck).success) { };
+                clearInterval(monitor.id);
+                if (monitor.data.cpu.length === 0) {
+                    await AppendTxt(usageFile, await Usage(cartaBackend.pid));
+                } else {
+                    await AppendTxt(usageFile, monitor.data);
+                }
 
-                await new Promise(resolve => setTimeout(resolve, resumeWait));
+                await Wait(resumeWait);
                 Connection.close();
             }, resumeTimeout + resumeWait);
         }
