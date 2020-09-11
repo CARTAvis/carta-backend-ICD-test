@@ -73,7 +73,7 @@ describe("Z profile cursor: ", () => {
 
                 test(`should get z-profile`, async () => {
                     const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
-                    await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                    // await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
                     for (let idx = 0; idx < cursorRepeat; idx++) {
                         await Connection.send(CARTA.SetCursor, {
                             ...assertItem.setCursor,
