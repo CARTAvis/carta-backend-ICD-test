@@ -37,7 +37,7 @@ let assertItem: AssertItem = {
         spatialRequirements: {
             fileId: 0,
             regionId: 0,
-            spatialProfiles: []
+            spatialProfiles: [],
         },
     },
     setSpectralRequirements: {
@@ -73,7 +73,8 @@ describe("Z profile cursor: ", () => {
 
                 test(`should get z-profile`, async () => {
                     const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
-                    // await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                    await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                    await Connection.receiveAny();
                     for (let idx = 0; idx < cursorRepeat; idx++) {
                         await Connection.send(CARTA.SetCursor, {
                             ...assertItem.setCursor,
@@ -82,10 +83,14 @@ describe("Z profile cursor: ", () => {
                                 y: Math.floor(width * (.3 + .4 * Math.random())),
                             },
                         });
-                        await Connection.receiveAny();
-                        await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                        while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
-                        await new Promise(resolve => setTimeout(resolve, config.wait.cursor));
+                        ack = await Connection.stream(1) as AckStream;
+                        while (ack.SpectralProfileData.length) {
+                            if (ack.SpectralProfileData[0].progress == 1) {
+                                break;
+                            } else {
+                                ack = await Connection.stream(1) as AckStream;
+                            }
+                        }
                     }
 
                     await Connection.send(CARTA.CloseFile, { fileId: -1 });

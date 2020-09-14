@@ -38,7 +38,7 @@ let assertItem: AssertItem = {
         spatialRequirements: {
             fileId: 0,
             regionId: 0,
-            spatialProfiles: []
+            spatialProfiles: [],
         },
     },
     setSpectralRequirements: {
@@ -100,8 +100,10 @@ testMainThreads.map(mainThread => {
 
                     test(`should get z-profile`, async () => {
                         const width = (ack.Responce[0] as CARTA.OpenFileAck).fileInfoExtended.width;
-                        // await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                        await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+                        await Connection.receiveAny();
                         for (let idx = 0; idx < cursorRepeat; idx++) {
+                            let monitor = Monitor(cartaBackend.pid, monitorPeriod);
                             await Connection.send(CARTA.SetCursor, {
                                 ...assertItem.setCursor,
                                 point: {
@@ -109,10 +111,14 @@ testMainThreads.map(mainThread => {
                                     y: Math.floor(width * (.3 + .4 * Math.random())),
                                 },
                             });
-                            await Connection.receiveAny();
-                            let monitor = Monitor(cartaBackend.pid, monitorPeriod);
-                            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                            while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
+                            ack = await Connection.stream(1) as AckStream;
+                            while (ack.SpectralProfileData.length) {
+                                if (ack.SpectralProfileData[0].progress == 1) {
+                                    break;
+                                } else {
+                                    ack = await Connection.stream(1) as AckStream;
+                                }
+                            }
                             clearInterval(monitor.id);
                             if (monitor.data.cpu.length === 0) {
                                 await AppendTxt(usageFile, await Usage(cartaBackend.pid));
