@@ -100,7 +100,7 @@ testFiles.map(file => {
                 config.port,
             );
             await Wait(config.wait.exec);
-        }, execTimeout);
+        }, execTimeout + config.wait.exec);
 
         describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
             beforeAll(async () => {
