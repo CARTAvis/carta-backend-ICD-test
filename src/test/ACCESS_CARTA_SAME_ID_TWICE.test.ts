@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
 interface AssertItem {
@@ -33,7 +34,7 @@ describe("ACCESS_CARTA_SAME_ID_TWICE tests: Testing backend connection with defa
             RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
 
             await Connection.close().then(()=>{
-                expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
+                expect(Connection.connection.readyState).toBe(W3CWebSocket.CLOSED);
             });
 
         }, connectTimeout);
