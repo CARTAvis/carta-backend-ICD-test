@@ -1,6 +1,7 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 export class Client {
     IcdVersion: number = 17;
     CartaType = new Map<number, any>([
@@ -75,16 +76,16 @@ export class Client {
         return ret;
     }
     static eventCount = { value: 0 };
-    connection: WebSocket;
+    connection: W3CWebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
-        this.connection = new WebSocket(url);
+        this.connection = new W3CWebSocket(url);
         this.connection.binaryType = "arraybuffer";
     }
     open(timeout?: number) {
         return new Promise<void>((resolve, reject) => {
             this.connection.onopen = onOpen;
-            function onOpen(this: WebSocket, ev: Event) {
+            function onOpen(this, ev: Event) {
                 resolve();
             }
             if (timeout) {
@@ -99,7 +100,7 @@ export class Client {
         this.connection.close();
         return new Promise<void>((resolve, reject) => {
             this.connection.onclose = onClose;
-            function onClose(this: WebSocket, ev: Event) {
+            function onClose(this, ev: Event) {
                 resolve();
             }
             if (timeout) {
