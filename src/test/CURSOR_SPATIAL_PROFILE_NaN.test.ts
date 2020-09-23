@@ -1,7 +1,10 @@
 import { CARTA } from "carta-protobuf";
+
+import { isNull } from "util";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
-import { isNull } from "util";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -109,7 +112,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
@@ -127,7 +130,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
         }, readFileTimeout);
 
         test(`(Step 0) Connection open? | `, () => {
-            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
         });
 
         assertItem.spatialProfileData.map((profileData, index) => {

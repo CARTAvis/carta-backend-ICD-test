@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
@@ -193,7 +194,7 @@ describe("CURSOR_SPATIAL_PROFILE: Testing if full resolution cursor spectral pro
                             }, cursorTimeout);
 
                             test("Backend still alive", async () => {
-                                expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
+                                expect(Connection.connection.readyState).toEqual(W3CWebSocket.OPEN);
                                 await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[index]);
                                 await Connection.receive(CARTA.SpectralProfileData);
                             }, connectTimeout);
