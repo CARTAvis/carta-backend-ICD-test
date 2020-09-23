@@ -1,6 +1,6 @@
 {
     "name": "carta-backend-ICD-test",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "private": true,
     "dependencies": {
         "pidusage": "^2.0.21",
