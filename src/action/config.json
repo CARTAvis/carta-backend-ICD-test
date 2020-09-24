@@ -28,7 +28,7 @@
         "changeChannel": 3200,
         "playImages": 3300,
         "cubeHistogram": 35000,
-        "cubeHistogramLarge": 1500000,
+        "cubeHistogramLarge": 3000000,
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
