@@ -1,6 +1,8 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -81,7 +83,7 @@ describe("PER_CUBE_HISTOGRAM tests: Testing calculations of the per-cube histogr
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     describe(`Go to "${assertItem.fileOpen.directory}" folder`, () => {

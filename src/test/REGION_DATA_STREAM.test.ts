@@ -1,6 +1,8 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -123,7 +125,7 @@ describe("REGION_DATA_STREAM test: Testing data streaming after the regions", ()
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set region`, () => {

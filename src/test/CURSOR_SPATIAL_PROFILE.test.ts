@@ -1,6 +1,8 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -192,7 +194,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
     };
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
@@ -201,7 +203,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
         });
 
         test(`OpenFileAck? | `, async () => {
-            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
             let temp1 = await Connection.receive(CARTA.OpenFileAck)
             // console.log(temp1)
@@ -320,7 +322,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 }, cursorTimeout + connectTimeout);
 
                 test("Backend is not crashed", () => {
-                    expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+                    expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
                 });
 
             });

@@ -1,7 +1,8 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -84,7 +85,7 @@ describe("PER_CONTOUR_2D", () => {
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {

@@ -1,7 +1,10 @@
 import { CARTA } from "carta-protobuf";
+
+import * as Long from "long";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import * as Long from "long";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -244,7 +247,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
     function sleep(ms) {

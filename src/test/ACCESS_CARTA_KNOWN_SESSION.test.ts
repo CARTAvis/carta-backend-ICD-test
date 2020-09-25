@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
+var W3CWebSocket = require('websocket').w3cwebsocket;
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
 interface AssertItem {
@@ -20,17 +21,17 @@ describe("ACCESS_CARTA_KNOWN_SESSION tests: Testing connections to the backend w
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
         test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, async () => {
             Connection = new Client(testServerUrl);
-            expect(Connection.connection.readyState).toBe(WebSocket.CONNECTING);
+            expect(Connection.connection.readyState).toBe(W3CWebSocket.CONNECTING);
 
             await Connection.open().then(()=>{
-                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+                expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
             });
 
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
 
             await Connection.close().then(()=>{
-                expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
+                expect(Connection.connection.readyState).toBe(W3CWebSocket.CLOSED);
             });
 
         }, connectTimeout);

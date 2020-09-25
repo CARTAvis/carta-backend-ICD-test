@@ -79,8 +79,8 @@ let testFiles = [
     "cube_A/cube_A_25600_z00100.fits",
     "cube_A/cube_A_25600_z00100.image",
 
-    "cube_A/cube_A_51200_z00100.fits",
-    "cube_A/cube_A_51200_z00100.image",
+    // "cube_A/cube_A_51200_z00100.fits",
+    // "cube_A/cube_A_51200_z00100.image",
 ];
 testFiles.map(file => {
     let testServerUrl: string = `${config.localHost}:${config.port}`;
