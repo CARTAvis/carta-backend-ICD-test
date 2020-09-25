@@ -63,29 +63,32 @@ let assertItem: AssertItem = {
         contourChunkSize: 100000,
     },
 }
+let cubeName = "cube_B"
+let channel = "00001"
 let testFiles = [
-    "cube_A/cube_A_01600_z00001.fits",
-    "cube_A/cube_A_01600_z00001.image",
-    "cube_A/cube_A_01600_z00001.hdf5",
+    `${cubeName}/${cubeName}_01600_z${channel}.fits`,
+    `${cubeName}/${cubeName}_01600_z${channel}.image`,
+    `${cubeName}/${cubeName}_01600_z${channel}.hdf5`,
 
-    "cube_A/cube_A_03200_z00001.fits",
-    "cube_A/cube_A_03200_z00001.image",
-    "cube_A/cube_A_03200_z00001.hdf5",
+    `${cubeName}/${cubeName}_03200_z${channel}.fits`,
+    `${cubeName}/${cubeName}_03200_z${channel}.image`,
+    `${cubeName}/${cubeName}_03200_z${channel}.hdf5`,
 
-    "cube_A/cube_A_06400_z00001.fits",
-    "cube_A/cube_A_06400_z00001.image",
-    "cube_A/cube_A_06400_z00001.hdf5",
+    `${cubeName}/${cubeName}_06400_z${channel}.fits`,
+    `${cubeName}/${cubeName}_06400_z${channel}.image`,
+    `${cubeName}/${cubeName}_06400_z${channel}.hdf5`,
 
-    "cube_A/cube_A_12800_z00001.fits",
-    "cube_A/cube_A_12800_z00001.image",
-    "cube_A/cube_A_12800_z00001.hdf5",
+    `${cubeName}/${cubeName}_12800_z${channel}.fits`,
+    `${cubeName}/${cubeName}_12800_z${channel}.image`,
+    `${cubeName}/${cubeName}_12800_z${channel}.hdf5`,
 
-    "cube_A/cube_A_25600_z00001.fits",
-    "cube_A/cube_A_25600_z00001.image",
-    "cube_A/cube_A_25600_z00001.hdf5",
+    `${cubeName}/${cubeName}_25600_z${channel}.fits`,
+    `${cubeName}/${cubeName}_25600_z${channel}.image`,
+    `${cubeName}/${cubeName}_25600_z${channel}.hdf5`,
 
-    "cube_A/cube_A_51200_z00001.fits",
-    "cube_A/cube_A_51200_z00001.image",
+    `${cubeName}/${cubeName}_51200_z${channel}.fits`,
+    `${cubeName}/${cubeName}_51200_z${channel}.image`,
+    `${cubeName}/${cubeName}_51200_z${channel}.hdf5`,
 ];
 testFiles.map(file => {
     describe(`Contour action: ${file.substr(file.search('/') + 1)}`, () => {
