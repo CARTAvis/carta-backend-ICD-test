@@ -32,7 +32,7 @@
         "cancel": 5000,
         "concurrent": 4000,
         "messageEvent": 500,
-        "mouseEvent": 4200,
+        "mouseEvent": 10200,
         "region": 20100,
         "regionLargeImage": 610000,
         "import": 500,

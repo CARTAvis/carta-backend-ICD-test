@@ -96,13 +96,7 @@ describe("Z profile cursor action: ", () => {
                         },
                     });
                     ack = await Connection.stream(1) as AckStream;
-                    while (ack.SpectralProfileData.length) {
-                        if (ack.SpectralProfileData[0].progress == 1) {
-                            break;
-                        } else {
-                            ack = await Connection.stream(1) as AckStream;
-                        }
-                    }
+                    while ((await Connection.receive(CARTA.SpectralProfileData) as CARTA.SpectralProfileData).progress < 1) { }
                     clearInterval(monitor.id);
                     if (monitor.data.cpu.length === 0) {
                         await AppendTxt(usageFile, await Usage(cartaBackend.pid));
