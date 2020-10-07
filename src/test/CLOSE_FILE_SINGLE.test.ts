@@ -50,7 +50,7 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
+describe("Test for Close one file:", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -80,34 +80,20 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.stream(5, 2500) as AckStream;
-        // console.log(ack)
         expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length)
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
     }, readFileTimeout);
 
-    test(`(Step 3) close file`, async () => {
+    test(`(Step 3) close file & make sure NO message returned & the backend is still alive`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
 
-        const promise1 = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve('foo');
-            }, 300);
-        });
+        let Response = await Connection.receiveAny(1000, false)
+        expect(Response).toEqual(undefined)
 
-        promise1.then((value) => {
-            console.log(value);
-            // expected output: "foo"
-        });
-
-        console.log(promise1);
-        // expected output: [object Promise]
-
-
-        // let temp = await Connection.receiveAny(1000)
-        // console.log(temp)
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
+        let BackendStatus = Connection.receive(CARTA.FileListResponse)
+        expect(BackendStatus).toBeDefined()
     });
-
-
 
     afterAll(() => Connection.close());
 });
