@@ -61,7 +61,7 @@ let assertItem: AssertItem = {
                 height: 800,
                 depth: 25,
                 stokes: 1,
-                stokesVals: [""],
+                stokesVals: [],
                 headerEntries: [
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
@@ -70,57 +70,58 @@ let assertItem: AssertItem = {
                     { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
                     {
                         name: "BMAJ",
-                        value: "0.000572514",
+                        value: "5.725136068132E-04",
                         entryType: 1,
                         numericValue: 0.0005725136068132
                     },
                     {
                         name: "BMIN",
-                        value: "0.000414239",
+                        value: "4.142385721207E-04",
                         entryType: 1,
-                        numericValue: 0.00041423857212070003
+                        numericValue: 0.0004142385721207
                     },
                     {
                         name: "BPA",
-                        value: "-74.6267",
+                        value: "-7.462673187256E+01",
                         entryType: 1,
                         numericValue: -74.62673187256
                     },
-                    { name: "BUNIT", value: "Jy/beam" },
-                    { name: "LONPOLE", value: "180", entryType: 1, numericValue: 180 },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
+                    { name: "LONPOLE", value: "1.800000000000E+02", entryType: 1, numericValue: 180 },
                     {
                         name: "LATPOLE",
-                        value: "-16.2028",
+                        value: "-1.620277777779E+01",
                         entryType: 1,
                         numericValue: -16.20277777779
                     },
                     { name: "CTYPE3", value: "FREQ" },
                     {
                         name: "CRVAL3",
-                        value: "8.67514e+10",
+                        value: "8.675139618840E+10",
                         entryType: 1,
                         numericValue: 86751396188.4
                     },
                     {
                         name: "CDELT3",
-                        value: "-244238",
+                        value: "-2.442377011414E+05",
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
-                    { name: "CRVAL4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CDELT4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
+                    { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
-                        value: "8.67543e+10",
+                        value: "8.675429000000E+10",
                         entryType: 1,
-                        numericValue: 86754290000
+                        numericValue: 86754290000,
+                        comment: 'Rest Frequency (Hz)'
                     },
-                    { name: "VELREF", value: "257", entryType: 2, numericValue: 257 },
+                    { name: "VELREF", value: "257", entryType: 2, numericValue: 257, comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio' },
                 ],
                 computedEntries: [
                     { name: "Name", value: "M17_SWex.fits" },
@@ -132,26 +133,26 @@ let assertItem: AssertItem = {
                         numericValue: 25
                     },
                     {
-                        name: "Number of Stokes",
+                        name: "Number of stokes",
                         value: "1",
                         entryType: 2,
                         numericValue: 1
                     },
-                    { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
-                    { name: "Image reference pixels", value: "[321, 401] " },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Image reference pixels", value: "[321, 401]" },
                     {
-                        name: "Image reference coordinates",
-                        value: "[275.0875 deg, -16.2028 deg]"
+                        name: "Image reference coords",
+                        value: "[18:20:21.0000, -016.12.10.0000]"
                     },
                     {
-                        name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000, -016.12.10.0000]"
+                        name: "Image ref coords (deg)",
+                        value: "[275.088 deg, -16.2028 deg]"
                     },
                     { name: "Celestial frame", value: "ICRS" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
-                    { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
+                    { name: "Pixel increment", value: "-0.4\", 0.4\"" },
+                    { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
             },
         },
@@ -170,7 +171,7 @@ let assertItem: AssertItem = {
                 height: 800,
                 depth: 25,
                 stokes: 1,
-                stokesVals: [""],
+                stokesVals: [],
                 headerEntries: [
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
@@ -179,48 +180,49 @@ let assertItem: AssertItem = {
                     { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
                     {
                         name: "BMAJ",
-                        value: "0.000572514",
+                        value: "5.725136068132E-04",
                         entryType: 1,
                         numericValue: 0.0005725136068132
                     },
                     {
                         name: "BMIN",
-                        value: "0.000414239",
+                        value: "4.142385721207E-04",
                         entryType: 1,
                         numericValue: 0.0004142385721207
                     },
                     {
                         name: "BPA",
-                        value: "-74.6267",
+                        value: "-7.462673187256E+01",
                         entryType: 1,
-                        numericValue: -74.6267318725586
+                        numericValue: -74.62673187256
                     },
-                    { name: "BUNIT", value: "Jy/beam" },
-                    { name: "CTYPE3", value: "Frequency" },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
+                    { name: "CTYPE3", value: "FREQ" },
                     {
                         name: "CRVAL3",
-                        value: "8.67514e+10",
+                        value: "8.675139618840E+10",
                         entryType: 1,
                         numericValue: 86751396188.4
                     },
                     {
                         name: "CDELT3",
-                        value: "-244238",
+                        value: "-2.442377011414E+05",
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
-                    { name: "CTYPE4", value: "Stokes" },
-                    { name: "CRVAL4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CDELT4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CTYPE4", value: "STOKES" },
+                    { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
+                    { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
-                        value: "8.67543e+10 Hz\n",
+                        value: "8.675429000000E+10",
                         entryType: 1,
-                        numericValue: 86754290000
+                        numericValue: 86754290000,
+                        comment: 'Rest Frequency (Hz)'
                     },
                 ],
                 computedEntries: [
@@ -233,26 +235,26 @@ let assertItem: AssertItem = {
                         numericValue: 25
                     },
                     {
-                        name: "Number of Stokes",
+                        name: "Number of stokes",
                         value: "1",
                         entryType: 2,
                         numericValue: 1
                     },
-                    { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
                     { name: "Image reference pixels", value: "[321, 401]" },
                     {
-                        name: "Image reference coordinates",
-                        value: "[275.088 deg, -16.203 deg]"
+                        name: "Image reference coords",
+                        value: "[18:20:21.0000, -016.12.10.0000]"
                     },
                     {
-                        name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000 -016.12.10.0000]"
+                        name: "Image ref coords (deg)",
+                        value: "[275.088 deg, -16.2028 deg]"
                     },
-                    { name: "Celestial frame", value: "ICRS, 2000" },
+                    { name: "Celestial frame", value: "ICRS" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
-                    { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
+                    { name: "Pixel increment", value: "-0.4\", 0.4\"" },
+                    { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
             },
         },
@@ -262,7 +264,7 @@ let assertItem: AssertItem = {
             fileInfo: {
                 name: "M17_SWex.hdf5",
                 type: CARTA.FileType.HDF5,
-                size: 112823720,
+                size: 185333128,
                 HDUList: ["0"],
             },
             fileInfoExtended: {
@@ -271,31 +273,31 @@ let assertItem: AssertItem = {
                 height: 800,
                 depth: 25,
                 stokes: 1,
-                stokesVals: [""],
+                stokesVals: [],
                 headerEntries: [
-                    { name: "NAXIS", value: "4" },
-                    { name: "NAXIS1", value: "640" },
-                    { name: "NAXIS2", value: "800" },
-                    { name: "NAXIS3", value: "25" },
-                    { name: "NAXIS4", value: "1" },
-                    { name: "BMAJ", value: "5.725136068132E-04" },
-                    { name: "BMIN", value: "4.142385721207E-04" },
-                    { name: "BPA", value: "-7.462673187256E+01" },
-                    { name: "BUNIT", value: "Jy/beam" },
-                    { name: "LONPOLE", value: "1.800000000000E+02" },
-                    { name: "LATPOLE", value: "-1.620277777779E+01" },
+                    { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
+                    { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
+                    { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
+                    { name: "NAXIS3", value: "25", entryType: 2, numericValue: 25 },
+                    { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
+                    { name: "BMAJ", value: "5.725136068132E-04", entryType: 1, numericValue: 0.0005725136068132 },
+                    { name: "BMIN", value: "4.142385721207E-04", entryType: 1, numericValue: 0.0004142385721207 },
+                    { name: "BPA", value: "-7.462673187256E+01", entryType: 1, numericValue: -74.62673187256 },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
+                    { name: "LONPOLE", value: "1.800000000000E+02", entryType: 1, numericValue: 180 },
+                    { name: "LATPOLE", value: "-1.620277777779E+01", entryType: 1, numericValue: -16.20277777779 },
                     { name: "CTYPE3", value: "FREQ" },
-                    { name: "CRVAL3", value: "8.675139618840E+10" },
-                    { name: "CDELT3", value: "-2.442377011414E+05" },
-                    { name: "CRPIX3", value: "1.000000000000E+00" },
+                    { name: "CRVAL3", value: "8.675139618840E+10", entryType: 1, numericValue: 86751396188.4 },
+                    { name: "CDELT3", value: "-2.442377011414E+05", entryType: 1, numericValue: -244237.7011414 },
+                    { name: "CRPIX3", value: '1', entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
-                    { name: "CRVAL4", value: "1.000000000000E+00" },
-                    { name: "CDELT4", value: "1.000000000000E+00" },
-                    { name: "CRPIX4", value: "1.000000000000E+00" },
+                    { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
+                    { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
-                    { name: "RESTFRQ", value: "8.675429000000E+10" }, ,
-                    { name: "VELREF", value: "257" },
+                    { name: "RESTFRQ", value: "8.675429000000E+10", entryType: 1, numericValue: 86754290000, comment: 'Rest Frequency (Hz)' }, ,
+                    { name: "VELREF", value: "257", entryType: 2, numericValue: 257, comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio' },
                 ],
                 computedEntries: [
                     { name: "Name", value: "M17_SWex.hdf5" },
@@ -307,29 +309,29 @@ let assertItem: AssertItem = {
                         numericValue: 25
                     },
                     {
-                        name: "Number of Stokes",
+                        name: "Number of stokes",
                         value: "1",
                         entryType: 2,
                         numericValue: 1
                     },
-                    { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
                     {
                         name: "Image reference pixels",
-                        value: "[3.210000000000E+02, 4.010000000000E+02] "
+                        value: "[321, 401]"
                     },
                     {
-                        name: "Image reference coordinates",
-                        value: "[275.0875 deg, -16.2028 deg]"
-                    },
-                    {
-                        name: "Image ref coords (coord type)",
+                        name: "Image reference coords",
                         value: "[18:20:21.0000, -016.12.10.0000]"
+                    },
+                    {
+                        name: "Image ref coords (deg)",
+                        value: "[275.088 deg, -16.2028 deg]"
                     },
                     { name: "Celestial frame", value: "ICRS" },
                     { name: "Spectral frame", value: "LSRK" },
                     { name: "Pixel unit", value: "Jy/beam" },
-                    { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
+                    { name: "Pixel increment", value: "-0.4\", 0.4\"" },
+                    { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
             },
         },
@@ -348,7 +350,7 @@ let assertItem: AssertItem = {
                 height: 800,
                 depth: 25,
                 stokes: 1,
-                stokesVals: [""],
+                stokesVals: [],
                 headerEntries: [
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
@@ -357,48 +359,49 @@ let assertItem: AssertItem = {
                     { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
                     {
                         name: "BMAJ",
-                        value: "0.000572514",
+                        value: "5.725135932445E-04",
                         entryType: 1,
                         numericValue: 0.0005725135932445429
                     },
                     {
                         name: "BMIN",
-                        value: "0.000414239",
+                        value: "4.142385813538E-04",
                         entryType: 1,
                         numericValue: 0.00041423858135383447
                     },
                     {
                         name: "BPA",
-                        value: "-74.6267",
+                        value: "-7.462673187256E+01",
                         entryType: 1,
                         numericValue: -74.6267318725586
                     },
-                    { name: "BUNIT", value: "Jy/beam" },
-                    { name: "CTYPE3", value: "Frequency" },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
+                    { name: "CTYPE3", value: "FREQ" },
                     {
                         name: "CRVAL3",
-                        value: "8.67514e+10",
+                        value: "8.675139618840E+10",
                         entryType: 1,
                         numericValue: 86751396188.40004
                     },
                     {
                         name: "CDELT3",
-                        value: "-244238",
+                        value: "-2.442377011414E+05",
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
                     { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
-                    { name: "CTYPE4", value: "Stokes" },
-                    { name: "CRVAL4", value: "1", entryType: 1, numericValue: 1 },
-                    { name: "CDELT4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CTYPE4", value: "STOKES" },
+                    { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
+                    { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
-                        value: "8.67543e+10 Hz\n",
+                        value: "8.675429000000E+10",
                         entryType: 1,
-                        numericValue: 86754290000.00003
+                        numericValue: 86754290000.00003,
+                        comment: 'Rest Frequency (Hz)'
                     },
                 ],
                 computedEntries: [
@@ -411,26 +414,26 @@ let assertItem: AssertItem = {
                         numericValue: 25
                     },
                     {
-                        name: "Number of Stokes",
+                        name: "Number of stokes",
                         value: "1",
                         entryType: 2,
                         numericValue: 1
                     },
-                    { name: "Coordinate type", value: "RA---SIN, DEC--SIN" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
                     { name: "Image reference pixels", value: "[321, 401]" },
                     {
-                        name: "Image reference coordinates",
-                        value: "[275.088 deg, -16.203 deg]"
+                        name: "Image reference coords",
+                        value: "[18:20:21.0000, -016.12.10.0000]"
                     },
                     {
-                        name: "Image ref coords (coord type)",
-                        value: "[18:20:21.0000 -016.12.10.0000]"
+                        name: "Image ref coords (deg)",
+                        value: "[275.088 deg, -16.2028 deg]"
                     },
                     { name: "Celestial frame", value: "FK5, J2000" },
-                    { name: "Spectral frame", value: "BARYCENT" },
+                    { name: 'Spectral frame', value: 'BARY' },
                     { name: "Pixel unit", value: "Jy/beam" },
-                    { name: "Pixel increment", value: "-0.40\", 0.40\"" },
-                    { name: "Restoring beam", value: "2.06\" X 1.49\", -74.6267 deg" }
+                    { name: "Pixel increment", value: "-0.4\", 0.4\"" },
+                    { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
             },
         },
@@ -449,24 +452,24 @@ let assertItem: AssertItem = {
                 height: 870,
                 depth: 1,
                 stokes: 1,
-                stokesVals: [""],
+                stokesVals: [],
                 headerEntries: [
                     { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
                     { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
                     { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
-                    { name: "CRPIX1", value: "861", entryType: 1, numericValue: 861 },
-                    { name: "CRPIX2", value: "976", entryType: 1, numericValue: 976 },
+                    { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
+                    { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
                     {
                         name: "CDELT1",
-                        value: "-0.00166667",
+                        value: "-3.888888888889E-03",
                         entryType: 1,
-                        numericValue: -0.001666666666667
+                        numericValue: -0.003888888888889
                     },
                     {
                         name: "CDELT2",
-                        value: "0.00166667",
+                        value: "3.888888888889E-03",
                         entryType: 1,
-                        numericValue: 0.001666666666667
+                        numericValue: 0.003888888888889
                     },
                     { name: "CTYPE1", value: "RA---TAN" },
                     { name: "CTYPE2", value: "DEC--TAN" },
@@ -476,36 +479,35 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 2000
                     },
-                    { name: "CROTA2", value: "0", entryType: 1 },
                     {
                         name: "CRVAL1",
-                        value: "107.305",
+                        value: "1.073046172702E+02",
                         entryType: 1,
                         numericValue: 107.30461727023817
                     },
                     {
                         name: "CRVAL2",
-                        value: "-10.6107",
+                        value: "-1.061072089652E+01",
                         entryType: 1,
                         numericValue: -10.610720896516849
                     },
-                    { name: "RADESYS", value: "ICRS" },
+                    { name: "RADESYS", value: "FK5" },
                 ],
                 computedEntries: [
                     { name: "Name", value: "spire500_ext.fits" },
                     { name: "Shape", value: "[830, 870]" },
-                    { name: "Coordinate type", value: "RA---TAN, DEC--TAN" },
-                    { name: "Image reference pixels", value: "[861, 976] " },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Image reference pixels", value: "[371, 421]" },
                     {
-                        name: "Image reference coordinates",
-                        value: "[107.3046 , -10.6107 ]"
+                        name: "Image reference coords",
+                        value: "[07:09:13.1081, -010.36.38.5952]"
                     },
                     {
-                        name: "Image ref coords (coord type)",
-                        value: "[107.305 , -10.6107 ]"
+                        name: "Image ref coords (deg)",
+                        value: "[107.305 deg, -10.6107 deg]"
                     },
-                    { name: "Celestial frame", value: "ICRS, 2000" },
-                    { name: "Pixel increment", value: "-0.002 , 0.002 " }
+                    { name: "Celestial frame", value: "FK5, J2000" },
+                    { name: "Pixel increment", value: "-14\", 14\"" }
                 ],
             },
         },
@@ -581,17 +583,19 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 }
 
                 test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = ${fileInfoRes.fileInfoExtended.stokesVals}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual(fileInfoRes.fileInfoExtended.stokesVals);
+                    expect(FileInfoResponseTemp.fileInfoExtended.stokesVals).toEqual(expect.arrayContaining(fileInfoRes.fileInfoExtended.stokesVals));
                 });
 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                     fileInfoRes.fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry) => {
+                        // console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries)
                         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                     });
                 });
 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                     fileInfoRes.fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry) => {
+                        // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                         expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                     });
                 });
