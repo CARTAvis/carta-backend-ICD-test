@@ -18,12 +18,6 @@ interface AssertItem {
     addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
-    startAnimation: CARTA.IStartAnimation[];
-    stopAnimation: CARTA.IStopAnimation[];
-    animationFlowControl: CARTA.IAnimationFlowControl[];
-    setImageChannel: CARTA.ISetImageChannels[];
-    reverseAnimation: CARTA.IStartAnimation[];
-    blinkAnimation: CARTA.IStartAnimation;
 };
 
 let assertItem: AssertItem = {
@@ -74,8 +68,10 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
         await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        await Connection.receiveAny()
-        await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
+        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
+        expect(OpenAck.success).toBe(true)
+        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
     }, openFileTimeout);
 
     let ack: AckStream;
@@ -83,19 +79,35 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-
-        ack = await Connection.stream(5, 3000) as AckStream;
-        // console.log(ack); // RasterTileData * 1 + SpatialProfileData * 2 + RasterTileSync *2 (start & end)
-        // let ackRasterAckLength = ack.RasterTileSync.length
-        // if (ackRasterAckLength == 1) {
-        //     let buffer = await Connection.receive(CARTA.RasterTileSync);
-        //     console.log(buffer)
-        // }
+        ack = await Connection.stream(5, 2500) as AckStream;
+        // console.log(ack)
+        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length)
     }, readFileTimeout);
 
     test(`(Step 3) close file`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
+
+        const promise1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('foo');
+            }, 300);
+        });
+
+        promise1.then((value) => {
+            console.log(value);
+            // expected output: "foo"
+        });
+
+        console.log(promise1);
+        // expected output: [object Promise]
+
+
+        // let temp = await Connection.receiveAny(1000)
+        // console.log(temp)
     });
+
+
 
     afterAll(() => Connection.close());
 });
