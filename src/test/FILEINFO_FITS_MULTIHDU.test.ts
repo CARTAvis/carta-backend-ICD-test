@@ -58,16 +58,17 @@ let assertItem: AssertItem = {
                     { name: "Pixel increment", value: "-14\", 14\"" },
                 ],
                 headerEntries: [
-                    { name: "SIMPLE", value: "T / Standard FITS", entryType: 2, numericValue: 1 },
-                    { name: "BITPIX", value: "-32 / Floating point (32 bit)", entryType: 2, numericValue: -32 },
+                    { name: "SIMPLE", value: "T", entryType: 2, numericValue: 1, comment: 'Standard FITS' },
+                    { name: "BITPIX", value: "-32", entryType: 2, numericValue: -32, comment: 'Floating point (32 bit)' },
                     { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
                     { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
                     { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
                     {
                         name: "BSCALE",
-                        value: "1.000000000000E+00 / PHYSICAL = PIXEL*BSCALE + BZERO",
+                        value: "1.000000000000E+00",
                         entryType: 1,
-                        numericValue: 1
+                        numericValue: 1,
+                        comment: 'PHYSICAL = PIXEL*BSCALE + BZERO'
                     },
                     {
                         name: "BZERO",
@@ -76,7 +77,7 @@ let assertItem: AssertItem = {
                     },
                     { name: "BTYPE", value: "Intensity" },
                     { name: "OBJECT" },
-                    { name: "BUNIT", value: "MJy/sr / Brightness (pixel) unit" },
+                    { name: "BUNIT", value: "MJy/sr", comment: 'Brightness (pixel) unit' },
                     {
                         name: "EQUINOX",
                         value: "2000",
@@ -165,7 +166,7 @@ let assertItem: AssertItem = {
                         entryType: 2,
                         numericValue: 870
                     },
-                    { name: "TIMESYS", value: "UTC / Time system for HDU" },
+                    { name: "TIMESYS", value: "UTC", comment: 'Time system for HDU' },
                 ],
             },
         },
@@ -261,6 +262,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                     expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                 });
             });
