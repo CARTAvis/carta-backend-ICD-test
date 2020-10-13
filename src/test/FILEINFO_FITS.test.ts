@@ -73,8 +73,8 @@ let assertItem: AssertItem = {
                     { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
                 headerEntries: [
-                    { name: "SIMPLE", value: "T / Standard FITS", entryType: 2, numericValue: 1 },
-                    { name: "BITPIX", value: "-32 / Floating point (32 bit)", entryType: 2, numericValue: -32 },
+                    { name: "SIMPLE", value: "T", entryType: 2, numericValue: 1, comment: "Standard FITS" },
+                    { name: "BITPIX", value: "-32", entryType: 2, numericValue: -32, comment: "Floating point (32 bit)" },
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
                     { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
@@ -82,9 +82,10 @@ let assertItem: AssertItem = {
                     { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
                     {
                         name: "BSCALE",
-                        value: "1.000000000000E+00 / PHYSICAL = PIXEL*BSCALE + BZERO",
+                        value: "1.000000000000E+00",
                         entryType: 1,
-                        numericValue: 1
+                        numericValue: 1,
+                        comment: "PHYSICAL = PIXEL*BSCALE + BZERO"
                     },
                     {
                         name: "BZERO",
@@ -111,7 +112,7 @@ let assertItem: AssertItem = {
                     },
                     { name: "BTYPE", value: "Intensity" },
                     { name: "OBJECT", value: "M17SW" },
-                    { name: "BUNIT", value: "Jy/beam / Brightness (pixel) unit" },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
                     { name: "RADESYS", value: "ICRS" },
                     {
                         name: "LONPOLE",
@@ -225,11 +226,12 @@ let assertItem: AssertItem = {
                     { name: "PV2_2", value: "0.000000000000E+00", entryType: 1 },
                     {
                         name: "RESTFRQ",
-                        value: "8.675429000000E+10 / Rest Frequency (Hz)",
+                        value: "8.675429000000E+10",
                         entryType: 1,
-                        numericValue: 86754290000
+                        numericValue: 86754290000,
+                        comment: 'Rest Frequency (Hz)'
                     },
-                    { name: "SPECSYS", value: "LSRK / Spectral reference frame" },
+                    { name: "SPECSYS", value: "LSRK", comment: 'Spectral reference frame' },
                     {
                         name: "ALTRVAL",
                         value: "9.999999914171E+03",
@@ -239,9 +241,10 @@ let assertItem: AssertItem = {
                     { name: "ALTRPIX", value: "1", entryType: 1, numericValue: 1 },
                     {
                         name: "VELREF",
-                        value: "257 / 1 LSR, 2 HEL, 3 OBS, +256 Radio",
+                        value: "257",
                         entryType: 2,
-                        numericValue: 257
+                        numericValue: 257,
+                        comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio'
                     },
                     { name: "TELESCOP", value: "ALMA" },
                     { name: "OBSERVER", value: "sishii" },
@@ -370,6 +373,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                     expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                 });
             });

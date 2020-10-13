@@ -107,12 +107,12 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
@@ -139,7 +139,7 @@ let assertItem: AssertItem = {
                         numericValue: 1
                     },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
-                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference pixels", value: "[321.0, 401.0]" },
                     {
                         name: "Image reference coords",
                         value: "[18:20:21.0000, -016.12.10.0000]"
@@ -210,12 +210,12 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
@@ -241,7 +241,7 @@ let assertItem: AssertItem = {
                         numericValue: 1
                     },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
-                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference pixels", value: "[321.0, 401.0]" },
                     {
                         name: "Image reference coords",
                         value: "[18:20:21.0000, -016.12.10.0000]"
@@ -289,12 +289,12 @@ let assertItem: AssertItem = {
                     { name: "CTYPE3", value: "FREQ" },
                     { name: "CRVAL3", value: "8.675139618840E+10", entryType: 1, numericValue: 86751396188.4 },
                     { name: "CDELT3", value: "-2.442377011414E+05", entryType: 1, numericValue: -244237.7011414 },
-                    { name: "CRPIX3", value: '1', entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: '1.0', entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     { name: "RESTFRQ", value: "8.675429000000E+10", entryType: 1, numericValue: 86754290000, comment: 'Rest Frequency (Hz)' }, ,
                     { name: "VELREF", value: "257", entryType: 2, numericValue: 257, comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio' },
@@ -317,7 +317,7 @@ let assertItem: AssertItem = {
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
                     {
                         name: "Image reference pixels",
-                        value: "[321, 401]"
+                        value: "[321.0, 401.0]"
                     },
                     {
                         name: "Image reference coords",
@@ -389,12 +389,12 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     { name: "CRVAL4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
                     { name: "CDELT4", value: "1.000000000000E+00", entryType: 1, numericValue: 1 },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     {
                         name: "RESTFRQ",
@@ -420,7 +420,7 @@ let assertItem: AssertItem = {
                         numericValue: 1
                     },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
-                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference pixels", value: "[321.0, 401.0]" },
                     {
                         name: "Image reference coords",
                         value: "[18:20:21.0000, -016.12.10.0000]"
@@ -457,8 +457,8 @@ let assertItem: AssertItem = {
                     { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
                     { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
                     { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
-                    { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
-                    { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
+                    { name: "CRPIX1", value: "371.0", entryType: 1, numericValue: 371 },
+                    { name: "CRPIX2", value: "421.0", entryType: 1, numericValue: 421 },
                     {
                         name: "CDELT1",
                         value: "-3.888888888889E-03",
@@ -475,7 +475,7 @@ let assertItem: AssertItem = {
                     { name: "CTYPE2", value: "DEC--TAN" },
                     {
                         name: "EQUINOX",
-                        value: "2000",
+                        value: "2000.0",
                         entryType: 1,
                         numericValue: 2000
                     },
@@ -497,7 +497,7 @@ let assertItem: AssertItem = {
                     { name: "Name", value: "spire500_ext.fits" },
                     { name: "Shape", value: "[830, 870]" },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
-                    { name: "Image reference pixels", value: "[371, 421]" },
+                    { name: "Image reference pixels", value: "[371.0, 421.0]" },
                     {
                         name: "Image reference coords",
                         value: "[07:09:13.1081, -010.36.38.5952]"
@@ -588,14 +588,14 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                     fileInfoRes.fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry) => {
-                        // console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries)
+                //        console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries)
                         expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                     });
                 });
 
                 test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                     fileInfoRes.fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry) => {
-                        // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
+                //        console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                         expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                     });
                 });

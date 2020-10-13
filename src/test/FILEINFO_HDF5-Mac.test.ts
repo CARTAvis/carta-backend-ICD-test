@@ -24,7 +24,7 @@ let assertItem: AssertItem = {
     fileInfoRequest: [
         {
             directory: testSubdirectory,
-            file: "M17_SWex.image",
+            file: "M17_SWex.hdf5",
             hdu: "",
         },
     ],
@@ -33,10 +33,10 @@ let assertItem: AssertItem = {
             success: true,
             message: "",
             fileInfo: {
-                name: "M17_SWex.image",
-                type: CARTA.FileType.CASA,
-                size: 53009869,
-                HDUList: [""],
+                name: "M17_SWex.hdf5",
+                type: CARTA.FileType.HDF5,
+                size: 185333128,
+                HDUList: ["0"],
             },
             fileInfoExtended: {
                 dimensions: 4,
@@ -46,7 +46,7 @@ let assertItem: AssertItem = {
                 stokes: 1,
                 stokesVals: [],
                 computedEntries: [
-                    { name: "Name", value: "M17_SWex.image" },
+                    { name: "Name", value: "M17_SWex.hdf5" },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
@@ -62,7 +62,7 @@ let assertItem: AssertItem = {
                     },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
                     { name: "Projection", value: "SIN" },
-                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference pixels", value: "[321.0, 401.0]" },
                     { name: "Image reference coords", value: "[18:20:21.0000, -016.12.10.0000]" },
                     { name: "Image ref coords (deg)", value: "[275.088 deg, -16.2028 deg]" },
                     { name: "Celestial frame", value: "ICRS" },
@@ -73,8 +73,8 @@ let assertItem: AssertItem = {
                     { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
                 ],
                 headerEntries: [
-                    { name: "SIMPLE", value: "T", entryType: 2, numericValue: 1, comment: "Standard FITS" },
-                    { name: "BITPIX", value: "-32", entryType: 2, numericValue: -32, comment: "Floating point (32 bit)" },
+                    { name: "SIMPLE", value: "T", entryType: 2, numericValue: 1, comment: 'Standard FITS' },
+                    { name: "BITPIX", value: "-32", entryType: 2, numericValue: -32 },
                     { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
                     { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
                     { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
@@ -84,8 +84,7 @@ let assertItem: AssertItem = {
                         name: "BSCALE",
                         value: "1.000000000000E+00",
                         entryType: 1,
-                        numericValue: 1,
-                        comment: "PHYSICAL = PIXEL*BSCALE + BZERO"
+                        numericValue: 1
                     },
                     {
                         name: "BZERO",
@@ -112,7 +111,7 @@ let assertItem: AssertItem = {
                     },
                     { name: "BTYPE", value: "Intensity" },
                     { name: "OBJECT", value: "M17SW" },
-                    { name: "BUNIT", value: "Jy/beam", comment: "Brightness (pixel) unit" },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
                     { name: "RADESYS", value: "ICRS" },
                     {
                         name: "LONPOLE",
@@ -173,9 +172,9 @@ let assertItem: AssertItem = {
                         name: "CDELT1",
                         value: "-1.111111111111E-04",
                         entryType: 1,
-                        numericValue: -0.00011111111111110002
+                        numericValue: -0.0001111111111111
                     },
-                    { name: "CRPIX1", value: "321", entryType: 1, numericValue: 321 },
+                    { name: "CRPIX1", value: "321.0", entryType: 1, numericValue: 321 },
                     { name: "CUNIT1", value: "deg" },
                     { name: "CTYPE2", value: "DEC--SIN" },
                     {
@@ -188,9 +187,9 @@ let assertItem: AssertItem = {
                         name: "CDELT2",
                         value: "1.111111111111E-04",
                         entryType: 1,
-                        numericValue: 0.00011111111111110002
+                        numericValue: 0.0001111111111111
                     },
-                    { name: "CRPIX2", value: "401", entryType: 1, numericValue: 401 },
+                    { name: "CRPIX2", value: "401.0", entryType: 1, numericValue: 401 },
                     { name: "CUNIT2", value: "deg" },
                     { name: "CTYPE3", value: "FREQ" },
                     {
@@ -205,7 +204,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     {
@@ -220,7 +219,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 1
                     },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     { name: "PV2_1", value: "0.000000000000E+00", entryType: 1 },
                     { name: "PV2_2", value: "0.000000000000E+00", entryType: 1 },
@@ -229,7 +228,7 @@ let assertItem: AssertItem = {
                         value: "8.675429000000E+10",
                         entryType: 1,
                         numericValue: 86754290000,
-                        comment: "Rest Frequency (Hz)"
+                        comment: 'Rest Frequency (Hz)'
                     },
                     { name: "SPECSYS", value: "LSRK", comment: 'Spectral reference frame' },
                     {
@@ -238,7 +237,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 9999.99991417096
                     },
-                    { name: "ALTRPIX", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "ALTRPIX", value: "1.0", entryType: 1, numericValue: 1 },
                     {
                         name: "VELREF",
                         value: "257",
@@ -266,20 +265,25 @@ let assertItem: AssertItem = {
                         name: "OBSGEO-X",
                         value: "2.225142180269E+06",
                         entryType: 1,
-                        numericValue: 2225142.1802689997
+                        numericValue: 2225142.1802689666
                     },
                     {
                         name: "OBSGEO-Y",
                         value: "-5.440307370349E+06",
                         entryType: 1,
-                        numericValue: -5440307.370349
+                        numericValue: -5440307.370348562
                     },
                     {
                         name: "OBSGEO-Z",
                         value: "-2.481029851874E+06",
                         entryType: 1,
-                        numericValue: -2481029.851874
+                        numericValue: -2481029.8518735464
                     },
+                    { value: "1", entryType: 2, numericValue: 1 },
+                    { name: "SCHEMA_VERSION", value: "0.3" },
+                    { name: "HDF5_CONVERTER", value: "hdf_convert" },
+                    { name: "HDF5_CONVERTER_VERSION", value: "0.1.10" },
+                    { name: "HDF5_DATE", value: "2016-09-07T22:08:24.390001" },
                 ],
             },
         },
@@ -325,7 +329,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 expect(FileInfoResponseTemp.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse[0].fileInfo.size.toString());
             });
 
-            test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.CASA}`, () => {
+            test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.HDF5}`, () => {
                 expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse[0].fileInfo.type);
             });
 
@@ -363,6 +367,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    //console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries)
                     expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                 });
             });
@@ -373,7 +378,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
+                    //console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                     expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                 });
             });

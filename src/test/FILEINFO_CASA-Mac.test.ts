@@ -62,7 +62,7 @@ let assertItem: AssertItem = {
                     },
                     { name: "Coordinate type", value: "Right Ascension, Declination" },
                     { name: "Projection", value: "SIN" },
-                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference pixels", value: "[321.0, 401.0]" },
                     { name: "Image reference coords", value: "[18:20:21.0000, -016.12.10.0000]" },
                     { name: "Image ref coords (deg)", value: "[275.088 deg, -16.2028 deg]" },
                     { name: "Celestial frame", value: "ICRS" },
@@ -175,7 +175,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -0.00011111111111110002
                     },
-                    { name: "CRPIX1", value: "321", entryType: 1, numericValue: 321 },
+                    { name: "CRPIX1", value: "321.0", entryType: 1, numericValue: 321 },
                     { name: "CUNIT1", value: "deg" },
                     { name: "CTYPE2", value: "DEC--SIN" },
                     {
@@ -190,7 +190,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 0.00011111111111110002
                     },
-                    { name: "CRPIX2", value: "401", entryType: 1, numericValue: 401 },
+                    { name: "CRPIX2", value: "401.0", entryType: 1, numericValue: 401 },
                     { name: "CUNIT2", value: "deg" },
                     { name: "CTYPE3", value: "FREQ" },
                     {
@@ -205,7 +205,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: -244237.7011414
                     },
-                    { name: "CRPIX3", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT3", value: "Hz" },
                     { name: "CTYPE4", value: "STOKES" },
                     {
@@ -220,7 +220,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 1
                     },
-                    { name: "CRPIX4", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
                     { name: "CUNIT4" },
                     { name: "PV2_1", value: "0.000000000000E+00", entryType: 1 },
                     { name: "PV2_2", value: "0.000000000000E+00", entryType: 1 },
@@ -238,7 +238,7 @@ let assertItem: AssertItem = {
                         entryType: 1,
                         numericValue: 9999.99991417096
                     },
-                    { name: "ALTRPIX", value: "1", entryType: 1, numericValue: 1 },
+                    { name: "ALTRPIX", value: "1.0", entryType: 1, numericValue: 1 },
                     {
                         name: "VELREF",
                         value: "257",
@@ -363,7 +363,8 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
+                   //console.log(FileInfoResponseTemp.fileInfoExtended.computedEntries)    
+                   expect(FileInfoResponseTemp.fileInfoExtended.computedEntries).toContainEqual(entry);
                 });
             });
 
@@ -373,7 +374,7 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
+                    //console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
                     expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
                 });
             });
