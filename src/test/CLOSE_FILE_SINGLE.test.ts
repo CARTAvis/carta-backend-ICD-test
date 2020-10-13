@@ -84,7 +84,7 @@ describe("Test for Close one file:", () => {
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
     }, readFileTimeout);
 
-    test(`(Step 3) close file & make sure NO message returned & the backend is still alive`, async () => {
+    test(`(Step 3) close image & make sure NO message returned & the backend is still alive`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
 
         let Response = await Connection.receiveAny(1000, false)
