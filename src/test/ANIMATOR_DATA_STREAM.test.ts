@@ -141,7 +141,7 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
             let Ack;
             test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.imageChannels[1]);
-                Ack = await Connection.stream(4);
+                Ack = await Connection.stream(6);
             }, changeChannelTimeout);
 
             test(`RASTER_TILE_DATA.channel = ${assertItem.imageChannels[1].channel}`, () => {
