@@ -8,7 +8,8 @@
         "directory": ".",
         "QA": "set_QA",
         "region": "set_QA/set_QA_regionTest",
-        "performance": "set_QA_performance"
+        "performance": "set_QA_performance",
+        "moment": "set_HD163296"
     },
     "timeout": {
         "connection": 1100,
@@ -29,7 +30,8 @@
         "resume": 3000,
         "sleep": 3000,
         "playAnimator": 10000,
-        "wasm": 3000
+        "wasm": 3000,
+        "moment": 3300
     },
     "repeat": {
         "concurrent": 10,
