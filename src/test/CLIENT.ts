@@ -1,6 +1,7 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
+const { performance } = require('perf_hooks');
 var W3CWebSocket = require('websocket').w3cwebsocket;
 export class Client {
     IcdVersion: number = 17;
@@ -64,6 +65,12 @@ export class Client {
         [58, CARTA.CatalogFilterResponse],
         [59, CARTA.ScriptingRequest],
         [60, CARTA.ScriptingResponse],
+        [61, CARTA.MomentRequest],
+        [62, CARTA.MomentResponse],
+        [63, CARTA.MomentProgress],
+        [64, CARTA.StopMomentCalc],
+        [65, CARTA.SaveFile],
+        [66, CARTA.SaveFileAck],
         [67, CARTA.SpectralLineRequest],
         [68, CARTA.SpectralLineResponse],
     ]);
@@ -114,7 +121,7 @@ export class Client {
     /// Send websocket message async
     /// Parameters: connection(Websocket ref), cartaType(CARTA.type), eventMessage(the sending message)
     /// return a Promise<any> for await
-    send(cartaType: any, eventMessage: any, ) {
+    send(cartaType: any, eventMessage: any,) {
         return new Promise<void>(resolve => {
             let message = cartaType.create(eventMessage);
             let payload = cartaType.encode(message).finish();
@@ -290,6 +297,9 @@ export class Client {
             SpectralProfileData: [],
             ContourImageData: [],
             CatalogFilterResponse: [],
+            ScriptingResponse: [],
+            MomentResponse: [],
+            MomentProgress: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -340,6 +350,15 @@ export class Client {
                         break;
                     case CARTA.CatalogFilterResponse:
                         ack.CatalogFilterResponse.push(CARTA.CatalogFilterResponse.decode(eventData));
+                        break;
+                    case CARTA.ScriptingResponse:
+                        ack.ScriptingResponse.push(CARTA.ScriptingResponse.decode(eventData));
+                        break;
+                    case CARTA.MomentProgress:
+                        ack.MomentProgress.push(CARTA.MomentProgress.decode(eventData));
+                        break;
+                    case CARTA.MomentResponse:
+                        ack.MomentResponse.push(CARTA.MomentResponse.decode(eventData));
                         break;
                 }
 
@@ -436,6 +455,9 @@ export interface AckStream {
     SpectralProfileData: CARTA.SpectralProfileData[];
     ContourImageData: CARTA.ContourImageData[];
     CatalogFilterResponse: CARTA.CatalogFilterResponse[];
+    ScriptingResponse: CARTA.ScriptingResponse[];
+    MomentResponse: CARTA.MomentResponse[];
+    MomentProgress: CARTA.MomentProgress[];
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
