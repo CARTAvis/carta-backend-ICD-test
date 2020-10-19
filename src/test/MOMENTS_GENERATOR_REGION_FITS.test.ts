@@ -237,7 +237,7 @@ describe("MOMENT_GENERATOR: Testing moments generator for a given region on a fi
             test(`Assert RASTER_TILE_DATA.tiles[0].imageData[100][100]`, () => {
                 RasterTileData.map((ack, index) => {
                     const data = (new Float32Array(ack.tiles[0].imageData.slice().buffer));
-                    expect(data[100][100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
+                    expect(data[201*100+100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
                 });
             });
         });

@@ -162,9 +162,9 @@ describe("MOMENT_GENERATOR: Testing moments generator for a given region on a hd
                 });
             });
 
-            test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 71`, () => {
+            test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 76`, () => {
                 MomentResponse.openFileAcks.map((ack, index) => {
-                    expect(ack.fileInfoExtended.headerEntries.length).toEqual(71);
+                    expect(ack.fileInfoExtended.headerEntries.length).toEqual(76);
                 });
             });
 
@@ -237,7 +237,7 @@ describe("MOMENT_GENERATOR: Testing moments generator for a given region on a hd
             test(`Assert RASTER_TILE_DATA.tiles[0].imageData[100][100]`, () => {
                 RasterTileData.map((ack, index) => {
                     const data = (new Float32Array(ack.tiles[0].imageData.slice().buffer));
-                    expect(data[100][100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
+                    expect(data[201*100+100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
                 });
             });
         });
