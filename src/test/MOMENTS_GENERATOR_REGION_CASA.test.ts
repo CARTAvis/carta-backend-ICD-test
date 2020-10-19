@@ -26,7 +26,7 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "HD163296_CO_2_1.fits",
+        file: "HD163296_CO_2_1.image",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -66,7 +66,7 @@ const intensity = [ // Testing intensity at the (100, 100) of each moment image
     0.36911, 9.2617, 0.10461, 3.2299,
 ];
 
-describe("MOMENT_GENERATOR: Testing moments generator for a given region on a fits image", () => {
+describe("MOMENT_GENERATOR: Testing moments generator for a given region on a casa image", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
