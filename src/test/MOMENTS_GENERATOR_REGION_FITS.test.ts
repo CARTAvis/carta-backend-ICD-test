@@ -79,13 +79,13 @@ describe("MOMENTS_GENERATOR_REGION_FITS: Testing moments generator for a given r
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.stream(2);
         }, readFileTimeout);
 
         test(`Set region`, async () => {
             await Connection.send(CARTA.SetRegion, assertItem.setRegion);
             await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-            await Connection.stream(2);
+            await Connection.receiveAny();
         }, regionTimeout);
     });
 

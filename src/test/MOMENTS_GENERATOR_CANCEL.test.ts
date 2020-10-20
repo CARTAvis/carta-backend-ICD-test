@@ -53,7 +53,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck);
+            await Connection.stream(2);
         }, readFileTimeout);
     });
 
