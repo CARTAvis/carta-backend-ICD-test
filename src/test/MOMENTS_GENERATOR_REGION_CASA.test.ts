@@ -66,7 +66,7 @@ const intensity = [ // Testing intensity at the (100, 100) of each moment image
     0.36911, 9.2617, 0.10461, 3.2299,
 ];
 
-describe("MOMENT_GENERATOR: Testing moments generator for a given region on a casa image", () => {
+describe("MOMENTS_GENERATOR_REGION_CASA: Testing moments generator for a given region on a casa image", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
