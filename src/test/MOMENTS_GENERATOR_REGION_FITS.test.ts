@@ -73,175 +73,169 @@ describe("MOMENTS_GENERATOR_REGION_FITS: Testing moments generator for a given r
         await Connection.open();
         await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
         await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder`, () => {
+    describe(`Preparation`, () => {
+        test(`Open image`, async () => {
+            await Connection.send(CARTA.OpenFile, assertItem.openFile);
+            await Connection.receive(CARTA.OpenFileAck);
+        }, readFileTimeout);
 
-        beforeAll(async () => {
-            await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        });
+        test(`Set region`, async () => {
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion);
+            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+            await Connection.stream(2);
+        }, regionTimeout);
+    });
 
-        describe(`Preparation`, () => {
-            test(`Open image`, async () => {
-                await Connection.send(CARTA.OpenFile, assertItem.openFile);
-                await Connection.receive(CARTA.OpenFileAck);
-            }, readFileTimeout);
-
-            test(`Set region`, async () => {
-                await Connection.send(CARTA.SetRegion, assertItem.setRegion);
-                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                await Connection.stream(2);
-            }, regionTimeout);
-        });
-
-        let FileId: number[] = [];
-        describe(`Moment generator`, () => {
-            let MomentProgress: CARTA.MomentProgress[] = [];
-            let MomentResponse: CARTA.MomentResponse;
-            test(`Receive a series of moment progress`, async () => {
-                let ack;
-                await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-                // ack = await Connection.streamUntil(3000, type => type!=CARTA.MomentResponse);
-                do {
-                    ack = await Connection.receiveAny();
-                    switch (ack.constructor.name) {
-                        case "MomentResponse":
-                            MomentResponse = ack;
-                            break;
-                        case "MomentProgress":
-                            MomentProgress.push(ack);
-                            break;
-                        case "RegionHistogramData":
-                            FileId.push(ack.fileId);
-                            break;
-                        default:
-                            break;
-                    }
-                } while (ack.constructor.name != "MomentResponse");
-                expect(MomentProgress.length).toBeGreaterThan(0);
-            }, momentTimeout);
-
-            test(`Receive ${assertItem.momentRequest.moments.length} REGION_HISTOGRAM_DATA`, () => {
-                expect(FileId.length).toEqual(assertItem.momentRequest.moments.length);
-            });
-
-            test(`Assert MomentResponse.success = true`, () => {
-                expect(MomentResponse.success).toBe(true);
-            });
-
-            test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`, () => {
-                expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
-            });
-
-            test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
-                MomentResponse.openFileAcks.map(ack => {
-                    expect(ack.success).toBe(true);
-                });
-            });
-
-            test(`Assert all openFileAcks[].fileId > 0`, () => {
-                MomentResponse.openFileAcks.map(ack => {
-                    expect(ack.fileId).toBeGreaterThan(0);
-                });
-            });
-
-            test(`Assert openFileAcks[].fileInfo.name`, () => {
-                MomentResponse.openFileAcks.map((ack, index) => {
-                    expect(ack.fileInfo.name).toEqual(assertItem.openFile.file + ".moment." + momentName[index]);
-                });
-            });
-
-            test(`Assert openFileAcks[].fileInfoExtended`, () => {
-                MomentResponse.openFileAcks.map(ack => {
-                    const coord = assertItem.setRegion.regionInfo.controlPoints;
-                    expect(ack.fileInfoExtended.height).toEqual(coord[1].y + 1);
-                    expect(ack.fileInfoExtended.width).toEqual(coord[1].x + 1);
-                    expect(ack.fileInfoExtended.dimensions).toEqual(4);
-                    expect(ack.fileInfoExtended.depth).toEqual(1);
-                    expect(ack.fileInfoExtended.stokes).toEqual(1);
-                });
-            });
-
-            test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 71`, () => {
-                MomentResponse.openFileAcks.map((ack, index) => {
-                    expect(ack.fileInfoExtended.headerEntries.length).toEqual(71);
-                });
-            });
-
-            test(`Assert openFileAcks[].fileInfoExtended.computedEntries.length = 15`, () => {
-                MomentResponse.openFileAcks.map((ack, index) => {
-                    expect(ack.fileInfoExtended.computedEntries.length).toEqual(15);
-                });
-            });
-
-        });
-
-        describe(`Requset moment image`, () => {
-            let RasterTileSync: CARTA.RasterTileSync[] = [];
-            let RasterTileData: CARTA.RasterTileData[] = [];
-            test(`Receive all image data until RasterTileSync.endSync = true`, async () => {
-                for (let idx = 0; idx < FileId.length; idx++) {
-                    await Connection.send(CARTA.AddRequiredTiles, {
-                        fileId: FileId[idx],
-                        tiles: [0],
-                        compressionType: CARTA.CompressionType.NONE,
-                        compressionQuality: 0,
-                    });
-                    let ack;
-                    do {
-                        ack = await Connection.receiveAny();
-                        switch (ack.constructor.name) {
-                            case "RasterTileSync":
-                                if (ack.endSync) {
-                                    RasterTileSync.push(ack);
-                                }
-                                break;
-                            case "RasterTileData":
-                                RasterTileData.push(ack);
-                                break;
-                            default:
-                                break;
-                        }
-                    } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
+    let FileId: number[] = [];
+    describe(`Moment generator`, () => {
+        let MomentProgress: CARTA.MomentProgress[] = [];
+        let MomentResponse: CARTA.MomentResponse;
+        test(`Receive a series of moment progress`, async () => {
+            let ack;
+            await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
+            // ack = await Connection.streamUntil(3000, type => type!=CARTA.MomentResponse);
+            do {
+                ack = await Connection.receiveAny();
+                switch (ack.constructor.name) {
+                    case "MomentResponse":
+                        MomentResponse = ack;
+                        break;
+                    case "MomentProgress":
+                        MomentProgress.push(ack);
+                        break;
+                    case "RegionHistogramData":
+                        FileId.push(ack.fileId);
+                        break;
+                    default:
+                        break;
                 }
-                RasterTileSync.map(ack => {
-                    expect(ack.endSync).toBe(true);
-                });
-            }, readFileTimeout * FileId.length);
+            } while (ack.constructor.name != "MomentResponse");
+            expect(MomentProgress.length).toBeGreaterThan(0);
+        }, momentTimeout);
 
-            test(`Assert RASTER_TILE_SYNC.fileId`, () => {
-                RasterTileSync.map((ack, index) => {
-                    expect(ack.fileId).toEqual(FileId[index]);
-                });
+        test(`Receive ${assertItem.momentRequest.moments.length} REGION_HISTOGRAM_DATA`, () => {
+            expect(FileId.length).toEqual(assertItem.momentRequest.moments.length);
+        });
+
+        test(`Assert MomentResponse.success = true`, () => {
+            expect(MomentResponse.success).toBe(true);
+        });
+
+        test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`, () => {
+            expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
+        });
+
+        test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
+            MomentResponse.openFileAcks.map(ack => {
+                expect(ack.success).toBe(true);
             });
+        });
 
-            test(`Receive RASTER_TILE_DATA`, () => {
-                expect(RasterTileData.length).toEqual(FileId.length);
+        test(`Assert all openFileAcks[].fileId > 0`, () => {
+            MomentResponse.openFileAcks.map(ack => {
+                expect(ack.fileId).toBeGreaterThan(0);
             });
+        });
 
-            test(`Assert RASTER_TILE_DATA.fileId`, () => {
-                RasterTileData.map((ack, index) => {
-                    expect(ack.fileId).toEqual(FileId[index]);
-                });
+        test(`Assert openFileAcks[].fileInfo.name`, () => {
+            MomentResponse.openFileAcks.map((ack, index) => {
+                expect(ack.fileInfo.name).toEqual(assertItem.openFile.file + ".moment." + momentName[index]);
             });
+        });
 
-            test(`Assert RASTER_TILE_DATA.tiles`, () => {
-                RasterTileData.map(ack => {
-                    expect(ack.tiles[0].height).toEqual(201);
-                    expect(ack.tiles[0].width).toEqual(201);
-                    expect(ack.tiles[0].imageData.length).toEqual(201*201*4);
-                    expect(ack.tiles[0].nanEncodings.length).toEqual(0);
-                });
+        test(`Assert openFileAcks[].fileInfoExtended`, () => {
+            MomentResponse.openFileAcks.map(ack => {
+                const coord = assertItem.setRegion.regionInfo.controlPoints;
+                expect(ack.fileInfoExtended.height).toEqual(coord[1].y + 1);
+                expect(ack.fileInfoExtended.width).toEqual(coord[1].x + 1);
+                expect(ack.fileInfoExtended.dimensions).toEqual(4);
+                expect(ack.fileInfoExtended.depth).toEqual(1);
+                expect(ack.fileInfoExtended.stokes).toEqual(1);
             });
+        });
 
-            test(`Assert RASTER_TILE_DATA.tiles[0].imageData[100][100]`, () => {
-                RasterTileData.map((ack, index) => {
-                    const data = (new Float32Array(ack.tiles[0].imageData.slice().buffer));
-                    expect(data[201*100+100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
-                });
+        test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 71`, () => {
+            MomentResponse.openFileAcks.map((ack, index) => {
+                expect(ack.fileInfoExtended.headerEntries.length).toEqual(71);
+            });
+        });
+
+        test(`Assert openFileAcks[].fileInfoExtended.computedEntries.length = 15`, () => {
+            MomentResponse.openFileAcks.map((ack, index) => {
+                expect(ack.fileInfoExtended.computedEntries.length).toEqual(15);
             });
         });
 
     });
+
+    describe(`Requset moment image`, () => {
+        let RasterTileSync: CARTA.RasterTileSync[] = [];
+        let RasterTileData: CARTA.RasterTileData[] = [];
+        test(`Receive all image data until RasterTileSync.endSync = true`, async () => {
+            for (let idx = 0; idx < FileId.length; idx++) {
+                await Connection.send(CARTA.AddRequiredTiles, {
+                    fileId: FileId[idx],
+                    tiles: [0],
+                    compressionType: CARTA.CompressionType.NONE,
+                    compressionQuality: 0,
+                });
+                let ack;
+                do {
+                    ack = await Connection.receiveAny();
+                    switch (ack.constructor.name) {
+                        case "RasterTileSync":
+                            if (ack.endSync) {
+                                RasterTileSync.push(ack);
+                            }
+                            break;
+                        case "RasterTileData":
+                            RasterTileData.push(ack);
+                            break;
+                        default:
+                            break;
+                    }
+                } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
+            }
+            RasterTileSync.map(ack => {
+                expect(ack.endSync).toBe(true);
+            });
+        }, readFileTimeout * FileId.length);
+
+        test(`Assert RASTER_TILE_SYNC.fileId`, () => {
+            RasterTileSync.map((ack, index) => {
+                expect(ack.fileId).toEqual(FileId[index]);
+            });
+        });
+
+        test(`Receive RASTER_TILE_DATA`, () => {
+            expect(RasterTileData.length).toEqual(FileId.length);
+        });
+
+        test(`Assert RASTER_TILE_DATA.fileId`, () => {
+            RasterTileData.map((ack, index) => {
+                expect(ack.fileId).toEqual(FileId[index]);
+            });
+        });
+
+        test(`Assert RASTER_TILE_DATA.tiles`, () => {
+            RasterTileData.map(ack => {
+                expect(ack.tiles[0].height).toEqual(201);
+                expect(ack.tiles[0].width).toEqual(201);
+                expect(ack.tiles[0].imageData.length).toEqual(201 * 201 * 4);
+                expect(ack.tiles[0].nanEncodings.length).toEqual(0);
+            });
+        });
+
+        test(`Assert RASTER_TILE_DATA.tiles[0].imageData[100][100]`, () => {
+            RasterTileData.map((ack, index) => {
+                const data = (new Float32Array(ack.tiles[0].imageData.slice().buffer));
+                expect(data[201 * 100 + 100]).toBeCloseTo(intensity[index], assertItem.precisionDigit);
+            });
+        });
+    });
+
     afterAll(() => Connection.close());
 });
