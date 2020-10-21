@@ -375,6 +375,101 @@ export class Client {
             };
         });
     }
+    /// Receive CARTA stream async until event == true
+    /// Until timeout: promise will not return CARTA data until time out if timeout > 0
+    streamUntil(timeout?: number, event?: (eventType) => {}) {
+        if (timeout === 0) {
+            return Promise.resolve();
+        }
+
+        let ack: AckStream = {
+            Responce: [],
+            RasterTileData: [],
+            RasterTileSync: [],
+            SpatialProfileData: [],
+            RegionStatsData: [],
+            RegionHistogramData: [],
+            SpectralProfileData: [],
+            ContourImageData: [],
+            CatalogFilterResponse: [],
+            ScriptingResponse: [],
+            MomentResponse: [],
+            MomentProgress: [],
+        };
+
+        return new Promise<AckStream>((resolve, reject) => {
+            this.connection.onmessage = (messageEvent: MessageEvent) => {
+                const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+                const eventData = new Uint8Array(messageEvent.data, 8);
+
+                const eventNumber = eventHeader16[0];
+                const eventIcdVersion = eventHeader16[1];
+                const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
+                }
+
+                if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
+                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
+                }
+                let eventType;
+                do {
+                    let data;
+                    eventType = this.CartaType.get(eventNumber);
+                    switch (eventType) {
+                        default:
+                            ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
+                            break;
+                        case CARTA.RasterTileData:
+                            ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
+                            break;
+                        case CARTA.RasterTileSync:
+                            ack.RasterTileSync.push(CARTA.RasterTileSync.decode(eventData));
+                            break;
+                        case CARTA.RegionStatsData:
+                            ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
+                            break;
+                        case CARTA.RegionHistogramData:
+                            ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
+                            break;
+                        case CARTA.SpatialProfileData:
+                            data = CARTA.SpatialProfileData.decode(eventData);
+                            data.profiles = data.profiles.map(p => processSpatialProfile(p));
+                            ack.SpatialProfileData.push(data);
+                            break;
+                        case CARTA.SpectralProfileData:
+                            data = CARTA.SpectralProfileData.decode(eventData);
+                            data.profiles = data.profiles.map(p => processSpectralProfile(p));
+                            ack.SpectralProfileData.push(data);
+                            break;
+                        case CARTA.ContourImageData:
+                            ack.ContourImageData.push(CARTA.ContourImageData.decode(eventData));
+                            break;
+                        case CARTA.CatalogFilterResponse:
+                            ack.CatalogFilterResponse.push(CARTA.CatalogFilterResponse.decode(eventData));
+                            break;
+                        case CARTA.ScriptingResponse:
+                            ack.ScriptingResponse.push(CARTA.ScriptingResponse.decode(eventData));
+                            break;
+                        case CARTA.MomentProgress:
+                            ack.MomentProgress.push(CARTA.MomentProgress.decode(eventData));
+                            break;
+                        case CARTA.MomentResponse:
+                            ack.MomentResponse.push(CARTA.MomentResponse.decode(eventData));
+                            break;
+                    }
+                } while (event(eventType));
+                resolve(ack);
+                if (timeout) {
+                    let Timer = setTimeout(() => {
+                        clearTimeout(Timer);
+                        reject();
+                    }, timeout);
+                }
+            };
+        });
+    }
     /// Receive CARTA stream async
     /// Until the number: totalCount of mesaages have received or
     /// timeout: promise will not return CARTA data until time out if timeout > 0
