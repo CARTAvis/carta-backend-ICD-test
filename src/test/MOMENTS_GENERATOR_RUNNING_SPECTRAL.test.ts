@@ -118,7 +118,7 @@ describe("MOMENTS_GENERATOR_RUNNING_SPECTRAL: Testing moments generator while re
             });
         });
 
-        test(`Assert a SpectralProfileData.progress = 1`, async () => {
+        test(`Receive a SpectralProfileData.progress = 1`, async () => {
             SpectralProfileData = await Connection.receive(CARTA.SpectralProfileData);
             expect(SpectralProfileData.progress).toEqual(1);
         }, momentTimeout);
