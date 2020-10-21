@@ -191,9 +191,11 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
     }, readFileTimeout);
 
     test(`(Step 4) the backend is still alive`, async () => {
-        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
-        expect(BackendStatus).toBeDefined()
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse);
+        expect(BackendStatus).toBeDefined();
+        expect(BackendStatus.success).toBe(true);
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
     });
 
     afterAll(() => Connection.close());
