@@ -51,7 +51,6 @@ let assertItem: AssertItem = {
         },
     ],
     setCursor: {
-        fileId: 0,
         point: { x: 218, y: 218 },
     },
 };
@@ -123,14 +122,13 @@ describe("MOMENTS_GENERATOR_EXCEPT: Testing moments generator for exception", ()
                 expect(ack.success).toBe(true);
             });
         });
-
     });
 
     describe(`Requset moment image`, () => {
         let SpatialProfileData: CARTA.SpatialProfileData;
         test(`Receive the image data until RasterTileSync.endSync = true`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, {
-                fileId: FileId[2],
+                fileId: FileId[1]+1,
                 tiles: [0],
                 compressionType: CARTA.CompressionType.ZFP,
                 compressionQuality: 11,
@@ -139,12 +137,15 @@ describe("MOMENTS_GENERATOR_EXCEPT: Testing moments generator for exception", ()
             do {
                 ack = await Connection.receiveAny();
             } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
-            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+            await Connection.send(CARTA.SetCursor, {
+                fileId: FileId[1]+1,
+                ...assertItem.setCursor,
+            });
             SpatialProfileData = await Connection.receiveAny();
         }, readFileTimeout * FileId.length);
 
         test(`Assert SpatialProfileData.value`, () => {
-            expect(SpatialProfileData.value).toBeCloseTo(0.004255577921867371, assertItem.precisionDigit);
+            expect(SpatialProfileData.value).toBeCloseTo(7.8840599, assertItem.precisionDigit);
         });
 
         test(`Assert backend is still alive`, ()=>{
