@@ -91,7 +91,7 @@ describe("Test for Close one file:", () => {
         expect(Response).toEqual(undefined)
 
         await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = Connection.receive(CARTA.FileListResponse)
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
         expect(BackendStatus).toBeDefined()
     });
 
