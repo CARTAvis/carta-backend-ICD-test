@@ -42,24 +42,24 @@ let assertItem: AssertItem = {
         [
             {
                 outputFileDirectory: 'tmp',
-                outputFileName: 'HD163296_CO_2_1.fits.moment.average',
+                outputFileName: 'HD163296_CO_2_1.fits.moment.average.fits',
                 outputFileType: CARTA.FileType.FITS,
             },
             {
                 outputFileDirectory: 'tmp',
-                outputFileName: 'HD163296_CO_2_1.fits.moment.average',
+                outputFileName: 'HD163296_CO_2_1.fits.moment.average.image',
                 outputFileType: CARTA.FileType.CASA,
             },
         ],
         [
             {
                 outputFileDirectory: 'tmp',
-                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated',
+                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.fits',
                 outputFileType: CARTA.FileType.FITS,
             },
             {
                 outputFileDirectory: 'tmp',
-                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated',
+                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.image',
                 outputFileType: CARTA.FileType.CASA,
             },
         ],
