@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
+import { async } from "q";
 var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl: string = config.serverURL;
@@ -17,6 +18,7 @@ interface AssertItem {
     addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
+    setImageChannel: CARTA.ISetImageChannels;
 };
 
 let assertItem: AssertItem = {
@@ -43,7 +45,7 @@ let assertItem: AssertItem = {
     setCursor:
     {
         fileId: 0,
-        point: { x: 1, y: 1 },
+        point: { x: 960, y: 960 },
     },
     setSpatialReq:
     {
@@ -51,9 +53,23 @@ let assertItem: AssertItem = {
         regionId: 0,
         spatialProfiles: ["x", "y"]
     },
+    setImageChannel:
+    {
+        fileId: 0,
+        channel: 100,
+        stokes: 0,
+        requiredTiles: {
+            fileId: 0,
+            compressionType: CARTA.CompressionType.ZFP,
+            compressionQuality: 11,
+            // tiles: [0]
+            tiles: [33558529, 33562625, 33558530, 33562626, 33558528, 33554433, 33562624, 33554434, 33566721, 33558531, 33566722, 33562627, 33554432, 33566720, 33554435, 33566723],
+        },
+    },
+
 };
 
-describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data is still streaming :", () => {
+describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during the TILE data streaming :", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -86,6 +102,30 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
         expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
     }, readFileTimeout);
+
+    test(`(Step 3) Set SET_IMAGE_CHANNELS and then CLOSE_FILE during the tile streaming & Check whether the backend is alive:`, async () => {
+        await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel)
+        // Expect to receive RasterTileData * 16 + RASTER_TILE_SYNC *2 + REGION_HISTOGRAM_DATA + SPATIAL_PROFILE_DATA
+        // await Connection.stream(assertItem.setImageChannel.requiredTiles.tiles.length + 4)
+
+        // Interupt during the tile, we will receive the number <  assertItem.setImageChannel.requiredTiles.tiles.length
+        let ResponseBeforeClose = await Connection.stream(assertItem.setImageChannel.requiredTiles.tiles.length + 4 - 10);
+        // CLOSE_FILE during the tile streaming
+        await Connection.send(CARTA.CloseFile, { fileId: 0 });
+        // Receive the rest of the stream after CLOSE_FILE
+        let ResponseAfterClose = await Connection.stream(10)
+        expect(ResponseBeforeClose.RasterTileData.length + ResponseAfterClose.RasterTileData.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length)
+
+        let Response = await Connection.receiveAny(1000, false)
+        expect(Response).toEqual(undefined)
+
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
+        expect(BackendStatus).toBeDefined()
+        expect(BackendStatus.success).toBe(true);
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
+
+    });
 
     afterAll(() => Connection.close());
 });
