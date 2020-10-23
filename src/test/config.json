@@ -31,7 +31,8 @@
         "sleep": 3000,
         "playAnimator": 10000,
         "wasm": 3000,
-        "moment": 3300
+        "moment": 3300,
+        "momentLargeCube": 50000
     },
     "repeat": {
         "concurrent": 10,

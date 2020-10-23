@@ -1,19 +1,22 @@
 import { CARTA } from "carta-protobuf";
 
+import { AckStream } from "action/CLIENT";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.moment;
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
-let momentTimeout = config.timeout.moment;
+let momentTimeout = config.timeout.momentLargeCube;
 interface AssertItem {
     precisionDigit: number;
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
-    momentRequest: CARTA.IMomentRequest;
     setSpectralRequirements: CARTA.ISetSpectralRequirements;
+    setCursor: CARTA.ISetCursor;
+    momentRequest: CARTA.IMomentRequest;
 };
 
 let assertItem: AssertItem = {
@@ -24,24 +27,27 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "HD163296_CO_2_1.fits",
+        file: "SDC335.579-0.292.spw0.line.image",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
+    },
+    setSpectralRequirements: {
+        fileId: 0,
+        regionId: 0,
+        spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
+    },
+    setCursor: {
+        point: { x: 150, y: 150 },
     },
     momentRequest: {
         fileId: 0,
         regionId: 0,
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
-        moments: [0, 1,],
-        pixelRange: { min: 0.1, max: 1.0 },
-        spectralRange: { min: 73, max: 114 },
-    },
-    setSpectralRequirements: {
-        fileId: 0,
-        regionId: 0,
-        spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
+        moments: [0],
+        pixelRange: { min: 0.2, max: 1.0 },
+        spectralRange: { min: 2100, max: 2200 },
     },
 };
 
@@ -60,23 +66,28 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
             await Connection.stream(2);
         }, readFileTimeout);
+        test(`Request spectral profile data till get 1 SpectralProfileData`, async () => {
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+            let ack = await Connection.stream(1) as AckStream;
+            expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
+        }, readFileTimeout);
     });
 
     let FileId: number[] = [];
     describe(`Moment generator after starting spectral profile`, () => {
         let MomentProgress: CARTA.MomentProgress[] = [];
         let MomentResponse: CARTA.MomentResponse;
-        // let SpectralProfileData: CARTA.SpectralProfileData[] = [];
-        test(`Receive a series messages`, async () => {
+        let SpectralProfileData: CARTA.SpectralProfileData[] = [];
+        test(`Request moment image and no receive SpectralProfileData`, async () => {
             let ack;
-            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             do {
                 ack = await Connection.receiveAny();
                 switch (ack.constructor.name) {
-                    // case "SpectralProfileData":
-                    //     SpectralProfileData.push(ack);
-                    //     break;
+                    case "SpectralProfileData":
+                        SpectralProfileData.push(ack);
+                        break;
                     case "MomentResponse":
                         MomentResponse = ack;
                         break;
@@ -90,6 +101,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
                         break;
                 }
             } while (ack.constructor.name != "MomentResponse");
+            expect(SpectralProfileData.length).toEqual(0);
         }, momentTimeout);
 
         test(`Assert all MomentProgress.progress < 1`, () => {
@@ -130,7 +142,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
                     default:
                         break;
                 }
-            } while (SpectralProfileData.slice(-1)[0].progress!=1);
+            } while (SpectralProfileData.slice(-1)[0].progress != 1);
         }, momentTimeout);
     });
 
