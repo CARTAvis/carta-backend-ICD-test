@@ -45,7 +45,7 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("MOMENTS_GENERATOR_RUNNING_SPECTRAL: Testing moments generator while requesting spectral profile", () => {
+describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while streaming spectral profile", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);

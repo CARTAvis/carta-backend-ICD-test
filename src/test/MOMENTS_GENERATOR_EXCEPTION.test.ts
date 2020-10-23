@@ -55,7 +55,7 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("MOMENTS_GENERATOR_EXCEPT: Testing moments generator for exception", () => {
+describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
