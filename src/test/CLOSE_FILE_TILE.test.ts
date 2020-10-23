@@ -2,7 +2,6 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl: string = config.serverURL;
@@ -99,6 +98,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.stream(5, 2500) as AckStream;
+        console.log(ack)
         expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
     }, readFileTimeout);
