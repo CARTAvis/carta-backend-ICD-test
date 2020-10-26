@@ -112,12 +112,9 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         let ResponseBeforeClose = await Connection.stream(assertItem.setImageChannel.requiredTiles.tiles.length + 4 - 10);
         // CLOSE_FILE during the tile streaming
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        // Receive the rest of the stream after CLOSE_FILE
-        let ResponseAfterClose = await Connection.stream(10)
-        expect(ResponseBeforeClose.RasterTileData.length + ResponseAfterClose.RasterTileData.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length)
-
-        let Response = await Connection.receiveAny(1000, false)
-        expect(Response).toEqual(undefined)
+        // // Receive the rest of the stream after CLOSE_FILE
+        // let ResponseAfterClose = await Connection.stream(10)
+        // expect(ResponseBeforeClose.RasterTileData.length + ResponseAfterClose.RasterTileData.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length)
 
         await Connection.send(CARTA.FileListRequest, assertItem.filelist)
         let BackendStatus = await Connection.receive(CARTA.FileListResponse)
