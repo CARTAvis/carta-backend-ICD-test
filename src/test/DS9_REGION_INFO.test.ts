@@ -143,8 +143,7 @@ describe("DS9_REGION_INFO: Testing DS9_REG region list and info", () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            await Connection.stream(2); // OpenFileAck | RegionHistogramData
         });
 
         describe(`Go to "${regionSubdirectory}" and send REGION_LIST_REQUEST`, () => {

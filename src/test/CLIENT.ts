@@ -1,6 +1,7 @@
 import { CARTA } from "carta-protobuf";
 
 import config from "./config.json";
+const { performance } = require('perf_hooks');
 var W3CWebSocket = require('websocket').w3cwebsocket;
 export class Client {
     IcdVersion: number = 17;

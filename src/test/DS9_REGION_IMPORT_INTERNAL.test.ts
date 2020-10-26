@@ -43,20 +43,20 @@ let assertItem: AssertItem = {
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
     },
-    precisionDigits: 1,
+    precisionDigits: 0,
     importRegion:
         [
             {
                 groupId: 0,
-                type: CARTA.FileType.CRTF,
+                type: CARTA.FileType.DS9_REG,
                 directory: regionSubdirectory,
-                file: "M17_SWex_regionSet1_world.crtf",
+                file: "M17_SWex_regionSet1_world.reg",
             },
             {
                 groupId: 0,
-                type: CARTA.FileType.CRTF,
+                type: CARTA.FileType.DS9_REG,
                 directory: regionSubdirectory,
-                file: "M17_SWex_regionSet1_pix.crtf",
+                file: "M17_SWex_regionSet1_pix.reg",
             },
         ],
     importRegionAck: [
@@ -227,7 +227,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made with CARTA", () => {
+describe("DS9_REGION_IMPORT_INTERNAL: Testing import of DS9 region files made with CARTA", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -277,8 +277,6 @@ describe("CASA_REGION_IMPORT_INTERNAL: Testing import of CASA region files made 
 
             });
         });
-
-
     });
 
     afterAll(() => Connection.close());
