@@ -108,7 +108,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.stream(assertItem.addTilesReq[0].tiles.length + 4, 2500) as AckStream;
-        console.log(ack)
+        // console.log(ack) // Receive RasterTileData * 16 + SpatialProfileData * 2 + RasterTileSync * 2
         expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length) //only 1 Tile returned
     }, readFileTimeout);
@@ -139,7 +139,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
                     timestamp: Long.fromNumber(Date.now()),
                 }
             );
-            console.log(AnimateStreamData[i]) // In principle, each channel should have RasterTileSync *2 (start & end)
+            // console.log(AnimateStreamData[i]) // In principle, each channel should have RasterTileSync *2 (start & end)
             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
         };
         // console.log(sequence)
