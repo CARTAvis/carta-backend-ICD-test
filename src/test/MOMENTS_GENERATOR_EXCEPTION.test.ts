@@ -128,7 +128,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
         let SpatialProfileData: CARTA.SpatialProfileData;
         test(`Receive the image data until RasterTileSync.endSync = true`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, {
-                fileId: FileId[1]+1,
+                fileId: FileId[1] + 1,
                 tiles: [0],
                 compressionType: CARTA.CompressionType.ZFP,
                 compressionQuality: 11,
@@ -137,18 +137,21 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
             do {
                 ack = await Connection.receiveAny();
             } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
+        }, readFileTimeout * FileId.length);
+
+        test(`Receive SpatialProfileData`, async () => {
             await Connection.send(CARTA.SetCursor, {
-                fileId: FileId[1]+1,
+                fileId: FileId[1] + 1,
                 ...assertItem.setCursor,
             });
             SpatialProfileData = await Connection.receiveAny();
-        }, readFileTimeout * FileId.length);
+        });
 
         test(`Assert SpatialProfileData.value`, () => {
             expect(SpatialProfileData.value).toBeCloseTo(7.8840599, assertItem.precisionDigit);
         });
 
-        test(`Assert backend is still alive`, ()=>{
+        test(`Assert backend is still alive`, () => {
             expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
         });
     });
