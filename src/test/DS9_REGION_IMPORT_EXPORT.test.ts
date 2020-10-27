@@ -217,7 +217,10 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
             test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                 await Connection.send(CARTA.ImportRegion, assertItem.importRegion);
                 importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
-                importRegionAckProperties = Object.keys(importRegionAck.regions)
+                if (importRegionAck.message != '') {
+                    console.warn(importRegionAck.message);
+                }
+                importRegionAckProperties = Object.keys(importRegionAck.regions);
             }, importTimeout);
 
             test(`IMPORT_REGION_ACK.success = ${assertItem.importRegionAck.success}`, () => {
@@ -264,7 +267,10 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
-                    importRegionAckProperties = Object.keys(importRegionAck.regions)
+                    if (importRegionAck.message != '') {
+                        console.warn(importRegionAck.message);
+                    }
+                    importRegionAckProperties = Object.keys(importRegionAck.regions);
                 }, importTimeout);
 
                 test(`IMPORT_REGION_ACK.success = ${Region.success}`, () => {
