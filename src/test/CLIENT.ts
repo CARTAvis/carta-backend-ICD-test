@@ -199,7 +199,7 @@ export class Client {
     /// A receiving websocket message in any type async
     /// timeout: promise will return CARTA data until time out if timeout > 0
     /// return a Promise<any> for await
-    receiveAny(timeout?: number) {
+    receiveAny(timeout?: number, isReceive?: boolean) {
         return new Promise<any>((resolve, reject) => {
             this.connection.onmessage = async (messageEvent: MessageEvent) => {
                 const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
@@ -232,7 +232,11 @@ export class Client {
             if (timeout) {
                 let Timer = setTimeout(() => {
                     clearTimeout(Timer);
-                    reject();
+                    if (isReceive) {
+                        reject();
+                    } else {
+                        resolve();
+                    }
                 }, timeout);
             }
         });
