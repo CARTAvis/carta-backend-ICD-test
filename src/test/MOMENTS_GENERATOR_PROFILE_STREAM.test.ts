@@ -102,7 +102,9 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
                 }
             } while (ack.constructor.name != "MomentResponse");
             expect(SpectralProfileData.length).toBeLessThanOrEqual(2);
-            expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
+            if (SpectralProfileData.length > 0) {
+                expect(SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
+            }
         }, momentTimeout);
 
         test(`Assert all MomentProgress.progress < 1`, () => {
