@@ -1,0 +1,6 @@
+# Region file format: DS9 CARTA 1.4
+Ices
+box (275.10143464, -16.19889023, 275.09371804, -16.18742106) # coord=ICRS, linewidth=1, linestyle=-, symsize=1, symthick=1, color=magenta, font=Helvetica, fontsize=11, fontstyle=normal, usetex=false
+ellipse (275.07816175, -16.19291676, 21.5058arcsec, 12.0464arcsec, 0.00000000) # coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=magenta, font=Helvetica, fontsize=11, fontstyle=normal, usetex=false
+poly (275.10616547, -16.21501890, 275.10467141, -16.20952321, 275.09907057, -16.20892621, 275.09459004, -16.21155484, 275.08824241, -16.21370549, 275.08239258, -16.21322754, 275.07865874, -16.21107688, 275.07492495, -16.20940405, 275.07181335, -16.21000122], 275.07007043, -16.21501900, 275.07119028, -16.21920069, 275.07915615, -16.22147116, 275.08712221, -16.22290502, 275.09371912, -16.22182966, 275.10255626, -16.21884236, 275.10504545, -16.21693058) # coord=ICRS, corr=[I], linewidth=1, linestyle=-, symsize=1, symthick=1, color=magenta, font=Helvetica, fontsize=11, fontstyle=normal, usetex=false
+symbol (275.08749562, -16.20366965, .) # coord=ICRS, linewidth=1, linestyle=-, symsize=1, symthick=1, color=magenta, font=Helvetica, fontsize=11, fontstyle=normal, usetex=false

@@ -1,0 +1,9 @@
+# Region file format: DS9 CARTA 1.4
+physical
+box(320, 400, 40, 100, 0)
+box(320, 400, 100, 40, 0)
+box(320, 400, 200, 40, 45)
+polygon(320, 400, 320, 600, 400, 400)
+circle(320, 400, 200)
+ellipse(320, 400, 100, 20, 45)
+point(320, 300)

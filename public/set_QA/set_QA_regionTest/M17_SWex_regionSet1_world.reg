@@ -1,0 +1,19 @@
+# Region file format: DS9 CARTA 1.4
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
+icrs
+point(275.136531, -16.179095) # color=green width=1
+box(275.136788, -16.188550, 30.0324", 30.0324", 0) # color=green width=1
+box(275.138179, -16.201438, 54.8867", 21.7476", 0) # color=green width=1
+box(275.138415, -16.219327, 69.3851", 17.6052", 45) # color=green width=1
+circle(275.036788, -16.176650, 20.1942") # color=green width=1
+ellipse(275.037832, -16.193191, 11.9094", 27.9612", 90) # color=green width=1
+ellipse(275.038279, -16.206136, 7.2492", 31.5858", 135) # color=green width=1
+polygon(275.036928,-16.217211,275.041717,-16.234040,275.028537,-16.225982) # color=green width=1
+point(275.104182, -16.181545) # color=green width=1
+box(275.105086, -16.189555, 22.7832", 22.7832", 0) # color=green width=1
+box(275.109484, -16.199554, 48.6731", 14.4984", 0) # color=green width=1
+box(275.112957, -16.215665, 28.5588", 49.0627", 45) # color=green width=1
+circle(275.067040, -16.183415, 19.6764") # color=green width=1
+ellipse(275.062844, -16.198805, 10.3560", 27.9612", 90) # color=green width=1
+ellipse(275.064041, -16.213044, 8.8026", 32.1036", 135) # color=green width=1
+polygon(275.067644,-16.221824,275.076331,-16.234913,275.056707,-16.235343) # color=green width=1
