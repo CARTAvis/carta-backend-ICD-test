@@ -6,5 +6,5 @@ box(320.00, 400.00, 100.00, 40.00, 0) # color=green width=1
 box(320.00, 400.00, 200.00, 40.00, 45) # color=green width=1
 polygon(320.00, 400.00,320.00,600.00,400.00,400.00) # color=green width=1
 circle(320.00, 400.00, 200.00) # color=green width=1
-ellipse(320.00, 400.00, 100.00, 20.00, 135) # color=green width=1
+ellipse(320.00, 400.00, 100.00, 20.00, 45) # color=green width=1
 point(320.00, 300.00) # color=green width=1
