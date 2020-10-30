@@ -32,7 +32,8 @@
         "playAnimator": 10000,
         "wasm": 3000,
         "moment": 3300,
-        "momentLargeCube": 50000
+        "momentLargeCube": 50000,
+        "spectralLineRequest": 3000
     },
     "repeat": {
         "concurrent": 10,
