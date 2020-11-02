@@ -2,7 +2,6 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-import { async } from "q";
 var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl: string = config.serverURL;
