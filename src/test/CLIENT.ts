@@ -326,51 +326,50 @@ export class Client {
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
-                let data;
-                switch (this.CartaType.get(eventNumber)) {
+                let eventType = this.CartaType.get(eventNumber);
+                let data = eventType.decode(eventData);
+                switch (eventType) {
                     default:
-                        ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
+                        ack.Responce.push(data);
                         break;
                     case CARTA.EntryType:
-                        ack.Responce.push(CARTA.ErrorData.decode(eventData));
+                        ack.Responce.push(data);
                         console.warn(data);
                         break;
                     case CARTA.RasterTileData:
-                        ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
+                        ack.RasterTileData.push(data);
                         break;
                     case CARTA.RasterTileSync:
-                        ack.RasterTileSync.push(CARTA.RasterTileSync.decode(eventData));
+                        ack.RasterTileSync.push(data);
                         break;
                     case CARTA.RegionStatsData:
-                        ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
+                        ack.RegionStatsData.push(data);
                         break;
                     case CARTA.RegionHistogramData:
-                        ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
+                        ack.RegionHistogramData.push(data);
                         break;
                     case CARTA.SpatialProfileData:
-                        data = CARTA.SpatialProfileData.decode(eventData);
                         data.profiles = data.profiles.map(p => processSpatialProfile(p));
                         ack.SpatialProfileData.push(data);
                         break;
                     case CARTA.SpectralProfileData:
-                        data = CARTA.SpectralProfileData.decode(eventData);
                         data.profiles = data.profiles.map(p => processSpectralProfile(p));
                         ack.SpectralProfileData.push(data);
                         break;
                     case CARTA.ContourImageData:
-                        ack.ContourImageData.push(CARTA.ContourImageData.decode(eventData));
+                        ack.ContourImageData.push(data);
                         break;
                     case CARTA.CatalogFilterResponse:
-                        ack.CatalogFilterResponse.push(CARTA.CatalogFilterResponse.decode(eventData));
+                        ack.CatalogFilterResponse.push(data);
                         break;
                     case CARTA.ScriptingResponse:
-                        ack.ScriptingResponse.push(CARTA.ScriptingResponse.decode(eventData));
+                        ack.ScriptingResponse.push(data);
                         break;
                     case CARTA.MomentProgress:
-                        ack.MomentProgress.push(CARTA.MomentProgress.decode(eventData));
+                        ack.MomentProgress.push(data);
                         break;
                     case CARTA.MomentResponse:
-                        ack.MomentResponse.push(CARTA.MomentResponse.decode(eventData));
+                        ack.MomentResponse.push(data);
                         break;
                 }
 
@@ -389,10 +388,7 @@ export class Client {
     }
     /// Receive CARTA stream async until event == true
     /// Until timeout: promise will not return CARTA data until time out if timeout > 0
-    streamUntil(timeout?: number, event?: (eventType) => {}) {
-        if (timeout === 0) {
-            return Promise.resolve();
-        }
+    streamUntil(isWait?: (type, data) => boolean) {
 
         let ack: AckStream = {
             Responce: [],
@@ -425,59 +421,54 @@ export class Client {
                 if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
                     console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
                 }
-                let eventType;
-                do {
-                    let data;
-                    eventType = this.CartaType.get(eventNumber);
-                    switch (eventType) {
-                        default:
-                            ack.Responce.push(this.CartaType.get(eventNumber).decode(eventData));
-                            break;
-                        case CARTA.RasterTileData:
-                            ack.RasterTileData.push(CARTA.RasterTileData.decode(eventData));
-                            break;
-                        case CARTA.RasterTileSync:
-                            ack.RasterTileSync.push(CARTA.RasterTileSync.decode(eventData));
-                            break;
-                        case CARTA.RegionStatsData:
-                            ack.RegionStatsData.push(CARTA.RegionStatsData.decode(eventData));
-                            break;
-                        case CARTA.RegionHistogramData:
-                            ack.RegionHistogramData.push(CARTA.RegionHistogramData.decode(eventData));
-                            break;
-                        case CARTA.SpatialProfileData:
-                            data = CARTA.SpatialProfileData.decode(eventData);
-                            data.profiles = data.profiles.map(p => processSpatialProfile(p));
-                            ack.SpatialProfileData.push(data);
-                            break;
-                        case CARTA.SpectralProfileData:
-                            data = CARTA.SpectralProfileData.decode(eventData);
-                            data.profiles = data.profiles.map(p => processSpectralProfile(p));
-                            ack.SpectralProfileData.push(data);
-                            break;
-                        case CARTA.ContourImageData:
-                            ack.ContourImageData.push(CARTA.ContourImageData.decode(eventData));
-                            break;
-                        case CARTA.CatalogFilterResponse:
-                            ack.CatalogFilterResponse.push(CARTA.CatalogFilterResponse.decode(eventData));
-                            break;
-                        case CARTA.ScriptingResponse:
-                            ack.ScriptingResponse.push(CARTA.ScriptingResponse.decode(eventData));
-                            break;
-                        case CARTA.MomentProgress:
-                            ack.MomentProgress.push(CARTA.MomentProgress.decode(eventData));
-                            break;
-                        case CARTA.MomentResponse:
-                            ack.MomentResponse.push(CARTA.MomentResponse.decode(eventData));
-                            break;
-                    }
-                } while (event(eventType));
-                resolve(ack);
-                if (timeout) {
-                    let Timer = setTimeout(() => {
-                        clearTimeout(Timer);
-                        reject();
-                    }, timeout);
+                let eventType = this.CartaType.get(eventNumber);
+                let data = eventType.decode(eventData);
+                switch (eventType) {
+                    default:
+                        ack.Responce.push(data);
+                        break;
+                    case CARTA.EntryType:
+                        ack.Responce.push(data);
+                        console.warn(data);
+                        break;
+                    case CARTA.RasterTileData:
+                        ack.RasterTileData.push(data);
+                        break;
+                    case CARTA.RasterTileSync:
+                        ack.RasterTileSync.push(data);
+                        break;
+                    case CARTA.RegionStatsData:
+                        ack.RegionStatsData.push(data);
+                        break;
+                    case CARTA.RegionHistogramData:
+                        ack.RegionHistogramData.push(data);
+                        break;
+                    case CARTA.SpatialProfileData:
+                        data.profiles = data.profiles.map(p => processSpatialProfile(p));
+                        ack.SpatialProfileData.push(data);
+                        break;
+                    case CARTA.SpectralProfileData:
+                        data.profiles = data.profiles.map(p => processSpectralProfile(p));
+                        ack.SpectralProfileData.push(data);
+                        break;
+                    case CARTA.ContourImageData:
+                        ack.ContourImageData.push(data);
+                        break;
+                    case CARTA.CatalogFilterResponse:
+                        ack.CatalogFilterResponse.push(data);
+                        break;
+                    case CARTA.ScriptingResponse:
+                        ack.ScriptingResponse.push(data);
+                        break;
+                    case CARTA.MomentProgress:
+                        ack.MomentProgress.push(data);
+                        break;
+                    case CARTA.MomentResponse:
+                        ack.MomentResponse.push(data);
+                        break;
+                }
+                if (!isWait(eventType, data)) {
+                    resolve(ack);
                 }
             };
         });
