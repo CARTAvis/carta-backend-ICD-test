@@ -16,6 +16,7 @@ interface ISpectralLineResponseExt extends CARTA.ISpectralLineResponse {
     lengthOfheaders: number;
     speciesOfline: string;
     speciesOflineIndex: number;
+    freqSpeciesOfline: string;
 }
 
 interface AssertItem {
@@ -105,6 +106,7 @@ let assertItem: AssertItem = {
             lengthOfheaders: 19,
             speciesOfline: "COv=0",
             speciesOflineIndex: 351,
+            freqSpeciesOfline: "230538.00000",
         },
         {
             success: true,
@@ -112,6 +114,7 @@ let assertItem: AssertItem = {
             lengthOfheaders: 19,
             speciesOfline: "Carbon Monoxide",
             speciesOflineIndex: 200,
+            freqSpeciesOfline: "220398.68420",
         },
     ],
 };
@@ -162,6 +165,7 @@ describe("[Case 1] Open an image, and then query the spectral line (line freq do
             expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[0].dataSize)
         });
         expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].speciesOfline);
+        expect(response.spectralLineData[5].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].freqSpeciesOfline);
     }, spectralLineRequest);
 
     afterAll(() => Connection.close());
@@ -236,6 +240,7 @@ describe("[Case 2] Open an image, set a region then ask the spectral profiler, t
             expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[1].dataSize)
         });
         expect(response.spectralLineData[1].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].speciesOfline);
+        expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].freqSpeciesOfline);
     }, spectralLineRequest);
 
     afterAll(() => Connection.close());
