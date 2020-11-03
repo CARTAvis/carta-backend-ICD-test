@@ -8,7 +8,6 @@ let testServerUrl: string = config.serverURL;
 let connectTimeout: number = config.timeout.connection;
 let spectralLineRequest: number = config.timeout.spectralLineRequest;
 
-
 interface ISpectralLineResponseExt extends CARTA.ISpectralLineResponse {
     lengthOfheaders: number;
     speciesOfline1st: string;
@@ -21,10 +20,6 @@ interface ISpectralLineResponseExt extends CARTA.ISpectralLineResponse {
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
-    filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles;
-    setCursor: CARTA.ISetCursor;
     setSpectralLineReq: CARTA.ISpectralLineRequest[];
     SpectraLineResponse: CARTA.ISpectralLineResponseExt[];
 };
