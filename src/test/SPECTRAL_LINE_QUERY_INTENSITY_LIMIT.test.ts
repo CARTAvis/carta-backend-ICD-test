@@ -11,9 +11,12 @@ let spectralLineRequest: number = config.timeout.spectralLineRequest;
 
 interface ISpectralLineResponseExt extends CARTA.ISpectralLineResponse {
     lengthOfheaders: number;
-    speciesOfline: string;
-    speciesOflineIndex: number;
-    freqSpeciesOfline: string;
+    speciesOfline1st: string;
+    speciesOflineIndex1st: number;
+    freqSpeciesOfline1st: string;
+    speciesOflineLast: string;
+    speciesOflineIndexLast: number;
+    freqSpeciesOflineLast: string;
 }
 
 interface AssertItem {
@@ -34,35 +37,101 @@ let assertItem: AssertItem = {
     setSpectralLineReq: [
         {
             frequencyRange: { min: 230500, max: 230600 },
-            lineIntensityLowerLimit: -10,
+            lineIntensityLowerLimit: NaN,
         },
         {
-            frequencyRange: { min: 220350, max: 220400 },
+            frequencyRange: { min: 230500, max: 230600 },
+            lineIntensityLowerLimit: -7,
+        },
+        {
+            frequencyRange: { min: 230500, max: 230600 },
             lineIntensityLowerLimit: -5,
+        },
+        {
+            frequencyRange: { min: 230500, max: 230600 },
+            lineIntensityLowerLimit: -3,
+        },
+        {
+            frequencyRange: { min: 230500, max: 230600 },
+            lineIntensityLowerLimit: -0.01,
+        },
+        {
+            frequencyRange: { min: 230500, max: 230600 },
+            lineIntensityLowerLimit: 0,
         },
     ],
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 919,
+            dataSize: 1013,
             lengthOfheaders: 19,
-            speciesOfline: "COv=0",
-            speciesOflineIndex: 351,
-            freqSpeciesOfline: "230538.00000",
+            speciesOfline1st: "gGG'g-CH2OHCH2CH2OH",
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: "230500.05580",
+            speciesOflineLast: "t-H13COOH",
+            speciesOflineIndexLast: 1012,
+            freqSpeciesOflineLast: "230599.28000",
         },
         {
             success: true,
-            dataSize: 203,
+            dataSize: 771,
             lengthOfheaders: 19,
-            speciesOfline: "Carbon Monoxide",
-            speciesOflineIndex: 200,
-            freqSpeciesOfline: "220398.68420",
+            speciesOfline1st: "gGG'g-CH2OHCH2CH2OH",
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: "230500.05580",
+            speciesOflineLast: "NH2CO2CH3v=1",
+            speciesOflineIndexLast: 770,
+            freqSpeciesOflineLast: "230599.22700",
+        },
+        {
+            success: true,
+            dataSize: 303,
+            lengthOfheaders: 19,
+            speciesOfline1st: "CH3CHNH2COOH-I",
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: "230500.38600",
+            speciesOflineLast: "NH2CO2CH3v=1",
+            speciesOflineIndexLast: 302,
+            freqSpeciesOflineLast: "230599.22700",
+        },
+        {
+            success: true,
+            dataSize: 18,
+            lengthOfheaders: 19,
+            speciesOfline1st: "30SiC2",
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: "230509.08430",
+            speciesOflineLast: "c-C3H5CN",
+            speciesOflineIndexLast: 17,
+            freqSpeciesOflineLast: "230588.61690",
+        },
+        {
+            success: true,
+            dataSize: 0,
+            lengthOfheaders: 19,
+            speciesOfline1st: undefined,
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: undefined,
+            speciesOflineLast: undefined,
+            speciesOflineIndexLast: 0,
+            freqSpeciesOflineLast: undefined,
+        },
+        {
+            success: true,
+            dataSize: 0,
+            lengthOfheaders: 19,
+            speciesOfline1st: undefined,
+            speciesOflineIndex1st: 0,
+            freqSpeciesOfline1st: undefined,
+            speciesOflineLast: undefined,
+            speciesOflineIndexLast: 0,
+            freqSpeciesOflineLast: undefined,
         },
     ]
 };
 
 
-describe("[Case 1] Open an image, and then query the spectral line (line freq does not match image's freq):", () => {
+describe("Query the spectral line directly:", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -76,20 +145,33 @@ describe("[Case 1] Open an image, and then query the spectral line (line freq do
         expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
     });
 
-    test(`(Step 3) return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms and check response:`, async () => {
-        await Connection.send(CARTA.SpectralLineRequest, assertItem.setSpectralLineReq[0]);
-        let response = await Connection.receive(CARTA.SpectralLineResponse);
-        // console.log(response)
-        expect(response.success).toEqual(assertItem.SpectraLineResponse[0].success);
-        expect(response.dataSize).toEqual(assertItem.SpectraLineResponse[0].dataSize);
-        expect(response.headers.length).toEqual(assertItem.SpectraLineResponse[0].lengthOfheaders);
-        let properties = Object.keys(response.spectralLineData);
-        properties.map((num, index) => {
-            expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[0].dataSize)
+    assertItem.setSpectralLineReq.map((request, index) => {
+        describe(`(Case ${index}: Line intensity lower limit = ${assertItem.setSpectralLineReq[index].lineIntensityLowerLimit})`, () => {
+            let response: CARTA.SpectralLineResponse;
+            test(`Sent & return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms`, async () => {
+                await Connection.send(CARTA.SpectralLineRequest, request);
+                response = await Connection.receive(CARTA.SpectralLineResponse);
+            }, spectralLineRequest);
+
+            test(`Check information & total number = ${assertItem.SpectraLineResponse[index].dataSize}`, () => {
+                expect(response.success).toEqual(assertItem.SpectraLineResponse[index].success);
+                expect(response.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
+                expect(response.headers.length).toEqual(assertItem.SpectraLineResponse[index].lengthOfheaders);
+                let properties = Object.keys(response.spectralLineData);
+                properties.map((num, index2) => {
+                    expect(response.spectralLineData[0].stringData.length).toEqual(assertItem.SpectraLineResponse[index].dataSize)
+                });
+            });
+
+            test(`Check the information of the first and the last molecular species`, () => {
+                expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
+                expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
+                expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
+                expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
+            });
         });
-        expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].speciesOfline);
-        expect(response.spectralLineData[5].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].freqSpeciesOfline);
-    }, spectralLineRequest);
+
+    });
 
     afterAll(() => Connection.close());
 });
