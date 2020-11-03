@@ -386,8 +386,8 @@ export class Client {
             };
         });
     }
-    /// Receive CARTA stream async until event == true
-    /// Until timeout: promise will not return CARTA data until time out if timeout > 0
+    /// Receive CARTA stream async
+    /// Until isWait == false
     streamUntil(isWait?: (type, data) => boolean) {
 
         let ack: AckStream = {
@@ -468,6 +468,36 @@ export class Client {
                         break;
                 }
                 if (!isWait(eventType, data)) {
+                    resolve(ack);
+                }
+            };
+        });
+    }
+    /// Receive all type of CARTA stream in series
+    /// Until isWait == false
+    streamAnyUntil(isWait?: (type: any, data: any, ack: any[]) => boolean) {
+        let ack: any = [];
+        return new Promise<AckStream>((resolve, reject) => {
+            this.connection.onmessage = (messageEvent: MessageEvent) => {
+                const eventHeader16 = new Uint16Array(messageEvent.data, 0, 2);
+                const eventHeader32 = new Uint32Array(messageEvent.data, 4, 1);
+                const eventData = new Uint8Array(messageEvent.data, 8);
+
+                const eventNumber = eventHeader16[0];
+                const eventIcdVersion = eventHeader16[1];
+                const eventId = eventHeader32[0];
+                if (config.log.event) {
+                    console.log(`<= ${this.CartaType.get(eventNumber).name} #${eventId} @ ${performance.now()}`);
+                }
+
+                if (eventIcdVersion !== this.IcdVersion && config.log.warning) {
+                    console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${this.IcdVersion}. Errors may occur`);
+                }
+                let eventType = this.CartaType.get(eventNumber);
+                let data = eventType.decode(eventData);
+                ack.push(data);
+
+                if (!isWait(eventType, data, ack)) {
                     resolve(ack);
                 }
             };
