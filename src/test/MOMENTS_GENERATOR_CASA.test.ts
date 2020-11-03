@@ -4,7 +4,7 @@ import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.moment;
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let regionTimeout = config.timeout.region;

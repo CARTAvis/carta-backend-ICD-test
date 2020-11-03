@@ -5,7 +5,7 @@ import config from "./config.json";
 var W3CWebSocket = require('websocket').w3cwebsocket;
 
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.moment;
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let momentTimeout = config.timeout.moment;
