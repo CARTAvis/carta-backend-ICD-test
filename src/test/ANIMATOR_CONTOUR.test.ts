@@ -9,8 +9,6 @@ let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
-let playImageTimeout: number = config.timeout.playImages;
-let sleepTimeout: number = config.timeout.sleep
 let playAnimatorTimeout = config.timeout.playAnimator
 
 interface AssertItem {
@@ -72,6 +70,9 @@ let assertItem: AssertItem = {
                     compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 9,
                 },
+                looping: false,
+                reverse: false,
+                frameRate: 5,
             },
             {
                 fileId: 0,
@@ -85,6 +86,9 @@ let assertItem: AssertItem = {
                     compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 9,
                 },
+                looping: false,
+                reverse: false,
+                frameRate: 5,
             },
         ],
     stopAnimation:
@@ -194,12 +198,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
             let sequence: number[] = [];
             let contourImageData: CARTA.ContourImageData[] = [];
             test(`Image should return one after one and the last channel is correct:`, async () => {
-                await Connection.send(CARTA.StartAnimation, {
-                    ...assertItem.startAnimation[0],
-                    looping: true,
-                    reverse: false,
-                    frameRate: 5,
-                });
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[0]);
                 expect((await Connection.receive(CARTA.StartAnimationAck)).success).toBe(true);
 
                 let Ack: AckStream;
@@ -211,7 +210,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     let currentChannel = Ack.RasterTileData.slice(-1)[0].channel;
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
-                            ...assertItem.animationFlowControl[1],
+                            ...assertItem.animationFlowControl[0],
                             receivedFrame: {
                                 channel: currentChannel,
                                 stokes: 0
@@ -256,12 +255,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
             let sequence: number[] = [];
             let contourImageData: CARTA.ContourImageData[] = [];
             test(`Image should return one after one and the last channel is correct:`, async () => {
-                await Connection.send(CARTA.StartAnimation, {
-                    ...assertItem.startAnimation[1],
-                    looping: false,
-                    reverse: true,
-                    frameRate: 5,
-                });
+                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[1]);
                 expect((await Connection.receive(CARTA.StartAnimationAck)).success).toBe(true);
 
                 let Ack: AckStream;
@@ -273,7 +267,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     let currentChannel = Ack.RasterTileData.slice(-1)[0].channel;
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
-                            ...assertItem.animationFlowControl[0],
+                            ...assertItem.animationFlowControl[1],
                             receivedFrame: {
                                 channel: currentChannel,
                                 stokes: 0
