@@ -430,7 +430,7 @@ export class Client {
     }
     /// Receive CARTA stream async
     /// Until isWait == false
-    streamUntil(isWait?: (type, data) => boolean) {
+    streamUntil(isWait?: (type, data?, ack?) => boolean) {
 
         let ack: AckStream = {
             Responce: [],
@@ -509,7 +509,7 @@ export class Client {
                         ack.MomentResponse.push(data);
                         break;
                 }
-                if (!isWait(eventType, data)) {
+                if (!isWait(eventType, data, ack)) {
                     resolve(ack);
                 }
             };
