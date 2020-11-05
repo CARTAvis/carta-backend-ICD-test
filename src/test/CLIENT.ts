@@ -86,7 +86,7 @@ export class Client {
     connection: W3CWebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
-        this.connection = new W3CWebSocket(url);
+        this.connection = new W3CWebSocket(url, {maxReceivedFrameSize: 0x02000000});
         this.connection.binaryType = "arraybuffer";
     }
     open(timeout?: number) {
