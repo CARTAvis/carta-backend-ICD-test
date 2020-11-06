@@ -4,7 +4,7 @@ import { isNull } from "util";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -112,7 +112,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
@@ -130,7 +130,7 @@ describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spa
         }, readFileTimeout);
 
         test(`(Step 0) Connection open? | `, () => {
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
         });
 
         assertItem.spatialProfileData.map((profileData, index) => {
