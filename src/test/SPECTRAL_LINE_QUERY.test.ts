@@ -90,8 +90,8 @@ let assertItem: AssertItem = {
     },
     setSpectralLineReq: [
         {
-            frequencyRange: { min: 230000, max: 240000 },
-            lineIntensityLowerLimit: NaN,
+            frequencyRange: { min: 230500, max: 230600 },
+            lineIntensityLowerLimit: -10,
         },
         {
             frequencyRange: { min: 220350, max: 220400 },
@@ -101,11 +101,11 @@ let assertItem: AssertItem = {
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 100000,
+            dataSize: 919,
             lengthOfheaders: 19,
-            speciesOfline: "(CH3)2COv=0",
+            speciesOfline: "COv=0",
             speciesOflineIndex: 351,
-            freqSpeciesOfline: "",
+            freqSpeciesOfline: "230538.00000",
         },
         {
             success: true,
