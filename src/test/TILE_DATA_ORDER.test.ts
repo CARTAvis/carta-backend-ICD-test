@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -139,7 +139,7 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
     assertItem.initTilesReq.map((initTilesReq, index) => {
         describe(`Go to "${testSubdirectory}" folder`, () => {
@@ -149,7 +149,7 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
             });
 
             test(`OpenFileAck? | `, async () => {
-                expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
                 let temp1 = await Connection.receive(CARTA.OpenFileAck)
                 // console.log(temp1)
