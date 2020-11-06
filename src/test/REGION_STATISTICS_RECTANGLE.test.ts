@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -284,7 +284,7 @@ describe("REGION_STATISTICS_RECTANGLE test: Testing statistics with rectangle re
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     assertItem.openFile.map(openFile => {

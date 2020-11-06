@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
@@ -176,7 +176,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.fileOpen.file}" to set image view`, () => {

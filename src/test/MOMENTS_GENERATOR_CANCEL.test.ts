@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -93,7 +93,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
 
         test(`Receive no MomentProgress till 500 ms`, async () => {
             await Connection.receive(CARTA.MomentProgress, 500, false);
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
         });
 
         test(`Assert MomentResponse.success = true`, () => {

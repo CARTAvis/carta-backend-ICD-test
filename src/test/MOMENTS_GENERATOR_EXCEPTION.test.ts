@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -152,7 +152,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
         });
 
         test(`Assert backend is still alive`, () => {
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
         });
     });
     afterAll(() => Connection.close());
