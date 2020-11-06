@@ -1,12 +1,12 @@
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", () => {
     let testRemoteWebsocketSite = "wss://echo.websocket.org";
     test(`should connect to "${testRemoteWebsocketSite}".`, done => {
         // Construct a Websocket
-        let Connection = new W3CWebSocket(testRemoteWebsocketSite);
+        let Connection = new WebSocket(testRemoteWebsocketSite);
 
         // While open a Websocket
         Connection.onopen = () => {
@@ -20,23 +20,23 @@ describe("ACCESS_WEBSOCKET tests: Testing connections to the websocket server", 
 
     test(`should connect to "${testServerUrl}".`, done => {
 
-        let Connection = new W3CWebSocket(testServerUrl);
-        expect(Connection.readyState).toBe(W3CWebSocket.CONNECTING);
+        let Connection = new WebSocket(testServerUrl);
+        expect(Connection.readyState).toBe(WebSocket.CONNECTING);
         
         Connection.onopen = OnOpen;
 
         function OnOpen (this, ev: Event) {
-            expect(this.readyState).toBe(W3CWebSocket.OPEN);
+            expect(this.readyState).toBe(WebSocket.OPEN);
             if (config.log.event) {
                 console.log(testServerUrl + "  opened");
             }
             
             this.close();
-            expect(this.readyState).toBe(W3CWebSocket.CLOSING);
+            expect(this.readyState).toBe(WebSocket.CLOSING);
 
             Connection.onclose = OnClose;
             function OnClose (this, ev: CloseEvent) {
-                expect(this.readyState).toBe(W3CWebSocket.CLOSED);
+                expect(this.readyState).toBe(WebSocket.CLOSED);
                 if (config.log.event) {
                     console.log(testServerUrl + "  closed");
                 }

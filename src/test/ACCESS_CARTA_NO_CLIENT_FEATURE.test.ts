@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
 let connectTimeout = config.timeout.connection;
 interface AssertItem {
@@ -21,17 +21,17 @@ describe("ACCESS_CARTA_NO_CLIENT_FEATURE tests: Testing backend connection witho
         let RegisterViewerAckTemp: CARTA.RegisterViewerAck; 
         test(`should get "REGISTER_VIEWER_ACK" within ${connectTimeout} ms`, async () => {
             Connection = new Client(testServerUrl);
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.CONNECTING);
+            expect(Connection.connection.readyState).toBe(WebSocket.CONNECTING);
 
             await Connection.open().then( () => {
-                expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+                expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             });
 
             await Connection.send(CARTA.RegisterViewer, assertItem.register);
             RegisterViewerAckTemp = await Connection.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
 
             await Connection.close().then( () => {
-                expect(Connection.connection.readyState).toBe(W3CWebSocket.CLOSED);
+                expect(Connection.connection.readyState).toBe(WebSocket.CLOSED);
             });
 
         }, connectTimeout);
@@ -49,9 +49,9 @@ describe("ACCESS_CARTA_NO_CLIENT_FEATURE tests: Testing backend connection witho
             expect(RegisterViewerAckTemp.sessionType).toBe(CARTA.SessionType.NEW);
         });
 
-        test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
-            expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(8);
-        });
+        // test("REGISTER_VIEWER_ACK.server_feature_flags = 8", () => {
+        //     expect(RegisterViewerAckTemp.serverFeatureFlags).toEqual(8);
+        // });
 
         test("REGISTER_VIEWER_ACK.user_preferences = None", () => {
             expect(RegisterViewerAckTemp.userPreferences).toMatchObject({});

@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
 let connectionTimeout = config.timeout.connection;
 let concurrentTimeout = config.timeout.concurrent;
@@ -30,10 +30,10 @@ describe("Access Websocket concurrently", () => {
 
         for (let i = 0; i < client.length; i++) {
             client[i] = new Client(testServerUrl);
-            expect(client[i].connection.readyState).toBe(W3CWebSocket.CONNECTING);
+            expect(client[i].connection.readyState).toBe(WebSocket.CONNECTING);
 
             await client[i].open(connectionTimeout).then(() =>
-                expect(client[i].connection.readyState).toBe(W3CWebSocket.OPEN)
+                expect(client[i].connection.readyState).toBe(WebSocket.OPEN)
             );
         }
 
@@ -43,7 +43,7 @@ describe("Access Websocket concurrently", () => {
 
         for (let i = 0; i < client.length; i++) {
             await client[i].close().then(() =>
-                expect(client[i].connection.readyState).toBe(W3CWebSocket.CLOSED)
+                expect(client[i].connection.readyState).toBe(WebSocket.CLOSED)
             );
         }
 
@@ -56,9 +56,9 @@ describe("ACCESS_CARTA_DEFAULT_CONCURRENT: Testing multiple concurrent connectio
     test(`establish ${testNumber} connections to "${testServerUrl}".`, async () => {
         for (let i = 0; i < client.length; i++) {
             client[i] = new Client(testServerUrl);
-            expect(client[i].connection.readyState).toBe(W3CWebSocket.CONNECTING);
+            expect(client[i].connection.readyState).toBe(WebSocket.CONNECTING);
             await client[i].open(connectionTimeout).then(() =>
-                expect(client[i].connection.readyState).toBe(W3CWebSocket.OPEN)
+                expect(client[i].connection.readyState).toBe(WebSocket.OPEN)
             );
         }
     }, concurrentTimeout);
