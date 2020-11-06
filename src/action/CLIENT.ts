@@ -1,7 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+import config from "./config.json";#149 lib
 let nodeusage = require("usage");
 const fs = require("fs");
 const procfs = require("procfs-stats");
@@ -80,10 +79,10 @@ export class Client {
         return ret;
     }
     static eventCount = { value: 0 };
-    connection: W3CWebSocket;
+    connection: WebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
-        this.connection = new W3CWebSocket(url);
+        this.connection = new WebSocket(url);
         this.connection.binaryType = "arraybuffer";
     }
     open(timeout?: number) {
