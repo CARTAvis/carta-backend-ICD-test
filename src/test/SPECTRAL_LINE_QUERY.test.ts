@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.moment;
@@ -90,8 +90,8 @@ let assertItem: AssertItem = {
     },
     setSpectralLineReq: [
         {
-            frequencyRange: { min: 230500, max: 230600 },
-            lineIntensityLowerLimit: -10,
+            frequencyRange: { min: 230000, max: 240000 },
+            lineIntensityLowerLimit: NaN,
         },
         {
             frequencyRange: { min: 220350, max: 220400 },
@@ -101,11 +101,11 @@ let assertItem: AssertItem = {
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 919,
+            dataSize: 100000,
             lengthOfheaders: 19,
-            speciesOfline: "COv=0",
+            speciesOfline: "(CH3)2COv=0",
             speciesOflineIndex: 351,
-            freqSpeciesOfline: "230538.00000",
+            freqSpeciesOfline: "",
         },
         {
             success: true,
@@ -129,7 +129,7 @@ describe("[Case 1] Open an image, and then query the spectral line (line freq do
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
@@ -181,7 +181,7 @@ describe("[Case 2] Open an image, set a region then ask the spectral profiler, t
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
