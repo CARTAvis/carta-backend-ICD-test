@@ -150,32 +150,23 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
             await Connection.stream(2); // OpenFileAck | RegionHistogramData
         }, openFileTimeout);
 
-        test(`Preparation of contour set`, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-            await Connection.streamUntil((type, data) => {
-                return type == CARTA.RasterTileSync ? !data.endSync : true;
-            });
-            await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
-            await Connection.stream(assertItem.setContour[0].levels.length);
-            await Connection.send(CARTA.SetContourParameters, assertItem.setContour[1]);
-            await Connection.stream(assertItem.setContour[1].levels.length);
-        }, readFileTimeout);
-
+        describe(`Preparation`, () => {
+            test(`Contour set`, async () => {
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+                await Connection.streamUntil((type, data) => {
+                    return type == CARTA.RasterTileSync ? !data.endSync : true;
+                });
+                await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
+                await Connection.stream(assertItem.setContour[0].levels.length);
+                await Connection.send(CARTA.SetContourParameters, assertItem.setContour[1]);
+                await Connection.stream(assertItem.setContour[1].levels.length);
+            }, readFileTimeout);
+        });
         describe(`Play some channels forwardly`, () => {
-            // test(`Preparation of set channel`, async () => {
-            //     await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-            //     await Connection.streamUntil((type, data) => {
-            //         return type == CARTA.RasterTileSync ? !data.endSync : true;
-            //     });
-            //     await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
-            //     await Connection.streamUntil((type, data) => {
-            //         return type == CARTA.RasterTileSync ? !data.endSync : true;
-            //     });
-            // }, readFileTimeout);
 
             let sequence: number[] = [];
             let contourImageData: CARTA.ContourImageData[] = [];
-            test(`Image should return one after one and the last channel is correct:`, async () => {
+            test(`Assert ContourImageData.channel = RasterTileData.channel`, async () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.startAnimation);
                 expect((await Connection.receive(CARTA.StartAnimationAck)).success).toBe(true);
 
@@ -186,6 +177,7 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                         return ack.ContourImageData.length < assertItem.setContour[0].levels.length * assertItem.fileOpen.length;
                     });
                     contourImageData = contourImageData.concat(Ack.ContourImageData);
+                    expect(Ack.ContourImageData.slice(-1)[0].channel).toEqual(Ack.RasterTileData.slice(-1)[0].channel);
                     let currentChannel = Ack.RasterTileSync.slice(-1)[0].channel;
                     sequence.push(currentChannel);
                     await Connection.send(CARTA.AnimationFlowControl,
@@ -201,17 +193,20 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                     );
                 };
 
+            }, playAnimatorTimeout)
+
+            test(`Assert the last channel = StopAnimation.endFrame`, async () => {
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                Ack = await Connection.streamUntil((type, data) => {
+                await Connection.streamUntil((type, data) => {
                     return type == CARTA.RasterTileSync ? !data.endSync : true;
                 });
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
-                Ack = await Connection.streamUntil((type, data) => {
+                await Connection.streamUntil((type, data) => {
                     return type == CARTA.RasterTileSync ? !data.endSync : true;
                 });
                 expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation.endFrame.channel);
-            }, playAnimatorTimeout)
+            }, readFileTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
                 sequence.map((id, index) => {
