@@ -40,4 +40,4 @@ We do not recomment to do it because the Jest has no guarantee of process in ord
 * `$ npm test src/test` to run the tests inside folder concurrently.
 
 ## Log message
-What if the backend responds unexpectly or out of order, the `Event Type` messages could be log by turn on the `isLog` on `src/test/testUtilityFunction.ts`.
+What if the backend responds unexpectly or out of order, the `Event Type` messages could log as the `log.event` being True in the configuration file `src/test/config.json`.
