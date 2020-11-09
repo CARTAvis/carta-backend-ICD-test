@@ -86,7 +86,7 @@ let assertItem: AssertItem = {
 
 describe("RESUME REGION: Test to resume regions", () => {
     let Connection: Client;
-    beforeAll(async () => {
+    beforeEach(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.send(CARTA.RegisterViewer, assertItem.register);
@@ -95,6 +95,24 @@ describe("RESUME REGION: Test to resume regions", () => {
     }, connectTimeout);
 
     describe(`Resume Regions`, () => {
+        let Ack: AckStream;
+        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+            await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
+            Ack = await Connection.stream(3) as AckStream;
+        }, resumeTimeout);
+
+        test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
+            let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
+            expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
+            if (ResumeSessionAckTemp.message) {
+                console.warn(`RESUME_SESSION_ACK error message: 
+                        ${ResumeSessionAckTemp.message}`);
+            }
+        });
+
+    });
+
+    describe(`Resume Regions again`, () => {
         let Ack: AckStream;
         test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
