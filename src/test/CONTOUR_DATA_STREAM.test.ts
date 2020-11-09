@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, processContourSet } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl: string = config.serverURL;

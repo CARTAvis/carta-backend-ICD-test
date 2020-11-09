@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
@@ -209,7 +209,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
@@ -218,7 +218,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         });
 
         test(`OpenFileAck? | `, async () => {
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
             let temp1 = await Connection.receive(CARTA.OpenFileAck)
             // console.log(temp1)

@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -10,7 +10,6 @@ let connectTimeout = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
 let cursorTimeout = config.timeout.mouseEvent;
-let sleepTimeout: number = config.timeout.sleep
 interface ISpatialProfileDataExt extends CARTA.ISpatialProfileData {
     value?: number,
     profileLength?: { x: number, y: number },
@@ -194,7 +193,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
     };
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
@@ -203,15 +202,9 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
         });
 
         test(`OpenFileAck? | `, async () => {
-            expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            let temp1 = await Connection.receive(CARTA.OpenFileAck)
-            // console.log(temp1)
-        }, openFileTimeout);
-
-        test(`RegionHistogramData (would pass over if trying several times)? | `, async () => {
-            let temp2 = await Connection.receive(CARTA.RegionHistogramData);
-            // console.log(temp2)
+            await Connection.stream(2);
         }, openFileTimeout);
 
         let ack: AckStream;
@@ -322,7 +315,7 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 }, cursorTimeout + connectTimeout);
 
                 test("Backend is not crashed", () => {
-                    expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+                    expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
                 });
 
             });

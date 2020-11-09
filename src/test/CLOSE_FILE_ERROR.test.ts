@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
-var W3CWebSocket = require('websocket').w3cwebsocket;
+const WebSocket = require('isomorphic-ws');
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -82,7 +82,7 @@ describe("[Case 1] Test for requesting the ICD message of the CLOSED image:", ()
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA of fileId = 0 should arrive within ${openFileTimeout} ms`, async () => {
@@ -146,7 +146,7 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(W3CWebSocket.OPEN);
+        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
