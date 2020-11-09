@@ -31,21 +31,8 @@ let assertItem: AssertItem = {
                     fileId: 0,
                     hdu: "",
                     renderMode: CARTA.RenderMode.RASTER,
-                    tileSize: 256,
                     channel: 0,
                     stokes: 0,
-                    regions:
-                        [
-                            {
-                                regionId: 1,
-                                regionInfo: {
-                                    regionName: "",
-                                    regionType: CARTA.RegionType.RECTANGLE,
-                                    controlPoints: [{ x: 276.066, y: 377.278 }, { x: 84.8485, y: 68.6869 }],
-                                    rotation: 0,
-                                },
-                            },
-                        ],
                 },
                 {
                     directory: testSubdirectory,
@@ -53,21 +40,8 @@ let assertItem: AssertItem = {
                     fileId: 1,
                     hdu: "",
                     renderMode: CARTA.RenderMode.RASTER,
-                    tileSize: 256,
                     channel: 0,
                     stokes: 0,
-                    regions:
-                        [
-                            {
-                                regionId: 2,
-                                regionInfo: {
-                                    regionName: "",
-                                    regionType: CARTA.RegionType.RECTANGLE,
-                                    controlPoints: [{ x: 276.066, y: 385.359 }, { x: 82.8283, y: 64.6465 }],
-                                    rotation: 0,
-                                },
-                            },
-                        ],
                 },
             ]
     },
@@ -96,7 +70,7 @@ let assertItem: AssertItem = {
         ],
 }
 
-describe("RESUME SESSION test: Test to resume images and regions", () => {
+describe("RESUME SESSION IMAGE: Test to resume images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -106,27 +80,20 @@ describe("RESUME SESSION test: Test to resume images and regions", () => {
         expect(ack.constructor.name).toEqual(CARTA.RegisterViewerAck.name);
     }, connectTimeout);
 
-    describe(`Go to "${testSubdirectory}" folder`, () => {
+    describe(`Resume Images`, () => {
+        let Ack: AckStream;
+        test(`Some REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+            await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
+            Ack = await Connection.stream(3) as AckStream;
+        }, resumeTimeout);
 
-        beforeAll(async () => {
-        });
-
-        describe(`RESUME_SESSION`, () => {
-            let Ack: AckStream;
-            test(`Some REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
-                await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-                Ack = await Connection.stream(3) as AckStream;
-            }, resumeTimeout);
-
-            test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-                let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
-                expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
-                if (ResumeSessionAckTemp.message) {
-                    console.warn(`RESUME_SESSION_ACK error message: 
+        test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
+            let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
+            expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
+            if (ResumeSessionAckTemp.message) {
+                console.warn(`RESUME_SESSION_ACK error message: 
                         ${ResumeSessionAckTemp.message}`);
-                }
-            });
-
+            }
         });
 
     });
