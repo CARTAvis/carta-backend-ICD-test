@@ -70,7 +70,7 @@ let assertItem: AssertItem = {
         ],
 }
 
-describe("RESUME SESSION IMAGE: Test to resume images", () => {
+describe("RESUME IMAGE: Test to resume images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -82,7 +82,7 @@ describe("RESUME SESSION IMAGE: Test to resume images", () => {
 
     describe(`Resume Images`, () => {
         let Ack: AckStream;
-        test(`Some REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             Ack = await Connection.stream(3) as AckStream;
         }, resumeTimeout);

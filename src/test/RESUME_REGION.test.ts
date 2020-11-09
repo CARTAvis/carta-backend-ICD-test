@@ -84,7 +84,7 @@ let assertItem: AssertItem = {
         ],
 }
 
-describe("RESUME SESSION IMAGE: Test to resume images", () => {
+describe("RESUME REGION: Test to resume regions", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -94,9 +94,9 @@ describe("RESUME SESSION IMAGE: Test to resume images", () => {
         expect(ack.constructor.name).toEqual(CARTA.RegisterViewerAck.name);
     }, connectTimeout);
 
-    describe(`Resume Images`, () => {
+    describe(`Resume Regions`, () => {
         let Ack: AckStream;
-        test(`Some REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             Ack = await Connection.stream(3) as AckStream;
         }, resumeTimeout);
