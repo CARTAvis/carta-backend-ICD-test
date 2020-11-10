@@ -67,7 +67,7 @@ describe("RESUME IMAGE: Test to resume images", () => {
         let Ack: AckStream;
         test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.streamUntil(type => type != CARTA.ResumeSessionAck);
+            Ack = await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
@@ -89,7 +89,7 @@ describe("RESUME IMAGE: Test to resume images", () => {
         let Ack: AckStream;
         test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.streamUntil(type => type != CARTA.ResumeSessionAck);
+            Ack = await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {

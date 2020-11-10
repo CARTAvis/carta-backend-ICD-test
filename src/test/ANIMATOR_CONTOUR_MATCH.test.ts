@@ -154,7 +154,7 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
             test(`Contour set`, async () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? !data.endSync : true;
+                    return type == CARTA.RasterTileSync ? data.endSync : false;
                 });
                 await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
                 await Connection.stream(assertItem.setContour[0].levels.length);
@@ -174,7 +174,7 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                 for (let i = 0; i < assertItem.stopAnimation.endFrame.channel; i++) {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                     Ack = await Connection.streamUntil((type, data, ack) => {
-                        return ack.ContourImageData.length < assertItem.setContour[0].levels.length * assertItem.fileOpen.length;
+                        return ack.ContourImageData.length >= assertItem.setContour[0].levels.length * assertItem.fileOpen.length;
                     });
                     contourImageData = contourImageData.concat(Ack.ContourImageData);
                     expect(Ack.ContourImageData.slice(-1)[0].channel).toEqual(Ack.RasterTileData.slice(-1)[0].channel);
@@ -199,11 +199,11 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
                 await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? !data.endSync : true;
+                    return type == CARTA.RasterTileSync ? data.endSync : false;
                 });
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
                 await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? !data.endSync : true;
+                    return type == CARTA.RasterTileSync ? data.endSync : false;
                 });
                 expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation.endFrame.channel);
             }, readFileTimeout);

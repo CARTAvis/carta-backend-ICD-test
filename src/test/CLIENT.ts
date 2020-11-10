@@ -429,8 +429,8 @@ export class Client {
         });
     }
     /// Receive CARTA stream async
-    /// Until isWait == false
-    streamUntil(isWait?: (type, data?, ack?) => boolean) {
+    /// Until isDone == True
+    streamUntil(isDone?: (type, data?, ack?) => boolean) {
 
         let ack: AckStream = {
             Responce: [],
@@ -509,15 +509,15 @@ export class Client {
                         ack.MomentResponse.push(data);
                         break;
                 }
-                if (!isWait(eventType, data, ack)) {
+                if (isDone(eventType, data, ack)) {
                     resolve(ack);
                 }
             };
         });
     }
     /// Receive all type of CARTA stream in a series
-    /// Until isWait == false
-    streamAnyUntil(isWait?: (type: any, data: any, ack: any[]) => boolean) {
+    /// Until isDone == True
+    streamAnyUntil(isDone?: (type: any, data: any, ack: any[]) => boolean) {
         let ack: any = [];
         return new Promise<AckStream>((resolve, reject) => {
             this.connection.onmessage = (messageEvent: MessageEvent) => {
@@ -539,7 +539,7 @@ export class Client {
                 let data = eventType.decode(eventData);
                 ack.push(data);
 
-                if (!isWait(eventType, data, ack)) {
+                if (isDone(eventType, data, ack)) {
                     resolve(ack);
                 }
             };
@@ -614,7 +614,7 @@ export class Client {
         });
     }
     /// Send registerViever and receive its returning message
-    async registerViewer(registerViewer) {
+    async registerViewer(registerViewer): Promise<CARTA.RegisterViewerAck> {
         await this.send(CARTA.RegisterViewer, registerViewer);
         return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
     }
