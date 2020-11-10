@@ -1,8 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { AckStream } from "action/CLIENT";
-
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -27,7 +25,7 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "SDC335.579-0.292.spw0.line.image",
+        file: "S255_IR_sci.spw27.cube.I.pbcor.fits",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -38,7 +36,7 @@ let assertItem: AssertItem = {
         spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
     },
     setCursor: {
-        point: { x: 150, y: 150 },
+        point: { x: 50 + 100 * Math.random(), y: 50 + 100 * Math.random() },
     },
     momentRequest: {
         fileId: 0,
@@ -46,8 +44,8 @@ let assertItem: AssertItem = {
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
         moments: [0],
-        pixelRange: { min: 0.2, max: 1.0 },
-        spectralRange: { min: 2100, max: 2200 },
+        pixelRange: { min: 0.02, max: 1.0 },
+        spectralRange: { min: 450, max: 500 },
     },
 };
 
@@ -62,7 +60,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
     }, connectTimeout);
 
     describe(`Preparation`, () => {
-        test(`Open image`, async () => {
+        test(`Open image ${assertItem.openFile.file}`, async () => {
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
             await Connection.stream(2);
         }, readFileTimeout);
