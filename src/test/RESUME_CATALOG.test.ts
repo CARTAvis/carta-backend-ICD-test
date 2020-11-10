@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.QA;
+let testSubdirectory = config.path.catalog;
 let connectTimeout = config.timeout.connection;
 let resumeTimeout = config.timeout.resume;
 
@@ -27,37 +27,22 @@ let assertItem: AssertItem = {
             [
                 {
                     directory: testSubdirectory,
-                    file: "M17_SWex.fits",
+                    file: "model.fits",
                     fileId: 0,
                     hdu: "",
                     renderMode: CARTA.RenderMode.RASTER,
                     channel: 0,
                     stokes: 0,
-                    regions: {
-                        "1": {
-                            regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{ x: 276.066, y: 377.278 }, { x: 84.8485, y: 68.6869 }],
-                            rotation: 0,
-                        },
-                    },
                 },
-                {
-                    directory: testSubdirectory,
-                    file: "M17_SWex.image",
-                    fileId: 1,
-                    hdu: "",
-                    renderMode: CARTA.RenderMode.RASTER,
-                    channel: 0,
-                    stokes: 0,
-                    regions: {
-                        "2": {
-                            regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{ x: 276.066, y: 377.278 }, { x: 84.8485, y: 68.6869 }],
-                            rotation: 0,
-                        },
-                    },
-                },
-            ]
+            ],
+        catalogFiles: [
+            {
+                directory: testSubdirectory,
+                name: "test_fk4.xml",
+                fileId: 1,
+                previewDataSize: 50,
+            },
+        ],
     },
     resumeSessionAck:
     {
@@ -66,7 +51,7 @@ let assertItem: AssertItem = {
     },
 }
 
-describe("RESUME REGION: Test to resume regions", () => {
+describe("RESUME CATALOG: Test to resume catalog", () => {
     let Connection: Client;
     beforeEach(async () => {
         Connection = new Client(testServerUrl);
@@ -76,11 +61,11 @@ describe("RESUME REGION: Test to resume regions", () => {
         expect(ack.constructor.name).toEqual(CARTA.RegisterViewerAck.name);
     }, connectTimeout);
 
-    describe(`Resume Regions`, () => {
+    describe(`Resume catalog`, () => {
         let Ack: AckStream;
-        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+        test(`RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.stream(3) as AckStream;
+            Ack = await Connection.stream(2) as AckStream;
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
@@ -94,11 +79,11 @@ describe("RESUME REGION: Test to resume regions", () => {
 
     });
 
-    describe(`Resume Regions again`, () => {
+    describe(`Resume catalog again`, () => {
         let Ack: AckStream;
-        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+        test(`RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.stream(3) as AckStream;
+            Ack = await Connection.stream(2) as AckStream;
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
@@ -109,8 +94,6 @@ describe("RESUME REGION: Test to resume regions", () => {
                         ${ResumeSessionAckTemp.message}`);
             }
         });
-
     });
-
     afterAll(() => Connection.close());
 });

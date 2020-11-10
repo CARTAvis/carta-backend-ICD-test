@@ -50,24 +50,6 @@ let assertItem: AssertItem = {
         success: true,
         message: "",
     },
-    openFileAck:
-        [
-            {
-                success: true,
-            },
-            {
-                success: true,
-            },
-        ],
-    setRegionAck:
-        [
-            {
-                success: true,
-            },
-            {
-                success: true,
-            },
-        ],
 }
 
 describe("RESUME IMAGE: Test to resume images", () => {
