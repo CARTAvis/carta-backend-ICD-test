@@ -86,19 +86,20 @@ let assertItem: AssertItem = {
 
 describe("RESUME CONTOUR: Test to resume contour lines", () => {
     let Connection: Client;
-    beforeEach(async () => {
+    beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        let ack = await Connection.receiveAny();
-        expect(ack.constructor.name).toEqual(CARTA.RegisterViewerAck.name);
     }, connectTimeout);
 
     describe(`Resume Contours`, () => {
+        beforeAll(async () => {
+            await Connection.registerViewer(assertItem.register);
+        }, connectTimeout);
+
         let Ack: AckStream;
         test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.stream(3) as AckStream;
+            Ack = await Connection.streamUntil(type => type != CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
@@ -113,10 +114,14 @@ describe("RESUME CONTOUR: Test to resume contour lines", () => {
     });
 
     describe(`Resume Contours again`, () => {
+        beforeAll(async () => {
+            await Connection.registerViewer(assertItem.register);
+        }, connectTimeout);
+
         let Ack: AckStream;
         test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.stream(3) as AckStream;
+            Ack = await Connection.streamUntil(type => type != CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
         test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {

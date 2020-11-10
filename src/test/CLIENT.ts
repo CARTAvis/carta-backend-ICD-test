@@ -613,6 +613,11 @@ export class Client {
             };
         });
     }
+    /// Send registerViever and receive its returning message
+    async registerViewer(registerViewer) {
+        await this.send(CARTA.RegisterViewer, registerViewer);
+        return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
+    }
 };
 
 export interface AckStream {
