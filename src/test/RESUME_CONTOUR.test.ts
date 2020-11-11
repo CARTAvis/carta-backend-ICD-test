@@ -11,8 +11,6 @@ interface AssertItem {
     precisionDigits: number;
     resumeSession?: CARTA.IResumeSession;
     resumeSessionAck?: CARTA.IResumeSessionAck;
-    openFileAck?: CARTA.IOpenFileAck[];
-    setRegionAck?: CARTA.ISetRegionAck[];
 }
 let assertItem: AssertItem = {
     register: {
@@ -108,29 +106,19 @@ describe("RESUME CONTOUR: Test to resume contour lines", () => {
                         ${ResumeSessionAckTemp.message}`);
             }
         });
-
     });
 
-    describe(`Resume Contours again`, () => {
+    describe(`Resume Regions again`, () => {
         beforeAll(async () => {
             await Connection.registerViewer(assertItem.register);
-        }, connectTimeout);
-
-        let Ack: AckStream;
-        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
+            await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
-        test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-            let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
-            expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
-            if (ResumeSessionAckTemp.message) {
-                console.warn(`RESUME_SESSION_ACK error message: 
-                        ${ResumeSessionAckTemp.message}`);
-            }
+        test(`Receive contour lines`, async () => {
+            await Connection.receiveAny();
+            // Not implement yet
         });
-
     });
     afterAll(() => Connection.close());
 });

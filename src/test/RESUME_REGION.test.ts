@@ -5,14 +5,14 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let resumeTimeout = config.timeout.resume;
+let regionTimeout = config.timeout.region;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     precisionDigits: number;
     resumeSession?: CARTA.IResumeSession;
     resumeSessionAck?: CARTA.IResumeSessionAck;
-    openFileAck?: CARTA.IOpenFileAck[];
-    setRegionAck?: CARTA.ISetRegionAck[];
+    setStatsRequirements: CARTA.ISetStatsRequirements[];
 }
 let assertItem: AssertItem = {
     register: {
@@ -36,7 +36,7 @@ let assertItem: AssertItem = {
                     regions: {
                         "1": {
                             regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{x: 250, y: 350}, {x: 80, y: 60}],
+                            controlPoints: [{ x: 250, y: 350 }, { x: 80, y: 60 }],
                             rotation: 0,
                         },
                     },
@@ -52,7 +52,7 @@ let assertItem: AssertItem = {
                     regions: {
                         "2": {
                             regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{x: 350, y: 250}, {x: 60, y: 80}],
+                            controlPoints: [{ x: 350, y: 250 }, { x: 60, y: 80 }],
                             rotation: 0,
                         },
                     },
@@ -64,6 +64,18 @@ let assertItem: AssertItem = {
         success: true,
         message: "",
     },
+    setStatsRequirements: [
+        {
+            fileId: 0,
+            regionId: 1,
+            stats: [0, 1, 2,],
+        },
+        {
+            fileId: 1,
+            regionId: 2,
+            stats: [0, 1, 2,],
+        },
+    ],
 }
 
 describe("RESUME REGION: Test to resume regions", () => {
@@ -92,29 +104,21 @@ describe("RESUME REGION: Test to resume regions", () => {
                         ${ResumeSessionAckTemp.message}`);
             }
         });
-
     });
 
     describe(`Resume Regions again`, () => {
         beforeAll(async () => {
             await Connection.registerViewer(assertItem.register);
-        }, connectTimeout);
-
-        let Ack: AckStream;
-        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
-            Ack = await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
+            await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
-        test(`RESUME_SESSION_ACK.success = ${assertItem.resumeSessionAck.success}`, () => {
-            let ResumeSessionAckTemp = Ack.Responce.filter(r => r.constructor.name === "ResumeSessionAck")[0] as CARTA.ResumeSessionAck;
-            expect(ResumeSessionAckTemp.success).toBe(assertItem.resumeSessionAck.success);
-            if (ResumeSessionAckTemp.message) {
-                console.warn(`RESUME_SESSION_ACK error message: 
-                        ${ResumeSessionAckTemp.message}`);
-            }
+        assertItem.setStatsRequirements.map(stats => {
+            test(`Try to request stats of region ${stats.regionId}`, async () => {
+                await Connection.send(CARTA.SetStatsRequirements, stats);
+                await Connection.receive(CARTA.RegionStatsData);
+            }, regionTimeout);
         });
-
     });
 
     afterAll(() => Connection.close());

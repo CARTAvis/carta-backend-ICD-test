@@ -92,14 +92,13 @@ describe("RESUME IMAGE: Test to resume images", () => {
                         ${ResumeSessionAckTemp.message}`);
             }
         });
-
     });
 
     describe(`Resume Images again`, () => {
         beforeAll(async () => {
             await Connection.registerViewer(assertItem.register); await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
-        }, connectTimeout);
+        }, resumeTimeout);
 
         assertItem.resumeSession.images.map((image, index) => {
             test(`Try to render file ID ${image.fileId}`, async () => {
@@ -107,8 +106,6 @@ describe("RESUME IMAGE: Test to resume images", () => {
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, renderTimeout);
         });
-
-
     });
     afterAll(() => Connection.close());
 });
