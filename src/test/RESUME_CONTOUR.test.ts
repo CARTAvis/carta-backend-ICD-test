@@ -11,6 +11,7 @@ interface AssertItem {
     precisionDigits: number;
     resumeSession?: CARTA.IResumeSession;
     resumeSessionAck?: CARTA.IResumeSessionAck;
+    setImageChannels: CARTA.ISetImageChannels;
 }
 let assertItem: AssertItem = {
     register: {
@@ -47,36 +48,23 @@ let assertItem: AssertItem = {
                         contourChunkSize: 100000,
                     },
                 },
-                {
-                    directory: testSubdirectory,
-                    file: "M17_SWex.image",
-                    fileId: 1,
-                    hdu: "",
-                    renderMode: CARTA.RenderMode.RASTER,
-                    channel: 0,
-                    stokes: 0,
-                    contourSettings: {
-                        fileId: 1,
-                        referenceFileId: 0,
-                        imageBounds: { xMin: 0, xMax: 800, yMin: 0, yMax: 800 },
-                        levels: [
-                            1.5, 2.0, 2.5, 3.0,
-                            3.5, 4.0, 4.5, 5.0,
-                            5.5, 6.0, 6.5, 7.0,
-                        ],
-                        smoothingMode: CARTA.SmoothingMode.GaussianBlur,
-                        smoothingFactor: 4,
-                        decimationFactor: 4,
-                        compressionLevel: 8,
-                        contourChunkSize: 100000,
-                    },
-                },
             ]
     },
     resumeSessionAck:
     {
         success: true,
         message: "",
+    },
+    setImageChannels: {
+        fileId: 0,
+        channel: 1,
+        stokes: 0,
+        // requiredTiles: {
+        //     fileId: 0,
+        //     compressionQuality: 11,
+        //     compressionType: CARTA.CompressionType.ZFP,
+        //     tiles: [0],
+        // },
     },
 }
 
@@ -93,7 +81,7 @@ describe("RESUME CONTOUR: Test to resume contour lines", () => {
         }, connectTimeout);
 
         let Ack: AckStream;
-        test(`2 REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
+        test(`REGION_HISTOGRAM_DATA & RESUME_SESSION_ACK should arrive within ${resumeTimeout} ms`, async () => {
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             Ack = await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
@@ -108,16 +96,16 @@ describe("RESUME CONTOUR: Test to resume contour lines", () => {
         });
     });
 
-    describe(`Resume Regions again`, () => {
+    describe(`Resume Regions again and change channel`, () => {
         beforeAll(async () => {
             await Connection.registerViewer(assertItem.register);
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
         }, resumeTimeout);
 
-        test(`Receive contour lines`, async () => {
-            await Connection.receiveAny();
-            // Not implement yet
+        test(`Receive ${assertItem.resumeSession.images[0].contourSettings.levels.length} set of contour lines`, async () => {
+            await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels);
+            await Connection.streamUntil((type, data, ack) => ack.ContourImageData.length == 12);
         });
     });
     afterAll(() => Connection.close());
