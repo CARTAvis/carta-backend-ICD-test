@@ -36,7 +36,7 @@ let assertItem: AssertItem = {
                     regions: {
                         "1": {
                             regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{ x: 276.066, y: 377.278 }, { x: 84.8485, y: 68.6869 }],
+                            controlPoints: [{x: 250, y: 350}, {x: 80, y: 60}],
                             rotation: 0,
                         },
                     },
@@ -52,7 +52,7 @@ let assertItem: AssertItem = {
                     regions: {
                         "2": {
                             regionType: CARTA.RegionType.RECTANGLE,
-                            controlPoints: [{ x: 276.066, y: 377.278 }, { x: 84.8485, y: 68.6869 }],
+                            controlPoints: [{x: 350, y: 250}, {x: 60, y: 80}],
                             rotation: 0,
                         },
                     },
