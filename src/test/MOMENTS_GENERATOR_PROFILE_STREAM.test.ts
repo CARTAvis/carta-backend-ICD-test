@@ -7,13 +7,14 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
+let regionTimeout = config.timeout.region;
 let momentTimeout = config.timeout.momentLargeCube;
 interface AssertItem {
     precisionDigit: number;
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     setSpectralRequirements: CARTA.ISetSpectralRequirements;
-    setCursor: CARTA.ISetCursor;
+    setRegion: CARTA.ISetRegion;
     momentRequest: CARTA.IMomentRequest;
 };
 
@@ -25,27 +26,33 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "S255_IR_sci.spw27.cube.I.pbcor.fits",
+        file: "S255_IR_sci.spw29.cube.I.pbcor.fits",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
     setSpectralRequirements: {
         fileId: 0,
-        regionId: 0,
+        regionId: 1,
         spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
     },
-    setCursor: {
-        point: { x: 50 + 100 * Math.random(), y: 50 + 100 * Math.random() },
+    setRegion: {
+        fileId: 0,
+        regionId: 1,
+        regionInfo: {
+            regionType: CARTA.RegionType.RECTANGLE,
+            controlPoints: [{ x: 900, y: 900 }, { x: 600.0, y: 600.0 }],
+            rotation: 0,
+        },
     },
     momentRequest: {
         fileId: 0,
-        regionId: 0,
+        regionId: 1,
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
         moments: [0],
-        pixelRange: { min: 0.02, max: 1.0 },
-        spectralRange: { min: 450, max: 500 },
+        pixelRange: { min: 0.2, max: 1.0 },
+        spectralRange: { min: 950, max: 1100 },
     },
 };
 
@@ -64,8 +71,12 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
             await Connection.stream(2);
         }, readFileTimeout);
+        test(`Set region`, async () => {
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion);
+            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+            await Connection.receiveAny();
+        }, regionTimeout);
         test(`Request spectral profile data till get 2 SpectralProfileData`, async () => {
-            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
             await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
             let ack = await Connection.stream(2) as AckStream;
             expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
