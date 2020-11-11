@@ -59,12 +59,6 @@ let assertItem: AssertItem = {
         fileId: 0,
         channel: 1,
         stokes: 0,
-        // requiredTiles: {
-        //     fileId: 0,
-        //     compressionQuality: 11,
-        //     compressionType: CARTA.CompressionType.ZFP,
-        //     tiles: [0],
-        // },
     },
 }
 
