@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -71,8 +71,7 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
@@ -86,28 +85,12 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
 
     let FileId: number[] = [];
     describe(`Moment generator`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
-        let MomentResponse: CARTA.MomentResponse;
+        let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (ack.constructor.name != "MomentResponse");
-            expect(MomentProgress.length).toBeGreaterThan(0);
+            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            FileId = ack.RegionHistogramData.map(data => data.fileId);
+            expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
         test(`Receive ${assertItem.momentRequest.moments.length} REGION_HISTOGRAM_DATA`, () => {
@@ -115,15 +98,15 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
         });
 
         test(`Assert MomentResponse.success = true`, () => {
-            expect(MomentResponse.success).toBe(true);
+            expect(ack.MomentResponse[0].success).toBe(true);
         });
 
         test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`, () => {
-            expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
+            expect(ack.MomentResponse[0].openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
         });
 
         test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.success).toBe(true);
             });
         });
