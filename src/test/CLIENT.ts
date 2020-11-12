@@ -618,6 +618,11 @@ export class Client {
         await this.send(CARTA.RegisterViewer, registerViewer);
         return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
     }
+    /// Send open_file and receive its returning message
+    async openFile(file): Promise<AckStream> {
+        await this.send(CARTA.OpenFile, file);
+        return await this.stream(2) as AckStream;
+    }
 };
 
 export interface AckStream {
