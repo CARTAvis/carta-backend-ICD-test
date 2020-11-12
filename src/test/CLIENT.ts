@@ -430,7 +430,7 @@ export class Client {
     }
     /// Receive CARTA stream async
     /// Until isDone == True
-    streamUntil(isDone?: (type, data?, ack?) => boolean) {
+    streamUntil(isDone?: (type, data?, ack?: AckStream) => boolean) {
 
         let ack: AckStream = {
             Responce: [],
