@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -109,8 +109,7 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             await Connection.send(CARTA.OpenFile, assertItem.file);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            await Connection.stream(2); // OpenFileAck | RegionHistogramData
             await Connection.send(CARTA.SetImageChannels, assertItem.imageChannels[0]);
             await Connection.receive(CARTA.RasterTileData);
             await Connection.send(CARTA.SetCursor, assertItem.cursor);
@@ -138,10 +137,10 @@ describe("ANIMATOR_DATA_STREAM test: Testing data streaming with animator", () =
         });
 
         describe("SET IMAGE CHANNELS", () => {
-            let Ack;
+            let Ack: AckStream;
             test(`RASTER_TILE_DATA, SPATIAL_PROFILE_DATA, REGION_HISTOGRAM_DATA & REGION_STATS_DATA should arrive within ${changeChannelTimeout} ms`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.imageChannels[1]);
-                Ack = await Connection.stream(6);
+                Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, changeChannelTimeout);
 
             test(`RASTER_TILE_DATA.channel = ${assertItem.imageChannels[1].channel}`, () => {
