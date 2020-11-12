@@ -10,7 +10,7 @@ let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
-let playImageTimeout: number = 10000;//config.timeout.playImages;
+let playImageTimeout: number = config.timeout.playImages;
 let sleepTimeout: number = config.timeout.sleep
 let playAnimatorTimeout = config.timeout.playAnimator
 
@@ -242,8 +242,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.register);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -263,8 +262,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: 0 });
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receiveAny()
-                await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                await Connection.stream(2) // OpenFileAck | RegionHistogramData
             }, openFileTimeout);
 
             let ack: AckStream;
@@ -273,8 +271,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
 
-                ack = await Connection.stream(15) as AckStream;
-                // console.log(ack); // RasterTileData * 12 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)
+                ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq[0].tiles.length);
             }, playImageTimeout);
 
@@ -295,7 +292,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 expect(SAAck.success).toBe(true);
 
                 for (let i = 0; i < assertItem.stopAnimation[0].endFrame.channel; i++) {
-                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false));
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[0],
@@ -306,16 +303,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                             timestamp: Long.fromNumber(Date.now()),
                         }
                     );
-                    // console.log(AnimateStreamData[i].RasterTileData[0].channel) // In principle, each channel should have RasterTileSync *2 (start & end)
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 };
 
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-                let lastRasterImageData = await Connection.stream(14) as AckStream;
-                // console.log(lastRasterImageData); // RasterTileData * 12 + RasterTileSync *2 (start & end)
-                // console.log(AnimateStreamData); // RasterTileData * 12 + SpatialProfileData * 1 + RegionHistogramData * 1 + RasterTileSync *2 (start & end)
-                // console.log(sequence); // show looping sequence
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 expect(sequence[sequence.length - 1]).toEqual(assertItem.stopAnimation[0].endFrame.channel);
 
             }, playAnimatorTimeout)
@@ -345,7 +338,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
                 await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < 2 * Math.abs(assertItem.startAnimation[1].lastFrame.channel - assertItem.startAnimation[1].firstFrame.channel + 1); i++) {
-                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[1],
@@ -358,14 +351,11 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 };
-                // console.log(AnimateStreamData); // RasterTileData * 12 + SpatialProfileData * 1 + RegionHistogramData * 1 + RasterTileSync *2 (start & end)
 
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[1]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
-                let lastRasterImageData = await Connection.stream(16) as AckStream;
-                // console.log(lastRasterImageData); // RasterTileData * 12 + SpatialProfileData * 1 + RegionHistogramData * 1 + RasterTileSync *2 (start & end)
+                let lastRasterImageData = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
                 sequence.push(lastRasterImageData.RasterTileData[0].channel);
-                // console.log(sequence);
 
                 expect(sequence[sequence.length - 1]).toEqual(assertItem.stopAnimation[1].endFrame.channel);
             }, playAnimatorTimeout);
@@ -397,8 +387,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 await Connection.receive(CARTA.StartAnimationAck);
 
                 for (let i = 0; i < 2 * Math.abs(assertItem.startAnimation[2].lastFrame.channel - assertItem.startAnimation[2].firstFrame.channel + 1); i++) {
-                    // console.log(i);
-                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[2],
@@ -410,15 +399,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                         }
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
-                    // console.log(AnimateStreamData[i].RasterTileData);
                 };
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2]);
 
-                lastRasterImageData = await Connection.stream(16) as AckStream;
+                lastRasterImageData = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
                 sequence.push(lastRasterImageData.RasterTileData[0].channel);
-                // console.log(AnimateStreamData);
-                // console.log(lastRasterImageData)
 
             }, playAnimatorTimeout);
 
@@ -443,7 +429,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
 
                 for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
                     // console.log(i);
-                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[3],
@@ -458,16 +444,12 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 };
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
-                let lastRasterImageData = await Connection.stream(16) as AckStream;
-                // console.log(lastRasterImageData)
-                // console.log(sequence);
-
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence and then reverse:`, async () => {
                 console.warn(`(Step 5) Channel index in roundtrip: ${sequence}`);
                 let previous: number = assertItem.startAnimation[0].lastFrame.channel;
-                // console.log(previous);
                 expect(Math.abs(sequence[sequence.length - 1] - previous)).toEqual(0);
             });
         });
@@ -481,7 +463,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     await Connection.send(CARTA.StartAnimation, animation);
                     await Connection.receive(CARTA.StartAnimationAck);
                     for (let i = 0; i < Math.abs(animation.lastFrame.channel - animation.firstFrame.channel); i++) {
-                        AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                        AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
                         await Connection.send(CARTA.AnimationFlowControl,
                             {
                                 ...assertItem.animationFlowControl[4 + index],
@@ -496,9 +478,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     }
                     await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                     await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-                    let lastRasterImageData = await Connection.stream(16) as AckStream;
-                    // console.log(lastRasterImageData);
-                    // console.log(sequence);
+                    await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 }, playAnimatorTimeout);
 
                 test(`Received image channels should be in sequence`, async () => {
@@ -518,7 +498,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
                 await Connection.receive(CARTA.StartAnimationAck);
                 for (let i = 0; i < 11; i++) {
-                    AnimateStreamData.push(await Connection.stream(16) as AckStream);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[6],
@@ -533,10 +513,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                 }
                 await Connection.send(CARTA.StopAnimation, assertItem.startAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-                let lastRasterImageData = await Connection.stream(16) as AckStream;
-                // sequence.push(lastRasterImageData.channel);
-                // console.log(lastRasterImageData);
-                // console.log(sequence);
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
@@ -549,7 +526,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
     });
 
     test(`close file`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     afterAll(() => Connection.close());
