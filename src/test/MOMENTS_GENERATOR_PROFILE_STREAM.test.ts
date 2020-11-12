@@ -1,21 +1,20 @@
 import { CARTA } from "carta-protobuf";
 
-import { AckStream } from "action/CLIENT";
-
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
+let regionTimeout = config.timeout.region;
 let momentTimeout = config.timeout.momentLargeCube;
 interface AssertItem {
     precisionDigit: number;
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     setSpectralRequirements: CARTA.ISetSpectralRequirements;
-    setCursor: CARTA.ISetCursor;
+    setRegion: CARTA.ISetRegion;
     momentRequest: CARTA.IMomentRequest;
 };
 
@@ -27,27 +26,33 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "SDC335.579-0.292.spw0.line.image",
+        file: "S255_IR_sci.spw29.cube.I.pbcor.fits",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
     setSpectralRequirements: {
         fileId: 0,
-        regionId: 0,
+        regionId: 1,
         spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
     },
-    setCursor: {
-        point: { x: 150, y: 150 },
+    setRegion: {
+        fileId: 0,
+        regionId: 1,
+        regionInfo: {
+            regionType: CARTA.RegionType.RECTANGLE,
+            controlPoints: [{ x: 900, y: 900 }, { x: 600.0, y: 600.0 }],
+            rotation: 0,
+        },
     },
     momentRequest: {
         fileId: 0,
-        regionId: 0,
+        regionId: 1,
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
         moments: [0],
         pixelRange: { min: 0.2, max: 1.0 },
-        spectralRange: { min: 2100, max: 2200 },
+        spectralRange: { min: 950, max: 1100 },
     },
 };
 
@@ -62,12 +67,16 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
     }, connectTimeout);
 
     describe(`Preparation`, () => {
-        test(`Open image`, async () => {
+        test(`Open image ${assertItem.openFile.file}`, async () => {
             await Connection.send(CARTA.OpenFile, assertItem.openFile);
             await Connection.stream(2);
         }, readFileTimeout);
+        test(`Set region`, async () => {
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion);
+            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+            await Connection.receiveAny();
+        }, regionTimeout);
         test(`Request spectral profile data till get 2 SpectralProfileData`, async () => {
-            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
             await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
             let ack = await Connection.stream(2) as AckStream;
             expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
