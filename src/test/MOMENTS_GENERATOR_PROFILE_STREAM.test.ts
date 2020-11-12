@@ -61,8 +61,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
@@ -78,46 +77,26 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
         }, regionTimeout);
         test(`Request spectral profile data till get 2 SpectralProfileData`, async () => {
             await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-            let ack = await Connection.stream(2) as AckStream;
+            let ack = await Connection.streamUntil((type, data, ack) => ack.SpectralProfileData.length == 2) as AckStream;
             expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
         }, readFileTimeout);
     });
 
     let FileId: number[] = [];
     describe(`Moment generator after starting spectral profile`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
-        let MomentResponse: CARTA.MomentResponse;
-        let SpectralProfileData: CARTA.SpectralProfileData[] = [];
+        let ack: AckStream;
         test(`Request moment image and receive a few SpectralProfileData`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "SpectralProfileData":
-                        SpectralProfileData.push(ack);
-                        break;
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (ack.constructor.name != "MomentResponse");
-            expect(SpectralProfileData.length).toBeLessThanOrEqual(2);
-            if (SpectralProfileData.length > 0) {
-                expect(SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
+            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            FileId = ack.RegionHistogramData.map(data => data.fileId);
+            expect(ack.SpectralProfileData.length).toBeLessThanOrEqual(2);
+            if (ack.SpectralProfileData.length > 0) {
+                expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
             }
         }, momentTimeout);
 
         test(`Assert all MomentProgress.progress < 1`, () => {
-            MomentProgress.map(ack => {
+            ack.MomentProgress.map(ack => {
                 expect(ack.progress).toBeLessThan(1);
             });
         });
@@ -127,34 +106,23 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
         });
 
         test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`, () => {
-            expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
+            expect(ack.MomentResponse[0].openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
         });
 
         test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.success).toBe(true);
             });
         });
 
         test(`Assert all MomentResponse.openFileAcks[].fileId > 0`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.fileId).toBeGreaterThan(0);
             });
         });
 
         test(`Receive any message until a SpectralProfileData.progress = 1`, async () => {
-            let SpectralProfileData: CARTA.SpectralProfileData[] = [];
-            let ack;
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "SpectralProfileData":
-                        SpectralProfileData.push(ack);
-                        break;
-                    default:
-                        break;
-                }
-            } while (SpectralProfileData.slice(-1)[0].progress != 1);
+            await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData ? data.progress == 1 : false);
         }, momentTimeout);
     });
 
