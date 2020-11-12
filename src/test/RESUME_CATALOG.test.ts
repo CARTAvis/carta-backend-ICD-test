@@ -89,7 +89,7 @@ describe("RESUME CATALOG: Test to resume catalog", () => {
             await Connection.registerViewer(assertItem.register);
             await Connection.send(CARTA.ResumeSession, assertItem.resumeSession);
             await Connection.streamUntil(type => type == CARTA.ResumeSessionAck);
-        }, connectTimeout);
+        }, resumeTimeout);
 
         test(`Assert the CATALOG_FILTER_RESPONSE.columns.length = ${assertItem.catalogFilterRequest.columnIndices.length}`, async () => {
             await Connection.send(CARTA.CatalogFilterRequest, assertItem.catalogFilterRequest);
