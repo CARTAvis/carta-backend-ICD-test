@@ -19,6 +19,7 @@
         "readFile": 4100,
         "readLargeImage": 18000,
         "changeChannel": 3000,
+        "playImages": 8000,
         "renderImages": 5000,
         "cubeHistogram": 60000,
         "cancel": 5000,
