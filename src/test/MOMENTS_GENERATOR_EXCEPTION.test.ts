@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -60,49 +60,28 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
         test(`Request 3 moment images`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest[0]);
-            do {
-                ack = await Connection.receiveAny();
-            } while (ack.constructor.name != "MomentResponse");
+            await Connection.streamUntil(type => type == CARTA.MomentResponse);
         }, momentTimeout);
     });
 
     let FileId: number[] = [];
     describe(`Moment generator again`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
-        let MomentResponse: CARTA.MomentResponse;
+        let ack: AckStream;
         test(`Receive a series of moment progress & MomentProgress.progress < 1`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest[1]);
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (ack.constructor.name != "MomentResponse");
-            expect(MomentProgress.length).toBeGreaterThan(0);
+            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            FileId = ack.RegionHistogramData.map(data => data.fileId);
+            expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
         test(`Receive ${assertItem.momentRequest[1].moments.length} REGION_HISTOGRAM_DATA`, () => {
@@ -110,15 +89,15 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
         });
 
         test(`Assert MomentResponse.success = true`, () => {
-            expect(MomentResponse.success).toBe(true);
+            expect(ack.MomentResponse[0].success).toBe(true);
         });
 
         test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest[1].moments.length}`, () => {
-            expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest[1].moments.length);
+            expect(ack.MomentResponse[0].openFileAcks.length).toEqual(assertItem.momentRequest[1].moments.length);
         });
 
         test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.success).toBe(true);
             });
         });
@@ -133,10 +112,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
                 compressionType: CARTA.CompressionType.ZFP,
                 compressionQuality: 11,
             });
-            let ack;
-            do {
-                ack = await Connection.receiveAny();
-            } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readFileTimeout * FileId.length);
 
         test(`Receive SpatialProfileData`, async () => {
@@ -144,7 +120,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
                 fileId: FileId[1] + 1,
                 ...assertItem.setCursor,
             });
-            SpatialProfileData = await Connection.receiveAny();
+            SpatialProfileData = await Connection.receive(CARTA.SpatialProfileData);
         });
 
         test(`Assert SpatialProfileData.value`, () => {
