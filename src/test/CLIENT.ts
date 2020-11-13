@@ -3,6 +3,11 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 const { performance } = require('perf_hooks');
 const WebSocket = require('isomorphic-ws');
+
+export interface IOpenFile {
+    OpenFileAck: CARTA.OpenFileAck;
+    RegionHistogramData: CARTA.RegionHistogramData;
+}
 export class Client {
     IcdVersion: number = 17;
     CartaType = new Map<number, any>([
@@ -619,9 +624,14 @@ export class Client {
         return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
     }
     /// Send open_file and receive its returning message
-    async openFile(file): Promise<AckStream> {
+
+    async openFile(file): Promise<IOpenFile> {
         await this.send(CARTA.OpenFile, file);
-        return await this.stream(2) as AckStream;
+        let ack = await this.stream(2) as AckStream;
+        return {
+            OpenFileAck: ack.Responce[0],
+            RegionHistogramData: ack.RegionHistogramData[0],
+        };
     }
 };
 
