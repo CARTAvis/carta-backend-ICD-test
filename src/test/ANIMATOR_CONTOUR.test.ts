@@ -12,7 +12,7 @@ let readFileTimeout: number = config.timeout.readFile;
 let playAnimatorTimeout = config.timeout.playAnimator
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
@@ -24,7 +24,7 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -162,27 +162,20 @@ let assertItem: AssertItem = {
 
 describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () => {
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms)).then(() => { console.log('sleep!') });
-    }
-
     let Connection: Client;
     describe(`Register a session`, () => {
         beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
-            await Connection.send(CARTA.RegisterViewer, assertItem.register);
-            await Connection.receive(CARTA.RegisterViewerAck);
-            await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.stream(2); // OpenFileAck | RegionHistogramData
+            await Connection.registerViewer(assertItem.registerViewer);
+
+            await Connection.openFile(assertItem.fileOpen[0]);
+            await Connection.openFile(assertItem.fileOpen[1]);
         }, openFileTimeout);
 
         test(`Preparation`, async () => {
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-            await Connection.streamUntil((type, data) => {
-                return type == CARTA.RasterTileSync ? data.endSync : false;
-            });
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             await Connection.send(CARTA.SetContourParameters, assertItem.setContour);
             await Connection.stream(assertItem.setContour.levels.length);
         }, readFileTimeout);
@@ -190,9 +183,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
         describe(`(Case 1):Play some channels forwardly`, () => {
             test(`Preparation`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? data.endSync : false;
-                });
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, readFileTimeout);
 
             let sequence: number[] = [];
@@ -204,10 +195,10 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                 let Ack: AckStream;
                 for (let i = 0; i < assertItem.stopAnimation[0].endFrame.channel; i++) {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    Ack = await Connection.streamUntil((type, data) => {
-                        return type == CARTA.RasterTileSync ? data.endSync : false;
-                    });
+                    Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                     let currentChannel = Ack.RasterTileData.slice(-1)[0].channel;
+                    sequence.push(currentChannel);
+                    contourImageData = contourImageData.concat(Ack.ContourImageData);
                     await Connection.send(CARTA.AnimationFlowControl,
                         {
                             ...assertItem.animationFlowControl[0],
@@ -218,8 +209,6 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                             timestamp: Long.fromNumber(Date.now()),
                         }
                     );
-                    sequence.push(currentChannel);
-                    contourImageData = contourImageData.concat(Ack.ContourImageData);
                 };
 
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
