@@ -17,7 +17,7 @@ interface IRasterTileDataExt extends CARTA.IRasterTileData {
 }
 interface AssertItem {
     precisionDigit: number;
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     fileOpen: CARTA.IOpenFile;
     fileOpenAck: CARTA.IOpenFileAck;
     initTilesReq: CARTA.IAddRequiredTiles;
@@ -29,7 +29,7 @@ interface AssertItem {
 }
 let assertItem: AssertItem = {
     precisionDigit: 4,
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -157,21 +157,18 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CHECK_RASTER_TILE_DATA: Testing data values at different layers in RASTER_TILE_DATA", () => {
+describe("TILE_DATA_REQUEST: Testing data values at different layers in RASTER_TILE_DATA", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-    let RasterTileData: CARTA.RasterTileData;
-    let RasterTileDataTemp2: CARTA.RasterTileData;
     describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
