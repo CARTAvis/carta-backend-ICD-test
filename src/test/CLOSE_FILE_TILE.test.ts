@@ -113,7 +113,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
         expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
-    });
+    }, readFileTimeout);
 
     afterAll(() => Connection.close());
 });
