@@ -5,6 +5,7 @@ import config from "./config.json";
 
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
+let saveSubdirectory = config.path.save;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let momentTimeout = config.timeout.moment;
@@ -41,24 +42,24 @@ let assertItem: AssertItem = {
     saveFile: [
         [
             {
-                outputFileDirectory: 'tmp',
+                outputFileDirectory: saveSubdirectory,
                 outputFileName: 'HD163296_CO_2_1.fits.moment.average.fits',
                 outputFileType: CARTA.FileType.FITS,
             },
             {
-                outputFileDirectory: 'tmp',
+                outputFileDirectory: saveSubdirectory,
                 outputFileName: 'HD163296_CO_2_1.fits.moment.average.image',
                 outputFileType: CARTA.FileType.CASA,
             },
         ],
         [
             {
-                outputFileDirectory: 'tmp',
+                outputFileDirectory: saveSubdirectory,
                 outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.fits',
                 outputFileType: CARTA.FileType.FITS,
             },
             {
-                outputFileDirectory: 'tmp',
+                outputFileDirectory: saveSubdirectory,
                 outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.image',
                 outputFileType: CARTA.FileType.CASA,
             },
