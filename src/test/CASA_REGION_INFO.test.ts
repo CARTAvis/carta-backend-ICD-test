@@ -11,7 +11,7 @@ let listTimeout = config.timeout.listFile;
 let readTimeout = config.timeout.readFile;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     precisionDigits: number;
     regionListRequest: CARTA.IRegionListRequest;
@@ -20,7 +20,7 @@ interface AssertItem {
     regionFileInfoResponse: CARTA.IRegionFileInfoResponse[];
 };
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -130,17 +130,14 @@ describe("CASA_REGION_INFO: Testing CASA region list and info", () => {
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
 
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+            await Connection.openFile(assertItem.openFile);
         });
 
         describe(`Go to "${regionSubdirectory}" and send REGION_LIST_REQUEST`, () => {
@@ -158,8 +155,8 @@ describe("CASA_REGION_INFO: Testing CASA region list and info", () => {
                 expect(regionListResponse.directory).toEqual(assertItem.regionListResponse.directory);
             });
 
-            test(`REGION_LIST_RESPONSE.parent = ${assertItem.regionListResponse.parent}`, () => {
-                expect(regionListResponse.parent).toEqual(assertItem.regionListResponse.parent);
+            test(`REGION_LIST_RESPONSE.parent is /${assertItem.regionListResponse.parent}`, () => {
+                expect(RegExp(`${regionListResponse.parent}$`).test(regionListResponse.parent)).toBe(true);
             });
 
             test(`REGION_LIST_RESPONSE.subdirectories = ${JSON.stringify(assertItem.regionListResponse.subdirectories)}`, () => {
