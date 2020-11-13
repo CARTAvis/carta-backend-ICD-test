@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, ProcessContourData } from "./CLIENT";
+import { Client, ProcessContourData } from "./CLIENT";
 import config from "./config.json";
 const ZstdCodec = require('zstd-codec').ZstdCodec;
 let testServerUrl: string = config.serverURL;
@@ -12,9 +12,9 @@ interface ContourImageData extends CARTA.IContourImageData {
     contourVertices?: number[];
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setContour: CARTA.ISetContourParameters[];
@@ -22,13 +22,13 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "contour_test_nan.image",
         fileId: 0,
@@ -98,32 +98,9 @@ let assertItem: AssertItem = {
             ],
             progress: 1,
             contourVertices: [
-                15, 4.5,
-                14.75, 5,
-                14, 5.75,
-                13.75, 6,
-                13.25, 7,
-                13, 7.5,
-                12.75, 8,
-                12.25, 9,
-                12, 9.5,
-                11.75, 10,
-                11, 10.75,
-                10.75, 11,
-                10, 11.75,
-                9.75, 12,
-                9, 12.75,
-                8.75, 13,
-                8.25, 14,
-                8, 14.75,
-                7.5, 15,
-                7, 15.5,
-                6, 16,
-                5.75, 16,
-                5, 16.5,
-                4, 17,
-                4, 17,
-                3, 18
+                15, 4.5, 14.75, 5, 14, 5.75, 13.75, 6, 13.25, 7, 13, 7.5, 13, 8, 13, 9, 13,
+                10, 12, 11, 12, 11, 12, 12, 12, 13, 12, 14, 11, 15, 11, 15, 10, 16, 9, 16, 
+                8, 16, 7, 16, 6, 16, 5.75, 16, 5, 16.5, 4, 17, 4, 17, 3, 18,
             ],
         },
         {
@@ -204,13 +181,12 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CONTOUR_IMAGE_DATA_NAN test: Testing if contour image data (vertices) are delivered correctly if NaN pixels are present", () => {
+describe("CONTOUR_IMAGE_DATA_NAN: Testing if contour image data (vertices) are delivered correctly if NaN pixels are present", () => {
 
     let zstdSimple: any;
     test(`prepare zstd`, done => {
         ZstdCodec.run(zstd => {
             zstdSimple = new zstd.Simple();
-            // console.log("zstd simple ready");
             done();
         });
     }, config.timeout.wasm);
@@ -219,19 +195,17 @@ describe("CONTOUR_IMAGE_DATA_NAN test: Testing if contour image data (vertices) 
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+            await Connection.openFile(assertItem.openFile);
 
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            // REGION_HISTOGRAM_DATA OPEN_FILE_ACK RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_SYNC
-            await Connection.stream(5) as AckStream;
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readTimeout);
 
         assertItem.contourImageData.map((contour, index) => {
