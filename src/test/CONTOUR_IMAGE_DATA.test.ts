@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream, ProcessContourData } from "./CLIENT";
+import { Client, ProcessContourData } from "./CLIENT";
 import config from "./config.json";
 const ZstdCodec = require('zstd-codec').ZstdCodec;
 let testServerUrl: string = config.serverURL;
@@ -12,9 +12,9 @@ interface ContourImageData extends CARTA.IContourImageData {
     contourVertices?: number[];
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setContour: CARTA.ISetContourParameters[];
@@ -22,13 +22,13 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "contour_test.miriad",
         fileId: 0,
@@ -162,13 +162,12 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are delivered correctly", () => {
+describe("CONTOUR_IMAGE_DATA: Testing if contour image data (vertices) are delivered correctly", () => {
 
     let zstdSimple: any;
     test(`prepare zstd`, done => {
         ZstdCodec.run(zstd => {
             zstdSimple = new zstd.Simple();
-            // console.log("zstd simple ready");
             done();
         });
     }, config.timeout.wasm);
@@ -177,19 +176,17 @@ describe("CONTOUR_IMAGE_DATA test: Testing if contour image data (vertices) are 
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
+            await Connection.openFile(assertItem.openFile);
 
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            // REGION_HISTOGRAM_DATA OPEN_FILE_ACK RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_SYNC
-            await Connection.stream(5) as AckStream;
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readTimeout);
 
         assertItem.contourImageData.map((contour, index) => {
