@@ -781,3 +781,6 @@ function unshuffle(raw: Uint8Array, decimationFactor: number): Float32Array {
     }
     return new Float32Array(data);
 }
+export function Wait(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}

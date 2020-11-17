@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -116,18 +116,19 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
 
     describe(`Save images`, () => {
         let saveFileAck: CARTA.SaveFileAck[] = [];
-        test(`Save all moment generated image and assert its fileId`, async () => {
-            for (let i = 0; i < FileId.length; i++) {
-                for (let j = 0; j < assertItem.saveFile.length; j++) {
+        for (let i = 0; i < assertItem.saveFile.length; i++) {
+            for (let j = 0; j < assertItem.saveFile[i].length; j++) {
+                test(`Save moment generated image ${assertItem.saveFile[i][j].outputFileName}`, async () => {
                     await Connection.send(CARTA.SaveFile, {
                         fileId: FileId[i],
                         ...assertItem.saveFile[i][j],
                     });
                     saveFileAck.push(await Connection.receive(CARTA.SaveFileAck));
-                }
-                expect(saveFileAck.slice(-1)[0].fileId).toEqual(FileId[i]);
+                    await Wait(200);
+                    expect(saveFileAck.slice(-1)[0].fileId).toEqual(FileId[i]);
+                }, readFileTimeout);
             }
-        }, readFileTimeout * FileId.length);
+        }
 
         test(`Assert all message.success = true`, () => {
             saveFileAck.map((ack, index) => {
