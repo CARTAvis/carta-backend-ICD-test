@@ -49,15 +49,15 @@ let assertItem: AssertItem = {
             },
             {
                 outputFileDirectory: saveSubdirectory,
-                outputFileName: 'HD163296_CO_2_1.fits.moment.average.image',
-                outputFileType: CARTA.FileType.CASA,
+                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.fits',
+                outputFileType: CARTA.FileType.FITS,
             },
         ],
         [
             {
                 outputFileDirectory: saveSubdirectory,
-                outputFileName: 'HD163296_CO_2_1.fits.moment.integrated.fits',
-                outputFileType: CARTA.FileType.FITS,
+                outputFileName: 'HD163296_CO_2_1.fits.moment.average.image',
+                outputFileType: CARTA.FileType.CASA,
             },
             {
                 outputFileDirectory: saveSubdirectory,
@@ -121,12 +121,12 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
             for (let j = 0; j < assertItem.saveFile[i].length; j++) {
                 test(`Save moment generated image ${assertItem.saveFile[i][j].outputFileName}`, async () => {
                     await Connection.send(CARTA.SaveFile, {
-                        fileId: FileId[i],
+                        fileId: FileId[j],
                         ...assertItem.saveFile[i][j],
                     });
                     saveFileAck.push(await Connection.receive(CARTA.SaveFileAck));
                     await Wait(200);
-                    expect(saveFileAck.slice(-1)[0].fileId).toEqual(FileId[i]);
+                    expect(saveFileAck.slice(-1)[0].fileId).toEqual(FileId[j]);
                 }, saveFileTimeout);
             }
         }
