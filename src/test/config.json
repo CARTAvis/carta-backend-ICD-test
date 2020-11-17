@@ -18,6 +18,7 @@
         "listFile": 1200,
         "openFile": 1300,
         "readFile": 4100,
+        "saveFile": 3000,
         "readLargeImage": 18000,
         "changeChannel": 3000,
         "playImages": 8000,

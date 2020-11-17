@@ -8,6 +8,7 @@ let testSubdirectory = config.path.QA;
 let saveSubdirectory = config.path.save;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
+let saveFileTimeout = config.timeout.saveFile;
 let momentTimeout = config.timeout.moment;
 interface AssertItem {
     precisionDigit: number;
@@ -126,7 +127,7 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
                     saveFileAck.push(await Connection.receive(CARTA.SaveFileAck));
                     await Wait(200);
                     expect(saveFileAck.slice(-1)[0].fileId).toEqual(FileId[i]);
-                }, readFileTimeout);
+                }, saveFileTimeout);
             }
         }
 
