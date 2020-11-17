@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -28,7 +28,6 @@ let assertItem: AssertItem = {
             fileId: 0,
             hdu: "0",
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -36,7 +35,6 @@ let assertItem: AssertItem = {
             fileId: 1,
             hdu: "0",
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
     ],
     setImageChannels: [
@@ -184,8 +182,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.register);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open images`, () => {
@@ -194,10 +191,9 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             for (let i = 0; i < assertItem.fileOpens.length; i++) {
                 await Connection.send(CARTA.OpenFile, assertItem.fileOpens[i]);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                await Connection.stream(2); // OpenFileAck | RegionHistogramData
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels[i]);
-                await Connection.receive(CARTA.RasterTileData);
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }
         });
 
@@ -213,47 +209,46 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                         await Connection.receive(CARTA.RasterTileData, messageReturnTimeout * .5, false);
                     }, messageReturnTimeout);
                 } else {
-                    let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-                    let RasterTileDataTemp: CARTA.RasterTileData;
+                    let ack: AckStream; 
                     test(`REGION_HISTOGRAM_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
                         await Connection.send(CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
-                        RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData);
+                        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                     }, changeChannelTimeout);
 
                     test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDatas[index].regionId}`, () => {
-                        expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
+                        expect(ack.RegionHistogramData[0].regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
                     });
 
                     test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDatas[index].stokes}`, () => {
-                        expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogramDatas[index].stokes);
+                        expect(ack.RegionHistogramData[0].stokes).toEqual(assertItem.regionHistogramDatas[index].stokes);
                     });
 
                     test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDatas[index].regionId}`, () => {
-                        expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
+                        expect(ack.RegionHistogramData[0].regionId).toEqual(assertItem.regionHistogramDatas[index].regionId);
                     });
 
                     test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDatas[index].progress}`, () => {
-                        expect(RegionHistogramDataTemp.progress).toEqual(assertItem.regionHistogramDatas[index].progress);
+                        expect(ack.RegionHistogramData[0].progress).toEqual(assertItem.regionHistogramDatas[index].progress);
                     });
 
                     test(`REGION_HISTOGRAM_DATA.histograms.channel = ${assertItem.regionHistogramDatas[index].histograms[0].channel}`, () => {
-                        expect(RegionHistogramDataTemp.histograms[0].channel).toEqual(assertItem.regionHistogramDatas[index].histograms[0].channel);
+                        expect(ack.RegionHistogramData[0].histograms[0].channel).toEqual(assertItem.regionHistogramDatas[index].histograms[0].channel);
                     });
 
                     test(`RASTER_IMAGE_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
-                        RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                        expect(ack.RasterTileData.length).toEqual(1);
                     }, changeChannelTimeout);
 
                     test(`RASTER_IMAGE_DATA.file_id = ${rasterTileData.fileId}`, () => {
-                        expect(RasterTileDataTemp.fileId).toEqual(rasterTileData.fileId);
+                        expect(ack.RasterTileData[0].fileId).toEqual(rasterTileData.fileId);
                     });
 
                     test(`RASTER_IMAGE_DATA.channel = ${rasterTileData.channel}`, () => {
-                        expect(RasterTileDataTemp.channel).toEqual(rasterTileData.channel);
+                        expect(ack.RasterTileData[0].channel).toEqual(rasterTileData.channel);
                     });
 
                     test(`RASTER_IMAGE_DATA.stokes = ${rasterTileData.stokes}`, () => {
-                        expect(RasterTileDataTemp.stokes).toEqual(rasterTileData.stokes);
+                        expect(ack.RasterTileData[0].stokes).toEqual(rasterTileData.stokes);
                     });
 
                 }

@@ -11,7 +11,7 @@ let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
@@ -21,7 +21,7 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -30,7 +30,7 @@ let assertItem: AssertItem = {
     {
         directory: testSubdirectory,
         file: "S255_IR_sci.spw29.cube.I.pbcor.fits",
-        hdu: "0",
+        hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
@@ -74,8 +74,8 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -83,46 +83,34 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
-        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let Ack = await Connection.openFile(assertItem.fileOpen);
+        expect(Ack.OpenFileAck.success).toBe(true);
+        expect(Ack.OpenFileAck.fileInfo.name).toEqual(assertItem.fileOpen.file);
     }, openFileTimeout);
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-        await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.stream(5, 2500) as AckStream;
-        console.log(ack)
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) Set SET_IMAGE_CHANNELS and then CLOSE_FILE during the tile streaming & Check whether the backend is alive:`, async () => {
-        await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel)
-        // Expect to receive RasterTileData * 16 + RASTER_TILE_SYNC *2 + REGION_HISTOGRAM_DATA + SPATIAL_PROFILE_DATA
-        // await Connection.stream(assertItem.setImageChannel.requiredTiles.tiles.length + 4)
-
+        await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
         // Interupt during the tile, we will receive the number <  assertItem.setImageChannel.requiredTiles.tiles.length
-        let ResponseBeforeClose = await Connection.stream(assertItem.setImageChannel.requiredTiles.tiles.length + 4 - 10);
+        await Connection.streamUntil((type, data, ack: AckStream) => ack.RasterTileData.length == 6);
         // CLOSE_FILE during the tile streaming
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        // // Receive the rest of the stream after CLOSE_FILE
-        // let ResponseAfterClose = await Connection.stream(10)
-        // expect(ResponseBeforeClose.RasterTileData.length + ResponseAfterClose.RasterTileData.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length)
-
-        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
-        expect(BackendStatus).toBeDefined()
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+        await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse);
+        expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
-        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
-
-    });
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
+    }, readFileTimeout);
 
     afterAll(() => Connection.close());
 });

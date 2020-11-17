@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -45,48 +45,31 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
     });
 
     let FileId: number[] = [];
     describe(`Moment generator cancel`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
+        let ack: AckStream;
         let MomentResponse: CARTA.MomentResponse;
-        test(`Request a moment progress but cancel after receiving 2 messages`, async () => {
-            let ack;
+        test(`Request a moment progress but cancel after receiving 5 MomentProgress`, async () => {
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (MomentProgress.length < 5);
+            ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length==5);
+            FileId = ack.RegionHistogramData.map(data => data.fileId);
             await Connection.send(CARTA.StopMomentCalc, { fileId: 0 });
             MomentResponse = await Connection.receive(CARTA.MomentResponse);
-            expect(MomentProgress.length).toEqual(5);
+            expect(ack.MomentProgress.length).toEqual(5);
         }, momentTimeout);
 
         test(`Assert MomentProgress.progress < 1.0`, () => {
-            MomentProgress.map(ack => {
+            ack.MomentProgress.map(ack => {
                 expect(ack.progress).toBeLessThan(1.0);
             });
         });
@@ -111,43 +94,26 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
     });
 
     describe(`Moment generator`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
-        let MomentResponse: CARTA.MomentResponse;
+        let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, {
                 ...assertItem.momentRequest,
                 moments: [12],
             });
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (ack.constructor.name != "MomentResponse");
-            expect(MomentProgress.length).toBeGreaterThan(0);
+            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
         test(`Assert MomentResponse.success = true`, () => {
-            expect(MomentResponse.success).toBe(true);
+            expect(ack.MomentResponse[0].success).toBe(true);
         });
 
         test(`Assert openFileAcks[].fileInfo.name = "HD163296_CO_2_1.fits.moment.minimum_coord"`, () => {
-            expect(MomentResponse.openFileAcks[0].fileInfo.name).toEqual("HD163296_CO_2_1.fits.moment.minimum_coord");
+            expect(ack.MomentResponse[0].openFileAcks[0].fileInfo.name).toEqual("HD163296_CO_2_1.fits.moment.minimum_coord");
         });
 
         test(`Assert openFileAcks[].fileInfoExtended`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.fileInfoExtended.height).toEqual(432);
                 expect(ack.fileInfoExtended.width).toEqual(432);
                 expect(ack.fileInfoExtended.dimensions).toEqual(4);
@@ -155,7 +121,6 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
                 expect(ack.fileInfoExtended.stokes).toEqual(1);
             });
         });
-
     });
 
     afterAll(() => Connection.close());

@@ -12,7 +12,7 @@ let readFileTimeout: number = config.timeout.readFile;
 let playAnimatorTimeout = config.timeout.playAnimator
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     fileOpen: CARTA.IOpenFile[];
     addTilesReq: CARTA.IAddRequiredTiles;
     setContour: CARTA.ISetContourParameters[];
@@ -22,7 +22,7 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -141,21 +141,16 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
         beforeAll(async () => {
             Connection = new Client(testServerUrl);
             await Connection.open();
-            await Connection.send(CARTA.RegisterViewer, assertItem.register);
-            await Connection.receive(CARTA.RegisterViewerAck);
-            await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen[0]);
-            await Connection.stream(2);
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen[1]);
-            await Connection.stream(2); // OpenFileAck | RegionHistogramData
+            await Connection.registerViewer(assertItem.registerViewer);
+
+            await Connection.openFile(assertItem.fileOpen[0]);
+            await Connection.openFile(assertItem.fileOpen[1]);
         }, openFileTimeout);
 
         describe(`Preparation`, () => {
             test(`Contour set`, async () => {
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? data.endSync : false;
-                });
+                await Connection.streamUntil((type, data) =>  type == CARTA.RasterTileSync ? data.endSync : false);
                 await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
                 await Connection.stream(assertItem.setContour[0].levels.length);
                 await Connection.send(CARTA.SetContourParameters, assertItem.setContour[1]);
@@ -173,9 +168,7 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                 let Ack: AckStream;
                 for (let i = 0; i < assertItem.stopAnimation.endFrame.channel; i++) {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    Ack = await Connection.streamUntil((type, data, ack) => {
-                        return ack.ContourImageData.length >= assertItem.setContour[0].levels.length * assertItem.fileOpen.length;
-                    });
+                    Ack = await Connection.streamUntil((type, data, ack) => ack.ContourImageData.length >= assertItem.setContour[0].levels.length * assertItem.fileOpen.length);
                     contourImageData = contourImageData.concat(Ack.ContourImageData);
                     expect(Ack.ContourImageData.slice(-1)[0].channel).toEqual(Ack.RasterTileData.slice(-1)[0].channel);
                     let currentChannel = Ack.RasterTileSync.slice(-1)[0].channel;
@@ -198,9 +191,7 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
             test(`Assert the last channel = StopAnimation.endFrame`, async () => {
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
-                await Connection.streamUntil((type, data) => {
-                    return type == CARTA.RasterTileSync ? data.endSync : false;
-                });
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
                 await Connection.streamUntil((type, data) => {
                     return type == CARTA.RasterTileSync ? data.endSync : false;

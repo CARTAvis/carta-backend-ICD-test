@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -71,15 +71,13 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.registerViewer);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
 
         test(`Set region`, async () => {
@@ -91,29 +89,12 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
 
     let FileId: number[] = [];
     describe(`Moment generator`, () => {
-        let MomentProgress: CARTA.MomentProgress[] = [];
-        let MomentResponse: CARTA.MomentResponse;
+        let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
-            let ack;
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            // ack = await Connection.streamUntil(3000, type => type!=CARTA.MomentResponse);
-            do {
-                ack = await Connection.receiveAny();
-                switch (ack.constructor.name) {
-                    case "MomentResponse":
-                        MomentResponse = ack;
-                        break;
-                    case "MomentProgress":
-                        MomentProgress.push(ack);
-                        break;
-                    case "RegionHistogramData":
-                        FileId.push(ack.fileId);
-                        break;
-                    default:
-                        break;
-                }
-            } while (ack.constructor.name != "MomentResponse");
-            expect(MomentProgress.length).toBeGreaterThan(0);
+            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            FileId = ack.RegionHistogramData.map(data => data.fileId);
+            expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
         test(`Receive ${assertItem.momentRequest.moments.length} REGION_HISTOGRAM_DATA`, () => {
@@ -121,33 +102,33 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
         });
 
         test(`Assert MomentResponse.success = true`, () => {
-            expect(MomentResponse.success).toBe(true);
+            expect(ack.MomentResponse[0].success).toBe(true);
         });
 
         test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`, () => {
-            expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
+            expect(ack.MomentResponse[0].openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
         });
 
         test(`Assert all MomentResponse.openFileAcks[].success = true`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.success).toBe(true);
             });
         });
 
         test(`Assert all openFileAcks[].fileId > 0`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 expect(ack.fileId).toBeGreaterThan(0);
             });
         });
 
         test(`Assert openFileAcks[].fileInfo.name`, () => {
-            MomentResponse.openFileAcks.map((ack, index) => {
+            ack.MomentResponse[0].openFileAcks.map((ack, index) => {
                 expect(ack.fileInfo.name).toEqual(assertItem.openFile.file + ".moment." + momentName[index]);
             });
         });
 
         test(`Assert openFileAcks[].fileInfoExtended`, () => {
-            MomentResponse.openFileAcks.map(ack => {
+            ack.MomentResponse[0].openFileAcks.map(ack => {
                 const coord = assertItem.setRegion.regionInfo.controlPoints;
                 expect(ack.fileInfoExtended.height).toEqual(coord[1].y + 1);
                 expect(ack.fileInfoExtended.width).toEqual(coord[1].x + 1);
@@ -158,13 +139,13 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
         });
 
         test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 71`, () => {
-            MomentResponse.openFileAcks.map((ack, index) => {
+            ack.MomentResponse[0].openFileAcks.map((ack, index) => {
                 expect(ack.fileInfoExtended.headerEntries.length).toEqual(71);
             });
         });
 
         test(`Assert openFileAcks[].fileInfoExtended.computedEntries.length = 15`, () => {
-            MomentResponse.openFileAcks.map((ack, index) => {
+            ack.MomentResponse[0].openFileAcks.map((ack, index) => {
                 expect(ack.fileInfoExtended.computedEntries.length).toEqual(15);
             });
         });
@@ -182,22 +163,10 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
                     compressionType: CARTA.CompressionType.NONE,
                     compressionQuality: 0,
                 });
-                let ack;
-                do {
-                    ack = await Connection.receiveAny();
-                    switch (ack.constructor.name) {
-                        case "RasterTileSync":
-                            if (ack.endSync) {
-                                RasterTileSync.push(ack);
-                            }
-                            break;
-                        case "RasterTileData":
-                            RasterTileData.push(ack);
-                            break;
-                        default:
-                            break;
-                    }
-                } while (!(ack.constructor.name == "RasterTileSync" && ack.endSync));
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false).then(ack => {
+                    RasterTileSync.push(...ack.RasterTileSync.slice(-1));
+                    RasterTileData.push(...ack.RasterTileData);
+                });
             }
             RasterTileSync.map(ack => {
                 expect(ack.endSync).toBe(true);

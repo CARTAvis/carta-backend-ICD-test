@@ -10,7 +10,7 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
-let playAnimatorTimeout = config.timeout.playAnimator
+let playAnimatorTimeout = config.timeout.playAnimator;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -76,6 +76,10 @@ let assertItem: AssertItem = {
             compressionQuality: 9,
         },
     },
+    animationFlowControl: {
+        fileId: 0,
+        animationId: 1,
+    },
 };
 
 describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during the ANIMATION data streaming :", () => {
@@ -84,8 +88,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.register);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -94,10 +97,9 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
         await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
-        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
+        let Ack = await Connection.stream(2) as AckStream;
+        let OpenAck = Ack.Responce[0] as CARTA.OpenFileAck;
         expect(OpenAck.success).toBe(true)
         expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
     }, openFileTimeout);
@@ -107,8 +109,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.stream(assertItem.addTilesReq[0].tiles.length + 4, 2500) as AckStream;
-        // console.log(ack) // Receive RasterTileData * 16 + SpatialProfileData * 2 + RasterTileSync * 2
+        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length) //only 1 Tile returned
     }, readFileTimeout);
@@ -127,8 +128,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         expect(SAAck.success).toBe(true);
 
         for (let i = 0; i < 2; i++) {
-            // Receive RasterTileData * 16 + SpatialProfileData * 1 + RegionHistogramData * 1 + RasterTileSync * 2
-            AnimateStreamData.push(await Connection.stream(assertItem.addTilesReq[1].tiles.length + 4) as AckStream);
+            AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
             await Connection.send(CARTA.AnimationFlowControl,
                 {
                     ...assertItem.animationFlowControl,
@@ -142,18 +142,17 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
             // console.log(AnimateStreamData[i]) // In principle, each channel should have RasterTileSync *2 (start & end)
             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
         };
-        // console.log(sequence)
 
         // CLOSE_FILE before STOP_ANIMATION (NO STOP_ANIMATION in this test!)
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
         // The backend may still returning the remain message
-        // Thus we do not test check whether there is NO message returned
-        // Only check whether the backend is still alive
-        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
-        expect(BackendStatus).toBeDefined()
+        // To check whether the backend is still alive
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+        let Ack = await Connection.streamUntil(type => type == CARTA.FileListResponse) as AckStream;
+        let BackendStatus = Ack.Responce.filter(f => f.constructor.name == "FileListResponse")[0] as CARTA.FileListResponse;
+        expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
-        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
 
     }, playAnimatorTimeout);
     afterAll(() => Connection.close());

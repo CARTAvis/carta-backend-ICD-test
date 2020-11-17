@@ -3,6 +3,11 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 const { performance } = require('perf_hooks');
 const WebSocket = require('isomorphic-ws');
+
+export interface IOpenFile {
+    OpenFileAck: CARTA.OpenFileAck;
+    RegionHistogramData: CARTA.RegionHistogramData;
+}
 export class Client {
     IcdVersion: number = 17;
     CartaType = new Map<number, any>([
@@ -169,6 +174,10 @@ export class Client {
                     }
                     let data;
                     switch (cartaType) {
+                        case CARTA.ErrorData:
+                            data = CARTA.ErrorData.decode(eventData);
+                            console.warn(data.message);
+                            break;
                         case CARTA.SpatialProfileData:
                             data = CARTA.SpatialProfileData.decode(eventData);
                             data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -215,7 +224,7 @@ export class Client {
                 let data;
                 let type = this.CartaType.get(eventNumber);
                 switch (type) {
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         data = CARTA.ErrorData.decode(eventData);
                         console.warn(data.message);
                         break;
@@ -332,7 +341,7 @@ export class Client {
                     default:
                         ack.Responce.push(data);
                         break;
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         ack.Responce.push(data);
                         console.warn(data);
                         break;
@@ -430,7 +439,7 @@ export class Client {
     }
     /// Receive CARTA stream async
     /// Until isDone == True
-    streamUntil(isDone?: (type, data?, ack?) => boolean) {
+    streamUntil(isDone?: (type, data?, ack?: AckStream) => boolean) {
 
         let ack: AckStream = {
             Responce: [],
@@ -469,7 +478,7 @@ export class Client {
                     default:
                         ack.Responce.push(data);
                         break;
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         ack.Responce.push(data);
                         console.warn(data);
                         break;
@@ -618,6 +627,16 @@ export class Client {
         await this.send(CARTA.RegisterViewer, registerViewer);
         return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
     }
+    /// Send open_file and receive its returning message
+
+    async openFile(file): Promise<IOpenFile> {
+        await this.send(CARTA.OpenFile, file);
+        let ack = await this.stream(2) as AckStream;
+        return {
+            OpenFileAck: ack.Responce[0],
+            RegionHistogramData: ack.RegionHistogramData[0],
+        };
+    }
 };
 
 export interface AckStream {
@@ -765,4 +784,7 @@ function unshuffle(raw: Uint8Array, decimationFactor: number): Float32Array {
         data[i + 1] = lastY;
     }
     return new Float32Array(data);
+}
+export function Wait(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
 }

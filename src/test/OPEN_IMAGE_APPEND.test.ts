@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client } from "./CLIENT";
+import { Client, IOpenFile } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -10,7 +10,7 @@ interface IRasterTileDataExt extends CARTA.IRasterTileData {
     tilesLength: number;
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpenGroup: CARTA.IOpenFile[];
     fileOpenAckGroup: CARTA.IOpenFileAck[];
@@ -20,7 +20,7 @@ interface AssertItem {
     rasterTileDataGroup: IRasterTileDataExt[];
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -33,7 +33,6 @@ let assertItem: AssertItem = {
             hdu: "",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -41,7 +40,6 @@ let assertItem: AssertItem = {
             hdu: "",
             fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -49,7 +47,6 @@ let assertItem: AssertItem = {
             hdu: "",
             fileId: 2,
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
         {
             directory: testSubdirectory,
@@ -57,7 +54,6 @@ let assertItem: AssertItem = {
             hdu: "",
             fileId: 3,
             renderMode: CARTA.RenderMode.RASTER,
-            tileSize: 256,
         },
     ],
     fileOpenAckGroup: [
@@ -248,13 +244,12 @@ let assertItem: AssertItem = {
     ],
 }
 
-describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images one by one without closing former ones", () => {
+describe("OPEN_IMAGE_APPEND: Testing the case of opening multiple images one by one without closing former ones", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
 
@@ -266,39 +261,33 @@ describe("OPEN_IMAGE_APPEND test: Testing the case of opening multiple images on
         assertItem.fileOpenAckGroup.map((fileOpenAck: CARTA.IOpenFileAck, index) => {
 
             describe(`open the file "${assertItem.fileOpenGroup[index].file}"`, () => {
-                let OpenFileAckTemp: CARTA.OpenFileAck;
-                let RegionHistogramDataTemp: CARTA.RegionHistogramData;
-                let ack: any[] = [];
+                let ack: IOpenFile;
                 test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                    await Connection.send(CARTA.OpenFile, assertItem.fileOpenGroup[index]);
-                    ack.push(await Connection.receiveAny());
-                    ack.push(await Connection.receiveAny()); // OpenFileAck | RegionHistogramData
+                    ack = await Connection.openFile(assertItem.fileOpenGroup[index]);
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK.success = ${fileOpenAck.success}`, () => {
-                    OpenFileAckTemp = ack.find(r => r.constructor.name === CARTA.OpenFileAck.name) as CARTA.OpenFileAck;
-                    expect(OpenFileAckTemp.success).toBe(fileOpenAck.success);
+                    expect(ack.OpenFileAck.success).toBe(fileOpenAck.success);
                 });
 
                 test(`OPEN_FILE_ACK.file_id = ${fileOpenAck.fileId}`, () => {
-                    expect(OpenFileAckTemp.fileId).toEqual(fileOpenAck.fileId);
+                    expect(ack.OpenFileAck.fileId).toEqual(fileOpenAck.fileId);
                 });
 
                 test(`REGION_HISTOGRAM_DATA.file_id = ${assertItem.regionHistogramDataGroup[index].fileId}`, () => {
-                    RegionHistogramDataTemp = ack.find(r => r.constructor.name === CARTA.RegionHistogramData.name) as CARTA.RegionHistogramData;
-                    expect(RegionHistogramDataTemp.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);
+                    expect(ack.RegionHistogramData.fileId).toEqual(assertItem.regionHistogramDataGroup[index].fileId);
                 });
 
                 test(`REGION_HISTOGRAM_DATA.stokes = ${assertItem.regionHistogramDataGroup[index].stokes}`, () => {
-                    expect(RegionHistogramDataTemp.stokes).toEqual(assertItem.regionHistogramDataGroup[index].stokes);
+                    expect(ack.RegionHistogramData.stokes).toEqual(assertItem.regionHistogramDataGroup[index].stokes);
                 });
 
                 test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramDataGroup[index].regionId}`, () => {
-                    expect(RegionHistogramDataTemp.regionId).toEqual(assertItem.regionHistogramDataGroup[index].regionId);
+                    expect(ack.RegionHistogramData.regionId).toEqual(assertItem.regionHistogramDataGroup[index].regionId);
                 });
 
                 test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramDataGroup[index].progress}`, () => {
-                    expect(RegionHistogramDataTemp.progress).toEqual(assertItem.regionHistogramDataGroup[index].progress);
+                    expect(ack.RegionHistogramData.progress).toEqual(assertItem.regionHistogramDataGroup[index].progress);
                 });
 
             });

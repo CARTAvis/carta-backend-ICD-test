@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
@@ -199,7 +199,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers in RASTER_TILE_DATA", () => {
+describe("CHECK_RASTER_TILE_DATA: Testing data values at different layers in RASTER_TILE_DATA", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -220,13 +220,7 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
         test(`OpenFileAck? | `, async () => {
             expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
             await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            let temp1 = await Connection.receive(CARTA.OpenFileAck)
-            // console.log(temp1)
-        }, openFileTimeout);
-
-        test(`RegionHistogramData (would pass over if trying several times)? | `, async () => {
-            let temp2 = await Connection.receive(CARTA.RegionHistogramData);
-            // console.log(temp2)
+            await Connection.stream(2);
         }, openFileTimeout);
 
         let ack: AckStream;
@@ -235,9 +229,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
             await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
-            ack = await Connection.stream(4) as AckStream;
-            // console.log(ack)
-            RasterTileDataTemp = ack.RasterTileData
+            ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            RasterTileDataTemp = ack.RasterTileData[0];
         }, readFileTimeout);
 
         describe(`SET_IMAGE_CHANNELS on the file "${assertItem.fileOpen.file}"`, () => {
@@ -303,9 +296,8 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
                 let ack2: AckStream;
                 test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTilesGroup[index]);
-                    let ack2 = await Connection.stream(3) as AckStream;
+                    ack2 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                     RasterTileDataTemp = ack2.RasterTileData[0];
-                    // console.log(RasterTileDataTemp)
                 }, readFileTimeout);
 
                 test(`RASTER_TILE_DATA.file_id = ${rasterTileData.fileId}`, () => {
@@ -357,7 +349,6 @@ describe("CHECK_RASTER_TILE_DATA test: Testing data values at different layers i
 
             });
         });
-
 
     });
     afterAll(() => Connection.close());

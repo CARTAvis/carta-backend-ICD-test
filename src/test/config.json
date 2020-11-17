@@ -10,13 +10,15 @@
         "region": "set_QA/set_QA_regionTest",
         "performance": "set_QA_performance",
         "moment": "set_HD163296",
-        "catalog": "carta_catalog_test"
+        "catalog": "carta_catalog_test",
+        "save": "/tmp"
     },
     "timeout": {
         "connection": 1100,
         "listFile": 1200,
         "openFile": 1300,
         "readFile": 4100,
+        "saveFile": 3000,
         "readLargeImage": 18000,
         "changeChannel": 3000,
         "playImages": 8000,

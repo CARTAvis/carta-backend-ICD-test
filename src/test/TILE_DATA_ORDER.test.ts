@@ -10,23 +10,22 @@ let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
 
-interface SetIAddRequiredTilesExt extends CARTA.IAddRequiredTiles {
+interface IAddRequiredTilesExt extends CARTA.IAddRequiredTiles {
     rank: number;
 };
 interface AssertItem {
     precisionDigit: number;
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
-    fileOpenAck: CARTA.IOpenFileAck;
-    initTilesReq: CARTA.IAddRequiredTilesExt[];
+    initTilesReq: IAddRequiredTilesExt[];
     initSetCursor: CARTA.ISetCursor;
     initSpatialReq: CARTA.ISetSpatialRequirements;
 };
 
 let assertItem: AssertItem = {
     precisionDigit: 4,
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -129,13 +128,12 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
+describe("TILE_DATA_ORDER: Testing the order of returning tiles", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -150,17 +148,8 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
 
             test(`OpenFileAck? | `, async () => {
                 expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                let temp1 = await Connection.receive(CARTA.OpenFileAck)
-                // console.log(temp1)
+                await Connection.openFile(assertItem.fileOpen);
             }, openFileTimeout);
-
-            test(`RegionHistogramData? | `, async () => {
-                let temp2 = await Connection.receive(CARTA.RegionHistogramData);
-                // console.log(temp2)
-            }, openFileTimeout);
-
-            let RasterTileDataTemp: CARTA.RasterTileData;
 
             describe(`RASTER_TILE_DATA on the file "${assertItem.fileOpen.file}"`, () => {
 
@@ -169,13 +158,11 @@ describe("TILE_DATA_ORDER test: Testing the order of returning tiles", () => {
                     await Connection.send(CARTA.AddRequiredTiles, initTilesReq);
                     await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
                     await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialReq);
-                    ack = await Connection.stream(initTilesReq.tiles.length + 3) as AckStream;
-                    // console.log(ack);
+                    ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 }, readFileTimeout);
 
                 test(`Check len(RasterTileData) = ${initTilesReq.tiles.length} ? |`, () => {
-                    let RasterTileDataTemp = ack.RasterTileData
-                    expect(RasterTileDataTemp.length).toBe(initTilesReq.tiles.length)
+                    expect(ack.RasterTileData.length).toBe(initTilesReq.tiles.length)
                 });
 
                 test(`Tile "${initTilesReq.tiles[0]}" should return within the ${initTilesReq.rank > 2 ? initTilesReq.rank + "th" : initTilesReq.rank > 1 ? initTilesReq.rank + "nd" : initTilesReq.rank + "st"} rank`, () => {

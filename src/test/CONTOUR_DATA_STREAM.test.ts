@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl: string = config.serverURL;
@@ -11,9 +11,9 @@ let playTimeout: number = config.timeout.playImages;
 let messageTimeout: number = config.timeout.messageEvent;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setContour: CARTA.ISetContourParameters[];
@@ -21,13 +21,13 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "h_m51_b_s05_drz_sci.fits",
         fileId: 0,
@@ -70,47 +70,35 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CONTOUR_DATA_STREAM test: Testing contour data stream when there are a lot of vertices", () => {
+describe("CONTOUR_DATA_STREAM: Testing contour data stream when there are a lot of vertices", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.receiveAny() // OpenFileAck
+            await Connection.openFile(assertItem.openFile);
 
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            // REGION_HISTOGRAM_DATA RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_DATA RASTER_TILE_SYNC
-            await Connection.stream(5) as AckStream;
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readTimeout);
 
         assertItem.contourImageData.map((contour, index) => {
             describe(`SET_CONTOUR_PARAMETERS${index} with SmoothingMode:"${CARTA.SmoothingMode[assertItem.setContour[index].smoothingMode]}"`, () => {
-                let contourImageData: CARTA.ContourImageData;
                 test(`should return CONTOUR_IMAGE_DATA x${assertItem.setContour[index].levels.length} with progress = ${contour.progress} in the end`, async () => {
                     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[index]);
-
-                    contourImageData = await Connection.receive(CARTA.ContourImageData);
-                    let count: number = 0;
-                    if (contourImageData.progress == 1) count++;
-
-                    while (count < assertItem.setContour[index].levels.length) {
-                        contourImageData = await Connection.receive(CARTA.ContourImageData);
-                        if (contourImageData.progress == 1) count++;
-                    }
-                    expect(count).toEqual(5);
+                    await Connection.streamUntil(
+                        (type, data, ack) => ack.ContourImageData.filter(data => data.progress == contour.progress).length == 5
+                    );
 
                     await Connection.receive(CARTA.ContourImageData, messageTimeout, false);
                 }, playTimeout);
-
             });
         });
 
