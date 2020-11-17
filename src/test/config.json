@@ -11,7 +11,7 @@
         "performance": "set_QA_performance",
         "moment": "set_HD163296",
         "catalog": "carta_catalog_test",
-        "save": "tmp"
+        "save": "/tmp"
     },
     "timeout": {
         "connection": 1100,
