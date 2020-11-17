@@ -174,6 +174,10 @@ export class Client {
                     }
                     let data;
                     switch (cartaType) {
+                        case CARTA.ErrorData:
+                            data = CARTA.ErrorData.decode(eventData);
+                            console.warn(data.message);
+                            break;
                         case CARTA.SpatialProfileData:
                             data = CARTA.SpatialProfileData.decode(eventData);
                             data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -220,7 +224,7 @@ export class Client {
                 let data;
                 let type = this.CartaType.get(eventNumber);
                 switch (type) {
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         data = CARTA.ErrorData.decode(eventData);
                         console.warn(data.message);
                         break;
@@ -337,7 +341,7 @@ export class Client {
                     default:
                         ack.Responce.push(data);
                         break;
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         ack.Responce.push(data);
                         console.warn(data);
                         break;
@@ -474,7 +478,7 @@ export class Client {
                     default:
                         ack.Responce.push(data);
                         break;
-                    case CARTA.EntryType:
+                    case CARTA.ErrorData:
                         ack.Responce.push(data);
                         console.warn(data);
                         break;
