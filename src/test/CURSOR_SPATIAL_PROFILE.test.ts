@@ -205,7 +205,7 @@ describe("CURSOR_SPATIAL_PROFILE: if full resolution cursor spatial profiles are
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
             await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
-            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);;
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readFileTimeout);
 
         assertItem.setCursor1.map((setCursor, index) => {
