@@ -19,8 +19,8 @@ interface ISpatialProfileDataExt extends CARTA.ISpatialProfileData {
     }
 };
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
-    fileOpen: CARTA.IOpenFile;
+    registerViewer: CARTA.IRegisterViewer;
+    openFile: CARTA.IOpenFile;
     initTilesReq: CARTA.IAddRequiredTiles;
     initSetCursor: CARTA.ISetCursor;
     initSpatialRequirements: CARTA.ISetSpatialRequirements;
@@ -31,11 +31,11 @@ interface AssertItem {
     errorPoint: CARTA.ISpatialProfileData[];
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    fileOpen:
+    openFile:
     {
         directory: testSubdirectory,
         // file: "M17_SWex.fits",
@@ -179,41 +179,33 @@ let assertItem: AssertItem = {
         ],
 };
 
-describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial profiles are delivered correctly", () => {
+describe("CURSOR_SPATIAL_PROFILE: if full resolution cursor spatial profiles are delivered correctly", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms)).then(() => { console.log('sleep!') });
-    };
 
     test(`(Step 0) Connection open? | `, () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-    describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
+    describe(`read the file "${assertItem.openFile.file}" on folder "${testSubdirectory}"`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
         });
 
         test(`OpenFileAck? | `, async () => {
             expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, openFileTimeout);
 
-        let ack: AckStream;
         test(`RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)?`, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
-            ack = await Connection.stream(4) as AckStream;
-            // console.log(ack);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);;
         }, readFileTimeout);
 
         assertItem.setCursor1.map((setCursor, index) => {
@@ -222,7 +214,6 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, setCursor);
                     SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
-                    // console.log(SpatialProfileDataTemp)
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${assertItem.spatialProfileData[0].value}`, () => {
@@ -268,9 +259,6 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 test(`SPATIAL_PROFILE_DATA should arrive within ${cursorTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetCursor, setCursor);
                     SpatialProfileDataTemp = await Connection.receive(CARTA.SpatialProfileData);
-                    // console.log(setCursor)
-                    // console.log(SpatialProfileDataTemp)
-                    // console.log(Object.keys(SpatialProfileDataTemp))
                 }, cursorTimeout);
 
                 test(`SPATIAL_PROFILE_DATA.value = ${assertItem.spatialProfileData2[index].value}`, () => {
@@ -305,12 +293,11 @@ describe("CURSOR_SPATIAL_PROFILE test with: if full resolution cursor spatial pr
                 test(`SPATIAL_PROFILE_DATA should not have any x or y`, async () => {
                     await Connection.send(CARTA.SetCursor, item);
                     let temp = await Connection.receive(CARTA.SpatialProfileData);
-                    // console.log(temp)
                     let tempProfileCoordinateEnd = temp.profiles.map(a => a.end)
                     if (item.x > tempProfileCoordinateEnd[0] && item.y > tempProfileCoordinateEnd[1]) {
                         expect(item.x).toBeGreaterThan(tempProfileCoordinateEnd[0]);
                         expect(item.y).toBeGreaterThan(tempProfileCoordinateEnd[1]);
-                        console.warn("Returned SpatialProfileData was filtered through jest/frontend");
+                        // console.warn("Returned SpatialProfileData was filtered through jest/frontend");
                     }
                 }, cursorTimeout + connectTimeout);
 
