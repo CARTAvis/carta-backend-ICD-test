@@ -10,7 +10,7 @@
         "region": "set_QA/set_QA_regionTest",
         "performance": "set_QA_performance",
         "moment": "set_HD163296",
-        "catalog": "carta_artificial_catalog",
+        "catalogArtificial": "carta_artificial_catalog",
         "catalogLarge": "set_cosmos",
         "save": "/tmp"
     },

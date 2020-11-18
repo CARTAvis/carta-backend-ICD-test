@@ -184,7 +184,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("Test for large-size CATALOG: load whole table at one time:", () => {
+describe("Test for large-size CATALOG: load whole table at one time", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -269,7 +269,7 @@ describe("Test for large-size CATALOG: load whole table at one time:", () => {
     afterAll(() => Connection.close());
 });
 
-describe("Test for large-size CATALOG: Progressive load of rows:", () => {
+describe("Test for large-size CATALOG: Progressive load of rows", () => {
 
     let Connection: Client;
     beforeAll(async () => {
