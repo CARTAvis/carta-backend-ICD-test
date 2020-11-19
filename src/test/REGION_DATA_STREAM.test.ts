@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -12,7 +12,7 @@ let regionTimeout = config.timeout.region;
 
 interface AssertItem {
     precisionDigits: number;
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     setCursor: CARTA.ISetCursor;
     addTilesRequire: CARTA.IAddRequiredTiles;
@@ -28,7 +28,7 @@ interface AssertItem {
 
 let assertItem: AssertItem = {
     precisionDigits: 4,
-    register:
+    registerViewer:
     {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -115,93 +115,79 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("REGION_DATA_STREAM test: Testing data streaming after the regions", () => {
+describe("REGION_DATA_STREAM: Testing data streaming after the regions", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
-    test(`Connection open? | `, () => {
+    test(`Connection open | `, () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set region`, () => {
-        beforeAll(async () => {
-            await Connection.send(CARTA.CloseFile, { fileId: -1 });
+
+    test(`Prepare image data | `, async () => {
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
+        await Connection.openFile(assertItem.openFile);
+        await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+        await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+    });
+
+    describe("SET REGION: ", () => {
+        let SetRegionAckTemp: CARTA.SetRegionAck;
+        test(`SET_REGION_ACK should arrive within ${readFileTimeout} ms`, async () => {
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion);
+            SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
+        }, readFileTimeout);
+
+        test("SET_REGION_ACK.success = true", () => {
+            expect(SetRegionAckTemp.success).toBe(true);
         });
 
-        test(`OpenFileAck & RegionHistogramData? | `, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck)
-            await Connection.receive(CARTA.RegionHistogramData);
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
-            await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            let temp1 = await Connection.stream(4) as AckStream;
-            // console.log(temp1)
+        test(`SET_REGION_ACK.region_id = ${assertItem.regionAck.regionId}`, () => {
+            expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck.regionId);
         });
 
-        describe("SET REGION: ", () => {
-            let SetRegionAckTemp: CARTA.SetRegionAck;
-            test(`SET_REGION_ACK should arrive within ${readFileTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetRegion, assertItem.setRegion);
-                SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
-                // console.log(SetRegionAckTemp)
-            }, readFileTimeout);
-
-            test("SET_REGION_ACK.success = true", () => {
-                expect(SetRegionAckTemp.success).toBe(true);
-            });
-
-            test(`SET_REGION_ACK.region_id = ${assertItem.regionAck.regionId}`, () => {
-                expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck.regionId);
-            });
-
-            let SpectralProfileDataTemp: any;
-            test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-                SpectralProfileDataTemp = await Connection.stream(1);
-                // console.log(SpectralProfileDataTemp);
-            });
-
-            test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileData.regionId}`, () => {
-                expect(SpectralProfileDataTemp.SpectralProfileData[0].regionId).toEqual(assertItem.spectralProfileData.regionId);
-            });
-
-            test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileData.progress}`, () => {
-                expect(SpectralProfileDataTemp.SpectralProfileData[0].progress).toEqual(assertItem.spectralProfileData.progress);
-            });
-
-            let RegionHistDataTemp: any;
-            test(`REGION_HISTOGRAM_DATA should returb within ${regionTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
-                RegionHistDataTemp = await Connection.stream(1);
-                // console.log(RegionHistDataTemp);
-            }, regionTimeout);
-
-            test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramData.regionId}`, () => {
-                expect(RegionHistDataTemp.RegionHistogramData[0].regionId).toEqual(assertItem.regionHistogramData.regionId);
-            });
-
-            test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramData.progress}`, () => {
-                expect(RegionHistDataTemp.RegionHistogramData[0].progress).toEqual(assertItem.regionHistogramData.progress);
-            });
-
-            let RegionStatsDataTemp: any;
-            test(`REGION_STATS_DATA should returb within ${regionTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements);
-                RegionStatsDataTemp = await Connection.stream(1);
-                // console.log(RegionStatsDataTemp);
-            }, regionTimeout);
-
-            test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsData.regionId}`, () => {
-                expect(RegionStatsDataTemp.RegionStatsData[0].regionId).toEqual(assertItem.regionStatsData.regionId);
-                // console.log(RegionStatsDataTemp.RegionStatsData[0].regionId);
-            });
+        let SpectralProfileData: CARTA.SpectralProfileData;
+        test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
+            await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
+            SpectralProfileData = await Connection.receiveAny();
         });
 
+        test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileData.regionId}`, () => {
+            expect(SpectralProfileData.regionId).toEqual(assertItem.spectralProfileData.regionId);
+        });
+
+        test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileData.progress}`, () => {
+            expect(SpectralProfileData.progress).toEqual(assertItem.spectralProfileData.progress);
+        });
+
+        let RegionHistData: CARTA.RegionHistogramData;
+        test(`REGION_HISTOGRAM_DATA should returb within ${regionTimeout} ms`, async () => {
+            await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
+            RegionHistData = await Connection.receiveAny();
+        }, regionTimeout);
+
+        test(`REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramData.regionId}`, () => {
+            expect(RegionHistData.regionId).toEqual(assertItem.regionHistogramData.regionId);
+        });
+
+        test(`REGION_HISTOGRAM_DATA.progress = ${assertItem.regionHistogramData.progress}`, () => {
+            expect(RegionHistData.progress).toEqual(assertItem.regionHistogramData.progress);
+        });
+
+        let RegionStatsData: CARTA.RegionStatsData;
+        test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
+            await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements);
+            RegionStatsData = await Connection.receiveAny();
+        }, regionTimeout);
+
+        test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsData.regionId}`, () => {
+            expect(RegionStatsData.regionId).toEqual(assertItem.regionStatsData.regionId);
+        });
     });
 
 });
