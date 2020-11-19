@@ -127,7 +127,6 @@ describe("REGION_DATA_STREAM: Testing data streaming after the regions", () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-
     test(`Prepare image data | `, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
         await Connection.openFile(assertItem.openFile);
