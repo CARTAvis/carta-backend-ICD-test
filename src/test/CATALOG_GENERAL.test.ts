@@ -11,19 +11,20 @@ let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile
 
 interface ICatalogFileInfoResponseExt extends CARTA.ICatalogFileInfoResponse {
-    lengthOfHeaders: number
+    lengthOfHeaders: number;
 };
 
 interface IOpenCatalogFileAckExt extends CARTA.IOpenCatalogFileAck {
-    lengthOfHeaders: number
+    lengthOfHeaders: number;
 };
 
 interface ICatalogFilterResponseExt extends CARTA.ICatalogFilterResponse {
-    lengthOfColumns: number
+    lengthOfColumns: number;
+    fileid: number;
 };
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
@@ -32,15 +33,15 @@ interface AssertItem {
     catalogListReq: CARTA.ICatalogListRequest;
     catalogListResponse: CARTA.ICatalogListResponse;
     catalogFileInfoReq: CARTA.ICatalogFileInfoRequest;
-    catalogFileInfoResponse: CARTA.ICatalogFileInfoResponseExt;
+    catalogFileInfoResponse: ICatalogFileInfoResponseExt;
     openCatalogFile: CARTA.IOpenCatalogFile;
-    openCatalogFileAck: CARTA.IOpenCatalogFileAckExt;
+    openCatalogFileAck: IOpenCatalogFileAckExt;
     catalogFilterReq: CARTA.ICatalogFilterRequest[];
-    catalogFilterResponse: CARTA.ICatalogFilterResponseExt[];
+    catalogFilterResponse: ICatalogFilterResponseExt[];
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -205,8 +206,7 @@ describe("Test for general CATALOG related messages:", () => {
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -215,11 +215,9 @@ describe("Test for general CATALOG related messages:", () => {
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms | `, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let Ack = await Connection.stream(2) as AckStream;
-        let OpenAck = Ack.Responce[0] as CARTA.OpenFileAck;
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let Ack = await Connection.openFile(assertItem.fileOpen);
+        expect(Ack.OpenFileAck.success).toBe(true);
+        expect(Ack.OpenFileAck.fileInfo.name).toEqual(assertItem.fileOpen.file);
     }, openFileTimeout);
 
     let ack: AckStream;
@@ -227,17 +225,17 @@ describe("Test for general CATALOG related messages:", () => {
         await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        expect(ack.RasterTileSync.length).toEqual(2) ;//RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) Request CatalogList & check CatalogListResponse | `, async () => {
         await Connection.send(CARTA.CatalogListRequest, assertItem.catalogListReq);
-        let CatalogListAck = await Connection.receive(CARTA.CatalogListResponse)
-        expect(CatalogListAck.directory).toEqual(assertItem.catalogListResponse.directory)
-        expect(CatalogListAck.success).toEqual(assertItem.catalogListResponse.success)
-        expect(CatalogListAck.subdirectories).toEqual(expect.arrayContaining(assertItem.catalogListResponse.subdirectories))
+        let CatalogListAck = await Connection.receive(CARTA.CatalogListResponse);
+        expect(CatalogListAck.directory).toEqual(assertItem.catalogListResponse.directory);
+        expect(CatalogListAck.success).toEqual(assertItem.catalogListResponse.success);
+        expect(CatalogListAck.subdirectories).toEqual(expect.arrayContaining(assertItem.catalogListResponse.subdirectories));
     });
 
     test(`(Step 4) Request CatalogFileInfo & check CatalogFileInfoAck | `, async () => {
