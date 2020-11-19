@@ -226,7 +226,7 @@ describe("Test for general CATALOG related messages:", () => {
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        expect(ack.RasterTileSync.length).toEqual(2) ;//RasterTileSync: start & end
+        expect(ack.RasterTileSync.length).toEqual(2);//RasterTileSync: start & end
         expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
