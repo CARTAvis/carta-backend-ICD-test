@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -14,9 +14,9 @@ interface ISpectralProfileDataExt extends CARTA.ISpectralProfileData {
     assertProfile?: { idx: number, value: number }[],
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile[];
+    openFile: CARTA.IOpenFile[];
     addRequiredTiles: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor[][];
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
@@ -24,13 +24,13 @@ interface AssertItem {
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: [
+    openFile: [
         {
             directory: testSubdirectory,
             file: "M17_SWex.image",
@@ -70,10 +70,10 @@ let assertItem: AssertItem = {
                 fileId: 0,
                 point: { x: 106, y: 135 },
             },
-            // {
-            //     fileId: 0,
-            //     point: { x: -10, y: -10 },
-            // },
+            {
+                fileId: 0,
+                point: { x: -10, y: -10 },
+            },
         ],
         [
             {
@@ -84,10 +84,10 @@ let assertItem: AssertItem = {
                 fileId: 1,
                 point: { x: 106, y: 135 },
             },
-            // {
-            //     fileId: 1,
-            //     point: { x: -10, y: -10 },
-            // },
+            {
+                fileId: 1,
+                point: { x: -10, y: -10 },
+            },
         ],
     ],
     setSpectralRequirements: [
@@ -164,28 +164,24 @@ let assertItem: AssertItem = {
 describe("CURSOR_SPATIAL_PROFILE: Testing if full resolution cursor spectral profile with/out NaN channels is delivered correctly", () => {
     let Connection: Client;
 
-    assertItem.fileOpen.map((fileOpen, index) => {
+    assertItem.openFile.map((openFile, index) => {
         describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
             beforeAll(async () => {
                 Connection = new Client(testServerUrl);
                 await Connection.open();
-                await Connection.send(CARTA.RegisterViewer, assertItem.register);
-                await Connection.receive(CARTA.RegisterViewerAck);
+                await Connection.registerViewer(assertItem.registerViewer);
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
-                await Connection.send(CARTA.OpenFile, fileOpen);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                await Connection.openFile(openFile);
             }, readFileTimeout);
 
-            describe(`read the file "${fileOpen.file}"`, () => {
+            describe(`read the file "${openFile.file}"`, () => {
 
                 assertItem.spectralProfileData[index].map((spectralProfile, idx) => {
                     describe(`set cursor on {${assertItem.setCursor[index][idx].point.x}, ${assertItem.setCursor[index][idx].point.y}}`, () => {
                         beforeAll(async () => {
                             await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles[index]);
                             await Connection.send(CARTA.SetCursor, assertItem.setCursor[index][idx]);
-                            // RASTER_TILE_SYNC SpatialProfileData RASTER_TILE_DATA RASTER_TILE_SYNC
-                            await Connection.stream(4) as AckStream;
+                            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                         }, cursorTimeout);
 
                         if (spectralProfile.progress < 0) {
@@ -196,8 +192,8 @@ describe("CURSOR_SPATIAL_PROFILE: Testing if full resolution cursor spectral pro
 
                             test("Backend still alive", async () => {
                                 expect(Connection.connection.readyState).toEqual(WebSocket.OPEN);
-                                await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[index]);
-                                await Connection.receive(CARTA.SpectralProfileData);
+                                // await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[index]);
+                                // await Connection.receive(CARTA.SpectralProfileData);
                             }, connectTimeout);
 
                         } else {
