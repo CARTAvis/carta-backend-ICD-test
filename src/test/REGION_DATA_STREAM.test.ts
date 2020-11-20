@@ -136,18 +136,18 @@ describe("REGION_DATA_STREAM: Testing data streaming after the regions", () => {
     });
 
     describe("SET REGION: ", () => {
-        let SetRegionAckTemp: CARTA.SetRegionAck;
+        let SetRegionAck: CARTA.SetRegionAck;
         test(`SET_REGION_ACK should arrive within ${readFileTimeout} ms`, async () => {
             await Connection.send(CARTA.SetRegion, assertItem.setRegion);
-            SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
+            SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
         }, readFileTimeout);
 
         test("SET_REGION_ACK.success = true", () => {
-            expect(SetRegionAckTemp.success).toBe(true);
+            expect(SetRegionAck.success).toBe(true);
         });
 
         test(`SET_REGION_ACK.region_id = ${assertItem.regionAck.regionId}`, () => {
-            expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck.regionId);
+            expect(SetRegionAck.regionId).toEqual(assertItem.regionAck.regionId);
         });
 
         let SpectralProfileData: CARTA.SpectralProfileData;

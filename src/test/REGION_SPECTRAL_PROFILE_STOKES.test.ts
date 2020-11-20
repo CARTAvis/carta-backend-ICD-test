@@ -20,7 +20,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
     setCursor: CARTA.ISetCursor;
-    addTilesRequire: CARTA.IAddRequiredTiles;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setImageChannels: CARTA.ISetImageChannels[];
     setRegion: CARTA.ISetRegion[];
     regionAck: CARTA.ISetRegionAck[];
@@ -59,7 +59,7 @@ let assertItem: AssertItem = {
             spatialProfiles: []
         },
     },
-    addTilesRequire:
+    addRequiredTiles:
     {
         tiles: [0],
         fileId: 0,
@@ -216,23 +216,23 @@ describe("REGION_SPECTRAL_PROFILE_STOKES: Testing spectral profiler with regions
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.openFile(openFile);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             });
 
             describe(`${assertItem.setRegion[0].regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[assertItem.setRegion[0].regionInfo.regionType]} region #${assertItem.regionAck[0].regionId} on ${JSON.stringify(assertItem.setRegion[0].regionInfo.controlPoints)}`, () => {
-                let SetRegionAckTemp: CARTA.SetRegionAck;
+                let SetRegionAck: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
-                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
+                    SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test(`SET_REGION_ACK.success = ${assertItem.regionAck[0].success}`, () => {
-                    expect(SetRegionAckTemp.success).toBe(assertItem.regionAck[0].success);
+                    expect(SetRegionAck.success).toBe(assertItem.regionAck[0].success);
                 });
 
                 test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[0].regionId}`, () => {
-                    expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck[0].regionId);
+                    expect(SetRegionAck.regionId).toEqual(assertItem.regionAck[0].regionId);
                 });
 
                 let SpectralProfileData: CARTA.SpectralProfileData;
@@ -317,22 +317,22 @@ describe("REGION_SPECTRAL_PROFILE_STOKES: Testing spectral profiler with regions
                 });
 
                 describe(`Set coordinate = ${assertItem.setSpectralRequirements[3].spectralProfiles[0].coordinate}`, () => {
-                    let ErrorDataTemp: CARTA.ErrorData;
+                    let ErrorData: CARTA.ErrorData;
                     test(`ERROR_DATA should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[3]);
-                        ErrorDataTemp = await Connection.receive(CARTA.ErrorData);
+                        ErrorData = await Connection.receive(CARTA.ErrorData);
                     }, regionTimeout);
 
                     test(`ERROR_DATA.message = "${assertItem.spectralProfileData[3].profile[0].message}"`, () => {
-                        expect(ErrorDataTemp.message).toEqual(assertItem.spectralProfileData[3].profile[0].message);
+                        expect(ErrorData.message).toEqual(assertItem.spectralProfileData[3].profile[0].message);
                     });
 
                     test(`ERROR_DATA.severity = ${assertItem.spectralProfileData[3].profile[0].severity}`, () => {
-                        expect(ErrorDataTemp.severity).toEqual(assertItem.spectralProfileData[3].profile[0].severity);
+                        expect(ErrorData.severity).toEqual(assertItem.spectralProfileData[3].profile[0].severity);
                     });
 
                     test(`ERROR_DATA.tags = ["${assertItem.spectralProfileData[3].profile[0].tags.join(`", "`)}"]`, () => {
-                        expect(ErrorDataTemp.tags).toEqual(assertItem.spectralProfileData[3].profile[0].tags);
+                        expect(ErrorData.tags).toEqual(assertItem.spectralProfileData[3].profile[0].tags);
                     });
                 });
 

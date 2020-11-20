@@ -18,8 +18,8 @@ interface AssertItem {
     regionGroup: CARTA.ISetRegion[];
     spatial?: CARTA.ISetSpatialRequirements;
     stats?: CARTA.ISetStatsRequirements;
-    histogramGroup: CARTA.ISetHistogramRequirements[];
-    histogramDataGroup: CARTA.IRegionHistogramData[];
+    histogram: CARTA.ISetHistogramRequirements[];
+    histogramData: CARTA.IRegionHistogramData[];
 };
 
 let assertItem: AssertItem = {
@@ -85,7 +85,7 @@ let assertItem: AssertItem = {
             },
         },
     ],
-    histogramGroup: [
+    histogram: [
         {
             fileId: 0,
             regionId: 1,
@@ -102,7 +102,7 @@ let assertItem: AssertItem = {
             histograms: [{ channel: -1, numBins: -1 }],
         },
     ],
-    histogramDataGroup: [
+    histogramData: [
         {
             regionId: 1,
             histograms: [
@@ -162,7 +162,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             });
 
-            assertItem.histogramDataGroup.map((histogramData, index) => {
+            assertItem.histogramData.map((histogramData, index) => {
                 describe(`SET REGION #${histogramData.regionId}`, () => {
                     let SetRegionAck: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
@@ -182,7 +182,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                 describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
                     let RegionHistogramData: CARTA.RegionHistogramData;
                     test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogramGroup[index]);
+                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
                         RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
                     }, regionTimeout);
 

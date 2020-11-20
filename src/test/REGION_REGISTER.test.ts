@@ -191,18 +191,18 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
         assertItem.setRegion.map((region, index) => {
 
             describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.regionInfo.controlPoints)}`, () => {
-                let SetRegionAckTemp: CARTA.SetRegionAck;
+                let SetRegionAck: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, region);
-                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
+                    SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = True", () => {
-                    expect(SetRegionAckTemp.success).toBe(true);
+                    expect(SetRegionAck.success).toBe(true);
                 });
 
                 test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[index].regionId}`, () => {
-                    expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck[index].regionId);
+                    expect(SetRegionAck.regionId).toEqual(assertItem.regionAck[index].regionId);
                 });
 
             });
@@ -220,7 +220,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
             });
 
             describe("Modify region #3", () => {
-                let SetRegionAckTemp: CARTA.SetRegionAck;
+                let SetRegionAck: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion,
                         {
@@ -234,11 +234,11 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
                             }
                         }
                     );
-                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
+                    SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = false", () => {
-                    expect(SetRegionAckTemp.success).toBe(false);
+                    expect(SetRegionAck.success).toBe(false);
                 });
 
             });
