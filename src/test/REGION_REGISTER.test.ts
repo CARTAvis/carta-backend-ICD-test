@@ -9,8 +9,8 @@ let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
 let returnTimeout = config.timeout.messageEvent;
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
-    fileOpen: CARTA.IOpenFile;
+    registerViewer: CARTA.IRegisterViewer;
+    openFile: CARTA.IOpenFile;
     addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setRegion: CARTA.ISetRegion[];
@@ -18,11 +18,11 @@ interface AssertItem {
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "M17_SWex.fits",
         fileId: 0,
@@ -171,26 +171,21 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.fileOpen.file}" to set image view`, () => {
+    describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}" to set image view`, () => {
 
         beforeAll(async () => {
-            await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
+            await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            await Connection.openFile(assertItem.openFile);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            // RASTER_TILE_SYNC SPATIAL_PROFILE_DATA RASTER_TILE_DATA RASTER_TILE_SYNC
-            await Connection.stream(4) as AckStream;
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         });
 
         assertItem.setRegion.map((region, index) => {
@@ -199,7 +194,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
                 let SetRegionAckTemp: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, region);
-                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = True", () => {
@@ -239,7 +234,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
                             }
                         }
                     );
-                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                    SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = false", () => {
