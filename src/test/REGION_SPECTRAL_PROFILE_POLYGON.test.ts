@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -14,7 +14,7 @@ interface ISpectralProfileData extends CARTA.ISpectralProfileData {
     profile?: IProfilesExt[];
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
     setCursor: CARTA.ISetCursor;
     addTilesRequire: CARTA.IAddRequiredTiles;
@@ -25,7 +25,7 @@ interface AssertItem {
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -239,8 +239,7 @@ describe("REGION_SPECTRAL_PROFILE_POLYGON: Testing spectral profiler with polygo
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     assertItem.openFile.map(openFile => {
@@ -248,12 +247,10 @@ describe("REGION_SPECTRAL_PROFILE_POLYGON: Testing spectral profiler with polygo
 
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1, });
-                await Connection.send(CARTA.OpenFile, openFile);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
+                await Connection.openFile(openFile);
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.stream(4) as AckStream;
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             });
 
             assertItem.setRegion.map((region, index) => {
@@ -261,7 +258,7 @@ describe("REGION_SPECTRAL_PROFILE_POLYGON: Testing spectral profiler with polygo
                     let SetRegionAckTemp: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetRegion, region);
-                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
                     }, regionTimeout);
 
                     test(`SET_REGION_ACK.success = ${assertItem.regionAck[index].success}`, () => {

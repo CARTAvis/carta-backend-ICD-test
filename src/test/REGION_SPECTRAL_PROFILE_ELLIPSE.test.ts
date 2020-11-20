@@ -258,7 +258,7 @@ describe("REGION_SPECTRAL_PROFILE_ELLIPSE: Testing spectral profiler with ellips
                     let SetRegionAckTemp: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetRegion, region);
-                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
                     }, regionTimeout);
 
                     test(`SET_REGION_ACK.success = ${assertItem.regionAck[index].success}`, () => {
