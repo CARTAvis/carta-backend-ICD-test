@@ -146,6 +146,7 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -153,7 +154,6 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
         let OpenAck = await Connection.openFile(assertItem.openFile[0]);
         expect(OpenAck.OpenFileAck.success).toBe(true)
         expect(OpenAck.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile[0].file)
@@ -214,6 +214,7 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -221,7 +222,6 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
     });
 
     test(`(Step 1) IMAGE 1 : OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
         let OpenAck = await Connection.openFile(assertItem.openFile[0]);
         expect(OpenAck.OpenFileAck.success).toBe(true)
         expect(OpenAck.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile[0].file)

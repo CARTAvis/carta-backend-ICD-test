@@ -56,6 +56,7 @@ describe("Test for Close single file:", () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -63,7 +64,6 @@ describe("Test for Close single file:", () => {
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
         let OpenAck = await Connection.openFile(assertItem.openFile);
         expect(OpenAck.OpenFileAck.success).toBe(true);
         expect(OpenAck.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile.file);
