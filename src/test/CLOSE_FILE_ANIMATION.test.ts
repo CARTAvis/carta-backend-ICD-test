@@ -110,8 +110,8 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length) //only 1 Tile returned
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     let AnimateStreamData: AckStream[] = [];
@@ -141,7 +141,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
             );
             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
         };
-        expect(AnimateStreamData.length).toEqual(assertItem.AnimatorStopChannel)
+        expect(AnimateStreamData.length).toEqual(assertItem.AnimatorStopChannel);
 
         // CLOSE_FILE before STOP_ANIMATION (NO STOP_ANIMATION in this test!)
         await Connection.send(CARTA.CloseFile, { fileId: 0 });

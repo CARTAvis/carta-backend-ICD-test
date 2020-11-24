@@ -103,15 +103,15 @@ describe("[Case 1] Test for requesting the ICD message of the CLOSED image:", ()
 
         //request ICD message of the closed fileId=1
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
-        let ErrMesssage = await Connection.receiveAny()
-        expect(ErrMesssage.tags).toEqual(assertItem.ErrorMessage.tags)
-        expect(ErrMesssage.message).toEqual(assertItem.ErrorMessage.message)
+        let ErrMesssage = await Connection.receiveAny();
+        expect(ErrMesssage.tags).toEqual(assertItem.ErrorMessage.tags);
+        expect(ErrMesssage.message).toEqual(assertItem.ErrorMessage.message);
 
         //check the backend is still alive
-        let Response = await Connection.receiveAny(1000, false)
-        expect(Response).toEqual(undefined)
-        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
+        let Response = await Connection.receiveAny(1000, false);
+        expect(Response).toEqual(undefined);
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse);
         expect(BackendStatus).toBeDefined()
     });
 
@@ -121,8 +121,8 @@ describe("[Case 1] Test for requesting the ICD message of the CLOSED image:", ()
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     afterAll(() => Connection.close());
@@ -155,8 +155,8 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) Closed and Re-open `, async () => {
@@ -173,8 +173,8 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 4) the backend is still alive`, async () => {
@@ -182,7 +182,7 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
         let BackendStatus = await Connection.receive(CARTA.FileListResponse);
         expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
-        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
     });
 
     afterAll(() => Connection.close());
