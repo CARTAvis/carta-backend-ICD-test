@@ -13,7 +13,7 @@ let readFileTimeout: number = config.timeout.readFile;
 let playAnimatorTimeout = config.timeout.playAnimator;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles[];
@@ -21,10 +21,11 @@ interface AssertItem {
     setSpatialReq: CARTA.ISetSpatialRequirements;
     startAnimation: CARTA.IStartAnimation;
     animationFlowControl: CARTA.IAnimationFlowControl;
+    AnimatorStopChannel: number;
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -80,6 +81,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         animationId: 1,
     },
+    AnimatorStopChannel: 2,
 };
 
 describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during the ANIMATION data streaming :", () => {
@@ -88,7 +90,8 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.registerViewer(assertItem.register);
+        await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -96,12 +99,9 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let Ack = await Connection.stream(2) as AckStream;
-        let OpenAck = Ack.Responce[0] as CARTA.OpenFileAck;
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let Ack = await Connection.openFile(assertItem.fileOpen);
+        expect(Ack.OpenFileAck.success).toBe(true);
+        expect(Ack.OpenFileAck.fileInfo.name).toEqual(assertItem.fileOpen.file);
     }, openFileTimeout);
 
     let ack: AckStream;
@@ -127,7 +127,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         let SAAck = await Connection.receive(CARTA.StartAnimationAck);
         expect(SAAck.success).toBe(true);
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < assertItem.AnimatorStopChannel; i++) {
             AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
             await Connection.send(CARTA.AnimationFlowControl,
                 {
@@ -139,9 +139,9 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
                     timestamp: Long.fromNumber(Date.now()),
                 }
             );
-            // console.log(AnimateStreamData[i]) // In principle, each channel should have RasterTileSync *2 (start & end)
             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
         };
+        expect(AnimateStreamData.length).toEqual(assertItem.AnimatorStopChannel)
 
         // CLOSE_FILE before STOP_ANIMATION (NO STOP_ANIMATION in this test!)
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
