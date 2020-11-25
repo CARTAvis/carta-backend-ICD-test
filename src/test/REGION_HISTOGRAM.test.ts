@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
@@ -9,7 +9,7 @@ let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
     setCursor: CARTA.ISetCursor;
     addTilesRequire: CARTA.IAddRequiredTiles;
@@ -18,12 +18,12 @@ interface AssertItem {
     regionGroup: CARTA.ISetRegion[];
     spatial?: CARTA.ISetSpatialRequirements;
     stats?: CARTA.ISetStatsRequirements;
-    histogramGroup: CARTA.ISetHistogramRequirements[];
-    histogramDataGroup: CARTA.IRegionHistogramData[];
+    histogram: CARTA.ISetHistogramRequirements[];
+    histogramData: CARTA.IRegionHistogramData[];
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -85,7 +85,7 @@ let assertItem: AssertItem = {
             },
         },
     ],
-    histogramGroup: [
+    histogram: [
         {
             fileId: 0,
             regionId: 1,
@@ -102,7 +102,7 @@ let assertItem: AssertItem = {
             histograms: [{ channel: -1, numBins: -1 }],
         },
     ],
-    histogramDataGroup: [
+    histogramData: [
         {
             regionId: 1,
             histograms: [
@@ -145,8 +145,7 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
@@ -154,74 +153,65 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
     });
 
     assertItem.openFile.map(openFile => {
-        describe(`Go to "${testSubdirectory}" folder and open image "${openFile.file}" to set region`, () => {
-
+        describe(`Prepare image data ${openFile.file}`, () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            });
-
-            test(`OpenFileAck & RegionHistogramData? | `, async () => {
-                await Connection.send(CARTA.OpenFile, openFile);
-                await Connection.receive(CARTA.OpenFileAck)
-                await Connection.receive(CARTA.RegionHistogramData);
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.openFile(openFile);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                let temp1 = await Connection.stream(4) as AckStream;
-                // console.log(temp1)
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             });
 
-            assertItem.histogramDataGroup.map((histogramData, index) => {
+            assertItem.histogramData.map((histogramData, index) => {
                 describe(`SET REGION #${histogramData.regionId}`, () => {
-                    let SetRegionAckTemp: CARTA.SetRegionAck;
+                    let SetRegionAck: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetRegion, assertItem.regionGroup[index]);
-                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                        SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                     }, regionTimeout);
 
                     test("SET_REGION_ACK.success = true", () => {
-                        expect(SetRegionAckTemp.success).toBe(true);
+                        expect(SetRegionAck.success).toBe(true);
                     });
 
                     test(`SET_REGION_ACK.region_id = ${histogramData.regionId}`, () => {
-                        expect(SetRegionAckTemp.regionId).toEqual(histogramData.regionId);
+                        expect(SetRegionAck.regionId).toEqual(histogramData.regionId);
                     });
                 });
 
                 describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
-                    let RegionHistogramDataTemp: CARTA.RegionHistogramData;
+                    let RegionHistogramData: CARTA.RegionHistogramData;
                     test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogramGroup[index]);
-                        RegionHistogramDataTemp = await Connection.receive(CARTA.RegionHistogramData) as CARTA.RegionHistogramData;
+                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
+                        RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
                     }, regionTimeout);
 
                     test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {
-                        expect(RegionHistogramDataTemp.regionId).toEqual(histogramData.regionId);
+                        expect(RegionHistogramData.regionId).toEqual(histogramData.regionId);
                     });
 
                     test(`REGION_HISTOGRAM_DATA.progress = ${histogramData.progress}`, () => {
-                        expect(RegionHistogramDataTemp.progress).toEqual(histogramData.progress);
+                        expect(RegionHistogramData.progress).toEqual(histogramData.progress);
                     });
 
                     test("Assert REGION_HISTOGRAM_DATA.histograms", () => {
-                        if (RegionHistogramDataTemp.histograms[0].binWidth !== 0) {
-                            expect(RegionHistogramDataTemp.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
+                        if (RegionHistogramData.histograms[0].binWidth !== 0) {
+                            expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
                         };
-                        if (RegionHistogramDataTemp.histograms[0].firstBinCenter !== 0) {
-                            expect(RegionHistogramDataTemp.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
+                        if (RegionHistogramData.histograms[0].firstBinCenter !== 0) {
+                            expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
                         };
 
-                        let filterZero = RegionHistogramDataTemp.histograms[0].bins.filter(value => value === 0);
-                        if (filterZero.length === RegionHistogramDataTemp.histograms[0].bins.length) {
-                            expect(RegionHistogramDataTemp.histograms[0].bins.length).toEqual(histogramData.histograms[0].numBins);
+                        let filterZero = RegionHistogramData.histograms[0].bins.filter(value => value === 0);
+                        if (filterZero.length === RegionHistogramData.histograms[0].bins.length) {
+                            expect(RegionHistogramData.histograms[0].bins.length).toEqual(histogramData.histograms[0].numBins);
                         } else {
-                            expect(RegionHistogramDataTemp.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
+                            expect(RegionHistogramData.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
                         };
-                        // console.log(RegionHistogramDataTemp.histograms[0])
-                        expect(RegionHistogramDataTemp.histograms[0].bins).toEqual(histogramData.histograms[0].bins);
+                        expect(RegionHistogramData.histograms[0].bins).toEqual(histogramData.histograms[0].bins);
                     });
                 });
             });
-
         });
     });
 

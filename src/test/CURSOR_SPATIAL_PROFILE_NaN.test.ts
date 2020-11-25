@@ -22,8 +22,8 @@ interface ISpatialProfileDataExt extends CARTA.ISpatialProfileData {
 }
 interface AssertItem {
     precisionDigits: number;
-    register: CARTA.IRegisterViewer;
-    fileOpen: CARTA.IOpenFile;
+    registerViewer: CARTA.IRegisterViewer;
+    openFile: CARTA.IOpenFile;
     initTilesReq: CARTA.IAddRequiredTiles;
     initSetCursor: CARTA.ISetCursor;
     initSpatialRequirements: CARTA.ISetSpatialRequirements;
@@ -32,11 +32,11 @@ interface AssertItem {
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    fileOpen:
+    openFile:
     {
         directory: testSubdirectory,
         file: "M17_SWex.fits",
@@ -102,31 +102,27 @@ let assertItem: AssertItem = {
         ],
 }
 
-describe("CURSOR_SPATIAL_PROFILE_NaN test: Testing if full resolution cursor spatial profiles with NaN data are delivered correctly", () => {
+describe("CURSOR_SPATIAL_PROFILE_NaN: Testing if full resolution cursor spatial profiles with NaN data are delivered correctly", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
         expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
     });
 
-    describe(`read the file "${assertItem.fileOpen.file}" on folder "${testSubdirectory}"`, () => {
-        let ack: AckStream;
+    describe(`read the file "${assertItem.openFile.file}" on folder "${testSubdirectory}"`, () => {
+
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-            await Connection.receiveAny();
-            await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+            await Connection.openFile(assertItem.openFile);
             await Connection.send(CARTA.SetCursor, assertItem.initSetCursor);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.initSpatialRequirements);
-            ack = await Connection.stream(4) as AckStream;
-            // console.log(ack);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.initTilesReq);
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         }, readFileTimeout);
 
         test(`(Step 0) Connection open? | `, () => {

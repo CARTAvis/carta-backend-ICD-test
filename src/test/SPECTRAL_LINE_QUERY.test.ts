@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, IOpenFile } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -19,33 +19,33 @@ interface ISpectralLineResponseExt extends CARTA.ISpectralLineResponse {
 }
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles;
+    openFile: CARTA.IOpenFile;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setRegion: CARTA.ISetRegion;
     regionAck: CARTA.ISetRegionAck;
     setSpectralRequirements: CARTA.ISetSpectralRequirements;
     setSpatialReq: CARTA.ISetSpatialRequirements;
     setSpectralLineReq: CARTA.ISpectralLineRequest[];
-    SpectraLineResponse: CARTA.ISpectralLineResponseExt[];
+    SpectraLineResponse: ISpectralLineResponseExt[];
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "HD163296_13CO_2-1.fits",
         hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq: {
+    addRequiredTiles: {
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
@@ -124,8 +124,7 @@ describe("[Case 1] Open an image, and then query the spectral line (line freq do
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -134,34 +133,31 @@ describe("[Case 1] Open an image, and then query the spectral line (line freq do
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
-        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let ack = await Connection.openFile(assertItem.openFile) as IOpenFile;
+        expect(ack.OpenFileAck.success).toBe(true);
+        expect(ack.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile.file);
     }, openFileTimeout);
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.stream(5, 2500) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms and check response:`, async () => {
         await Connection.send(CARTA.SpectralLineRequest, assertItem.setSpectralLineReq[0]);
         let response = await Connection.receive(CARTA.SpectralLineResponse);
-        // console.log(response)
+        // console.log(SpectralLineResponse)
         expect(response.success).toEqual(assertItem.SpectraLineResponse[0].success);
         expect(response.dataSize).toEqual(assertItem.SpectraLineResponse[0].dataSize);
         expect(response.headers.length).toEqual(assertItem.SpectraLineResponse[0].lengthOfheaders);
         let properties = Object.keys(response.spectralLineData);
         properties.map((num, index) => {
-            expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[0].dataSize)
+            expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[0].dataSize);
         });
         expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].speciesOfline);
         expect(response.spectralLineData[5].stringData[assertItem.SpectraLineResponse[0].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[0].freqSpeciesOfline);
@@ -176,8 +172,7 @@ describe("[Case 2] Open an image, set a region then ask the spectral profiler, t
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -186,60 +181,46 @@ describe("[Case 2] Open an image, set a region then ask the spectral profiler, t
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
-        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let ack = await Connection.openFile(assertItem.openFile) as IOpenFile;
+        expect(ack.OpenFileAck.success).toBe(true);
+        expect(ack.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile.file);
     }, openFileTimeout);
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.stream(5, 2500) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
-    let SetRegionAckTemp: CARTA.SetRegionAck;
-    let SpectralProfileDataTemp: CARTA.SpectralProfileData;
-    let ReceiveProgress: number;
+    let SetRegionAck: CARTA.SetRegionAck;
     test(`(Step 3) Set REGION & SPECTRAL_PROFILE streaming until progress=1:`, async () => {
         // Set REGION
         await Connection.send(CARTA.SetRegion, assertItem.setRegion);
-        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
-        expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck.regionId)
-        expect(SetRegionAckTemp.success).toEqual(assertItem.regionAck.success)
+        SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
+        expect(SetRegionAck.regionId).toEqual(assertItem.regionAck.regionId);
+        expect(SetRegionAck.success).toEqual(assertItem.regionAck.success);
 
         //Set SPECTRAL_PROFILE streaming
         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
-        SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-        ReceiveProgress = SpectralProfileDataTemp.progress;
-        if (ReceiveProgress != 1) {
-            while (ReceiveProgress <= 1) {
-                SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
-                ReceiveProgress = SpectralProfileDataTemp.progress
-                console.warn('' + assertItem.fileOpen.file + ' SPECTRAL_PROFILE progress :', ReceiveProgress)
-            };
-        };
+        await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
     });
 
     test(`(Step 4) return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms and check response:`, async () => {
         await Connection.send(CARTA.SpectralLineRequest, assertItem.setSpectralLineReq[1]);
-        let response = await Connection.receive(CARTA.SpectralLineResponse);
-        // console.log(response)
-        expect(response.success).toEqual(assertItem.SpectraLineResponse[1].success);
-        expect(response.dataSize).toEqual(assertItem.SpectraLineResponse[1].dataSize);
-        expect(response.headers.length).toEqual(assertItem.SpectraLineResponse[1].lengthOfheaders);
-        let properties = Object.keys(response.spectralLineData);
+        let SpectralLineResponse = await Connection.receive(CARTA.SpectralLineResponse);
+        expect(SpectralLineResponse.success).toEqual(assertItem.SpectraLineResponse[1].success);
+        expect(SpectralLineResponse.dataSize).toEqual(assertItem.SpectraLineResponse[1].dataSize);
+        expect(SpectralLineResponse.headers.length).toEqual(assertItem.SpectraLineResponse[1].lengthOfheaders);
+        let properties = Object.keys(SpectralLineResponse.spectralLineData);
         properties.map((num, index) => {
-            expect(response.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[1].dataSize)
+            expect(SpectralLineResponse.spectralLineData[index].stringData.length).toEqual(assertItem.SpectraLineResponse[1].dataSize);
         });
-        expect(response.spectralLineData[1].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].speciesOfline);
-        expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].freqSpeciesOfline);
+        expect(SpectralLineResponse.spectralLineData[1].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].speciesOfline);
+        expect(SpectralLineResponse.spectralLineData[2].stringData[assertItem.SpectraLineResponse[1].speciesOflineIndex]).toEqual(assertItem.SpectraLineResponse[1].freqSpeciesOfline);
     }, spectralLineRequest);
 
     afterAll(() => Connection.close());

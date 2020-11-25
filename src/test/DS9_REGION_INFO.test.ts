@@ -160,7 +160,7 @@ describe("DS9_REGION_INFO: Testing DS9_REG region list and info", () => {
             });
 
             test(`REGION_LIST_RESPONSE.parent = ${assertItem.regionListResponse.parent}`, () => {
-                expect(RegExp(`${regionListResponse.parent}$`).test(regionListResponse.parent)).toBe(true);
+                expect(regionListResponse.parent).toMatch(new RegExp(`${regionListResponse.parent}$`));
             });
 
             test(`REGION_LIST_RESPONSE.subdirectories = ${JSON.stringify(assertItem.regionListResponse.subdirectories)}`, () => {

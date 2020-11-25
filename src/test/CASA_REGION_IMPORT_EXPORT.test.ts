@@ -19,7 +19,7 @@ interface ImportRegionAckExt2 extends CARTA.IImportRegionAck {
 };
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     setCursor: CARTA.ISetCursor;
     addTilesRequire: CARTA.IAddRequiredTiles;
@@ -32,7 +32,7 @@ interface AssertItem {
     importRegionAck2: ImportRegionAckExt2[];
 };
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -200,22 +200,19 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
+            await Connection.openFile(assertItem.openFile);
         });
 
         test(`OpenFileAck & RegionHistogramData? | `, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.receive(CARTA.OpenFileAck)
-            await Connection.receive(CARTA.RegionHistogramData);
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-            await Connection.stream(4) as AckStream;
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         });
 
         describe(`Import "${assertItem.importRegion.file}"`, () => {
