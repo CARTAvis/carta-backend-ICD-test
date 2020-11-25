@@ -191,6 +191,10 @@ export class Client {
                             break;
                     }
                     resolve(data);
+                } else if (this.CartaType.get(eventNumber) ===CARTA.ErrorData){
+                    let data = CARTA.ErrorData.decode(eventData);
+                    console.warn(data.message);
+                    reject(data);
                 }
             };
             if (timeout) {
@@ -306,6 +310,7 @@ export class Client {
         let _count: number = 0;
         let ack: AckStream = {
             Responce: [],
+            ErrorData: [],
             RasterTileData: [],
             RasterTileSync: [],
             SpatialProfileData: [],
@@ -342,7 +347,7 @@ export class Client {
                         ack.Responce.push(data);
                         break;
                     case CARTA.ErrorData:
-                        ack.Responce.push(data);
+                        ack.ErrorData.push(data);
                         console.warn(data);
                         break;
                     case CARTA.RasterTileData:
@@ -443,6 +448,7 @@ export class Client {
 
         let ack: AckStream = {
             Responce: [],
+            ErrorData: [],
             RasterTileData: [],
             RasterTileSync: [],
             SpatialProfileData: [],
@@ -479,7 +485,7 @@ export class Client {
                         ack.Responce.push(data);
                         break;
                     case CARTA.ErrorData:
-                        ack.Responce.push(data);
+                        ack.ErrorData.push(data);
                         console.warn(data);
                         break;
                     case CARTA.RasterTileData:
@@ -641,6 +647,7 @@ export class Client {
 
 export interface AckStream {
     Responce: any[],
+    ErrorData: CARTA.ErrorData[];
     RasterTileData: CARTA.RasterTileData[];
     RasterTileSync: CARTA.RasterTileSync[];
     SpatialProfileData: CARTA.SpatialProfile[];
