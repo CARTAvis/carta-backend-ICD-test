@@ -14,7 +14,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
     setImageChannel: CARTA.ISetImageChannels;
@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq:
+    addRequiredTiles:
     {
         fileId: 0,
         compressionQuality: 11,
@@ -92,10 +92,10 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) Set SET_IMAGE_CHANNELS and then CLOSE_FILE during the tile streaming & Check whether the backend is alive:`, async () => {

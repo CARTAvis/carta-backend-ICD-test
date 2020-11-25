@@ -14,7 +14,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
-    addTilesReq: CARTA.IAddRequiredTiles;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor[];
     setSpatialReq: CARTA.ISetSpatialRequirements;
     ErrorMessage: CARTA.IErrorData;
@@ -42,7 +42,7 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         }
     ],
-    addTilesReq: {
+    addRequiredTiles: {
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
@@ -117,12 +117,12 @@ describe("[Case 1] Test for requesting the ICD message of the CLOSED image:", ()
 
     let ack: AckStream;
     test(`(Step 4) Test fileId = 0 is still working well: `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     afterAll(() => Connection.close());
@@ -151,12 +151,12 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) Closed and Re-open `, async () => {
@@ -169,12 +169,12 @@ describe("[Case 2] Open=>Close=>Open of fileId=0, and then check the backend ali
         expect(OpenAck.OpenFileAck.fileInfo.name).toEqual(assertItem.fileOpen[0].file);
 
         //ICD messages work fine?
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length); //only 1 Tile returned
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 4) the backend is still alive`, async () => {

@@ -16,7 +16,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles[];
+    addRequiredTiles: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
     startAnimation: CARTA.IStartAnimation;
@@ -38,7 +38,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq: [
+    addRequiredTiles: [
         {
             fileId: 0,
             compressionQuality: 11,
@@ -106,12 +106,12 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles[0]);
         ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
         expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length); //only 1 Tile returned
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles[0].tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     let AnimateStreamData: AckStream[] = [];
@@ -123,7 +123,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
             reverse: false,
             frameRate: 5,
         });
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles[1]);
         let SAAck = await Connection.receive(CARTA.StartAnimationAck);
         expect(SAAck.success).toBe(true);
 
