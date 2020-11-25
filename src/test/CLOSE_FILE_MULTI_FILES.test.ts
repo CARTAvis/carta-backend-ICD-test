@@ -106,7 +106,7 @@ let assertItem: AssertItem = {
 };
 
 
-describe("Test for Close one file:", () => {
+describe("Test for Close one file (run1):", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -129,9 +129,9 @@ describe("Test for Close one file:", () => {
 
         let ack: AckStream;
         test(`(Image1, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*2
             expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -146,10 +146,10 @@ describe("Test for Close one file:", () => {
 
         let ack2: AckStream;
         test(`(Image2, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             ack2 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack2.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -164,10 +164,10 @@ describe("Test for Close one file:", () => {
 
         let ack3: AckStream;
         test(`(Image3, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[2]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[2]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             ack3 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack3.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -210,7 +210,7 @@ describe("Test for Close one file:", () => {
     afterAll(() => Connection.close());
 });
 
-describe("Test for Close one file:", () => {
+describe("Test for Close one file (run2):", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -233,9 +233,9 @@ describe("Test for Close one file:", () => {
 
         let ack: AckStream;
         test(`(Image1, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*2
             expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -250,10 +250,10 @@ describe("Test for Close one file:", () => {
 
         let ack2: AckStream;
         test(`(Image2, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             ack2 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack2.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -268,10 +268,10 @@ describe("Test for Close one file:", () => {
 
         let ack3: AckStream;
         test(`(Image3, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[2]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[2]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             ack3 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             // console.log(ack3) //RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack3.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -305,7 +305,7 @@ describe("Test for Close one file:", () => {
     afterAll(() => Connection.close());
 });
 
-describe("Test for Close one file:", () => {
+describe("Test for Close one file (run3):", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -328,9 +328,9 @@ describe("Test for Close one file:", () => {
 
         let ack: AckStream;
         test(`(Image1, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*2
             expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -345,10 +345,10 @@ describe("Test for Close one file:", () => {
 
         let ack2: AckStream;
         test(`(Image2, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             ack2 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack2.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
@@ -363,10 +363,10 @@ describe("Test for Close one file:", () => {
 
         let ack3: AckStream;
         test(`(Image3, step2)return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[2]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[2]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
             ack3 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream;
             ////RasterTileData + RasterTileSync*2 + SpatialProfileData*3
             expect(ack3.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
