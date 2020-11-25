@@ -9,11 +9,12 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let playImageTimeout: number = config.timeout.playImages;
+let contourTimeout: number = config.timeout.contour;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
@@ -21,12 +22,12 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "h_m51_b_s05_drz_sci.fits",
         hdu: "0",
@@ -74,14 +75,13 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("PER_CONTOUR_2D", () => {
+describe("PER_CONTOUR_DATA_2D", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -95,90 +95,46 @@ describe("PER_CONTOUR_2D", () => {
 
         describe(`(Step 1) Initialize the open image"`, () => {
             test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.receiveAny()
-                await Connection.receiveAny() // OpenFileAck | RegionHistogramData
+                await Connection.openFile(assertItem.openFile);
             }, openFileTimeout);
 
             let Ack: AckStream;
             test(`Initialised WCS info from frame: ADD_REQUIRED_TILES, SET_CURSOR, and SET_SPATIAL_REQUIREMENTS, then check them are all returned correctly:`, async () => {
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-                Ack = await Connection.stream(12) as AckStream;; // RasterTileData * 9 + SpatialProfileData * 1 + RasterTileSync * 2(start & end)
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
+                Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 expect(Ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length);
-                // console.log(Ack)
             }, playImageTimeout);
         });
 
         describe(`(Contour Tests)`, () => {
             test(`(Step 2) Set Default Contour Parameters:`, async () => {
                 await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
-                for (let i = 0; i < assertItem.setContour[0].levels.length; i++) {
-                    let ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
-                    let ReceiveProgress: number = ContourImageDataTemp.progress;
-
-                    if (ReceiveProgress != 1) {
-                        while (ReceiveProgress < 1) {
-                            ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
-                            ReceiveProgress = ContourImageDataTemp.progress
-                            console.warn('' + assertItem.fileOpen.file + ' ContourImageData progress :', ReceiveProgress)
-                        };
-                        expect(ReceiveProgress).toEqual(1);
-                    };
-                    // console.log(ContourImageDataTemp);
-                };
-            });
-
-            let SM_number = new Array(2).fill(1).map((_, i) => i + 1);
-            let newnumber = [];
-            while (newnumber.length < 2) {
-                let selnum = SM_number[Math.floor(Math.random() * SM_number.length)];
-                SM_number = SM_number.filter(function (item) {
-                    return item !== selnum
-                });
-                newnumber.push(selnum);
-            };
-            console.log('New Contour smoothing mode (random between 0 and 1):', newnumber);
+                await Connection.streamUntil(
+                    (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
+                );
+            }, contourTimeout);
 
             let SF_number = new Array(5).fill(1).map((_, i) => i + 1);
-            let newnumber2 = [];
-            while (newnumber2.length < 2) {
-                let selnum = SF_number[Math.floor(Math.random() * SF_number.length)];
-                SF_number = SF_number.filter(function (item) {
-                    return item !== selnum
-                });
-                newnumber2.push(selnum);
-            };
-            console.log('New Contour smoothing factor (random between 1 and 5):', newnumber2);
+            let newnumber = SF_number.sort(() => Math.random() - 0.5);
+            console.log('New Contour smoothing factor (random between 1 and 5):', newnumber);
 
-            test(`(Step 3) Change Smooth Mode and Smooth Factor with random number:`, async () => {
-                await Connection.send(CARTA.SetContourParameters,
-                    { ...assertItem.setContour[1], smoothingMode: newnumber[0], smoothingFactor: newnumber2[0] }
-                );
-                for (let i = 0; i < assertItem.setContour[0].levels.length; i++) {
-                    let ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
-                    let ReceiveProgress: number = ContourImageDataTemp.progress;
-
-                    if (ReceiveProgress != 1) {
-                        while (ReceiveProgress < 1) {
-                            ContourImageDataTemp = await Connection.receive(CARTA.ContourImageData);
-                            ReceiveProgress = ContourImageDataTemp.progress
-                            console.warn('' + assertItem.fileOpen.file + ' ContourImageData progress :', ReceiveProgress)
-                        };
-                        expect(ReceiveProgress).toEqual(1);
-                    };
-                    // console.log(ContourImageDataTemp);
-                };
+            [0, 1].map((number, idx) => {
+                test(`(Step 3.${idx}) Change Smooth Mode and Smooth Factor with random number: ${number} and ${newnumber[idx]}`, async () => {
+                    await Connection.send(CARTA.SetContourParameters,
+                        {
+                            ...assertItem.setContour[1],
+                            smoothingMode: number,
+                            smoothingFactor: newnumber[idx],
+                        }
+                    );
+                    await Connection.streamUntil(
+                        (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[1].levels.length
+                    );
+                }, contourTimeout);
             });
-
-
-
         });
-
     });
-
-
     afterAll(() => Connection.close());
-
 });
