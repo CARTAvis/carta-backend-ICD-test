@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
@@ -14,10 +14,10 @@ interface ISpectralProfileData extends CARTA.ISpectralProfileData {
     profile?: IProfilesExt[];
 }
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
     setCursor: CARTA.ISetCursor;
-    addTilesRequire: CARTA.IAddRequiredTiles;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setRegion: CARTA.ISetRegion[];
     regionAck: CARTA.ISetRegionAck[];
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
@@ -25,7 +25,7 @@ interface AssertItem {
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             spatialProfiles: []
         },
     },
-    addTilesRequire:
+    addRequiredTiles:
     {
         tiles: [0],
         fileId: 0,
@@ -239,8 +239,7 @@ describe("REGION_SPECTRAL_PROFILE_ELLIPSE: Testing spectral profiler with ellips
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     assertItem.openFile.map(openFile => {
@@ -248,49 +247,47 @@ describe("REGION_SPECTRAL_PROFILE_ELLIPSE: Testing spectral profiler with ellips
 
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1, });
-                await Connection.send(CARTA.OpenFile, openFile);
-                await Connection.receiveAny();
-                await Connection.receiveAny(); // OpenFileAck | RegionHistogramData
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
+                await Connection.openFile(openFile);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                await Connection.stream(4) as AckStream;
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             });
 
             assertItem.setRegion.map((region, index) => {
                 describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.regionInfo.controlPoints)}`, () => {
-                    let SetRegionAckTemp: CARTA.SetRegionAck;
+                    let SetRegionAck: CARTA.SetRegionAck;
                     test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetRegion, region);
-                        SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
+                        SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                     }, regionTimeout);
 
                     test(`SET_REGION_ACK.success = ${assertItem.regionAck[index].success}`, () => {
-                        expect(SetRegionAckTemp.success).toBe(assertItem.regionAck[index].success);
+                        expect(SetRegionAck.success).toBe(assertItem.regionAck[index].success);
                     });
 
                     test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[index].regionId}`, () => {
-                        expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAck[index].regionId);
+                        expect(SetRegionAck.regionId).toEqual(assertItem.regionAck[index].regionId);
                     });
 
                 });
 
                 describe(`SET SPECTRAL REQUIREMENTS on ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId}`, () => {
-                    let SpectralProfileDataTemp: any;
+                    let SpectralProfileData: any;
                     test(`SPECTRAL_PROFILE_DATA should return within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements[index]);
-                        SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
+                        SpectralProfileData = await Connection.receive(CARTA.SpectralProfileData);
                     }, regionTimeout);
 
                     test(`SPECTRAL_PROFILE_DATA.region_id = ${assertItem.spectralProfileData[index].regionId}`, () => {
-                        expect(SpectralProfileDataTemp.regionId).toEqual(assertItem.spectralProfileData[index].regionId);
+                        expect(SpectralProfileData.regionId).toEqual(assertItem.spectralProfileData[index].regionId);
                     });
 
                     test(`SPECTRAL_PROFILE_DATA.progress = ${assertItem.spectralProfileData[index].progress}`, () => {
-                        expect(SpectralProfileDataTemp.progress).toEqual(assertItem.spectralProfileData[index].progress);
+                        expect(SpectralProfileData.progress).toEqual(assertItem.spectralProfileData[index].progress);
                     });
 
                     test("Assert SPECTRAL_PROFILE_DATA.profiles of CARTA.StatsType.Mean", () => {
-                        let _meanProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
+                        let _meanProfile = SpectralProfileData.profiles.find(f => f.statsType === CARTA.StatsType.Mean);
                         let _assertProfile = assertItem.spectralProfileData[index].profile.find(f => f.statsType === CARTA.StatsType.Mean);
                         expect(_meanProfile.coordinate).toEqual(_assertProfile.coordinate);
                         expect(_meanProfile.values.length).toEqual(_assertProfile.profileLength);
@@ -316,7 +313,7 @@ describe("REGION_SPECTRAL_PROFILE_ELLIPSE: Testing spectral profiler with ellips
 
                     test("Assert other SPECTRAL_PROFILE_DATA.profiles", () => {
                         assertItem.spectralProfileData[index].profile.map(profile => {
-                            let _returnedProfile = SpectralProfileDataTemp.profiles.find(f => f.statsType === profile.statsType);
+                            let _returnedProfile = SpectralProfileData.profiles.find(f => f.statsType === profile.statsType);
                             profile.assertValues.map(assertVal => {
                                 if (isNaN(assertVal.value)) {
                                     expect(isNaN(_returnedProfile.values[assertVal.index])).toBe(true);

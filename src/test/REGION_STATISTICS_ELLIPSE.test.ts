@@ -7,23 +7,22 @@ const WebSocket = require('isomorphic-ws');
 let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
-let openFileTimeout = config.timeout.openFile;
 let readFileTimeout = config.timeout.readFile;
 let regionTimeout = config.timeout.region;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
-    addTilesReq: CARTA.IAddRequiredTiles;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
-    setRegionGroup: CARTA.ISetRegion[];
-    regionAckGroup: CARTA.ISetRegionAck[];
-    setStatsRequirementsGroup: CARTA.ISetStatsRequirements[];
-    regionStatsDataGroup: CARTA.IRegionStatsData[];
+    setRegion: CARTA.ISetRegion[];
+    regionAck: CARTA.ISetRegionAck[];
+    setStatsRequirements: CARTA.ISetStatsRequirements[];
+    regionStatsData: CARTA.IRegionStatsData[];
     precisionDigits: number;
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
@@ -44,7 +43,7 @@ let assertItem: AssertItem = {
                 renderMode: CARTA.RenderMode.RASTER,
             },
         ],
-    addTilesReq: {
+    addRequiredTiles: {
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
@@ -54,7 +53,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         point: { x: 1, y: 1 },
     },
-    setRegionGroup: [
+    setRegion: [
         {
             fileId: 0,
             regionId: -1,
@@ -86,7 +85,7 @@ let assertItem: AssertItem = {
             },
         },
     ],
-    regionAckGroup: [
+    regionAck: [
         {
             success: true,
             regionId: 1,
@@ -100,7 +99,7 @@ let assertItem: AssertItem = {
             regionId: 3,
         },
     ],
-    setStatsRequirementsGroup: [
+    setStatsRequirements: [
         {
             fileId: 0,
             regionId: 1,
@@ -147,7 +146,7 @@ let assertItem: AssertItem = {
             ],
         },
     ],
-    regionStatsDataGroup: [
+    regionStatsData: [
         {
             regionId: 1,
             statistics: [
@@ -222,13 +221,12 @@ let assertItem: AssertItem = {
     precisionDigits: 4,
 };
 
-describe("REGION_STATISTICS_RECTANGLE test: Testing statistics with rectangle regions", () => {
+describe("REGION_STATISTICS_RECTANGLE: Testing statistics with rectangle regions", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -236,71 +234,59 @@ describe("REGION_STATISTICS_RECTANGLE test: Testing statistics with rectangle re
     });
 
     assertItem.openFile.map(openFile => {
-        describe(`Go to "${testSubdirectory}" folder and open image "${openFile.file}" to set image view`, () => {
+        describe(`Open image "${openFile.file}" to set image view`, () => {
             beforeAll(async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
             }, connectTimeout);
 
-            describe(`(Step 0) Initialization: the open image`, () => {
-                test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                    await Connection.send(CARTA.CloseFile, { fileId: 0 });
-                    await Connection.send(CARTA.OpenFile, openFile);
-                    await Connection.receiveAny()
-                    await Connection.receiveAny() // OpenFileAck | RegionHistogramData
-                }, openFileTimeout);
+            let ack: AckStream;
+            test(`Prepare`, async () => {
+                await Connection.openFile(openFile);
+                await Connection.send(CARTA.SetCursor, assertItem.setCursor);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
+                ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+                expect(ack.RasterTileData.length).toBe(assertItem.addRequiredTiles.tiles.length);
+            }, readFileTimeout);
 
-                let ack: AckStream;
-                test(`return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    await Connection.send(CARTA.SetCursor, assertItem.setCursor);
-                    // await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-
-                    ack = await Connection.stream(assertItem.addTilesReq.tiles.length + 3) as AckStream;
-                    // console.log(ack); // RasterTileData * 1 + SpatialProfileData * 1 + RasterTileSync *2 (start & end)
-                    expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq.tiles.length);
-                }, readFileTimeout);
-
-                assertItem.setRegionGroup.map((region, index) => {
-                    if (region.regionId) {
-                        describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId} on ${JSON.stringify(region.controlPoints)}`, () => {
-                            let SetRegionAckTemp: CARTA.SetRegionAck;
-                            test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
-                                await Connection.send(CARTA.SetRegion, region);
-                                SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck) as CARTA.SetRegionAck;
-                            }, regionTimeout);
-
-                            test(`SET_REGION_ACK.success = ${assertItem.regionAckGroup[index].success}`, () => {
-                                expect(SetRegionAckTemp.success).toBe(assertItem.regionAckGroup[index].success);
-                            });
-
-                            test(`SET_REGION_ACK.region_id = ${assertItem.regionAckGroup[index].regionId}`, () => {
-                                expect(SetRegionAckTemp.regionId).toEqual(assertItem.regionAckGroup[index].regionId);
-                            });
-
-                        });
-                    };
-
-                    describe(`SET STATS REQUIREMENTS on ${CARTA.RegionType[region.regionType]} region #${assertItem.regionAckGroup[index].regionId}`, () => {
-                        let RegionStatsDataTemp: CARTA.RegionStatsData;
-                        test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
-                            await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirementsGroup[index]);
-                            RegionStatsDataTemp = await Connection.receive(CARTA.RegionStatsData) as CARTA.RegionStatsData;
+            assertItem.setRegion.map((region, index) => {
+                if (region.regionId) {
+                    describe(`${region.regionId < 0 ? "Creating" : "Modify"} ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId} on ${JSON.stringify(region.regionInfo.controlPoints)}`, () => {
+                        let SetRegionAck: CARTA.SetRegionAck;
+                        test(`SET_REGION_ACK should return within ${regionTimeout} ms`, async () => {
+                            await Connection.send(CARTA.SetRegion, region);
+                            SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
                         }, regionTimeout);
 
-                        test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsDataGroup[index].regionId}`, () => {
-                            expect(RegionStatsDataTemp.regionId).toEqual(assertItem.regionStatsDataGroup[index].regionId);
+                        test(`SET_REGION_ACK.success = ${assertItem.regionAck[index].success}`, () => {
+                            expect(SetRegionAck.success).toBe(assertItem.regionAck[index].success);
                         });
 
-                        test("Assert & Check REGION_STATS_DATA.statistics", () => {
-                            assertItem.regionStatsDataGroup[index].statistics.map(stats => {
-                                if (isNaN(stats.value)) {
-                                    expect(isNaN(RegionStatsDataTemp.statistics.find(f => f.statsType === stats.statsType).value)).toBe(true);
-                                } else {
-                                    expect(RegionStatsDataTemp.statistics.find(f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
-                                }
-                            });
+                        test(`SET_REGION_ACK.region_id = ${assertItem.regionAck[index].regionId}`, () => {
+                            expect(SetRegionAck.regionId).toEqual(assertItem.regionAck[index].regionId);
                         });
 
+                    });
+                };
+
+                describe(`SET STATS REQUIREMENTS on ${CARTA.RegionType[region.regionInfo.regionType]} region #${assertItem.regionAck[index].regionId}`, () => {
+                    let RegionStatsData: CARTA.RegionStatsData;
+                    test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
+                        await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements[index]);
+                        RegionStatsData = await Connection.receive(CARTA.RegionStatsData);
+                    }, regionTimeout);
+
+                    test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsData[index].regionId}`, () => {
+                        expect(RegionStatsData.regionId).toEqual(assertItem.regionStatsData[index].regionId);
+                    });
+
+                    test("Assert & Check REGION_STATS_DATA.statistics", () => {
+                        assertItem.regionStatsData[index].statistics.map(stats => {
+                            if (isNaN(stats.value)) {
+                                expect(isNaN(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value)).toBe(true);
+                            } else {
+                                expect(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
+                            }
+                        });
                     });
                 });
             });
