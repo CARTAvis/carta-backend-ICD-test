@@ -174,10 +174,6 @@ export class Client {
                     }
                     let data;
                     switch (cartaType) {
-                        case CARTA.ErrorData:
-                            data = CARTA.ErrorData.decode(eventData);
-                            console.warn(data.message);
-                            break;
                         case CARTA.SpatialProfileData:
                             data = CARTA.SpatialProfileData.decode(eventData);
                             data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -191,7 +187,7 @@ export class Client {
                             break;
                     }
                     resolve(data);
-                } else if (this.CartaType.get(eventNumber) ===CARTA.ErrorData){
+                } else if (this.CartaType.get(eventNumber) === CARTA.ErrorData) {
                     let data = CARTA.ErrorData.decode(eventData);
                     console.warn(data.message);
                     reject(data);
