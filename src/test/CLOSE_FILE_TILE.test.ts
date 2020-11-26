@@ -9,6 +9,7 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
+let listFileTimeout: number = config.timeout.listFile;
 
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
@@ -110,7 +111,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
         expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
-    }, readFileTimeout);
+    }, readFileTimeout + listFileTimeout);
 
     afterAll(() => Connection.close());
 });
