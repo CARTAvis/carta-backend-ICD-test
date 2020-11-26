@@ -11,28 +11,28 @@ let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles;
+    openFile: CARTA.IOpenFile;
+    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: {
+    openFile: {
         directory: testSubdirectory,
         file: "M17_SWex.fits",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq: {
+    addRequiredTiles: {
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
@@ -49,14 +49,14 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("Test for Close one file:", () => {
+describe("Test for Close single file:", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
+        await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
     test(`(Step 0) Connection open? | `, () => {
@@ -64,36 +64,32 @@ describe("Test for Close one file:", () => {
     });
 
     test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-        await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-        let OpenAck = await Connection.receive(CARTA.OpenFileAck)
-        await Connection.receive(CARTA.RegionHistogramData) // OpenFileAck | RegionHistogramData
-        expect(OpenAck.success).toBe(true)
-        expect(OpenAck.fileInfo.name).toEqual(assertItem.fileOpen.file)
+        let OpenAck = await Connection.openFile(assertItem.openFile);
+        expect(OpenAck.OpenFileAck.success).toBe(true);
+        expect(OpenAck.OpenFileAck.fileInfo.name).toEqual(assertItem.openFile.file);
     }, openFileTimeout);
 
     let ack: AckStream;
     test(`(Step 2) return RASTER_TILE_DATA(Stream) and check total length `, async () => {
-        await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
         await Connection.send(CARTA.SetCursor, assertItem.setCursor);
         await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-        ack = await Connection.stream(5, 2500) as AckStream;
-        expect(ack.RasterTileSync.length).toEqual(2) //RasterTileSync: start & end
-        expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length) //only 1 Tile returned
+        await Connection.send(CARTA.AddRequiredTiles, assertItem.addRequiredTiles);
+        let ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        expect(ack.RasterTileSync.length).toEqual(2); //RasterTileSync: start & end
+        expect(ack.RasterTileData.length).toEqual(assertItem.addRequiredTiles.tiles.length); //only 1 Tile returned
     }, readFileTimeout);
 
     test(`(Step 3) close image & make sure NO message returned & the backend is still alive`, async () => {
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
 
-        let Response = await Connection.receiveAny(1000, false)
-        expect(Response).toEqual(undefined)
+        let Response = await Connection.receiveAny(1000, false);
+        expect(Response).toEqual(undefined);
 
-        await Connection.send(CARTA.FileListRequest, assertItem.filelist)
-        let BackendStatus = await Connection.receive(CARTA.FileListResponse)
-        expect(BackendStatus).toBeDefined()
+        await Connection.send(CARTA.FileListRequest, assertItem.filelist);
+        let BackendStatus = await Connection.receive(CARTA.FileListResponse);
+        expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);
-        expect(BackendStatus.directory).toBe(assertItem.filelist.directory)
+        expect(BackendStatus.directory).toBe(assertItem.filelist.directory);
     });
 
     afterAll(() => Connection.close());
