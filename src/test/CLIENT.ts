@@ -650,7 +650,7 @@ export interface AckStream {
     ErrorData: CARTA.ErrorData[];
     RasterTileData: CARTA.RasterTileData[];
     RasterTileSync: CARTA.RasterTileSync[];
-    SpatialProfileData: CARTA.SpatialProfile[];
+    SpatialProfileData: CARTA.SpatialProfileData[];
     RegionStatsData: CARTA.RegionStatsData[];
     RegionHistogramData: CARTA.RegionHistogramData[];
     SpectralProfileData: CARTA.SpectralProfileData[];
