@@ -6,12 +6,12 @@ let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.moment;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
-let regionTimeout = config.timeout.region;
+let cursorTimeout = config.timeout.cursor;
+let profileTimeout = config.timeout.spatralProfile;
 interface AssertItem {
     precisionDigits: number;
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
-    addRequiredTiles: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor[];
     spatialProfileData: CARTA.ISpatialProfileData[];
     setSpatialRequirements: CARTA.ISetSpatialRequirements[];
@@ -53,12 +53,6 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    addRequiredTiles: {
-        tiles: [0],
-        fileId: 0,
-        compressionType: CARTA.CompressionType.ZFP,
-        compressionQuality: 11,
-    },
     setCursor: [
         {
             fileId: 100,
@@ -159,22 +153,21 @@ describe("MATCH_SPATIAL: Testing cursor spatial result as matching multiple imag
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
-    describe(`Prepare image`, () => {
+    describe(`Prepare images`, () => {
         for (const file of assertItem.openFile) {
-            test(`Open images ${file.file} in file_id:${file.fileId}`, async () => {
+            test(`Should open image ${file.file} as file_id: ${file.fileId}`, async () => {
                 await Connection.openFile(file);
             }, openFileTimeout);
         }
     });
 
     for (const [index, cursor] of assertItem.setCursor.entries()) {
-        describe(`Set cursors ${index}`, () => {
-            let spatialProfileData: CARTA.SpatialProfileData;
+        describe(`Set cursor ${index}`, () => {
             test(`Assert SpatialProfileData ${JSON.stringify(assertItem.spatialProfileData[index])}`, async () => {
                 await Connection.send(CARTA.SetCursor, cursor);
-                spatialProfileData = await Connection.receive(CARTA.SpatialProfileData);
+                let spatialProfileData = await Connection.receive(CARTA.SpatialProfileData) as CARTA.SpatialProfileData;
                 expect(spatialProfileData).toMatchObject(assertItem.spatialProfileData[index]);
-            }, regionTimeout);
+            }, cursorTimeout);
         });
     }
 
@@ -186,19 +179,19 @@ describe("MATCH_SPATIAL: Testing cursor spatial result as matching multiple imag
             spatialProfileData = await Connection.receive(CARTA.SpatialProfileData);
             spatialProfileData0 = spatialProfileData;
             expect(spatialProfileData.profiles).toMatchObject(assertItem.profiles);
-        }, regionTimeout);
+        }, profileTimeout);
     });
 
     describe(`Set Spatial Requirements for file_id = ${assertItem.setSpatialRequirements[2].fileId}`, () => {
         let spatialProfileData: CARTA.SpatialProfileData[];
-        test(`Assert SpatialProfileData`, async () => {
+        test(`Should receive SpatialProfileData x2`, async () => {
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialRequirements[1]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialRequirements[2]);
             let ack = await Connection.streamUntil((type, data, ack: AckStream) => ack.SpatialProfileData.length == 2);
             spatialProfileData = ack.SpatialProfileData;
-        }, regionTimeout);
+        }, profileTimeout);
 
-        test(`Assert SPATIAL_PROFILE_DATA[ ].profiles.length`, () => {
+        test(`Assert SPATIAL_PROFILE_DATA[ ].profiles.length = [0, 2]`, () => {
             expect(spatialProfileData[0].profiles.length).toEqual(0);
             expect(spatialProfileData[1].profiles.length).toEqual(2);
         });
