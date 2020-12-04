@@ -178,7 +178,7 @@ describe("MATCH_STATS: Testing region stats result as matching multiple images",
 
             test(`Assert region_id for file_id: ${file.fileId}`, () => {
                 for (const [regionIdx, region] of assertItem.setRegion.entries()) {
-                    expect(RegionStatsData[fileIdx][regionIdx].regionId).toEqual(region.regionId);
+                    expect(RegionStatsData[fileIdx].filter(stats=>stats.regionId==region.regionId)[0].statistics.length).toBeGreaterThan(0);
                 }
             });
         }
