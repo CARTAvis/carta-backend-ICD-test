@@ -18,7 +18,7 @@ interface AssertItem {
     setStatsRequirements: CARTA.ISetStatsRequirements[][];
 }
 let assertItem: AssertItem = {
-    precisionDigits: 3,
+    precisionDigits: 2,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -156,7 +156,7 @@ describe("MATCH_STATS: Testing region stats result as matching multiple images",
             }, cursorTimeout);
         }
         for (const [index, region] of assertItem.setRegion.entries()) {
-            test(`Should set region ${index}`, async () => {
+            test(`Should set region ${region.regionId}`, async () => {
                 await Connection.send(CARTA.SetRegion, region);
                 await Connection.receiveAny();
             }, regionTimeout);
@@ -171,22 +171,25 @@ describe("MATCH_STATS: Testing region stats result as matching multiple images",
                     await Connection.send(CARTA.SetStatsRequirements, statsReq);
                 }
                 let ack = await Connection.streamUntil(
-                    (type, data, ack: AckStream) => ack.RegionStatsData.length == 4
+                    (type, data, ack: AckStream) => ack.RegionStatsData.filter(data => data.fileId == file.fileId).length == 4
                 );
                 RegionStatsData.push(ack.RegionStatsData);
             }, profileTimeout);
 
             test(`Assert region_id for file_id: ${file.fileId}`, () => {
                 for (const [regionIdx, region] of assertItem.setRegion.entries()) {
-                    expect(RegionStatsData[fileIdx].filter(stats=>stats.regionId==region.regionId)[0].statistics.length).toBeGreaterThan(0);
+                    expect(RegionStatsData[fileIdx].filter(stats => stats.regionId == region.regionId)[0].statistics.length).toBeGreaterThan(0);
                 }
             });
         }
-
         for (const [regionIdx, region] of assertItem.setRegion.entries()) {
             for (const [statsIdx, statsType] of assertItem.setStatsRequirements[0][regionIdx].stats.entries()) {
                 test(`Assert the ${CARTA.StatsType[statsType]} of region ${region.regionId} for first image equal to that for the second image`, () => {
-                    expect(RegionStatsData[0][regionIdx].statistics[statsIdx].value).toBeCloseTo(RegionStatsData[1][regionIdx].statistics[statsIdx].value, assertItem.precisionDigits);
+                    expect(
+                        RegionStatsData[0].find(data => data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value
+                    ).toBeCloseTo(
+                        RegionStatsData[1].find(data => data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value
+                        , assertItem.precisionDigits);
                 });
             }
         }
