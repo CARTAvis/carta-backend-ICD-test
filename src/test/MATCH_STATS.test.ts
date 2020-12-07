@@ -134,7 +134,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("MATCH_STATS: Testing region stats result as matching multiple images", () => {
+describe("MATCH_STATS: Testing region stats with spatially and spectrally matched images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);

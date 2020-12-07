@@ -115,7 +115,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("MATCH_SPECTRAL: Testing region spectral result as matching multiple images", () => {
+describe("MATCH_SPECTRAL: Test region spectral profile with spatially and spectrally matched images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);

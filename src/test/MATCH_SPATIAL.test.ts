@@ -144,7 +144,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("MATCH_SPATIAL: Testing cursor spatial result as matching multiple images", () => {
+describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
