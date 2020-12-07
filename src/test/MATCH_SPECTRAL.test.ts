@@ -157,12 +157,12 @@ describe("MATCH_SPECTRAL: Testing region spectral result as matching multiple im
 
         test(`Assert all region_id equal to ${assertItem.setSpectralRequirements[0].regionId}`, () => {
             for (const [index, spectralRequirement] of assertItem.setSpectralRequirements.entries()) {
-                expect(SpectralProfileData[index].regionId).toEqual(spectralRequirement.regionId);
+                expect(SpectralProfileData.find(data => data.fileId == spectralRequirement.fileId).regionId).toEqual(spectralRequirement.regionId);
             }
         });
 
         test(`Assert the first profile equal to the last profile`, () => {
-            expect(SpectralProfileData[0].profiles).toEqual(SpectralProfileData[3].profiles);
+            expect(SpectralProfileData.find(data => data.fileId == assertItem.openFile[0].fileId).profiles).toEqual(SpectralProfileData.find(data => data.fileId == assertItem.openFile[3].fileId).profiles);
         });
     });
 
