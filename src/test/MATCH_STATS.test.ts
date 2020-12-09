@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 200, y: 200 }, { x: 100, y: 100 }],
+                controlPoints: [{ x: 200, y: 200 }, { x: 400, y: 400 }],
             },
         },
         {
@@ -65,7 +65,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 30,
-                controlPoints: [{ x: 100, y: 100 }, { x: 150, y: 150 }],
+                controlPoints: [{ x: 220, y: 220 }, { x: 400, y: 400 }],
             },
         },
         {
@@ -74,7 +74,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 4,
                 rotation: 45,
-                controlPoints: [{ x: 150, y: 150 }, { x: 10, y: 100 }],
+                controlPoints: [{ x: 150, y: 150 }, { x: 150, y: 300 }],
             },
         },
         {
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 100, y: 350 }, { x: 200, y: 350 }, { x: 100, y: 250 }],
+                controlPoints: [{ x: -30, y: 450 }, { x: 430, y: 430 }, { x: 500, y: -30 }],
             },
         },
     ],
@@ -91,44 +91,44 @@ let assertItem: AssertItem = {
             {
                 fileId: 100,
                 regionId: 1,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 2,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 3,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 4,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
         [
             {
                 fileId: 101,
                 regionId: 1,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 2,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 3,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 4,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
     ]
@@ -185,6 +185,10 @@ describe("MATCH_STATS: Testing region stats with spatially and spectrally matche
             });
         }
         for (const [regionIdx, region] of assertItem.setRegion.entries()) {
+            // test(`Log statistics`, () => {
+            //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics);
+            //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[1].fileId && data.regionId == region.regionId).statistics);
+            // });
             for (const [statsIdx, statsType] of assertItem.setStatsRequirements[0][regionIdx].stats.entries()) {
                 test(`Assert the ${CARTA.StatsType[statsType]} of region ${region.regionId} for first image equal to that for the second image`, () => {
                     const left = RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value;

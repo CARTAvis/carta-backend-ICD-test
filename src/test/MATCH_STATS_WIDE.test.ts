@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 1200, y: 3700 }, { x: -100, y: -100 }, { x: 100, y: 250 }],
+                controlPoints: [{ x: 3600, y: 3700 }, { x: 3700, y: -100 }, { x: 2300, y: 0 }],
             },
         },
     ],
@@ -91,44 +91,44 @@ let assertItem: AssertItem = {
             {
                 fileId: 100,
                 regionId: 1,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 2,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 3,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 4,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
         [
             {
                 fileId: 101,
                 regionId: 1,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 2,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 3,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 4,
-                stats: [2, 3, 4, 5, 6, 7, 8, 9],
+                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
     ]
@@ -185,6 +185,10 @@ describe("MATCH_STATS_WIDE: Testing region stats with spatially and spectrally m
             });
         }
         for (const [regionIdx, region] of assertItem.setRegion.entries()) {
+            // test(`Log statistics`, () => {
+            //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics);
+            //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[1].fileId && data.regionId == region.regionId).statistics);
+            // });
             for (const [statsIdx, statsType] of assertItem.setStatsRequirements[0][regionIdx].stats.entries()) {
                 test(`Assert the ${CARTA.StatsType[statsType]} of region ${region.regionId} for first image equal to that for the second image`, () => {
                     const left = RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value;
