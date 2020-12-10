@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 2600, y: 1900 }, { x: 500, y: 500 }],
+                controlPoints: [{ x: 300, y: 200 }, { x: 400, y: 400 }],
             },
         },
         {
@@ -65,7 +65,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 45,
-                controlPoints: [{ x: 1800, y: 1200 }, { x: 1000, y: 1000 }],
+                controlPoints: [{ x: 1800, y: 700 }, { x: 1000, y: 1000 }],
             },
         },
         {
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 3600, y: 3700 }, { x: 3700, y: -100 }, { x: 2300, y: 0 }],
+                controlPoints: [{ x: 3500, y: 1300 }, { x: 3599, y: 1 }, { x: 2200, y: 100 }],
             },
         },
     ],
