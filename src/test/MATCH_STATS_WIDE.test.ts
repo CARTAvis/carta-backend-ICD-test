@@ -18,7 +18,7 @@ interface AssertItem {
     setStatsRequirements: CARTA.ISetStatsRequirements[][];
 }
 let assertItem: AssertItem = {
-    precisionDigits: 2,
+    precisionDigits: 4,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -64,8 +64,8 @@ let assertItem: AssertItem = {
             regionId: 2,
             regionInfo: {
                 regionType: 3,
-                rotation: 45,
-                controlPoints: [{ x: 1800, y: 700 }, { x: 1000, y: 1000 }],
+                rotation: 25,
+                controlPoints: [{ x: 1800, y: 659.2 }, { x: 1000, y: 1000 }],
             },
         },
         {
@@ -73,7 +73,7 @@ let assertItem: AssertItem = {
             regionId: 3,
             regionInfo: {
                 regionType: 4,
-                rotation: 45,
+                rotation: 330,
                 controlPoints: [{ x: 1800, y: 1200 }, { x: 800, y: 2000 }],
             },
         },
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 3500, y: 1300 }, { x: 3599, y: 1 }, { x: 2200, y: 100 }],
+                controlPoints: [{ x: 3500, y: 1300 }, { x: 3599, y: -1.5 }, { x: 2200, y: 100 }],
             },
         },
     ],
