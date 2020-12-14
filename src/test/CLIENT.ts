@@ -9,7 +9,7 @@ export interface IOpenFile {
     RegionHistogramData: CARTA.RegionHistogramData;
 }
 export class Client {
-    IcdVersion: number = 17;
+    IcdVersion: number = 18;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -50,10 +50,6 @@ export class Client {
         [38, CARTA.ImportRegionAck],
         [39, CARTA.ExportRegion],
         [40, CARTA.ExportRegionAck],
-        [41, CARTA.SetUserPreferences],
-        [42, CARTA.SetUserPreferencesAck],
-        [43, CARTA.SetUserLayout],
-        [44, CARTA.SetUserLayoutAck],
         [45, CARTA.SetContourParameters],
         [46, CARTA.ContourImageData],
         [47, CARTA.ResumeSession],
