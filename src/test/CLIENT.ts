@@ -9,7 +9,7 @@ export interface IOpenFile {
     RegionHistogramData: CARTA.RegionHistogramData;
 }
 export class Client {
-    IcdVersion: number = 17;
+    IcdVersion: number = 18;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -50,10 +50,6 @@ export class Client {
         [38, CARTA.ImportRegionAck],
         [39, CARTA.ExportRegion],
         [40, CARTA.ExportRegionAck],
-        [41, CARTA.SetUserPreferences],
-        [42, CARTA.SetUserPreferencesAck],
-        [43, CARTA.SetUserLayout],
-        [44, CARTA.SetUserLayoutAck],
         [45, CARTA.SetContourParameters],
         [46, CARTA.ContourImageData],
         [47, CARTA.ResumeSession],
@@ -174,10 +170,6 @@ export class Client {
                     }
                     let data;
                     switch (cartaType) {
-                        case CARTA.ErrorData:
-                            data = CARTA.ErrorData.decode(eventData);
-                            console.warn(data.message);
-                            break;
                         case CARTA.SpatialProfileData:
                             data = CARTA.SpatialProfileData.decode(eventData);
                             data.profiles = data.profiles.map(p => processSpatialProfile(p));
@@ -191,7 +183,7 @@ export class Client {
                             break;
                     }
                     resolve(data);
-                } else if (this.CartaType.get(eventNumber) ===CARTA.ErrorData){
+                } else if (this.CartaType.get(eventNumber) === CARTA.ErrorData) {
                     let data = CARTA.ErrorData.decode(eventData);
                     console.warn(data.message);
                     reject(data);

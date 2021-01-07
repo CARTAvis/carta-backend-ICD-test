@@ -24,7 +24,7 @@
         "changeChannel": 3000,
         "playImages": 8000,
         "renderImages": 5000,
-        "contour": 10000,
+        "contour": 30000,
         "cubeHistogram": 60000,
         "cancel": 5000,
         "concurrent": 4000,
