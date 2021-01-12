@@ -9,7 +9,7 @@ export interface IOpenFile {
     RegionHistogramData: CARTA.RegionHistogramData;
 }
 export class Client {
-    IcdVersion: number = 18;
+    IcdVersion: number = 19;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -195,7 +195,7 @@ export class Client {
                     if (isReceive) {
                         reject();
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }, timeout);
             }
@@ -244,7 +244,7 @@ export class Client {
                     if (isReceive) {
                         reject();
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }, timeout);
             }
@@ -281,7 +281,7 @@ export class Client {
     receiveAnyNull(timeout?: number) {
         return new Promise<null>((resolve, reject) => {
             this.connection.onmessage = async () => {
-                resolve();
+                resolve(null);
             };
             if (timeout) {
                 let Timer = setTimeout(() => {
@@ -609,12 +609,12 @@ export class Client {
             this.connection.onmessage = (messageEvent: MessageEvent) => {
                 _count++;
                 if (_count === count) {
-                    resolve();
+                    resolve(null);
                 }
                 if (timeout) {
                     let Timer = setTimeout(() => {
                         clearTimeout(Timer);
-                        resolve();
+                        resolve(null);
                     }, timeout);
                 }
             };
