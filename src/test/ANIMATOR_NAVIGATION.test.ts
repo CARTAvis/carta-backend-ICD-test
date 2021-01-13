@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
@@ -8,7 +9,7 @@ let changeChannelTimeout = config.timeout.changeChannel;
 let messageReturnTimeout = config.timeout.messageEvent;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     fileOpens: CARTA.IOpenFile[];
     setImageChannels: CARTA.ISetImageChannels[];
     changeImageChannels: CARTA.ISetImageChannels[];
@@ -16,7 +17,7 @@ interface AssertItem {
     rasterTileDatas: CARTA.IRasterTileData[];
 }
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -177,12 +178,12 @@ let assertItem: AssertItem = {
     ],
 }
 
-describe("ANIMATOR_NAVIGATION test: Testing using animator to see different frames/channels/stokes", () => {
+describe("ANIMATOR_NAVIGATION: Testing using animator to see different frames/channels/stokes", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.registerViewer(assertItem.register);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open images`, () => {
@@ -190,8 +191,7 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
             for (let i = 0; i < assertItem.fileOpens.length; i++) {
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpens[i]);
-                await Connection.stream(2); // OpenFileAck | RegionHistogramData
+                await Connection.openFile(assertItem.fileOpens[i]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannels[i]);
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }
@@ -201,12 +201,14 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
             const { requiredTiles, ..._channel } = assertItem.changeImageChannels[index];
             describe(`Set Image Channel ${JSON.stringify(_channel)}`, () => {
                 if (rasterTileData.fileId < 0) {
+                    let ack: AckStream;
                     test(`REGION_HISTOGRAM_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
                         await Connection.send(CARTA.SetImageChannels, assertItem.changeImageChannels[index]);
-                        await Connection.receive(CARTA.RegionHistogramData, messageReturnTimeout * .5, false);
+                        ack = await Connection.stream(2, messageReturnTimeout * .5) as AckStream;
+                        expect(ack.RegionHistogramData.length).toBe(0);
                     }, changeChannelTimeout + messageReturnTimeout);
                     test(`RASTER_IMAGE_DATA should not arrive within ${messageReturnTimeout * .5} ms.`, async () => {
-                        await Connection.receive(CARTA.RasterTileData, messageReturnTimeout * .5, false);
+                        expect(ack.RasterTileData.length).toBe(0);
                     }, messageReturnTimeout);
                 } else {
                     let ack: AckStream; 
@@ -250,11 +252,9 @@ describe("ANIMATOR_NAVIGATION test: Testing using animator to see different fram
                     test(`RASTER_IMAGE_DATA.stokes = ${rasterTileData.stokes}`, () => {
                         expect(ack.RasterTileData[0].stokes).toEqual(rasterTileData.stokes);
                     });
-
                 }
             });
         });
-
     });
 
     afterAll(() => Connection.close());
