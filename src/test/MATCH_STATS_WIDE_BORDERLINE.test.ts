@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 400, y: 1800 }, { x: 800, y: 800 }],
+                controlPoints: [{ x: 300, y: 200 }, { x: 400, y: 400 }],
             },
         },
         {
@@ -64,8 +64,8 @@ let assertItem: AssertItem = {
             regionId: 2,
             regionInfo: {
                 regionType: 3,
-                rotation: 45,
-                controlPoints: [{ x: 1800, y: 800 }, { x: 1000, y: 1000 }],
+                rotation: 25,
+                controlPoints: [{ x: 1800, y: 659.2 }, { x: 1000, y: 1000 }],
             },
         },
         {
@@ -73,8 +73,8 @@ let assertItem: AssertItem = {
             regionId: 3,
             regionInfo: {
                 regionType: 4,
-                rotation: 22,
-                controlPoints: [{ x: 1800, y: 1300 }, { x: 230, y: 300 }],
+                rotation: 330,
+                controlPoints: [{ x: 1800, y: 1200 }, { x: 800, y: 2000 }],
             },
         },
         {
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 3300, y: 1300 }, { x: 3400, y: 120 }, { x: 2200, y: 100 }],
+                controlPoints: [{ x: 3500, y: 1300 }, { x: 3599, y: -1.5 }, { x: 2200, y: 100 }],
             },
         },
     ],
@@ -134,7 +134,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("MATCH_STATS_WIDE: Testing region stats with spatially and spectrally matched wide field images", () => {
+describe("MATCH_STATS_WIDE_BORDERLINE: Testing region stats with spatially and spectrally matched wide field images over the image boundary", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
