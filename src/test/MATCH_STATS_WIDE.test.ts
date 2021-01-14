@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.moment;
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let regionTimeout = config.timeout.region;
@@ -26,14 +26,14 @@ let assertItem: AssertItem = {
     openFile: [
         {
             directory: testSubdirectory,
-            file: "HD163296_CO_2_1.fits",
+            file: "casa_wideField.fits",
             fileId: 100,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
-            file: "HD163296_CO_2_1.image",
+            file: "casa_wideField.image",
             fileId: 101,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 250, y: 200 }, { x: 300, y: 300 }],
+                controlPoints: [{ x: 400, y: 1800 }, { x: 800, y: 800 }],
             },
         },
         {
@@ -64,8 +64,8 @@ let assertItem: AssertItem = {
             regionId: 2,
             regionInfo: {
                 regionType: 3,
-                rotation: 25,
-                controlPoints: [{ x: 350, y: 350 }, { x: 100, y: 150 }],
+                rotation: 45,
+                controlPoints: [{ x: 1800, y: 800 }, { x: 1000, y: 1000 }],
             },
         },
         {
@@ -73,8 +73,8 @@ let assertItem: AssertItem = {
             regionId: 3,
             regionInfo: {
                 regionType: 4,
-                rotation: 25,
-                controlPoints: [{ x: 150, y: 150 }, { x: 60, y: 100 }],
+                rotation: 22,
+                controlPoints: [{ x: 1800, y: 1300 }, { x: 230, y: 300 }],
             },
         },
         {
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 100, y: 150 }, { x: 400, y: 400 }, { x: 300, y: 30 }],
+                controlPoints: [{ x: 3300, y: 1300 }, { x: 3400, y: 120 }, { x: 2200, y: 100 }],
             },
         },
     ],
@@ -134,7 +134,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("MATCH_STATS: Testing region stats with spatially and spectrally matched images", () => {
+describe("MATCH_STATS_WIDE: Testing region stats with spatially and spectrally matched wide field images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
