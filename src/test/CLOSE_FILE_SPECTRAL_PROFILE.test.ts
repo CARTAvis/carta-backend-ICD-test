@@ -195,7 +195,7 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
 
             //Check whether the backend ist alive?
             let Response = await Connection.receiveAny(1000, false);
-            expect(Response).toEqual(undefined);
+            expect(Response).toEqual(null);
 
             await Connection.send(CARTA.FileListRequest, assertItem.filelist);
             let BackendStatus = await Connection.receive(CARTA.FileListResponse);
@@ -292,7 +292,7 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
 
                 //Check whether the backend ist alive?
                 let Response = await Connection.receiveAny(1000, false);
-                expect(Response).toEqual(undefined);
+                expect(Response).toEqual(null);
 
                 await Connection.send(CARTA.FileListRequest, assertItem.filelist);
                 let BackendStatus = await Connection.receive(CARTA.FileListResponse);

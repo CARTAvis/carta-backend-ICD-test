@@ -199,7 +199,7 @@ describe("Test for Close one file (run1):", () => {
             await Connection.send(CARTA.CloseFile, { fileId: 0 });
 
             let Response = await Connection.receiveAny(1000, false);
-            expect(Response).toEqual(undefined);
+            expect(Response).toEqual(null);
 
             await Connection.send(CARTA.FileListRequest, assertItem.filelist);
             let BackendStatus = Connection.receive(CARTA.FileListResponse);
@@ -286,14 +286,14 @@ describe("Test for Close one file (run2):", () => {
             await Connection.send(CARTA.CloseFile, { fileId: 1 });
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[2]);
             ack6 = await Connection.receiveAny(1000, false);
-            expect(ack6).toEqual(undefined);
+            expect(ack6).toEqual(null);
         });
 
         test(`(Step 2) Close image 2 and then, make sure NO message returned & the backend is still alive`, async () => {
             await Connection.send(CARTA.CloseFile, { fileId: 2 });
 
             let Response = await Connection.receiveAny(1000, false);
-            expect(Response).toEqual(undefined);
+            expect(Response).toEqual(null);
 
             await Connection.send(CARTA.FileListRequest, assertItem.filelist);
             let BackendStatus = await Connection.receive(CARTA.FileListResponse);
@@ -382,7 +382,7 @@ describe("Test for Close one file (run3):", () => {
             await Connection.send(CARTA.CloseFile, { fileId: 2 });
 
             let Response = await Connection.receiveAny(1000, false);
-            expect(Response).toEqual(undefined);
+            expect(Response).toEqual(null);
 
             await Connection.send(CARTA.FileListRequest, assertItem.filelist);
             let BackendStatus = await Connection.receive(CARTA.FileListResponse);
