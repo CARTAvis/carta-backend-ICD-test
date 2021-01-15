@@ -336,53 +336,53 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                 expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse[0].fileInfo.type);
             });
 
-            test(`FILE_INFO_RESPONSE.file_info_extended.dimensions = ${assertItem.fileInfoResponse[0].fileInfoExtended[0].dimensions}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].dimensions).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].dimensions);
+            test(`FILE_INFO_RESPONSE.file_info_extended.dimensions = ${assertItem.fileInfoResponse[0].fileInfoExtended['0'].dimensions}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].dimensions).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].dimensions);
             });
 
-            test(`FILE_INFO_RESPONSE.file_info_extended.width = ${assertItem.fileInfoResponse[0].fileInfoExtended[0].width}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].width).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].width);
+            test(`FILE_INFO_RESPONSE.file_info_extended.width = ${assertItem.fileInfoResponse[0].fileInfoExtended['0'].width}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].width).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].width);
             });
 
-            test(`FILE_INFO_RESPONSE.file_info_extended.height = ${assertItem.fileInfoResponse[0].fileInfoExtended[0].height}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].height).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].height);
+            test(`FILE_INFO_RESPONSE.file_info_extended.height = ${assertItem.fileInfoResponse[0].fileInfoExtended['0'].height}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].height).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].height);
             });
 
-            if (assertItem.fileInfoResponse[0].fileInfoExtended[0].dimensions > 2) {
-                test(`FILE_INFO_RESPONSE.file_info_extended.depth = ${assertItem.fileInfoResponse[0].fileInfoExtended[0].depth}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[0].depth).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].depth);
+            if (assertItem.fileInfoResponse[0].fileInfoExtended['0'].dimensions > 2) {
+                test(`FILE_INFO_RESPONSE.file_info_extended.depth = ${assertItem.fileInfoResponse[0].fileInfoExtended['0'].depth}`, () => {
+                    expect(FileInfoResponseTemp.fileInfoExtended['0'].depth).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].depth);
                 });
             };
 
-            if (assertItem.fileInfoResponse[0].fileInfoExtended[0].dimensions > 3) {
-                test(`FILE_INFO_RESPONSE.file_info_extended.stokes = ${assertItem.fileInfoResponse[0].fileInfoExtended[0].stokes}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[0].stokes).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].stokes);
+            if (assertItem.fileInfoResponse[0].fileInfoExtended['0'].dimensions > 3) {
+                test(`FILE_INFO_RESPONSE.file_info_extended.stokes = ${assertItem.fileInfoResponse[0].fileInfoExtended['0'].stokes}`, () => {
+                    expect(FileInfoResponseTemp.fileInfoExtended['0'].stokes).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].stokes);
                 });
             };
 
-            test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = [${assertItem.fileInfoResponse[0].fileInfoExtended[0].stokesVals}]`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].stokesVals).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].stokesVals);
+            test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = [${assertItem.fileInfoResponse[0].fileInfoExtended['0'].stokesVals}]`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].stokesVals).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].stokesVals);
             });
 
-            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended[0].computedEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].computedEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].computedEntries.length);
+            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended['0'].computedEntries.length}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].computedEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].computedEntries.length);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                assertItem.fileInfoResponse[0].fileInfoExtended[0].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[0].computedEntries).toContainEqual(entry);
+                assertItem.fileInfoResponse[0].fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    expect(FileInfoResponseTemp.fileInfoExtended['0'].computedEntries).toContainEqual(entry);
                 });
             });
 
-            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended[0].headerEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[0].headerEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[0].headerEntries.length)
+            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended['0'].headerEntries.length}`, () => {
+                expect(FileInfoResponseTemp.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended['0'].headerEntries.length)
                 // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                assertItem.fileInfoResponse[0].fileInfoExtended[0].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                assertItem.fileInfoResponse[0].fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
                     // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
-                    expect(FileInfoResponseTemp.fileInfoExtended[0].headerEntries).toContainEqual(entry);
+                    expect(FileInfoResponseTemp.fileInfoExtended['0'].headerEntries).toContainEqual(entry);
                 });
             });
         });
