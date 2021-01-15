@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
                 name: "M17_SWex.fits",
                 type: CARTA.FileType.FITS,
                 size: 51393600,
-                HDUList: ["0"],
+                HDUList: [""],
             },
             {
                 name: "M17_SWex.miriad",
@@ -52,7 +52,7 @@ let assertItem: AssertItem = {
                 name: "spire500_ext.fits",
                 type: CARTA.FileType.FITS,
                 size: 17591040,
-                HDUList: ["1 ExtName: image", "6 ExtName: error", "7 ExtName: coverage"],
+                HDUList: [""],
             },
         ],
     },
