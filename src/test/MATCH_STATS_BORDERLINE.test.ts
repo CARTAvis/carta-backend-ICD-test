@@ -56,7 +56,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 250, y: 200 }, { x: 300, y: 300 }],
+                controlPoints: [{ x: 200, y: 150 }, { x: 300, y: 300 }],
             },
         },
         {
@@ -65,7 +65,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 25,
-                controlPoints: [{ x: 350, y: 350 }, { x: 100, y: 150 }],
+                controlPoints: [{ x: 354, y: 343 }, { x: 100, y: 150 }],
             },
         },
         {
@@ -73,8 +73,8 @@ let assertItem: AssertItem = {
             regionId: 3,
             regionInfo: {
                 regionType: 4,
-                rotation: 25,
-                controlPoints: [{ x: 150, y: 150 }, { x: 60, y: 100 }],
+                rotation: 45,
+                controlPoints: [{ x: 110, y: 250 }, { x: 100, y: 200 }],
             },
         },
         {
@@ -82,7 +82,7 @@ let assertItem: AssertItem = {
             regionId: 4,
             regionInfo: {
                 regionType: 6,
-                controlPoints: [{ x: 100, y: 150 }, { x: 400, y: 400 }, { x: 300, y: 30 }],
+                controlPoints: [{ x: 100, y: 150 }, { x: 429, y: 429 }, { x: 300, y: 30 }],
             },
         },
     ],
@@ -134,7 +134,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("MATCH_STATS: Testing region stats with spatially and spectrally matched images", () => {
+describe("MATCH_STATS_BORDERLINE: Testing region stats with spatially and spectrally matched images over the image boundary", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);

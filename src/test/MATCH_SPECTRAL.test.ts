@@ -100,7 +100,7 @@ let assertItem: AssertItem = {
             regionInfo: {
                 regionType: 3,
                 rotation: 0,
-                controlPoints: [{ x: 200, y: 200 }, { x: 100, y: 100 }],
+                controlPoints: [{ x: 200, y: 200 }, { x: 200, y: 200 }],
             },
         },
         {
@@ -108,8 +108,8 @@ let assertItem: AssertItem = {
             regionId: 1,
             regionInfo: {
                 regionType: 3,
-                rotation: 0,
-                controlPoints: [{ x: 200, y: 200 }, { x: 150, y: 150 }],
+                rotation: 30,
+                controlPoints: [{ x: 200, y: 200 }, { x: 200, y: 200 }],
             },
         },
     ],
@@ -168,7 +168,7 @@ describe("MATCH_SPECTRAL: Test region spectral profile with spatially and spectr
 
     describe(`Test acquire all spectral profiles after enlarge region`, () => {
         let SpectralProfileData: CARTA.SpectralProfileData[];
-        test(`Should move region 1`, async () => {
+        test(`Should rotate region 1`, async () => {
             await Connection.send(CARTA.SetRegion, assertItem.setRegion[1]);
             let ack = await Connection.streamUntil(
                 (type, data, ack: AckStream) =>

@@ -8,6 +8,14 @@ let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let cursorTimeout = config.timeout.cursor;
 let profileTimeout = config.timeout.spatralProfile;
+interface IIndexValue {
+    index: number;
+    value: number;
+}
+interface ISingleProfile {
+    coordinate: string;
+    inspectCoordinate: IIndexValue[];
+}
 interface AssertItem {
     precisionDigits: number;
     registerViewer: CARTA.IRegisterViewer;
@@ -16,6 +24,7 @@ interface AssertItem {
     spatialProfileData: CARTA.ISpatialProfileData[];
     setSpatialRequirements: CARTA.ISetSpatialRequirements[];
     profiles: CARTA.ISpatialProfile[];
+    testProfile: ISingleProfile[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
@@ -139,8 +148,56 @@ let assertItem: AssertItem = {
         },
     ],
     profiles: [
-        { coordinate: 'x', start: 0, end: 432, },
-        { coordinate: 'y', start: 0, end: 432, },
+        {
+            coordinate: 'x', start: 0, end: 432,
+        },
+        {
+            coordinate: 'y', start: 0, end: 432,
+        },
+    ],
+    testProfile: [
+        {
+            coordinate: 'x',
+            inspectCoordinate: [
+                {
+                    index: 0,
+                    value: 0.003749021328985691,
+                },
+                {
+                    index: 100,
+                    value: -0.00412857485935092,
+                },
+                {
+                    index: 200,
+                    value: -0.0023265306372195482,
+                },
+                {
+                    index: 300,
+                    value: -0.004911878611892462,
+                },
+            ],
+        },
+        {
+            coordinate: 'y',
+            inspectCoordinate: [
+                {
+                    index: 0,
+                    value: 0.010285217314958572,
+                },
+                {
+                    index: 100,
+                    value: 0.011745041236281395,
+                },
+                {
+                    index: 200,
+                    value: -0.0023265306372195482,
+                },
+                {
+                    index: 300,
+                    value: 0.0040122647769749165,
+                },
+            ],
+        },
     ],
 };
 
@@ -167,6 +224,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
                 await Connection.send(CARTA.SetCursor, cursor);
                 let spatialProfileData = await Connection.receive(CARTA.SpatialProfileData) as CARTA.SpatialProfileData;
                 expect(spatialProfileData).toMatchObject(assertItem.spatialProfileData[index]);
+                expect(spatialProfileData.regionId).toEqual(0);
             }, cursorTimeout);
         });
     }
@@ -179,6 +237,15 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             spatialProfileData = await Connection.receive(CARTA.SpatialProfileData);
             spatialProfileData0 = spatialProfileData;
             expect(spatialProfileData.profiles).toMatchObject(assertItem.profiles);
+            expect(spatialProfileData.regionId).toEqual(0);
+            let testingArrayX = spatialProfileData.profiles.find(profile => profile.coordinate == 'x').values;
+            assertItem.testProfile[0].inspectCoordinate.map(Coordinates => {
+                expect(testingArrayX[Coordinates.index]).toEqual(Coordinates.value)
+            });
+            let testingArrayY = spatialProfileData.profiles.find(profile => profile.coordinate == 'y').values;
+            assertItem.testProfile[1].inspectCoordinate.map(Coordinates => {
+                expect(testingArrayY[Coordinates.index]).toEqual(Coordinates.value)
+            });
         }, profileTimeout);
     });
 
@@ -191,17 +258,17 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             spatialProfileData = ack.SpatialProfileData;
         }, profileTimeout);
 
-        test(`Assert SPATIAL_PROFILE_DATA[ ].profiles.length = [0, 2]`, () => {
-            expect(spatialProfileData[0].profiles.length).toEqual(0);
-            expect(spatialProfileData[1].profiles.length).toEqual(2);
+        test(`Assert SPATIAL_PROFILE_DATA[first, last].profiles.length = [0, 2]`, () => {
+            expect(spatialProfileData.find(data => data.fileId==assertItem.openFile[0].fileId).profiles.length).toEqual(0);
+            expect(spatialProfileData.find(data => data.fileId==assertItem.openFile[3].fileId).profiles.length).toEqual(2);
         });
 
         test(`Assert SPATIAL_PROFILE_DATA of file_id:${assertItem.setSpatialRequirements[0].fileId} & file_id:${assertItem.setSpatialRequirements[2].fileId} are equal`, () => {
-            const spatialProfileData1 = spatialProfileData[1];
+            const spatialProfileData1 = spatialProfileData.find(data => data.fileId==assertItem.openFile[3].fileId);
             delete spatialProfileData1.fileId;
             const spatialProfileData2 = spatialProfileData0;
             delete spatialProfileData2.fileId;
-            expect(spatialProfileData1).toMatchObject(spatialProfileData2);
+            expect(spatialProfileData1).toStrictEqual(spatialProfileData2);
         });
     });
 
