@@ -539,13 +539,6 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
                     });
                 });
             })
-
-            // test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-            //     assertItem.fileInfoResponse[0].fileInfoExtended.headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-            //         // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
-            //         expect(FileInfoResponseTemp.fileInfoExtended.headerEntries).toContainEqual(entry);
-            //     });
-            // });
         });
     });
     afterAll(() => Connection.close());
