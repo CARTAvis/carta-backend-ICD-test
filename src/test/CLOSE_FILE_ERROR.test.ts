@@ -109,7 +109,7 @@ describe("[Case 1] Test for requesting the ICD message of the CLOSED image:", ()
 
         //check the backend is still alive
         let Response = await Connection.receiveAny(1000, false);
-        expect(Response).toEqual(undefined);
+        expect(Response).toEqual(null);
         await Connection.send(CARTA.FileListRequest, assertItem.filelist);
         let BackendStatus = await Connection.receive(CARTA.FileListResponse);
         expect(BackendStatus).toBeDefined()

@@ -237,7 +237,8 @@ describe("CHECK_RASTER_TILE_DATA: Testing data values at different layers in RAS
             let RasterTileDataTemp: CARTA.RasterTileData;
             test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+                RasterTileDataTemp = ack.RasterTileData[0];
             }, readFileTimeout);
 
             test(`RASTER_TILE_DATA.file_id = ${assertItem.rasterTileData.fileId}`, () => {
