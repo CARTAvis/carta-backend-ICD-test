@@ -301,79 +301,79 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
         beforeAll(async () => { }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest.file}`, () => {
-            let FileInfoResponseTemp: CARTA.FileInfoResponse;
+            let FileInfoResponse: CARTA.FileInfoResponse;
             test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                 await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest);
-                FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
+                FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
             }, openFileTimeout);
 
             test("FILE_INFO_RESPONSE.success = true", () => {
-                expect(FileInfoResponseTemp.success).toBe(true);
+                expect(FileInfoResponse.success).toBe(true);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.HDU_List = [${assertItem.fileInfoResponse.fileInfo.HDUList}]`, () => {
-                expect(FileInfoResponseTemp.fileInfo.HDUList[0]).toBe(assertItem.fileInfoResponse.fileInfo.HDUList[0]);
+                expect(FileInfoResponse.fileInfo.HDUList[0]).toBe(assertItem.fileInfoResponse.fileInfo.HDUList[0]);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.name = "${assertItem.fileInfoResponse.fileInfo.name}"`, () => {
-                expect(FileInfoResponseTemp.fileInfo.name).toEqual(assertItem.fileInfoResponse.fileInfo.name);
+                expect(FileInfoResponse.fileInfo.name).toEqual(assertItem.fileInfoResponse.fileInfo.name);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.size = ${assertItem.fileInfoResponse.fileInfo.size}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse.fileInfo.size.toString());
+                expect(FileInfoResponse.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse.fileInfo.size.toString());
             });
 
             test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.HDF5}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
+                expect(FileInfoResponse.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.dimensions = ${assertItem.fileInfoResponse.fileInfoExtended['0'].dimensions}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].dimensions).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].dimensions);
+                expect(FileInfoResponse.fileInfoExtended['0'].dimensions).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].dimensions);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.width = ${assertItem.fileInfoResponse.fileInfoExtended['0'].width}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].width).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].width);
+                expect(FileInfoResponse.fileInfoExtended['0'].width).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].width);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.height = ${assertItem.fileInfoResponse.fileInfoExtended['0'].height}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].height).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].height);
+                expect(FileInfoResponse.fileInfoExtended['0'].height).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].height);
             });
 
             if (assertItem.fileInfoResponse.fileInfoExtended['0'].dimensions > 2) {
                 test(`FILE_INFO_RESPONSE.file_info_extended.depth = ${assertItem.fileInfoResponse.fileInfoExtended['0'].depth}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended['0'].depth).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].depth);
+                    expect(FileInfoResponse.fileInfoExtended['0'].depth).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].depth);
                 });
             };
 
             if (assertItem.fileInfoResponse.fileInfoExtended['0'].dimensions > 3) {
                 test(`FILE_INFO_RESPONSE.file_info_extended.stokes = ${assertItem.fileInfoResponse.fileInfoExtended['0'].stokes}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended['0'].stokes).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].stokes);
+                    expect(FileInfoResponse.fileInfoExtended['0'].stokes).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].stokes);
                 });
             };
 
             test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = [${assertItem.fileInfoResponse.fileInfoExtended['0'].stokesVals}]`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].stokesVals);
+                expect(FileInfoResponse.fileInfoExtended['0'].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].stokesVals);
             });
 
             test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.length);
+                expect(FileInfoResponse.fileInfoExtended['0'].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.length);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponseTemp.fileInfoExtended['0'].computedEntries).toContainEqual(entry);
+                    expect(FileInfoResponse.fileInfoExtended['0'].computedEntries).toContainEqual(entry);
                 });
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length)
-                // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
+                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length)
+                // console.log(FileInfoResponse.fileInfoExtended.headerEntries)
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    // console.log(FileInfoResponseTemp.fileInfoExtended.headerEntries)
-                    expect(FileInfoResponseTemp.fileInfoExtended['0'].headerEntries).toContainEqual(entry);
+                    // console.log(FileInfoResponse.fileInfoExtended.headerEntries)
+                    expect(FileInfoResponse.fileInfoExtended['0'].headerEntries).toContainEqual(entry);
                 });
             });
         });

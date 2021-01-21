@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -9,18 +10,16 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
-    filelist: CARTA.IFileListRequest;
+    registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest[];
     fileInfoResponse: CARTA.IFileInfoResponse[];
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    filelist: { directory: testSubdirectory },
     fileInfoRequest: [
         {
             directory: testSubdirectory,
@@ -39,7 +38,7 @@ let assertItem: AssertItem = {
                 HDUList: [""],
             },
             fileInfoExtended: {
-                '':{
+                '': {
                     dimensions: 4,
                     width: 640,
                     height: 800,
@@ -294,88 +293,84 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => {
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
-        }, listFileTimeout);
+        beforeAll(async () => { }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest[0].file}`, () => {
-            let FileInfoResponseTemp: CARTA.FileInfoResponse;
+            let FileInfoResponse: CARTA.FileInfoResponse;
             test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                 await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest[0]);
-                FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
+                FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
             }, openFileTimeout);
 
             test("FILE_INFO_RESPONSE.success = true", () => {
-                expect(FileInfoResponseTemp.success).toBe(true);
+                expect(FileInfoResponse.success).toBe(true);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.HDU_List = [${assertItem.fileInfoResponse[0].fileInfo.HDUList}]`, () => {
-                expect(FileInfoResponseTemp.fileInfo.HDUList[0]).toBe(assertItem.fileInfoResponse[0].fileInfo.HDUList[0]);
+                expect(FileInfoResponse.fileInfo.HDUList[0]).toBe(assertItem.fileInfoResponse[0].fileInfo.HDUList[0]);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.name = "${assertItem.fileInfoResponse[0].fileInfo.name}"`, () => {
-                expect(FileInfoResponseTemp.fileInfo.name).toEqual(assertItem.fileInfoResponse[0].fileInfo.name);
+                expect(FileInfoResponse.fileInfo.name).toEqual(assertItem.fileInfoResponse[0].fileInfo.name);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.size = ${assertItem.fileInfoResponse[0].fileInfo.size}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse[0].fileInfo.size.toString());
+                expect(FileInfoResponse.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse[0].fileInfo.size.toString());
             });
 
             test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.CASA}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse[0].fileInfo.type);
+                expect(FileInfoResponse.fileInfo.type).toBe(assertItem.fileInfoResponse[0].fileInfo.type);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.dimensions = ${assertItem.fileInfoResponse[0].fileInfoExtended[''].dimensions}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].dimensions).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].dimensions);
+                expect(FileInfoResponse.fileInfoExtended[''].dimensions).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].dimensions);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.width = ${assertItem.fileInfoResponse[0].fileInfoExtended[''].width}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].width).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].width);
+                expect(FileInfoResponse.fileInfoExtended[''].width).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].width);
             });
 
             test(`FILE_INFO_RESPONSE.file_info_extended.height = ${assertItem.fileInfoResponse[0].fileInfoExtended[''].height}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].height).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].height);
+                expect(FileInfoResponse.fileInfoExtended[''].height).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].height);
             });
 
             if (assertItem.fileInfoResponse[0].fileInfoExtended[''].dimensions > 2) {
                 test(`FILE_INFO_RESPONSE.file_info_extended.depth = ${assertItem.fileInfoResponse[0].fileInfoExtended[''].depth}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[''].depth).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].depth);
+                    expect(FileInfoResponse.fileInfoExtended[''].depth).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].depth);
                 });
             };
 
             if (assertItem.fileInfoResponse[0].fileInfoExtended[''].dimensions > 3) {
                 test(`FILE_INFO_RESPONSE.file_info_extended.stokes = ${assertItem.fileInfoResponse[0].fileInfoExtended[''].stokes}`, () => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[''].stokes).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].stokes);
+                    expect(FileInfoResponse.fileInfoExtended[''].stokes).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].stokes);
                 });
             };
 
             test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = [${assertItem.fileInfoResponse[0].fileInfoExtended[''].stokesVals}]`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].stokesVals).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].stokesVals);
+                expect(FileInfoResponse.fileInfoExtended[''].stokesVals).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].stokesVals);
             });
 
             test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended[''].computedEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].computedEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].computedEntries.length);
+                expect(FileInfoResponse.fileInfoExtended[''].computedEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].computedEntries.length);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended[''].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[''].computedEntries).toContainEqual(entry);
+                    expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toContainEqual(entry);
                 });
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse[0].fileInfoExtended[''].headerEntries.length}`, () => {
-                expect(FileInfoResponseTemp.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].headerEntries.length)
+                expect(FileInfoResponse.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.fileInfoResponse[0].fileInfoExtended[''].headerEntries.length)
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse[0].fileInfoExtended[''].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponseTemp.fileInfoExtended[''].headerEntries).toContainEqual(entry);
+                    expect(FileInfoResponse.fileInfoExtended[''].headerEntries).toContainEqual(entry);
                 });
             });
         });

@@ -450,82 +450,82 @@ describe("FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is corre
         beforeAll(async () => { }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest.file}`, () => {
-            let FileInfoResponseTemp: CARTA.FileInfoResponse;
+            let FileInfoResponse: CARTA.FileInfoResponse;
             test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                 await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest);
-                FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
+                FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
             }, openFileTimeout);
 
             test("FILE_INFO_RESPONSE.success = true", () => {
-                expect(FileInfoResponseTemp.success).toBe(true);
+                expect(FileInfoResponse.success).toBe(true);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.HDU_List = [${assertItem.fileInfoResponse.fileInfo.HDUList}]`, () => {
                 assertItem.fileInfoResponse.fileInfo.HDUList.map((entry, index) => {
-                    expect(FileInfoResponseTemp.fileInfo.HDUList).toContainEqual(entry);
+                    expect(FileInfoResponse.fileInfo.HDUList).toContainEqual(entry);
                 });
             });
 
             test(`FILE_INFO_RESPONSE.file_info.name = "${assertItem.fileInfoResponse.fileInfo.name}"`, () => {
-                expect(FileInfoResponseTemp.fileInfo.name).toEqual(assertItem.fileInfoResponse.fileInfo.name);
+                expect(FileInfoResponse.fileInfo.name).toEqual(assertItem.fileInfoResponse.fileInfo.name);
             });
 
             test(`FILE_INFO_RESPONSE.file_info.size = ${assertItem.fileInfoResponse.fileInfo.size}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse.fileInfo.size.toString());
+                expect(FileInfoResponse.fileInfo.size.toString()).toEqual(assertItem.fileInfoResponse.fileInfo.size.toString());
             });
 
             test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.FITS}`, () => {
-                expect(FileInfoResponseTemp.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
-                // console.log(FileInfoResponseTemp.fileInfoExtended[assertItem.fileInfoExtendedString[0]])
+                expect(FileInfoResponse.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
+                // console.log(FileInfoResponse.fileInfoExtended[assertItem.fileInfoExtendedString[0]])
             });
 
             assertItem.fileInfoExtendedString.map((input, index) => {
                 describe(`FileInfoExtended of '${input}':`, () => {
                     test(`FILE_INFO_RESPONSE.file_info_extended.dimensions = ${assertItem.fileInfoResponse.fileInfoExtended[input].dimensions}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].dimensions).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].dimensions);
+                        expect(FileInfoResponse.fileInfoExtended[input].dimensions).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].dimensions);
                     });
 
                     test(`FILE_INFO_RESPONSE.file_info_extended.width = ${assertItem.fileInfoResponse.fileInfoExtended[input].width}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].width).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].width);
+                        expect(FileInfoResponse.fileInfoExtended[input].width).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].width);
                     });
 
                     test(`FILE_INFO_RESPONSE.file_info_extended.height = ${assertItem.fileInfoResponse.fileInfoExtended[input].height}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].height).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].height);
+                        expect(FileInfoResponse.fileInfoExtended[input].height).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].height);
                     });
 
                     if (assertItem.fileInfoResponse.fileInfoExtended[input].dimensions >= 2) {
                         test(`FILE_INFO_RESPONSE.file_info_extended.depth = ${assertItem.fileInfoResponse.fileInfoExtended[input].depth}`, () => {
-                            expect(FileInfoResponseTemp.fileInfoExtended[input].depth).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].depth);
+                            expect(FileInfoResponse.fileInfoExtended[input].depth).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].depth);
                         });
                     };
 
                     if (assertItem.fileInfoResponse.fileInfoExtended[input].dimensions >= 2) {
                         test(`FILE_INFO_RESPONSE.file_info_extended.stokes = ${assertItem.fileInfoResponse.fileInfoExtended[input].stokes}`, () => {
-                            expect(FileInfoResponseTemp.fileInfoExtended[input].stokes).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].stokes);
+                            expect(FileInfoResponse.fileInfoExtended[input].stokes).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].stokes);
                         });
                     };
 
                     test(`FILE_INFO_RESPONSE.file_info_extended.stokes_vals = [${assertItem.fileInfoResponse.fileInfoExtended[input].stokesVals}]`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].stokesVals);
+                        expect(FileInfoResponse.fileInfoExtended[input].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].stokesVals);
                     });
 
                     test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.length}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.length);
+                        expect(FileInfoResponse.fileInfoExtended[input].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.length);
                     });
 
                     test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                         assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                            expect(FileInfoResponseTemp.fileInfoExtended[input].computedEntries).toContainEqual(entry);
+                            expect(FileInfoResponse.fileInfoExtended[input].computedEntries).toContainEqual(entry);
                         });
                     });
 
                     test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length}`, () => {
-                        expect(FileInfoResponseTemp.fileInfoExtended[input].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length)
+                        expect(FileInfoResponse.fileInfoExtended[input].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length)
                     });
 
                     test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                         assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                            expect(FileInfoResponseTemp.fileInfoExtended[input].headerEntries).toContainEqual(entry);
+                            expect(FileInfoResponse.fileInfoExtended[input].headerEntries).toContainEqual(entry);
                         });
                     });
                 });

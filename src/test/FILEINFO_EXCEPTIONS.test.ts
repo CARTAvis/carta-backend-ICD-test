@@ -34,7 +34,7 @@ describe("FILEINFO_EXCEPTIONS: Testing error handle of file info generation", ()
 
         ["no_such_file.image", "broken_header.miriad"].map((fileName: string) => {
             describe(`query the info of file : ${fileName}`, () => {
-                let FileInfoResponseTemp: CARTA.FileInfoResponse;
+                let FileInfoResponse: CARTA.FileInfoResponse;
 
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                     await Connection.send(CARTA.FileInfoRequest,
@@ -44,17 +44,17 @@ describe("FILEINFO_EXCEPTIONS: Testing error handle of file info generation", ()
                             hdu: "",
                         }
                     );
-                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
+                    FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = false", () => {
-                    expect(FileInfoResponseTemp.success).toBe(false);
+                    expect(FileInfoResponse.success).toBe(false);
                 });
 
                 test("FILE_INFO_RESPONSE.message is not None", () => {
-                    expect(FileInfoResponseTemp.message).toBeDefined();
-                    expect(FileInfoResponseTemp.message).not.toBe("");
-                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
+                    expect(FileInfoResponse.message).toBeDefined();
+                    expect(FileInfoResponse.message).not.toBe("");
+                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponse.message}`);
                 });
             });
         });
