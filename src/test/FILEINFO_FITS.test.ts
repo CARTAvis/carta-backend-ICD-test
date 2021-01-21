@@ -294,8 +294,7 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => {
-        }, listFileTimeout);
+        beforeAll(async () => { }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest.file}`, () => {
             let FileInfoResponse: CARTA.FileInfoResponse;

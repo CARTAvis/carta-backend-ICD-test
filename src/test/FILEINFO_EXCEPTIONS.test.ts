@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -9,33 +10,27 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
-    filelist: CARTA.IFileListRequest;
+    registerViewer: CARTA.IRegisterViewer;
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    filelist: { directory: testSubdirectory },
 };
 
-describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => {
+describe("FILEINFO_EXCEPTIONS: Testing error handle of file info generation", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => {
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
-        }, listFileTimeout);
+        beforeAll(async () => { }, listFileTimeout);
 
         ["no_such_file.image", "broken_header.miriad"].map((fileName: string) => {
             describe(`query the info of file : ${fileName}`, () => {
