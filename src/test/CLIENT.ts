@@ -87,9 +87,7 @@ export class Client {
     connection: WebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
-        this.connection = new WebSocket(url, {
-            perMessageDeflate: false,
-        });
+        this.connection = new WebSocket(url);
         this.connection.binaryType = "arraybuffer";
     }
     open(timeout?: number) {
