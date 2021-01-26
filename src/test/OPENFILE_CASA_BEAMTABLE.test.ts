@@ -48,7 +48,7 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("OPEN_FILE_FITS_BEAMTABLE: Testing if file info of beam tables of a CASA image is correctly delivered by the backend", () => {
+describe("OPEN_FILE_CASA_BEAMTABLE: Testing if file info of beam tables of a CASA image is correctly delivered by the backend", () => {
 
     let Connection: Client;
     beforeAll(async () => {
