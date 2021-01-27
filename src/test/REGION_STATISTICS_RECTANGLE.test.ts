@@ -1,3 +1,4 @@
+import { CartaBackend } from "action/SocketOperation";
 import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
@@ -116,7 +117,6 @@ let assertItem: AssertItem = {
             success: true,
             regionId: 5,
         },
-        {},
     ],
     setStatsRequirements: [
         {
@@ -131,7 +131,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -146,7 +147,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -161,7 +163,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -176,7 +179,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -191,7 +195,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
     ],
@@ -208,6 +213,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00182528 },
                 { statsType: CARTA.StatsType.Min, value: -0.00358113 },
                 { statsType: CARTA.StatsType.Max, value: 0.00793927 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.00793926 },
             ]
         },
         {
@@ -222,6 +228,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00048188 },
                 { statsType: CARTA.StatsType.Min, value: -0.0095625 },
                 { statsType: CARTA.StatsType.Max, value: 0.00694707 },
+                { statsType: CARTA.StatsType.Extrema, value: -0.00956249 },
             ]
         },
         {
@@ -236,6 +243,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00512399 },
                 { statsType: CARTA.StatsType.Min, value: -0.01768329 },
                 { statsType: CARTA.StatsType.Max, value: 0.02505673 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.02505672 },
             ]
         },
         {
@@ -250,6 +258,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
         {
