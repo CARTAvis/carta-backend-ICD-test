@@ -112,7 +112,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -127,7 +128,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -142,7 +144,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
     ],
@@ -159,6 +162,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00468503 },
                 { statsType: CARTA.StatsType.Min, value: -0.01768329 },
                 { statsType: CARTA.StatsType.Max, value: 0.02505673 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.02505672 },
             ]
         },
         {
@@ -173,6 +177,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00017065 },
                 { statsType: CARTA.StatsType.Min, value: -0.00590614 },
                 { statsType: CARTA.StatsType.Max, value: 0.00654556 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.00654555 },
             ]
         },
         {
@@ -187,6 +192,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
         {
