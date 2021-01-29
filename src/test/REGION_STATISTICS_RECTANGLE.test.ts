@@ -1,4 +1,3 @@
-import { CartaBackend } from "action/SocketOperation";
 import { CARTA } from "carta-protobuf";
 
 import { Client, AckStream } from "./CLIENT";
@@ -273,6 +272,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 4.84713562 },
                 { statsType: CARTA.StatsType.Min, value: -0.03958673 },
                 { statsType: CARTA.StatsType.Max, value: 0.04523611 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.04523611 },
             ]
         },
     ],
@@ -348,8 +348,28 @@ describe("REGION_STATISTICS_RECTANGLE: Testing statistics with rectangle regions
                     });
                 });
             });
+            describe(`SET STATS REQUIREMENTS on region #-1`, () => {
+                let RegionStatsData: CARTA.RegionStatsData;
+                test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
+                    await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements[4]);
+                    RegionStatsData = await Connection.receive(CARTA.RegionStatsData);
+                }, regionTimeout);
+
+                test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsData[4].regionId}`, () => {
+                    expect(RegionStatsData.regionId).toEqual(assertItem.regionStatsData[4].regionId);
+                });
+
+                test("Assert & Check REGION_STATS_DATA.statistics", () => {
+                    assertItem.regionStatsData[4].statistics.map(stats => {
+                        if (isNaN(stats.value)) {
+                            expect(isNaN(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value)).toBe(true);
+                        } else {
+                            expect(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
+                        }
+                    });
+                });
+            });
         });
     });
-
     afterAll(() => Connection.close());
 });
