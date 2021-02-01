@@ -122,7 +122,8 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -142,7 +143,8 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -162,7 +164,8 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -214,6 +217,11 @@ let assertItem: AssertItem = {
                     statsType: CARTA.StatsType.Max,
                     assertValues: [{ index: 10, value: 0.0702243 }],
                 },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
+                    assertValues: [{ index: 10, value: 0.0702243 }],
+                },
             ],
         },
         {
@@ -261,6 +269,11 @@ let assertItem: AssertItem = {
                     statsType: CARTA.StatsType.Max,
                     assertValues: [{ index: 10, value: -0.00236961 }],
                 },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
+                    assertValues: [{ index: 10, value: -0.03209378 }],
+                },
             ],
         },
         {
@@ -306,6 +319,11 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Max,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
                     assertValues: [{ index: 0, value: NaN }],
                 },
             ],
