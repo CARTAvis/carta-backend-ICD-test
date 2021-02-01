@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
         fileInfo: {
             name: testImageName,
             type: CARTA.FileType.CASA,
-            size: 1864981459,
+            size: 1864975311,
             HDUList: [""],
         },
         beamTable: [
