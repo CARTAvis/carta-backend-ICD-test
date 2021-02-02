@@ -499,7 +499,7 @@ describe("REGION_SPECTRAL_PROFILE_RECTANGLE: Testing spectral profiler with rect
                         assertItem.spectralProfileData[index].profile.map(profile => {
                             let _returnedProfile = SpectralProfileData.profiles.find(f => f.statsType === profile.statsType);
                             profile.assertValues.map(assertVal => {
-                                if (isNaN(assertVal.value) || isNaN(_returnedProfile.values[assertVal.index])) {
+                                if (isNaN(assertVal.value)) {
                                     expect(isNaN(_returnedProfile.values[assertVal.index])).toBe(true);
                                 } else {
                                     expect(_returnedProfile.values[assertVal.index]).toBeCloseTo(assertVal.value, assertItem.precisionDigits);
