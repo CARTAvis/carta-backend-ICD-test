@@ -348,7 +348,7 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Min,
-                    assertValues: [{ index: 10, value: 0.00006235 }],
+                    assertValues: [{ index: 10, value: 0.0000623 }],
                 },
                 {
                     coordinate: "z",
