@@ -355,10 +355,10 @@ describe("FILEINFO test: Testing if info of an image file is correctly delivered
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toMatchObject(assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries);
-                // assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                //     expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toContainEqual(entry);
-                // });
+                // expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toMatchObject(assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries);
+                assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toContainEqual(entry);
+                });
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.length}`, () => {
