@@ -54,7 +54,7 @@ let assertItem: AssertItem = {
                         { name: "Shape", value: "[830, 870]" },
                         { name: "Coordinate type", value: "Right Ascension, Declination" },
                         { name: "Projection", value: "TAN" },
-                        { name: "Image reference pixels", value: "[371.0, 421.0]" },
+                        { name: "Image reference pixels", value: "[371, 421]" },
                         { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
                         { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
                         { name: "Celestial frame", value: "FK5, J2000" },
@@ -84,7 +84,7 @@ let assertItem: AssertItem = {
                         { name: "BUNIT", value: "MJy/sr", comment: 'Brightness (pixel) unit' },
                         {
                             name: "EQUINOX",
-                            value: "2000.0",
+                            value: "2000",
                             entryType: 1,
                             numericValue: 2000
                         },
@@ -128,7 +128,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: -0.003888888888889
                         },
-                        { name: "CRPIX1", value: "371.0", entryType: 1, numericValue: 371 },
+                        { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
                         { name: "CUNIT1", value: "deg" },
                         { name: "CTYPE2", value: "DEC--TAN" },
                         {
@@ -143,7 +143,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: 0.003888888888889
                         },
-                        { name: "CRPIX2", value: "421.0", entryType: 1, numericValue: 421 },
+                        { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
                         { name: "CUNIT2", value: "deg" },
                         { name: "LONGSTRN", value: "OGIP 1.0" },
                         { name: "EXTNAME", value: "image" },
@@ -186,7 +186,7 @@ let assertItem: AssertItem = {
                         { name: "Shape", value: "[830, 870]" },
                         { name: "Coordinate type", value: "Right Ascension, Declination" },
                         { name: "Projection", value: "TAN" },
-                        { name: "Image reference pixels", value: "[371.0, 421.0]" },
+                        { name: "Image reference pixels", value: "[371, 421]" },
                         { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
                         { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
                         { name: "Celestial frame", value: "FK5, J2000" },
@@ -216,7 +216,7 @@ let assertItem: AssertItem = {
                         { name: "BUNIT", value: "MJy/sr", comment: 'Brightness (pixel) unit' },
                         {
                             name: "EQUINOX",
-                            value: "2000.0",
+                            value: "2000",
                             entryType: 1,
                             numericValue: 2000
                         },
@@ -260,7 +260,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: -0.003888888888889
                         },
-                        { name: "CRPIX1", value: "371.0", entryType: 1, numericValue: 371 },
+                        { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
                         { name: "CUNIT1", value: "deg" },
                         { name: "CTYPE2", value: "DEC--TAN" },
                         {
@@ -275,7 +275,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: 0.003888888888889
                         },
-                        { name: "CRPIX2", value: "421.0", entryType: 1, numericValue: 421 },
+                        { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
                         { name: "CUNIT2", value: "deg" },
                         { name: "LONGSTRN", value: "OGIP 1.0" },
                         { name: "EXTNAME", value: "error" },
@@ -318,7 +318,7 @@ let assertItem: AssertItem = {
                         { name: "Shape", value: "[830, 870]" },
                         { name: "Coordinate type", value: "Right Ascension, Declination" },
                         { name: "Projection", value: "TAN" },
-                        { name: "Image reference pixels", value: "[371.0, 421.0]" },
+                        { name: "Image reference pixels", value: "[371, 421]" },
                         { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
                         { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
                         { name: "Celestial frame", value: "FK5, J2000" },
@@ -348,7 +348,7 @@ let assertItem: AssertItem = {
                         { name: "BUNIT", value: "1", comment: 'Brightness (pixel) unit' },
                         {
                             name: "EQUINOX",
-                            value: "2000.0",
+                            value: "2000",
                             entryType: 1,
                             numericValue: 2000
                         },
@@ -392,7 +392,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: -0.003888888888889
                         },
-                        { name: "CRPIX1", value: "371.0", entryType: 1, numericValue: 371 },
+                        { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
                         { name: "CUNIT1", value: "deg" },
                         { name: "CTYPE2", value: "DEC--TAN" },
                         {
@@ -407,7 +407,7 @@ let assertItem: AssertItem = {
                             entryType: 1,
                             numericValue: 0.003888888888889
                         },
-                        { name: "CRPIX2", value: "421.0", entryType: 1, numericValue: 421 },
+                        { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
                         { name: "CUNIT2", value: "deg" },
                         { name: "LONGSTRN", value: "OGIP 1.0" },
                         { name: "EXTNAME", value: "coverage" },
