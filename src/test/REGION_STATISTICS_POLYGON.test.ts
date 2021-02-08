@@ -154,7 +154,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -169,7 +170,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -184,7 +186,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -199,7 +202,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -214,7 +218,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -229,7 +234,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
     ],
@@ -246,6 +252,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.01752493 },
                 { statsType: CARTA.StatsType.Min, value: -0.01051447 },
                 { statsType: CARTA.StatsType.Max, value: 0.01217441 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.01217440 },
             ]
         },
         {
@@ -260,6 +267,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.01179662 },
                 { statsType: CARTA.StatsType.Min, value: -0.01994896 },
                 { statsType: CARTA.StatsType.Max, value: 0.0235076 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.02350760 },
             ]
         },
         {
@@ -274,6 +282,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
         {
@@ -288,6 +297,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 4.84713562 },
                 { statsType: CARTA.StatsType.Min, value: -0.03958673 },
                 { statsType: CARTA.StatsType.Max, value: 0.04523611 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.04523611 },
             ]
         },
         {
@@ -302,6 +312,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
         {
@@ -316,6 +327,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 1.32743435e-06 },
                 { statsType: CARTA.StatsType.Min, value: -0.00115214 },
                 { statsType: CARTA.StatsType.Max, value: -0.00115214 },
+                { statsType: CARTA.StatsType.Extrema, value: -0.00115214 },
             ]
         },
     ],

@@ -112,7 +112,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -127,7 +128,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -142,7 +144,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
     ],
@@ -159,6 +162,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00468503 },
                 { statsType: CARTA.StatsType.Min, value: -0.01768329 },
                 { statsType: CARTA.StatsType.Max, value: 0.02505673 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.02505672 },
             ]
         },
         {
@@ -173,6 +177,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00017065 },
                 { statsType: CARTA.StatsType.Min, value: -0.00590614 },
                 { statsType: CARTA.StatsType.Max, value: 0.00654556 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.00654555 },
             ]
         },
         {
@@ -187,34 +192,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
-            ]
-        },
-        {
-            regionId: 4,
-            statistics: [
-                { statsType: CARTA.StatsType.NumPixels, value: 0 },
-                { statsType: CARTA.StatsType.Sum, value: NaN },
-                { statsType: CARTA.StatsType.FluxDensity, value: NaN },
-                { statsType: CARTA.StatsType.Mean, value: NaN },
-                { statsType: CARTA.StatsType.RMS, value: NaN },
-                { statsType: CARTA.StatsType.Sigma, value: NaN },
-                { statsType: CARTA.StatsType.SumSq, value: NaN },
-                { statsType: CARTA.StatsType.Min, value: NaN },
-                { statsType: CARTA.StatsType.Max, value: NaN },
-            ]
-        },
-        {
-            regionId: -1,
-            statistics: [
-                { statsType: CARTA.StatsType.NumPixels, value: 216248 },
-                { statsType: CARTA.StatsType.Sum, value: -7.6253559 },
-                { statsType: CARTA.StatsType.FluxDensity, value: -0.35032758 },
-                { statsType: CARTA.StatsType.Mean, value: -3.52620875e-05 },
-                { statsType: CARTA.StatsType.RMS, value: 0.00473442 },
-                { statsType: CARTA.StatsType.Sigma, value: 0.0047343 },
-                { statsType: CARTA.StatsType.SumSq, value: 4.84713562 },
-                { statsType: CARTA.StatsType.Min, value: -0.03958673 },
-                { statsType: CARTA.StatsType.Max, value: 0.04523611 },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
     ],

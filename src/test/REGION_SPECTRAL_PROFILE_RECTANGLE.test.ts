@@ -87,6 +87,15 @@ let assertItem: AssertItem = {
             regionId: -1,
             regionInfo: {
                 regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 360, y: 490 }, { x: 0.5, y: 0.5 }],
+                rotation: 0.0,
+            }
+        },
+        {
+            fileId: 0,
+            regionId: -1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
                 controlPoints: [{ x: 0, y: 522 }, { x: 4, y: 6 }],
                 rotation: 50.0,
             }
@@ -105,6 +114,10 @@ let assertItem: AssertItem = {
             success: true,
             regionId: 3,
         },
+        {
+            success: true,
+            regionId: 4,
+        },
     ],
     setSpectralRequirements: [
         {
@@ -122,7 +135,8 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -142,7 +156,8 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -162,7 +177,29 @@ let assertItem: AssertItem = {
                         CARTA.StatsType.Sigma,
                         CARTA.StatsType.SumSq,
                         CARTA.StatsType.Min,
-                        CARTA.StatsType.Max
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
+                    ],
+                }
+            ],
+        },
+        {
+            fileId: 0,
+            regionId: 4,
+            spectralProfiles: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                        CARTA.StatsType.Extrema
                     ],
                 }
             ],
@@ -214,6 +251,11 @@ let assertItem: AssertItem = {
                     statsType: CARTA.StatsType.Max,
                     assertValues: [{ index: 10, value: 0.0702243 }],
                 },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
+                    assertValues: [{ index: 10, value: 0.0702243 }],
+                },
             ],
         },
         {
@@ -261,10 +303,67 @@ let assertItem: AssertItem = {
                     statsType: CARTA.StatsType.Max,
                     assertValues: [{ index: 10, value: -0.00236961 }],
                 },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
+                    assertValues: [{ index: 10, value: -0.03209378 }],
+                },
             ],
         },
         {
             regionId: 3,
+            progress: 1,
+            profile: [
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sum,
+                    assertValues: [{ index: 10, value: 0.00006235 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.FluxDensity,
+                    assertValues: [{ index: 10, value: 0.00000286 }],
+                },
+                {
+                    coordinate: "z",
+                    profileLength: 25,
+                    statsType: CARTA.StatsType.Mean,
+                    assertValues: [{ index: 10, value: 0.00006235 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.RMS,
+                    assertValues: [{ index: 10, value: 0.00006235 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Sigma,
+                    assertValues: [{ index: 10, value: 0.0 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.SumSq,
+                    assertValues: [{ index: 10, value: 0.0 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Min,
+                    assertValues: [{ index: 10, value: 0.0000623 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Max,
+                    assertValues: [{ index: 10, value: 0.0000623 }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
+                    assertValues: [{ index: 10, value: 0.0000623 }],
+                },
+            ],
+        },
+        {
+            regionId: 4,
             progress: 1,
             profile: [
                 {
@@ -306,6 +405,11 @@ let assertItem: AssertItem = {
                 {
                     coordinate: "z",
                     statsType: CARTA.StatsType.Max,
+                    assertValues: [{ index: 0, value: NaN }],
+                },
+                {
+                    coordinate: "z",
+                    statsType: CARTA.StatsType.Extrema,
                     assertValues: [{ index: 0, value: NaN }],
                 },
             ],

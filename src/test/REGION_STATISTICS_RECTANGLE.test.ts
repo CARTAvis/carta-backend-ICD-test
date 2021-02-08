@@ -116,7 +116,6 @@ let assertItem: AssertItem = {
             success: true,
             regionId: 5,
         },
-        {},
     ],
     setStatsRequirements: [
         {
@@ -131,7 +130,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -146,7 +146,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -161,7 +162,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -176,7 +178,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
         {
@@ -191,7 +194,8 @@ let assertItem: AssertItem = {
                 CARTA.StatsType.Sigma,
                 CARTA.StatsType.SumSq,
                 CARTA.StatsType.Min,
-                CARTA.StatsType.Max
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
             ],
         },
     ],
@@ -208,6 +212,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00182528 },
                 { statsType: CARTA.StatsType.Min, value: -0.00358113 },
                 { statsType: CARTA.StatsType.Max, value: 0.00793927 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.00793926 },
             ]
         },
         {
@@ -222,6 +227,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00048188 },
                 { statsType: CARTA.StatsType.Min, value: -0.0095625 },
                 { statsType: CARTA.StatsType.Max, value: 0.00694707 },
+                { statsType: CARTA.StatsType.Extrema, value: -0.00956249 },
             ]
         },
         {
@@ -236,6 +242,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 0.00512399 },
                 { statsType: CARTA.StatsType.Min, value: -0.01768329 },
                 { statsType: CARTA.StatsType.Max, value: 0.02505673 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.02505672 },
             ]
         },
         {
@@ -250,6 +257,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: NaN },
                 { statsType: CARTA.StatsType.Min, value: NaN },
                 { statsType: CARTA.StatsType.Max, value: NaN },
+                { statsType: CARTA.StatsType.Extrema, value: NaN },
             ]
         },
         {
@@ -264,6 +272,7 @@ let assertItem: AssertItem = {
                 { statsType: CARTA.StatsType.SumSq, value: 4.84713562 },
                 { statsType: CARTA.StatsType.Min, value: -0.03958673 },
                 { statsType: CARTA.StatsType.Max, value: 0.04523611 },
+                { statsType: CARTA.StatsType.Extrema, value: 0.04523611 },
             ]
         },
     ],
@@ -339,8 +348,28 @@ describe("REGION_STATISTICS_RECTANGLE: Testing statistics with rectangle regions
                     });
                 });
             });
+            describe(`SET STATS REQUIREMENTS on region #-1`, () => {
+                let RegionStatsData: CARTA.RegionStatsData;
+                test(`REGION_STATS_DATA should return within ${regionTimeout} ms`, async () => {
+                    await Connection.send(CARTA.SetStatsRequirements, assertItem.setStatsRequirements[4]);
+                    RegionStatsData = await Connection.receive(CARTA.RegionStatsData);
+                }, regionTimeout);
+
+                test(`REGION_STATS_DATA.region_id = ${assertItem.regionStatsData[4].regionId}`, () => {
+                    expect(RegionStatsData.regionId).toEqual(assertItem.regionStatsData[4].regionId);
+                });
+
+                test("Assert & Check REGION_STATS_DATA.statistics", () => {
+                    assertItem.regionStatsData[4].statistics.map(stats => {
+                        if (isNaN(stats.value)) {
+                            expect(isNaN(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value)).toBe(true);
+                        } else {
+                            expect(RegionStatsData.statistics.find(f => f.statsType === stats.statsType).value).toBeCloseTo(stats.value, assertItem.precisionDigits);
+                        }
+                    });
+                });
+            });
         });
     });
-
     afterAll(() => Connection.close());
 });
