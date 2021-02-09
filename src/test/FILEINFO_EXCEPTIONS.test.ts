@@ -1,4 +1,5 @@
 import { CARTA } from "carta-protobuf";
+
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
@@ -9,37 +10,31 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
-    filelist: CARTA.IFileListRequest;
+    registerViewer: CARTA.IRegisterViewer;
 };
 
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    filelist: { directory: testSubdirectory },
 };
 
-describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation", () => {
+describe("FILEINFO_EXCEPTIONS: Testing error handle of file info generation", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => {
-            await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-            await Connection.receive(CARTA.FileListResponse);
-        }, listFileTimeout);
+        beforeAll(async () => { }, listFileTimeout);
 
         ["no_such_file.image", "broken_header.miriad"].map((fileName: string) => {
             describe(`query the info of file : ${fileName}`, () => {
-                let FileInfoResponseTemp: CARTA.FileInfoResponse;
+                let FileInfoResponse: CARTA.FileInfoResponse;
 
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
                     await Connection.send(CARTA.FileInfoRequest,
@@ -49,17 +44,17 @@ describe("FILEINFO_EXCEPTIONS test: Testing error handle of file info generation
                             hdu: "",
                         }
                     );
-                    FileInfoResponseTemp = await Connection.receive(CARTA.FileInfoResponse);
+                    FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
                 }, openFileTimeout);
 
                 test("FILE_INFO_RESPONSE.success = false", () => {
-                    expect(FileInfoResponseTemp.success).toBe(false);
+                    expect(FileInfoResponse.success).toBe(false);
                 });
 
                 test("FILE_INFO_RESPONSE.message is not None", () => {
-                    expect(FileInfoResponseTemp.message).toBeDefined();
-                    expect(FileInfoResponseTemp.message).not.toBe("");
-                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponseTemp.message}`);
+                    expect(FileInfoResponse.message).toBeDefined();
+                    expect(FileInfoResponse.message).not.toBe("");
+                    console.warn(`Error message from reading "${fileName}": ${FileInfoResponse.message}`);
                 });
             });
         });

@@ -6,9 +6,9 @@
         "isomorphic-ws": "^4.0.1",
         "pidusage": "^2.0.21",
         "procfs-stats": "^1.0.2",
-        "react-scripts": "^3.4.1",
+        "react-scripts": "^3.4.4",
         "usage": "^0.7.1",
-        "ws": "^7.3.1",
+        "ws": "^7.4.2",
         "zstd-codec": "^0.1.2"
     },
     "scripts": {
@@ -16,8 +16,8 @@
     },
     "devDependencies": {
         "@types/jest": "^23.3.14",
-        "@types/node": "^10.17.24",
+        "@types/node": "^10.17.51",
         "protobufjs": "6.9.0",
-        "typescript": "^3.9.3"
+        "typescript": "^3.9.7"
     }
 }
