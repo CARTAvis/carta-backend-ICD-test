@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client } from "./CLIENT";
+import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -125,48 +125,52 @@ let assertItem: AssertItem = {
     ]
 };
 
+assertItem.setSpectralLineReq.map((request, index) => {
+    describe(`(Case ${index}: Line intensity lower limit = ${assertItem.setSpectralLineReq[index].lineIntensityLowerLimit})`, () => {
+        let Connection: Client;
+        beforeAll(async()=>{
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.send(CARTA.RegisterViewer, assertItem.register);
+            await Connection.receive(CARTA.RegisterViewerAck);
+        }, connectTimeout);
 
-describe("Query the spectral line directly:", () => {
+        test(`(Step 0) Connection open? | `,async()=>{
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
+        })
 
-    let Connection: Client;
-    beforeAll(async () => {
-        Connection = new Client(testServerUrl);
-        await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
-    }, connectTimeout);
-
-    test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
-    });
-
-    assertItem.setSpectralLineReq.map((request, index) => {
-        describe(`(Case ${index}: Line intensity lower limit = ${assertItem.setSpectralLineReq[index].lineIntensityLowerLimit})`, () => {
-            let response: CARTA.SpectralLineResponse;
-            test(`Sent & return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms`, async () => {
+        describe(`Query the spectral line directly:`,()=>{
+            let response: AckStream;
+            let response2: any;
+            test(`(Step 1) Sent & return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms`, async () => {
                 await Connection.send(CARTA.SpectralLineRequest, request);
-                response = await Connection.receive(CARTA.SpectralLineResponse);
+                response = await Connection.streamUntil(type => type == CARTA.SpectralLineResponse);
+                response2 = response.SpectralLineResponse[0]
+                // console.log(response2.success)
             }, spectralLineRequest);
 
-            test(`Check information & total number = ${assertItem.SpectraLineResponse[index].dataSize}`, () => {
-                expect(response.success).toEqual(assertItem.SpectraLineResponse[index].success);
-                expect(response.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
-                expect(response.headers.length).toEqual(assertItem.SpectraLineResponse[index].lengthOfheaders);
-                let properties = Object.keys(response.spectralLineData);
-                properties.map((num, index2) => {
-                    expect(response.spectralLineData[0].stringData.length).toEqual(assertItem.SpectraLineResponse[index].dataSize)
-                });
+            test(`(Step 2)Check information & total number = ${assertItem.SpectraLineResponse[index].dataSize}`, () => {
+                if (response2 != undefined && response2.dataSize === assertItem.SpectraLineResponse[index].dataSize) {
+                    expect(response2.success).toEqual(assertItem.SpectraLineResponse[index].success);
+                    expect(response2.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
+                    expect(response2.headers.length).toEqual(assertItem.SpectraLineResponse[index].lengthOfheaders);
+                    expect(response2.spectralLineData[0].stringData.length).toEqual(assertItem.SpectraLineResponse[index].dataSize)
+                } else {
+                    console.warn("Does not receive proper SpectralLineResponse")
+                }
             });
 
-            test(`Check the information of the first and the last molecular species`, () => {
-                expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
-                expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
-                expect(response.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
-                expect(response.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
-            });
-        });
-
+            test(`(Step 3)Check the information of the first and the last molecular species`,async()=>{
+                if (response2 != undefined && response2.dataSize === assertItem.SpectraLineResponse[index].dataSize) {
+                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
+                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
+                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
+                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
+                } else {
+                    console.warn("Does not receive proper SpectralLineResponse")
+                };
+            })
+        })
+        afterAll(() => Connection.close());
     });
-
-    afterAll(() => Connection.close());
 });
