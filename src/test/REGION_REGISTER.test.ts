@@ -234,7 +234,7 @@ describe("REGION_REGISTER: Testing region creation and modification", () => {
                             }
                         }
                     );
-                    SetRegionAck = await Connection.receive(CARTA.SetRegionAck);
+                    SetRegionAck = (await Connection.streamUntil((type) => type == CARTA.SetRegionAck)).Responce[0];
                 }, regionTimeout);
 
                 test("SET_REGION_ACK.success = false", () => {
