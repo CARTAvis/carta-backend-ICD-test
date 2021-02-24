@@ -367,14 +367,12 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponse.fileInfoExtended['0'].computedEntries).toContainEqual(entry);
+                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                 });
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
-                });
+                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
