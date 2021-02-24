@@ -89,7 +89,7 @@ assertItem.setSpectralLineReq.map((request, index) => {
         });
 
         describe("Query the spectral line directly with a wide freq range:", () => {
-            let response: CARTA.SpectralLineResponse;
+            let response: AckStream;
             let response2: any;
             test(`(Step 1) Sent & return SPECTRAL_LINE_RESPONSE within ${spectralLineRequest}ms`, async () => {
                 await Connection.send(CARTA.SpectralLineRequest, request);

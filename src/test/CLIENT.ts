@@ -314,6 +314,7 @@ export class Client {
             ScriptingResponse: [],
             MomentResponse: [],
             MomentProgress: [],
+            SpectralLineResponse: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -376,6 +377,9 @@ export class Client {
                         break;
                     case CARTA.MomentResponse:
                         ack.MomentResponse.push(data);
+                        break;
+                    case CARTA.SpectralLineResponse:
+                        ack.SpectralLineResponse.push(data);
                         break;
                 }
 
@@ -518,6 +522,7 @@ export class Client {
                         break;
                     case CARTA.SpectralLineResponse:
                         ack.SpectralLineResponse.push(data);
+                        break;
                 }
                 if (isDone(eventType, data, ack)) {
                     resolve(ack);
