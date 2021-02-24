@@ -625,10 +625,19 @@ export class Client {
         await this.send(CARTA.RegisterViewer, registerViewer);
         return await this.receive(CARTA.RegisterViewerAck) as CARTA.RegisterViewerAck;
     }
-    /// Send open_file and receive its returning message
 
-    async openFile(file): Promise<IOpenFile> {
-        await this.send(CARTA.OpenFile, file);
+    /// Send open_file and receive its returning message
+    async openFile(openFile: any): Promise<IOpenFile> {
+        await this.send(CARTA.FileListRequest, { directory: "$BASE" });
+        let bathPath: string = (await this.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+        console.log(`${bathPath}/${openFile.directory}`);
+        await this.send(CARTA.OpenFile, {
+            directory: `${bathPath}/${openFile.directory}`,
+            file: openFile.file,
+            hdu: openFile.hdu,
+            fileId: openFile.fileId,
+            renderMode: openFile.renderMode,
+        });
         let ack = await this.stream(2) as AckStream;
         return {
             OpenFileAck: ack.Responce[0],
