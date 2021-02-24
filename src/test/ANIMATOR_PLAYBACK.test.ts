@@ -261,8 +261,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         describe(`(Step 1) Initialization: the open image`, () => {
             test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                 await Connection.send(CARTA.CloseFile, { fileId: 0 });
-                await Connection.send(CARTA.OpenFile, assertItem.fileOpen);
-                await Connection.stream(2) // OpenFileAck | RegionHistogramData
+                await Connection.openFile(assertItem.fileOpen);
             }, openFileTimeout);
 
             let ack: AckStream;
