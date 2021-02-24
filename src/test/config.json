@@ -43,7 +43,7 @@
         "moment": 3300,
         "momentLargeCube": 50000,
         "spectralLineRequest": 3000,
-        "spectralLineRequestWide": 30000,
+        "spectralLineRequestWide": 60000,
         "openCatalogLarge": 100000
     },
     "repeat": {
