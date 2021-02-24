@@ -21,7 +21,6 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     fileInfoRequest: {
-        directory: testSubdirectory,
         file: "M17_SWex.miriad",
         hdu: "",
     },
@@ -292,12 +291,19 @@ describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly 
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => { }, listFileTimeout);
+        let basePath: string;
+        beforeAll(async () => {
+            await Connection.send(CARTA.FileListRequest, { directory: "$BASE" });
+            basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+        }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest.file}`, () => {
             let FileInfoResponse: CARTA.FileInfoResponse;
             test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest);
+                await Connection.send(CARTA.FileInfoRequest, {
+                    directory: `${basePath}/` + testSubdirectory,
+                    ...assertItem.fileInfoRequest,
+                });
                 FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
             }, openFileTimeout);
 
@@ -355,7 +361,7 @@ describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly 
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toContainEqual(entry);
+                    expect(parseFloat(FileInfoResponse.fileInfoExtended[''].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                 });
             });
 
@@ -365,7 +371,7 @@ describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly 
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(FileInfoResponse.fileInfoExtended[''].headerEntries).toContainEqual(entry);
+                    expect(parseFloat(FileInfoResponse.fileInfoExtended[''].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                 });
             });
         });

@@ -21,7 +21,6 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     fileInfoRequest: {
-        directory: testSubdirectory,
         file: "M17_SWex.hdf5",
         hdu: "",
     },
@@ -298,12 +297,19 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder`, () => {
-        beforeAll(async () => { }, listFileTimeout);
+        let basePath: string;
+        beforeAll(async () => {
+            await Connection.send(CARTA.FileListRequest, { directory: "$BASE" });
+            basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+        }, listFileTimeout);
 
         describe(`query the info of file : ${assertItem.fileInfoRequest.file}`, () => {
             let FileInfoResponse: CARTA.FileInfoResponse;
             test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
-                await Connection.send(CARTA.FileInfoRequest, assertItem.fileInfoRequest);
+                await Connection.send(CARTA.FileInfoRequest, {
+                    directory: `${basePath}/` + testSubdirectory,
+                    ...assertItem.fileInfoRequest,
+                });
                 FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
             }, openFileTimeout);
 
@@ -366,14 +372,14 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length)
-                // console.log(FileInfoResponse.fileInfoExtended.headerEntries)
+                assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                });
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    // console.log(FileInfoResponse.fileInfoExtended.headerEntries)
-                    expect(FileInfoResponse.fileInfoExtended['0'].headerEntries).toContainEqual(entry);
+                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                 });
             });
         });
