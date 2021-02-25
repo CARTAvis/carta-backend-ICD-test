@@ -45,7 +45,7 @@ let assertItem: AssertItem = {
             {
                 name: "M17_SWex.hdf5",
                 type: CARTA.FileType.HDF5,
-                size: 185333128,
+                size: 185331280,
                 HDUList: ["0"],
             },
             {
