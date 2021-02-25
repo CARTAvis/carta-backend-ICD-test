@@ -367,7 +367,9 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    if (entry.name != "") {
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    }
                 });
             });
 
@@ -377,7 +379,9 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    if (entry.name != "") {
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    }
                 });
             });
         });
