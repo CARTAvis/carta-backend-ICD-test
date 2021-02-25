@@ -314,6 +314,7 @@ export class Client {
             ScriptingResponse: [],
             MomentResponse: [],
             MomentProgress: [],
+            SpectralLineResponse: [],
         };
 
         return new Promise<AckStream>(resolve => {
@@ -376,6 +377,9 @@ export class Client {
                         break;
                     case CARTA.MomentResponse:
                         ack.MomentResponse.push(data);
+                        break;
+                    case CARTA.SpectralLineResponse:
+                        ack.SpectralLineResponse.push(data);
                         break;
                 }
 
@@ -452,6 +456,7 @@ export class Client {
             ScriptingResponse: [],
             MomentResponse: [],
             MomentProgress: [],
+            SpectralLineResponse:[],
         };
 
         return new Promise<AckStream>((resolve, reject) => {
@@ -514,6 +519,9 @@ export class Client {
                         break;
                     case CARTA.MomentResponse:
                         ack.MomentResponse.push(data);
+                        break;
+                    case CARTA.SpectralLineResponse:
+                        ack.SpectralLineResponse.push(data);
                         break;
                 }
                 if (isDone(eventType, data, ack)) {
@@ -660,6 +668,7 @@ export interface AckStream {
     ScriptingResponse: CARTA.ScriptingResponse[];
     MomentResponse: CARTA.MomentResponse[];
     MomentProgress: CARTA.MomentProgress[];
+    SpectralLineResponse: CARTA.SpectralLineResponse[];
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {
