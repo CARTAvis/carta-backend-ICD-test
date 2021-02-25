@@ -55,6 +55,6 @@
     "log": {
         "error": false,
         "warning": true,
-        "event": false
+        "event": true
     }
 }

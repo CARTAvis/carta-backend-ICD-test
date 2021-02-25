@@ -59,7 +59,7 @@ let assertItem: AssertItem = {
     importRegion:
     {
         contents: [],
-        directory: regionSubdirectory,
+        // directory: regionSubdirectory,
         file: "M17_SWex_testRegions_pix.crtf",
         groupId: 0,
         type: CARTA.FileType.CRTF,
@@ -113,7 +113,7 @@ let assertItem: AssertItem = {
         [
             {
                 coordType: CARTA.CoordinateType.WORLD,
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_world.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
@@ -130,7 +130,7 @@ let assertItem: AssertItem = {
             },
             {
                 coordType: CARTA.CoordinateType.PIXEL,
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
@@ -161,14 +161,14 @@ let assertItem: AssertItem = {
         [
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_world.crtf",
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
             },
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
@@ -204,9 +204,11 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
+        let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
-            await Connection.openFile(assertItem.openFile);
+            let fileAck = await Connection.openFile(assertItem.openFile);
+            basePath = fileAck.basePath;
         });
 
         test(`OpenFileAck & RegionHistogramData? | `, async () => {
@@ -219,7 +221,10 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
             let importRegionAck: CARTA.ImportRegionAck;
             let importRegionAckProperties: any[];
             test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                await Connection.send(CARTA.ImportRegion, assertItem.importRegion);
+                await Connection.send(CARTA.ImportRegion, {
+                    ...assertItem.importRegion,
+                    directory: basePath + "/" + regionSubdirectory,
+                });
                 importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                 importRegionAckProperties = Object.keys(importRegionAck.regions);
                 if (importRegionAck.message != '') {
@@ -250,8 +255,11 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
             describe(`Export "${assertItem.exportRegion[idxRegion].file}"`, () => {
                 let exportRegionAck: CARTA.ExportRegionAck;
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
-                    exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
+                    await Connection.send(CARTA.ExportRegion, {
+                        ...assertItem.exportRegion[idxRegion],
+                        directory: basePath + "/" + regionSubdirectory,
+                    });
+                    exportRegionAck = (await Connection.streamUntil(type => type == CARTA.ExportRegionAck)).Responce[0] as CARTA.ExportRegionAck;
                 }, exportTimeout);
 
                 test(`EXPORT_REGION_ACK.success = ${exRegion.success}`, () => {
@@ -269,8 +277,11 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 let importRegionAck: CARTA.ImportRegionAck;
                 let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
-                    importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                    await Connection.send(CARTA.ImportRegion, {
+                        ...assertItem.exportRegion[idxRegion],
+                        directory: basePath + "/" + regionSubdirectory,
+                    });
+                    importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                     importRegionAckProperties = Object.keys(importRegionAck.regions);
                     if (importRegionAck.message != '') {
                         console.warn(importRegionAck.message);

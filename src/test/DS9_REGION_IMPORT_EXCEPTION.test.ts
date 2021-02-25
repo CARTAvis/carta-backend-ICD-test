@@ -10,14 +10,14 @@ let connectTimeout = config.timeout.connection;
 let importTimeout = config.timeout.import;
 
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     precisionDigits: number;
     importRegion: CARTA.IImportRegion[];
     importRegionAck: CARTA.IImportRegionAck[];
 };
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -60,24 +60,26 @@ describe("CASA_REGION_IMPORT_EXCEPTION test: Testing import/export of CASA regio
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
-
+        let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2); // OpenFileAck | RegionHistogramData
+            let fileAck = await Connection.openFile(assertItem.openFile);
+            basePath = fileAck.basePath;
         });
 
         assertItem.importRegionAck.map((regionAck, idxRegion) => {
             describe(`Import "${assertItem.importRegion[idxRegion].file}"`, () => {
                 let importRegionAck: CARTA.ImportRegionAck;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ImportRegion, assertItem.importRegion[idxRegion]);
-                    importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
+                    await Connection.send(CARTA.ImportRegion, {
+                        ...assertItem.importRegion[idxRegion],
+                        directory: basePath + "/" + regionSubdirectory,
+                    });
+                    importRegionAck = (await Connection.streamUntil(type => type==CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                 }, importTimeout);
 
                 test(`IMPORT_REGION_ACK.success = ${regionAck.success}`, () => {

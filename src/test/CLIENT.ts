@@ -7,6 +7,7 @@ const WebSocket = require('isomorphic-ws');
 export interface IOpenFile {
     OpenFileAck: CARTA.OpenFileAck;
     RegionHistogramData: CARTA.RegionHistogramData;
+    basePath: string;
 }
 export class Client {
     IcdVersion: number = 19;
@@ -638,7 +639,6 @@ export class Client {
     async openFile(openFile: any): Promise<IOpenFile> {
         await this.send(CARTA.FileListRequest, { directory: "$BASE" });
         let bathPath: string = (await this.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
-        console.log(`${bathPath}/${openFile.directory}`);
         await this.send(CARTA.OpenFile, {
             directory: `${bathPath}/${openFile.directory}`,
             file: openFile.file,
@@ -650,6 +650,7 @@ export class Client {
         return {
             OpenFileAck: ack.Responce[0],
             RegionHistogramData: ack.RegionHistogramData[0],
+            basePath: bathPath,
         };
     }
 };
