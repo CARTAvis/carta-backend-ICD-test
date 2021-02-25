@@ -69,7 +69,7 @@ let assertItem: AssertItem = {
         mean: 18.742310241547514,//18.742310241547514 for socketdev; 18.743059611332498 for socketicd
         stdDev: 22.534722680160574,//22.534722680160574 for socketdev; 22.376087536494833 for socketicd
     },
-    precisionDigits: 4,
+    precisionDigits: 3,
 };
 
 describe("PER_CUBE_HISTOGRAM_HDF5: Testing calculations of the per-cube histogram of hdf5", () => {
