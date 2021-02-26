@@ -239,8 +239,9 @@ describe("DS9_REGION_IMPORT_INTERNAL: Testing import of DS9 region files made wi
         let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            let fileAck = await Connection.openFile(assertItem.openFile);
-            basePath = fileAck.basePath;
+            await Connection.openFile(assertItem.openFile).then(()=>{
+                basePath = Connection.Property.basePath;
+            });
         });
 
         assertItem.importRegionAck.map((regionAck, idxRegion) => {
@@ -250,7 +251,7 @@ describe("DS9_REGION_IMPORT_INTERNAL: Testing import of DS9 region files made wi
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, {
                         ...assertItem.importRegion[idxRegion],
-                        directory: basePath + "/" + regionSubdirectory,
+                        directory: basePath + regionSubdirectory,
                     });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                     importRegionAckProperties = Object.keys(importRegionAck.regions)

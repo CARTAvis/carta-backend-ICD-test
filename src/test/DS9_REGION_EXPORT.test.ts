@@ -322,8 +322,9 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
         let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            let fileAck = await Connection.openFile(assertItem.openFile);
-            basePath = fileAck.basePath;
+            await Connection.openFile(assertItem.openFile).then(()=>{
+                basePath = Connection.Property.basePath;
+            });
             for (let region of assertItem.setRegion) {
                 await Connection.send(CARTA.SetRegion, region);
                 await Connection.receive(CARTA.SetRegionAck);
@@ -336,7 +337,7 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ExportRegion, {
                         ...assertItem.exportRegion[idxRegion],
-                        directory: basePath + "/" + regionSubdirectory,
+                        directory: basePath + regionSubdirectory,
                     });
                     exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
                     // console.log(exportRegionAck)
@@ -359,7 +360,7 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, {
                         ...assertItem.importRegion[idxRegion],
-                        directory: basePath + "/" + regionSubdirectory,
+                        directory: basePath + regionSubdirectory,
                     });
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                     importRegionAckProperties = Object.keys(importRegionAck.regions)

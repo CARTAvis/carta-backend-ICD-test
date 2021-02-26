@@ -207,8 +207,9 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
         let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            let fileAck = await Connection.openFile(assertItem.openFile);
-            basePath = fileAck.basePath;
+            await Connection.openFile(assertItem.openFile).then(()=>{
+                basePath = Connection.Property.basePath;
+            });
         });
 
         describe(`Import "${assertItem.importRegion.file}"`, () => {
@@ -217,7 +218,7 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
             test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                 await Connection.send(CARTA.ImportRegion, {
                     ...assertItem.importRegion,
-                    directory: basePath + "/" + regionSubdirectory,
+                    directory: basePath + regionSubdirectory,
                 });
                 importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                 if (importRegionAck.message != '') {
@@ -251,7 +252,7 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ExportRegion, {
                         ...assertItem.exportRegion[idxRegion],
-                        directory: basePath + "/" + regionSubdirectory,
+                        directory: basePath + regionSubdirectory,
                     });
                     exportRegionAck = (await Connection.streamUntil(type => type == CARTA.ExportRegionAck)).Responce[0] as CARTA.ExportRegionAck;
                 }, exportTimeout);
@@ -273,7 +274,7 @@ describe("DS9_REGION_IMPORT_EXPORT: Testing import/export of DS9 region format",
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, {
                         ...assertItem.exportRegion[idxRegion],
-                        directory: basePath + "/" + regionSubdirectory,
+                        directory: basePath + regionSubdirectory,
                     });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                     if (importRegionAck.message != '') {
