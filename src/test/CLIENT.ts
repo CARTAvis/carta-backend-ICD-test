@@ -83,7 +83,10 @@ export class Client {
         }
         return ret;
     }
-    static eventCount = { value: 0 };
+    static staticValue = { eventCount: 0 };
+    Property = {
+        basePath: "./",
+    };
     connection: WebSocket;
     // Construct a websocket connection to url
     constructor(url: string) {
@@ -131,7 +134,7 @@ export class Client {
             const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
             eventHeader16[0] = this.CartaTypeValue(cartaType);
             eventHeader16[1] = this.IcdVersion;
-            eventHeader32[0] = Client.eventCount.value++; // eventCounter;
+            eventHeader32[0] = Client.staticValue.eventCount++; // eventCounter;
             if (config.log.event) {
                 console.log(`${cartaType.name} => #${eventHeader32[0]} @ ${performance.now()}`);
             }
@@ -456,7 +459,7 @@ export class Client {
             ScriptingResponse: [],
             MomentResponse: [],
             MomentProgress: [],
-            SpectralLineResponse:[],
+            SpectralLineResponse: [],
         };
 
         return new Promise<AckStream>((resolve, reject) => {
@@ -637,10 +640,12 @@ export class Client {
     /// Send open_file and receive its returning message
     async openFile(openFile: any): Promise<IOpenFile> {
         await this.send(CARTA.FileListRequest, { directory: "$BASE" });
-        let bathPath: string = (await this.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
-        console.log(`${bathPath}/${openFile.directory}`);
+        this.Property.basePath = (await this.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory + "/";
+        if (config.log.event) {
+            console.log(this.Property);
+        }
         await this.send(CARTA.OpenFile, {
-            directory: `${bathPath}/${openFile.directory}`,
+            directory: this.Property.basePath + openFile.directory,
             file: openFile.file,
             hdu: openFile.hdu,
             fileId: openFile.fileId,

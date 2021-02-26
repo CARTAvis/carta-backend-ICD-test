@@ -18,7 +18,7 @@ interface ImportRegionAckExt extends CARTA.IImportRegionAck {
     };
 };
 interface AssertItem {
-    register: CARTA.IRegisterViewer;
+    registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     precisionDigits: number;
     setRegion: CARTA.ISetRegion[];
@@ -28,7 +28,7 @@ interface AssertItem {
     importRegionAck: ImportRegionAckExt[];
 };
 let assertItem: AssertItem = {
-    register: {
+    registerViewer: {
         sessionId: 0,
         apiKey: "",
         clientFeatureFlags: 5,
@@ -209,7 +209,7 @@ let assertItem: AssertItem = {
         [
             {
                 coordType: CARTA.CoordinateType.WORLD,
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.reg",
                 fileId: 0,
                 type: CARTA.FileType.DS9_REG,
@@ -235,7 +235,7 @@ let assertItem: AssertItem = {
             },
             {
                 coordType: CARTA.CoordinateType.PIXEL,
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.reg",
                 fileId: 0,
                 type: CARTA.FileType.DS9_REG,
@@ -275,14 +275,14 @@ let assertItem: AssertItem = {
         [
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_world.reg",
                 groupId: 0,
                 type: CARTA.FileType.DS9_REG,
             },
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_handMadeRegions_pix.reg",
                 groupId: 0,
                 type: CARTA.FileType.DS9_REG,
@@ -314,16 +314,17 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.send(CARTA.RegisterViewer, assertItem.register);
-        await Connection.receive(CARTA.RegisterViewerAck);
+        await Connection.registerViewer(assertItem.registerViewer);
     }, connectTimeout);
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file} and set regions"`, () => {
 
+        let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2); // OpenFileAck | RegionHistogramData
+            await Connection.openFile(assertItem.openFile).then(()=>{
+                basePath = Connection.Property.basePath;
+            });
             for (let region of assertItem.setRegion) {
                 await Connection.send(CARTA.SetRegion, region);
                 await Connection.receive(CARTA.SetRegionAck);
@@ -334,7 +335,10 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
             describe(`Export "${assertItem.exportRegion[idxRegion].file}"`, () => {
                 let exportRegionAck: CARTA.ExportRegionAck;
                 test(`EXPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ExportRegion, assertItem.exportRegion[idxRegion]);
+                    await Connection.send(CARTA.ExportRegion, {
+                        ...assertItem.exportRegion[idxRegion],
+                        directory: basePath + regionSubdirectory,
+                    });
                     exportRegionAck = await Connection.receive(CARTA.ExportRegionAck) as CARTA.ExportRegionAck;
                     // console.log(exportRegionAck)
                 }, exportTimeout);
@@ -354,7 +358,10 @@ describe("DS9_REGION_EXPORT test: Testing export of DS9 region to a file", () =>
                 let importRegionAck: CARTA.ImportRegionAck;
                 let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ImportRegion, assertItem.exportRegion[idxRegion]);
+                    await Connection.send(CARTA.ImportRegion, {
+                        ...assertItem.importRegion[idxRegion],
+                        directory: basePath + regionSubdirectory,
+                    });
                     importRegionAck = await Connection.receive(CARTA.ImportRegionAck) as CARTA.ImportRegionAck;
                     importRegionAckProperties = Object.keys(importRegionAck.regions)
                 }, importTimeout);

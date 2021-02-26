@@ -35,14 +35,14 @@ let assertItem: AssertItem = {
         [
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_regionSet2_pix.crtf",
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
             },
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_regionSet2_world.crtf",
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
@@ -65,16 +65,22 @@ describe("CASA_REGION_IMPORT_EXCEPTION: Testing import/export of CASA region for
 
     describe(`Go to "${testSubdirectory}" folder and open image "${assertItem.openFile.file}"`, () => {
 
+        let basePath: string;
         beforeAll(async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1, });
-            await Connection.openFile(assertItem.openFile);
+            await Connection.openFile(assertItem.openFile).then(() => {
+                basePath = Connection.Property.basePath;
+            });
         });
 
         assertItem.importRegionAck.map((regionAck, idxRegion) => {
             describe(`Import "${assertItem.importRegion[idxRegion].file}"`, () => {
                 let importRegionAck: CARTA.ImportRegionAck;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
-                    await Connection.send(CARTA.ImportRegion, assertItem.importRegion[idxRegion]);
+                    await Connection.send(CARTA.ImportRegion, {
+                        ...assertItem.importRegion[idxRegion],
+                        directory: basePath + regionSubdirectory,
+                    });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                 }, importTimeout);
 
