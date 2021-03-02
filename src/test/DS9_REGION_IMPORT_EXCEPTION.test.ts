@@ -35,14 +35,14 @@ let assertItem: AssertItem = {
         [
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_regionSet2_pix.reg",
                 groupId: 0,
                 type: CARTA.FileType.DS9_REG,
             },
             {
                 contents: [],
-                directory: regionSubdirectory,
+                // directory: regionSubdirectory,
                 file: "M17_SWex_regionSet2_world.reg",
                 groupId: 0,
                 type: CARTA.FileType.DS9_REG,
