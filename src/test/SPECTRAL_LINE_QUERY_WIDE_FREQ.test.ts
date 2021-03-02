@@ -45,13 +45,13 @@ let assertItem: AssertItem = {
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 75686,
+            dataSize: 75718,
             lengthOfheaders: 19,
             speciesOfline1st: "HOCH2CN",
             speciesOflineIndex1st: 0,
             freqSpeciesOfline1st: "420000.32970",
             speciesOflineLast: "CH2CDCN",
-            speciesOflineIndexLast: 75685,
+            speciesOflineIndexLast: 75717,
             freqSpeciesOflineLast: "439999.26740",
         },
         {
@@ -61,9 +61,9 @@ let assertItem: AssertItem = {
             speciesOfline1st: "HOCH2CN",
             speciesOflineIndex1st: 0,
             freqSpeciesOfline1st: "420000.32970",
-            speciesOflineLast: "NH2CH2CH2OHv26=1",
+            speciesOflineLast: "HNO3v5=1/v9=2",
             speciesOflineIndexLast: 99999,
-            freqSpeciesOflineLast: "430886.07520",
+            freqSpeciesOflineLast: "430883.75780",
         },
     ],
 };
