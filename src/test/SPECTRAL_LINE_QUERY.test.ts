@@ -109,10 +109,10 @@ let assertItem: AssertItem = {
         },
         {
             success: true,
-            dataSize: 203,
+            dataSize: 204,
             lengthOfheaders: 19,
             speciesOfline: "Carbon Monoxide",
-            speciesOflineIndex: 200,
+            speciesOflineIndex: 201,
             freqSpeciesOfline: "220398.68420",
         },
     ],
