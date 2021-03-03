@@ -108,12 +108,19 @@ assertItem.setSpectralLineReq.map((request, index) => {
                 }
             });
 
-            test(`(Step 3)Check the information of the first and the last molecular species`,async()=>{
+            test(`(Step 3)Check the information of two molecular species (one is near the 1st another is near the last)`,async()=>{
                 if (response2 != undefined && response2.dataSize === assertItem.SpectraLineResponse[index].dataSize) {
-                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
-                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
-                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
-                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
+                    // check at least two molecules freq inside a returned array
+                    expect(response2.spectralLineData[2].stringData).toEqual(expect.arrayContaining([assertItem.SpectraLineResponse[index].freqSpeciesOfline1st]));
+                    expect(response2.spectralLineData[2].stringData).toEqual(expect.arrayContaining([assertItem.SpectraLineResponse[index].freqSpeciesOflineLast]));
+                    // find the index of these two molecules freq
+                    const is1st = (element) => element ===  assertItem.SpectraLineResponse[index].freqSpeciesOfline1st;
+                    let tar1Index = response2.spectralLineData[2].stringData.findIndex(is1st);
+                    const islast = (element) => element ===  assertItem.SpectraLineResponse[index].freqSpeciesOflineLast;
+                    let tarlastIndex = response2.spectralLineData[2].stringData.findIndex(islast);
+                    // matching these two molecules' name
+                    expect(response2.spectralLineData[0].stringData[tar1Index]).toMatch(assertItem.SpectraLineResponse[index].speciesOfline1st)
+                    expect(response2.spectralLineData[0].stringData[tarlastIndex]).toMatch(assertItem.SpectraLineResponse[index].speciesOflineLast)
                 } else {
                     console.warn("Does not receive proper SpectralLineResponse")
                 };
