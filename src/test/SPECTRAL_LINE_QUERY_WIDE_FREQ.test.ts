@@ -61,9 +61,9 @@ let assertItem: AssertItem = {
             speciesOfline1st: "HOCH2CN",
             speciesOflineIndex1st: 0,
             freqSpeciesOfline1st: "420000.32970",
-            speciesOflineLast: "c-H2COCH2",
-            speciesOflineIndexLast: 99999,
-            freqSpeciesOflineLast: "430883.86380",
+            speciesOflineLast: "HNO3",
+            speciesOflineIndexLast: 99926,
+            freqSpeciesOflineLast: "430878.88820",
         },
     ],
 };
