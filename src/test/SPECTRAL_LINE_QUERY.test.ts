@@ -90,29 +90,29 @@ let assertItem: AssertItem = {
     },
     setSpectralLineReq: [
         {
-            frequencyRange: { min: 230500, max: 230600 },
+            frequencyRange: { min: 230537, max: 230539 },
             lineIntensityLowerLimit: -10,
         },
         {
-            frequencyRange: { min: 220350, max: 220400 },
+            frequencyRange: { min: 220398, max: 220399 },
             lineIntensityLowerLimit: -5,
         },
     ],
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 919,
+            dataSize: 26,
             lengthOfheaders: 19,
             speciesOfline: "COv=0",
-            speciesOflineIndex: 351,
+            speciesOflineIndex: 18,
             freqSpeciesOfline: "230538.00000",
         },
         {
             success: true,
-            dataSize: 204,
+            dataSize: 8,
             lengthOfheaders: 19,
             speciesOfline: "Carbon Monoxide",
-            speciesOflineIndex: 201,
+            speciesOflineIndex: 6,
             freqSpeciesOfline: "220398.68420",
         },
     ],
