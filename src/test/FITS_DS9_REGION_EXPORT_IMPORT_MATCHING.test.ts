@@ -165,7 +165,6 @@ describe("REGION_EXPORT test: Testing export of FITS region to a file", () => {
             describe(`Check IMPORT_REGION_ACK and the region controlPoints:`,()=>{
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`,async()=>{
                     await Connection.send(CARTA.ImportRegion, {
-                        // ...assertItem.exportRegion[idxRegion],
                         file:assertItem.importRegion[0].file,
                         directory: basePath + regionSubdirectory,
                         groupId:0,
