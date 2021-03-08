@@ -46,7 +46,7 @@ let assertItem: AssertItem = {
                 regionInfo: {
                     regionType: CARTA.RegionType.POINT,
                     rotation: 0,
-                    controlPoints: [{ x: -109.579, y: 618.563 }],
+                    controlPoints: [{ x: 262.071716, y: 377.173907 }],
                 },
             },
             {
@@ -55,7 +55,7 @@ let assertItem: AssertItem = {
                 regionInfo: {
                     regionType: CARTA.RegionType.RECTANGLE,
                     rotation: 0,
-                    controlPoints: [{ x: -114.748, y: 508.708 }, { x: 90.468, y: 90.468 }],
+                    controlPoints: [{ x: 224.531619, y: 503.871734 }, { x: 154.852900, y: 319.090825 }],
                 },
             },
             {
@@ -64,7 +64,7 @@ let assertItem: AssertItem = {
                 regionInfo: {
                     regionType: CARTA.RegionType.ELLIPSE,
                     rotation: 0,
-                    controlPoints: [{ x: 758.918, y: 634.071 }, { x: 62.035, y: 62.035 }],
+                    controlPoints: [{ x: 405.191764, y: 628.238373 }, { x: 105.581523, y: 79.772706 }],
                 },
             },
             {
@@ -73,7 +73,7 @@ let assertItem: AssertItem = {
                 regionInfo: {
                     regionType: CARTA.RegionType.POLYGON,
                     rotation: 0,
-                    controlPoints: [{ x: 757.626, y: 184.314 }, { x: 698.175, y: 66.7051 }, { x: 831.293, y: 106.769 }],
+                    controlPoints: [{ x: 419.270873, y: 367.788882 }, { x: 330.113142, y: 285.669920 }, { x: 431.002154, y: 177.742140 }],
                 },
             },
         ],
@@ -104,8 +104,6 @@ let assertItem: AssertItem = {
             {
                 contents: [],
                 file: "M17_SWex_test_world.crtf",
-                groupId: 0,
-                type: CARTA.FileType.CRTF,
             },
         ],
 };
@@ -171,7 +169,7 @@ describe("REGION_EXPORT test: Testing export of FITS region to a file", () => {
                         file:assertItem.importRegion[0].file,
                         directory: basePath + regionSubdirectory,
                         groupId:0,
-                        type:1
+                        type:CARTA.FileType.CRTF
                     });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
                     // console.log(importRegionAck);
