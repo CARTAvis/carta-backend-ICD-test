@@ -103,7 +103,7 @@ let assertItem: AssertItem = {
         [
             {
                 contents: [],
-                file: "M17_SWex_handMadeRegions_world.crtf",
+                file: "M17_SWex_test_world.crtf",
                 groupId: 0,
                 type: CARTA.FileType.CRTF,
             },
