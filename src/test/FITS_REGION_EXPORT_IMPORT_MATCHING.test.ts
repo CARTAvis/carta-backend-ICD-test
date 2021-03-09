@@ -4,7 +4,7 @@ import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
