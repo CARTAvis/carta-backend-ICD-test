@@ -47,9 +47,10 @@ RUN \
 
 # Clone and build the carta-backend
 RUN \
-  git clone --recurse-submodules -j4 https://github.com/CARTAvis/carta-backend.git --depth 1 && \
+  git clone https://github.com/CARTAvis/carta-backend.git && \
   cd carta-backend && \
   git checkout dev && \
+  git submodule update --init --recursive && \
   mkdir build && cd build && \
   cmake .. && make -j
 
