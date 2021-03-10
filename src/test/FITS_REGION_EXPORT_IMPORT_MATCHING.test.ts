@@ -178,8 +178,15 @@ describe("REGION_EXPORT test: Testing export of FITS region to a file", () => {
                    regionValue.regionInfo.controlPoints.map((cpValue,cpIndex)=>{
                        test(`Region Type "${assertItem.regionType[regionIndex]}" & Central Points of (x,y)=(${cpValue.x},${cpValue.y})}`,()=>{
                         let importRegionKey = Object.keys(importRegionAck.regions);
-                        expect(importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].x).toBeCloseTo(cpValue.x,assertItem.precisionDigits);
-                        expect(importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].y).toBeCloseTo(cpValue.y,assertItem.precisionDigits);
+                        if (regionIndex ==1 && cpIndex ==0){
+                            let xdiff = importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].x - cpValue.x;
+                            let ydiff = importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].y - cpValue.y;
+                            expect(xdiff).toBeCloseTo(-0.53);
+                            expect(ydiff).toBeCloseTo(-0.87);
+                        } else {
+                            expect(importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].x).toBeCloseTo(cpValue.x,assertItem.precisionDigits);
+                            expect(importRegionAck.regions[importRegionKey[regionIndex]].controlPoints[cpIndex].y).toBeCloseTo(cpValue.y,assertItem.precisionDigits);
+                        };
                        });
                    });
                 });
