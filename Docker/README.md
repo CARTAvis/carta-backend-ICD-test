@@ -80,6 +80,8 @@ ENTRYPOINT ["/start.sh"]
 
 You could change the red line above to build a different carta_backend branch.
 
+
+
 2.
 
 Build the Dockerfile. For example,
@@ -94,6 +96,8 @@ docker build -f Dockerfile-carta -t carta-backend-dev .
 
 The container name could be called anything too. In this example I am calling it “carta-backend-dev”
 
+
+
 3. 
 
 Now start it. For example:
@@ -106,6 +110,8 @@ docker run -ti -p 3002:3002 -v <frontend location>:/carta-backend/build/../share
 
 
 You need to replace &lt;frontend location>** **with the location of your built frontend html.
+
+
 
 Alternative way:
 
@@ -123,6 +129,8 @@ So only the green 3002 needs to be adjusted. The port inside the container could
 ```
 docker run -ti -p 3002:7777 -v <frontend location>:/carta-backend/build/../share/carta/frontend -v $PWD:/zzz  carta-backend-dev /zzzz --port 7777
 ```
+
+
 
 
 To Do:
