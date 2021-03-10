@@ -47,12 +47,11 @@ RUN \
 
 # Clone and build the carta-backend
 RUN \
-  git clone https://github.com/CARTAvis/carta-backend.git && \
+  git clone --recurse-submodules -j4 https://github.com/CARTAvis/carta-backend.git --depth 1 && \
   cd carta-backend && \
   git checkout dev && \
-  git submodule update --init --recursive && \
   mkdir build && cd build && \
-  cmake .. && make -j 2
+  cmake .. && make -j
 
 # Add a non-root user and run carta_backend and startup script as this user
 RUN groupadd -g 5555 carta && \

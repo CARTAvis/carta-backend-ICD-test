@@ -84,6 +84,10 @@ You could change the red line above to build a different carta_backend branch.
 
 ## 2.
 
+Install Docker app ,
+
+** Click Preferences. Click Resources. Drag the Memory slider up (8GB seems OK for a j 2 build). Click Apple & Restart. **
+
 Build the Dockerfile. For example,
 
 
