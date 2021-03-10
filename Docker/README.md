@@ -1,8 +1,8 @@
-**<span style="text-decoration:underline;">Build and run carta_backend directly from a Docker - March 2021</span>**
+# <span style="text-decoration:underline;">Build and run carta_backend directly from a Docker - March 2021</span>
 
 Here is a basic Dockerfile for creating a carta_backend build environment with a carta_backend that runs automatically as soon as the container is started.
 
-1.
+## 1.
 
 Copy the lines below into a Dockerfile. You could call it anything, for example, **Dockerfile-carta**
 
@@ -82,7 +82,7 @@ You could change the red line above to build a different carta_backend branch.
 
 
 
-2.
+## 2.
 
 Build the Dockerfile. For example,
 
@@ -98,7 +98,7 @@ The container name could be called anything too. In this example I am calling it
 
 
 
-3. 
+## 3. 
 
 Now start it. For example:
 
@@ -113,7 +113,7 @@ You need to replace &lt;frontend location>** **with the location of your built f
 
 
 
-Alternative way:
+## Alternative way:
 
 docker run -ti -p 3002:3002 -v &lt;frontend location>:/frontend -v $PWD:/images carta-backend-dev /images --frontend_folder /frontend
 
@@ -133,6 +133,6 @@ docker run -ti -p 3002:7777 -v <frontend location>:/carta-backend/build/../share
 
 
 
-To Do:
+## To Do:
 
 Maybe try adding a built frontend into the container.
