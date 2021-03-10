@@ -103,7 +103,8 @@ ENV CASAPATH "/usr/local/share/casacore linux local `hostname`"
 
 # Create the startup script
 RUN \
-  echo "#!/bin/bash \n ./carta-backend/build/carta_backend \$@" >> /start.sh && \
+  echo "#!/bin/bash" >> /start.sh && \
+  echo "./carta-backend/build/carta_backend \$@" >> /start.sh && \
   chmod 755 /start.sh
 
 # Clone and build the carta-backend
