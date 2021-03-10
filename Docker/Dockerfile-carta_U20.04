@@ -52,7 +52,7 @@ RUN \
   git checkout dev && \
   git submodule update --init --recursive && \
   mkdir build && cd build && \
-  cmake .. && make -j
+  cmake .. && make -j2
 
 # Add a non-root user and run carta_backend and startup script as this user
 RUN groupadd -g 5555 carta && \
