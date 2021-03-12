@@ -216,67 +216,63 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
         });
 
 
-        describe(`(Case 2) Play some channels backwardly`, () => {
-            test(`Preparation`, async () => {
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
-                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-            }, readFileTimeout);
+        // describe(`(Case 2) Play some channels backwardly`, () => {
+        //     test(`Preparation`, async () => {
+        //         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
+        //         await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        //     }, readFileTimeout);
 
-            let sequence: number[] = [];
-            let contourImageData: CARTA.ContourImageData[] = [];
-            test(`Image should return one after one and the last channel is correct:`, async () => {
-                await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[1]);
-                expect((await Connection.receive(CARTA.StartAnimationAck)).success).toBe(true);
+        //     let sequence: number[] = [];
+        //     let contourImageData: CARTA.ContourImageData[] = [];
+        //     test(`Image should return one after one and the last channel is correct:`, async () => {
+        //         await Connection.send(CARTA.StartAnimation, assertItem.startAnimation[1]);
+        //         expect((await Connection.receive(CARTA.StartAnimationAck)).success).toBe(true);
 
-                let Ack: AckStream;
-                for (let i = assertItem.startAnimation[1].startFrame.channel+1; i > assertItem.stopAnimation[1].endFrame.channel - 1; i--) {
-                    await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                    Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-                    let currentChannel = Ack.RasterTileData.slice(-1)[0].channel;
-                    await Connection.send(CARTA.AnimationFlowControl,
-                        {
-                            ...assertItem.animationFlowControl[1],
-                            receivedFrame: {
-                                channel: currentChannel,
-                                stokes: 0
-                            },
-                            timestamp: Long.fromNumber(Date.now()),
-                        }
-                    );
-                    sequence.push(currentChannel);
-                    contourImageData = contourImageData.concat(Ack.ContourImageData);
-                    // console.log(contourImageData)
-                };
-                // Pick up the streaming messages
-                // Channel 9 & 8: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData + ContourImageData
-                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length * 2 + 4 + 2 + 2 + 2);
-                
-                // Remove channel 19, because it will return twice
-                sequence = sequence.slice(1,sequence.length);
-                console.log(contourImageData);
-                contourImageData = contourImageData.slice(2,contourImageData.length);
+        //         let Ack: AckStream;
+        //         for (let i = assertItem.startAnimation[1].startFrame.channel; i > assertItem.stopAnimation[1].endFrame.channel - 1; i--) {
+        //             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+        //             Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        //             let currentChannel = Ack.RasterTileData.slice(-1)[0].channel - 1;
+        //             console.log(currentChannel);
+        //             await Connection.send(CARTA.AnimationFlowControl,
+        //                 {
+        //                     ...assertItem.animationFlowControl[1],
+        //                     receivedFrame: {
+        //                         channel: currentChannel,
+        //                         stokes: 0
+        //                     },
+        //                     timestamp: Long.fromNumber(Date.now()),
+        //                 }
+        //             );
+        //             sequence.push(currentChannel);
+        //             contourImageData = contourImageData.concat(Ack.ContourImageData);
+        //             // console.log(contourImageData)
+        //         };
+        //         // Pick up the streaming messages
+        //         // Channel 9 & 8: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData + ContourImageData
+        //         let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length * 2 + 4 + 2 + 2 + 2);
 
-                // Send StopAnimator
-                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[1]);
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
-                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-                expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation[1].endFrame.channel);
-            }, playAnimatorTimeout);
+        //         // Send StopAnimator
+        //         await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[1]);
+        //         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
+        //         await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        //         expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation[1].endFrame.channel);
+        //     }, playAnimatorTimeout);
 
-            test(`Received image channels should be in sequence`, async () => {
-                console.warn(`(Step 2) Sequent channel index: ${sequence}`);
-                sequence.map((id, index) => {
-                    let channelId = -index + assertItem.startAnimation[1].startFrame.channel;
-                    expect(id).toEqual(channelId);
-                });
-            });
+        //     test(`Received image channels should be in sequence`, async () => {
+        //         console.warn(`(Step 2) Sequent channel index: ${sequence}`);
+        //         sequence.map((id, index) => {
+        //             let channelId = -index + assertItem.startAnimation[1].startFrame.channel;
+        //             expect(id).toEqual(channelId);
+        //         });
+        //     });
 
-            // test(`Received image contours should be in sequence`, async () => {
-            //     for (let i = assertItem.startAnimation[1].startFrame.channel; i > assertItem.stopAnimation[1].endFrame.channel - 1; i--) {
-            //         expect(contourImageData.filter(data => data.progress == 1 && data.channel == i).length).toEqual(assertItem.setContour.levels.length);
-            //     }
-            // });
-        });
+        //     test(`Received image contours should be in sequence`, async () => {
+        //         for (let i = assertItem.startAnimation[1].startFrame.channel; i > assertItem.stopAnimation[1].endFrame.channel - 1; i--) {
+        //             expect(contourImageData.filter(data => data.progress == 1 && data.channel == i).length).toEqual(assertItem.setContour.levels.length);
+        //         }
+        //     });
+        // });
 
         afterAll(() => Connection.close());
     });
