@@ -42,7 +42,7 @@ ENV CASAPATH "/usr/share/casacore linux local `hostname`"
 
 # Create the startup scipt
 RUN \
-  echo "#!/bin/bash \n ./carta-backend/build/carta_backend \$@" >> /start.sh && \
+  echo "#!/bin/bash \n ./carta-backend/build/carta_backend --verbosity 6 --no_log --no_http --no_browser --debug_no_auth  /Images \$@" >> /start.sh && \
   chmod 755 /start.sh
 
 # Clone and build the carta-backend
