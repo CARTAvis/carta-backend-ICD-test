@@ -8,3 +8,8 @@ To start a service via `/k8s/deployment` :
 $ kubectl apply -f deployment.yaml
 ```
 
+## 2.
+To stop a service via `/k8s/deployment` :
+```
+$ kubectl delete -f deployment.yaml
+```
