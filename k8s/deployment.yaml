@@ -37,5 +37,5 @@ spec:
       volumes:
       - name: images
         hostPath: 
-          path: /Users/zarda/CARTA/Images
+          path: </CARTA/Images>
           type: Directory
