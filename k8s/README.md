@@ -7,7 +7,7 @@ To start a service via `/k8s/deployment` :
 ```
 $ kubectl apply -f deployment.yaml
 ```
-### Customis to your environment
+### Customise to your environment
 The path `- mountPath: /Images` and `- hostPath: path: </CARTA/Images>` should be changed to the directory in your running envirenment, `- mountPath:` denotes the imgae location inside Docker container and `- hostPath: path:` denotes the image location in your native system.
 
 ## 2.
