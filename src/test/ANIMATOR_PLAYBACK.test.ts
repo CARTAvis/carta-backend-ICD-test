@@ -11,8 +11,8 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let playImageTimeout: number = config.timeout.playImages;
-let sleepTimeout: number = config.timeout.sleep
-let playAnimatorTimeout = config.timeout.playAnimator
+let sleepTimeout: number = config.timeout.sleep;
+let playAnimatorTimeout = config.timeout.playAnimator;
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;

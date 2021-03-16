@@ -1,5 +1,5 @@
 {
-    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
+    "serverURL": "wss://almac.asiaa.sinica.edu.tw/socketdev",
     "serverURL0": "ws://127.0.0.1:3002",
     "serverURL1": "ws://cartaviewer:5000",
     "path": {
@@ -38,7 +38,7 @@
         "spatralProfile": 500,
         "spectralProfile": 2000,
         "sleep": 3000,
-        "playAnimator": 10000,
+        "playAnimator": 20000,
         "wasm": 3000,
         "moment": 3300,
         "momentLargeCube": 50000,
