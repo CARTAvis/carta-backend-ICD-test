@@ -4,7 +4,7 @@ Here is a basic Dockerfile for creating a carta_backend build environment with a
 
 ## 1.
 
-Copy the lines below into a Dockerfile. You could call it anything, for example, **Dockerfile-carta**
+The lines below is a part of Dockerfile. For example, **Dockerfile-carta**
 
 
 ```
@@ -29,14 +29,12 @@ You could change the `git checkout dev` above to `git checkout master` for insta
 
 ## 2.
 
-Install Docker app ,
+Install Docker app.
 
-** On MacOS, the Docker Desktop app only assigns 2GB of RAM to Docker by default. This is insufficient to build the carta_backend using parallel make (e.g. make -j 2). **
-** The consequence of insufficient RAM is the build message c++: fatal error: Killed signal terminated program cc1plus.
-To assign more RAM to Docker, go to Docker > Preferences > Resources, and drag the Memory slider up to at least 8GB. 8GB seems to be OK for a -j2 build, but more would be better. Click Apply & Restart on the bottom right corner of the Preferences Window. **
+On MacOS, the Docker Desktop app only assigns 2GB of RAM to Docker by default. This is insufficient to build the carta_backend using parallel make (e.g. make -j 2). The consequence of insufficient RAM is the build message c++: fatal error: Killed signal terminated program cc1plus.
+To assign more RAM to Docker, go to Docker > Preferences > Resources, and drag the Memory slider up to at least 8GB. 8GB seems to be OK for a -j2 build, but more would be better. Click Apply & Restart on the bottom right corner of the Preferences Window.
 
 Build the Dockerfile. For example,
-
 
 ```
 docker build -f Dockerfile-carta -t carta-backend-dev .
