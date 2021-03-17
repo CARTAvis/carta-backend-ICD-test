@@ -185,7 +185,7 @@ let assertItem: AssertItem = {
         [
             {
                 success: true,
-                lengthOfRegions: 7,
+                lengthOfRegions: 8,
                 assertRegionId: {
                     index: 6,
                     id: 15,
@@ -193,7 +193,7 @@ let assertItem: AssertItem = {
             },
             {
                 success: true,
-                lengthOfRegions: 7,
+                lengthOfRegions: 8,
                 assertRegionId: {
                     index: 6,
                     id: 22,
@@ -305,7 +305,7 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 });
 
                 test(`IMPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
-                    expect(importRegionAckProperties[importRegionAckProperties.length - 1]).toEqual(String(Region.assertRegionId.id));
+                    expect(importRegionAckProperties[Region.assertRegionId.index]).toEqual(String(Region.assertRegionId.id));
                 });
             });
         });
