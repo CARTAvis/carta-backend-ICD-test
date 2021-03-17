@@ -15,3 +15,13 @@ To stop a service via `/k8s/deployment` :
 ```
 $ kubectl delete -f deployment.yaml
 ```
+
+## Deploy on MacOS
+Download from https://docs.docker.com/docker-for-mac/install/
+
+## Deploy on Ubuntu
+Install Docker and minikube, please refer to https://howtoforge.com/how-to-install-kubernetes-with-minikube-ubuntu-20-04/
+
+Login Docker by `$ docker login`
+
+Create an image, e.g. `carta-backend-dev:latest`
