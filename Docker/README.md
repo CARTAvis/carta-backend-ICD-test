@@ -58,13 +58,13 @@ docker run -ti -p 3002:3002 -v <frontend location>:/carta-backend/build/../share
 ```
 
 
-You need to replace <frontend location> with the location of your built frontend html.
+You need to replace `<frontend location>` with the location of your built frontend html.
 
 
 
 ## Alternative way:
 
-docker run -ti -p 3002:3002 -v <frontend location>:/frontend -v $PWD:/images carta-backend-dev /images --frontend_folder /frontend
+`$ docker run -ti -p 3002:3002 -v <frontend location>:/frontend -v $PWD:/images carta-backend-dev /images --frontend_folder /frontend`
 
 Remember to adjust your local image directory accordingly. In this example I am just using $PWD. 
 
