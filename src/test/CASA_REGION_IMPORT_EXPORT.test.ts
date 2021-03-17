@@ -187,16 +187,16 @@ let assertItem: AssertItem = {
                 success: true,
                 lengthOfRegions: 8,
                 assertRegionId: {
-                    index: 6,
-                    id: 15,
+                    index: 7,
+                    id: 16,
                 },
             },
             {
                 success: true,
                 lengthOfRegions: 8,
                 assertRegionId: {
-                    index: 6,
-                    id: 22,
+                    index: 7,
+                    id: 23,
                 },
             },
         ],
