@@ -25,3 +25,6 @@ Install Docker and minikube, please refer to https://howtoforge.com/how-to-insta
 Login Docker by `$ docker login`
 
 Create an image, e.g. `carta-backend-dev:latest`
+
+Use `$ docker images` to confirm the new image is there, if not try `$ eval $(minikube docker-env)` to switch node.
+Then re-create the image. So that we could run a local image here.
