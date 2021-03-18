@@ -196,7 +196,7 @@ let assertItem: AssertItem = {
                 lengthOfRegions: 8,
                 assertRegionId: {
                     index: 7,
-                    id: 23,
+                    id: 24,
                 },
             },
         ],
@@ -286,7 +286,7 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, {
-                        ...assertItem.exportRegion[idxRegion],
+                        ...assertItem.importRegion2[idxRegion],
                         directory: basePath + regionSubdirectory,
                     });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
