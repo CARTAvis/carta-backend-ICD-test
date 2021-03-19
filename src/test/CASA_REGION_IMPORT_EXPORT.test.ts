@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -95,8 +95,16 @@ let assertItem: AssertItem = {
                 rotation: 45,
             },
             '7': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 300 }],
+                regionType: CARTA.RegionType.LINE,
+            },
+            '8': {
                 controlPoints: [{ x: 320, y: 300 }],
                 regionType: CARTA.RegionType.POINT,
+            },
+            '9': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
+                regionType: CARTA.RegionType.POLYLINE,
             },
         },
         regionStyles: {
@@ -107,6 +115,8 @@ let assertItem: AssertItem = {
             '5': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
             '6': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
             '7': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '8': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '9': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
         },
     },
     exportRegion:
@@ -125,8 +135,9 @@ let assertItem: AssertItem = {
                     '5': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                 },
-                // regionId: [1, 2, 3, 4, 5, 6, 7],
             },
             {
                 coordType: CARTA.CoordinateType.PIXEL,
@@ -134,7 +145,6 @@ let assertItem: AssertItem = {
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
-                // regionId: [1, 2, 3, 4, 5, 6, 7],
                 regionStyles: {
                     '1': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '2': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
@@ -143,6 +153,8 @@ let assertItem: AssertItem = {
                     '5': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                 }
             },
         ],
@@ -178,18 +190,18 @@ let assertItem: AssertItem = {
         [
             {
                 success: true,
-                lengthOfRegions: 7,
+                lengthOfRegions: 9,
                 assertRegionId: {
-                    index: 6,
-                    id: 14,
+                    index: 7,
+                    id: 17,
                 },
             },
             {
                 success: true,
-                lengthOfRegions: 7,
+                lengthOfRegions: 9,
                 assertRegionId: {
-                    index: 6,
-                    id: 21,
+                    index: 7,
+                    id: 26,
                 },
             },
         ],
@@ -279,7 +291,7 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 let importRegionAckProperties: any;
                 test(`IMPORT_REGION_ACK should return within ${importTimeout}ms`, async () => {
                     await Connection.send(CARTA.ImportRegion, {
-                        ...assertItem.exportRegion[idxRegion],
+                        ...assertItem.importRegion2[idxRegion],
                         directory: basePath + regionSubdirectory,
                     });
                     importRegionAck = (await Connection.streamUntil(type => type == CARTA.ImportRegionAck)).Responce[0] as CARTA.ImportRegionAck;
@@ -298,7 +310,7 @@ describe("CASA_REGION_IMPORT_EXPORT: Testing import/export of CASA region format
                 });
 
                 test(`IMPORT_REGION_ACK.regions[${Region.assertRegionId.index}].region_id = ${Region.assertRegionId.id}`, () => {
-                    expect(importRegionAckProperties[importRegionAckProperties.length - 1]).toEqual(String(Region.assertRegionId.id));
+                    expect(importRegionAckProperties[Region.assertRegionId.index]).toEqual(String(Region.assertRegionId.id));
                 });
             });
         });
