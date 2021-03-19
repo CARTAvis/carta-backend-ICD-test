@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -102,6 +102,10 @@ let assertItem: AssertItem = {
                 controlPoints: [{ x: 320, y: 300 }],
                 regionType: CARTA.RegionType.POINT,
             },
+            '9': {
+                controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
+                regionType: CARTA.RegionType.POLYLINE,
+            },
         },
         regionStyles: {
             '1': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
@@ -112,6 +116,7 @@ let assertItem: AssertItem = {
             '6': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
             '7': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
             '8': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
+            '9': { color: "#2EE6D6", dashList: [], lineWidth: 1, name: "" },
         },
     },
     exportRegion:
@@ -131,8 +136,8 @@ let assertItem: AssertItem = {
                     '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                 },
-                // regionId: [1, 2, 3, 4, 5, 6, 7, 8],
             },
             {
                 coordType: CARTA.CoordinateType.PIXEL,
@@ -140,7 +145,6 @@ let assertItem: AssertItem = {
                 file: "M17_SWex_testRegions_pix_export_to_pix.crtf",
                 fileId: 0,
                 type: CARTA.FileType.CRTF,
-                // regionId: [1, 2, 3, 4, 5, 6, 7, 8],
                 regionStyles: {
                     '1': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '2': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
@@ -150,6 +154,7 @@ let assertItem: AssertItem = {
                     '6': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '7': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                     '8': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
+                    '9': { color: "#2EE6D6", dashList: [], lineWidth: 2, name: "" },
                 }
             },
         ],
@@ -185,18 +190,18 @@ let assertItem: AssertItem = {
         [
             {
                 success: true,
-                lengthOfRegions: 8,
+                lengthOfRegions: 9,
                 assertRegionId: {
                     index: 7,
-                    id: 16,
+                    id: 17,
                 },
             },
             {
                 success: true,
-                lengthOfRegions: 8,
+                lengthOfRegions: 9,
                 assertRegionId: {
                     index: 7,
-                    id: 24,
+                    id: 26,
                 },
             },
         ],
