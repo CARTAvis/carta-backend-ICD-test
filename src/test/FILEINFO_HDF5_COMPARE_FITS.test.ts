@@ -4,7 +4,7 @@ import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
@@ -23,11 +23,11 @@ let assertItem: AssertItem = {
     fileInfoRequest: 
     [
         {
-            file: "M17_SWex.fits",
+            file: "SDC335.579-0.292.spw0.line.fits",
             hdu: "",
         },
         {
-            file: "M17_SWex.hdf5",
+            file: "SDC335.579-0.292.spw0.line.hdf5",
             hdu: "",
         },
     ]
@@ -91,8 +91,15 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
 
                 let intersection = hdf5HeaderArray.filter(x => fitsHeaderArray.includes(x));
 
-                let difference = hdf5HeaderArray.filter(x => !fitsHeaderArray.includes(x));
-                console.warn("Additional header entries in hdf5:",difference)
+                let difference_hdf5 = hdf5HeaderArray.filter(x => !fitsHeaderArray.includes(x));
+                if (difference_hdf5.length != 0){
+                    console.warn("Additional header entries in hdf5:",difference_hdf5);
+                }
+
+                let difference_fits = fitsHeaderArray.filter(x => !hdf5HeaderArray.includes(x));
+                if (difference_fits.length != 0){
+                    console.warn("Additional header entries in fits:",difference_fits);
+                }
 
                 intersection.map((input,index)=>{
                    let hdf5Index = hdf5HeaderEntries.findIndex(x => x.name == input);
