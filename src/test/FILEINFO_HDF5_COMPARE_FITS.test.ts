@@ -104,7 +104,10 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
                 intersection.map((input,index)=>{
                    let hdf5Index = hdf5HeaderEntries.findIndex(x => x.name == input);
                    let fitsIndex = fitsHeaderEntries.findIndex(y => y.name == input);
-                   expect(hdf5HeaderEntries[hdf5Index].value).toEqual(fitsHeaderEntries[fitsIndex].value)
+                //    if(input != "OBSGEO-X" && input != "OBSGEO-Y" && input != "OBSGEO-Z"){
+                    //    console.log(input)
+                       expect(hdf5HeaderEntries[hdf5Index].value).toEqual(fitsHeaderEntries[fitsIndex].value)
+                //    }
                 //    console.log(hdf5HeaderEntries[hdf5Index].value);
                 //    console.log(fitsHeaderEntries[fitsIndex].value);
                 });
