@@ -29,6 +29,6 @@ Create an image, e.g. `carta-backend-dev:latest`
 Use `$ docker images` to confirm the new image is there, if not try `$ eval $(minikube docker-env)` to switch node.
 Then re-create the image. So that we could run a local image here.
 
-If there is any issue about mount, please try `$ minikube mount <local/images/path>:CARTA/Images` to establish a turnnel.
+If there is any issue about mount, please try `$ minikube mount <local/images/path>:CARTA/Images` to establish a tunnel.
 
 Finally, we could get a ws address by `$ minikube service carta-backend-dev-service --url`, which will return `http://<ip>:<port>`. We could compose to `ws::/<ip>:<port>`.
