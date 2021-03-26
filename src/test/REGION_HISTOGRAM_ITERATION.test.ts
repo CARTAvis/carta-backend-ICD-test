@@ -52,6 +52,51 @@ let assertItem: AssertItem = {
             fileId: 0,
             regionId: -1,
             regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 5, y: 10 }],
+                rotation: 0,
+            },
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 5, y: 10 }],
+                rotation: 25,
+            },
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 5, y: 10 }],
+                rotation: 50,
+            },
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 5, y: 10 }],
+                rotation: 75
+            },
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 5, y: 10 }],
+                rotation: 100
+            },
+        },
+        {
+            fileId: 0,
+            regionId: -1,
+            regionInfo: {
                 regionType: CARTA.RegionType.ELLIPSE,
                 controlPoints: [{ x: 303, y: 607 }, { x: 3, y: 7 }],
                 rotation: 0,
@@ -59,7 +104,7 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 0,
-            regionId: 1,
+            regionId: 2,
             regionInfo: {
                 regionType: CARTA.RegionType.ELLIPSE,
                 controlPoints: [{ x: 303, y: 607 }, { x: 3, y: 7 }],
@@ -68,7 +113,7 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 0,
-            regionId: 1,
+            regionId: 2,
             regionInfo: {
                 regionType: CARTA.RegionType.ELLIPSE,
                 controlPoints: [{ x: 303, y: 607 }, { x: 3, y: 7 }],
@@ -77,11 +122,20 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 0,
-            regionId: 1,
+            regionId: 2,
             regionInfo: {
                 regionType: CARTA.RegionType.ELLIPSE,
                 controlPoints: [{ x: 303, y: 607 }, { x: 3, y: 7 }],
                 rotation: 75
+            },
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            regionInfo: {
+                regionType: CARTA.RegionType.ELLIPSE,
+                controlPoints: [{ x: 303, y: 607 }, { x: 3, y: 7 }],
+                rotation: 100
             },
         },
     ],
@@ -106,17 +160,48 @@ let assertItem: AssertItem = {
             regionId: 1,
             histograms: [{ channel: -1, numBins: -1 }],
         },
+        {
+            fileId: 0,
+            regionId: 1,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
+        {
+            fileId: 0,
+            regionId: 2,
+            histograms: [{ channel: -1, numBins: -1 }],
+        },
     ],
     histogramData: [
         {
             regionId: 1,
             histograms: [
                 {
-                    numBins: 100,
-                    binWidth: 0.0004586729046422988,
-                    firstBinCenter: -0.027140149846673012,
-                    mean: -0.0005255218950590148,
-                    stdDev: 0.0041562225009849985,
+                    numBins: 7,
+                    binWidth: 1.5208303928375244,
+                    firstBinCenter: -4.034262657165527,
+                    mean: 0.4041082208806818,
+                    stdDev: 2.6764579920150386,
+                    bins: [3, 12, 7, 13, 8, 7, 5],
                 },
             ],
             progress: 1,
@@ -125,11 +210,12 @@ let assertItem: AssertItem = {
             regionId: 1,
             histograms: [
                 {
-                    numBins: 213,
-                    binWidth: 0.0002458694507367909,
-                    firstBinCenter: -0.028115009889006615,
-                    mean: 0.000045857146533616145,
-                    stdDev: 0.004279587823672661,
+                    numBins: 9,
+                    binWidth: 1.3602973222732544,
+                    firstBinCenter: -5.711391925811768,
+                    mean: -0.12993427351409315,
+                    stdDev: 2.871427649275705,
+                    bins: [1, 1, 11, 9, 10, 6, 4,  5, 4],
                 },
             ],
             progress: 1,
@@ -138,11 +224,12 @@ let assertItem: AssertItem = {
             regionId: 1,
             histograms: [
                 {
-                    numBins: 235,
-                    binWidth: 0.00019277054525446147,
-                    firstBinCenter: -0.02472059801220894,
-                    mean: -0.00015718120989984945,
-                    stdDev: 0.004208865149775719,
+                    numBins: 9,
+                    binWidth: 1.4611884355545044,
+                    firstBinCenter: -6.568966388702393,
+                    mean: -0.07283528645833333,
+                    stdDev: 3.357136753999045,
+                    bins: [2, 2, 6, 11, 9, 5, 3, 6,  7],
                 },
             ],
             progress: 1,
@@ -151,11 +238,96 @@ let assertItem: AssertItem = {
             regionId: 1,
             histograms: [
                 {
-                    numBins: 235,
-                    binWidth: 0.00019277054525446147,
-                    firstBinCenter: -0.02472059801220894,
-                    mean: -0.00015718120989984945,
-                    stdDev: 0.004208865149775719,
+                    numBins: 8,
+                    binWidth: 1.6125259399414062,
+                    firstBinCenter: -6.242809295654297,
+                    mean: 0.4907681334252451,
+                    stdDev: 3.439834023587806,
+                    bins: [2, 3, 9, 9, 3, 8, 8, 9],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 1,
+            histograms: [
+                {
+                    numBins: 8,
+                    binWidth: 1.7416839599609375,
+                    firstBinCenter: -6.428718566894531,
+                    mean: 1.2446935317095589,
+                    stdDev: 3.603033922567316,
+                    bins: [3, 1,8, 5, 5, 10, 9, 10],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 2,
+            histograms: [
+                {
+                    numBins: 9,
+                    binWidth: 1.4611884355545044,
+                    firstBinCenter: -6.568966388702393,
+                    mean: 0.6847772598266602,
+                    stdDev: 3.803558083723265,
+                    bins: [4, 4, 5, 8, 6, 5, 8, 11, 13],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 2,
+            histograms: [
+                {
+                    numBins: 15,
+                    binWidth: 0.9121989011764526,
+                    firstBinCenter: -6.592972755432129,
+                    mean: 1.120794040053638,
+                    stdDev: 3.263444231613786,
+                    bins: [1, 1, 2, 2, 5, 6, 3, 5, 3, 9, 7, 9, 1, 11, 2],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 2,
+            histograms: [
+                {
+                    numBins: 15,
+                    binWidth: 0.6742350459098816,
+                    firstBinCenter: -3.1424968242645264,
+                    mean: 1.4638134401236007,
+                    stdDev: 2.541942356604781,
+                    bins: [3, 4, 5, 2, 4, 6, 5, 7, 6, 8, 6, 1, 6, 3, 1],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 2,
+            histograms: [
+                {
+                    numBins: 15,
+                    binWidth: 0.6721476316452026,
+                    firstBinCenter: -3.112229347229004,
+                    mean: 0.8817129826200181,
+                    stdDev: 2.629250474696574,
+                    bins: [5, 6, 8, 3, 5, 6, 6, 4, 7, 5, 5, 1, 5, 2, 1],
+                },
+            ],
+            progress: 1,
+        },
+        {
+            regionId: 2,
+            histograms: [
+                {
+                    numBins: 15,
+                    binWidth: 0.8161783814430237,
+                    firstBinCenter: -5.9834513664245605,
+                    mean: 0.05106820633162314,
+                    stdDev: 2.7907663401523517,
+                    bins: [1, 1, 1, 4, 7, 10, 6, 8, 7, 5, 3, 2, 5, 4, 3],
                 },
             ],
             progress: 1,
@@ -186,7 +358,7 @@ describe("REGION_HISTOGRAM_ITERATION test: Testing histogram with different rota
 
 
         assertItem.histogramData.map((histogramData, index) => {
-            describe(`SET REGION #${histogramData.regionId}`, () => {
+            describe(`SET REGION #${histogramData.regionId} with degree = ${assertItem.regionGroup[index].regionInfo.rotation}`, () => {
                 let SetRegionAck: CARTA.SetRegionAck;
                 test(`SET_REGION_ACK should arrive within ${regionTimeout} ms`, async () => {
                     await Connection.send(CARTA.SetRegion, assertItem.regionGroup[index]);
@@ -200,17 +372,23 @@ describe("REGION_HISTOGRAM_ITERATION test: Testing histogram with different rota
                 test(`SET_REGION_ACK.region_id = ${histogramData.regionId}`, () => {
                     expect(SetRegionAck.regionId).toEqual(histogramData.regionId);
                 });
+
+                describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
+                    let RegionHistogramData: CARTA.RegionHistogramData;
+                    test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
+                        await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
+                        RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
+                        console.log(RegionHistogramData)
+                        console.log(RegionHistogramData.histograms[0].bins)
+                    }, regionTimeout);
+    
+                    test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {
+                        expect(RegionHistogramData.regionId).toEqual(histogramData.regionId);
+                    });
+                });
             });
 
-            describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
-                let RegionHistogramData: CARTA.RegionHistogramData;
-                test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
-                    await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
-                    RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
-                    console.log(RegionHistogramData)
-                    console.log(RegionHistogramData.histograms[0].bins)
-                }, regionTimeout);
-            });
+            
         });
     });
 });
