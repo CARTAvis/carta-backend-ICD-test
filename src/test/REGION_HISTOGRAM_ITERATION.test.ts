@@ -373,17 +373,38 @@ describe("REGION_HISTOGRAM_ITERATION test: Testing histogram with different rota
                     expect(SetRegionAck.regionId).toEqual(histogramData.regionId);
                 });
 
-                describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId}`, () => {
+                describe(`SET HISTOGRAM REQUIREMENTS on region #${histogramData.regionId} with degree = ${assertItem.regionGroup[index].regionInfo.rotation}`, () => {
                     let RegionHistogramData: CARTA.RegionHistogramData;
                     test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
                         RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
-                        console.log(RegionHistogramData)
-                        console.log(RegionHistogramData.histograms[0].bins)
+                        // console.log(RegionHistogramData)
+                        // console.log(RegionHistogramData.histograms[0].bins)
                     }, regionTimeout);
     
                     test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {
                         expect(RegionHistogramData.regionId).toEqual(histogramData.regionId);
+                    });
+
+                    test(`REGION_HISTOGRAM_DATA.progress = ${histogramData.progress}`, () => {
+                        expect(RegionHistogramData.progress).toEqual(histogramData.progress);
+                    });
+
+                    test("Assert REGION_HISTOGRAM_DATA.histograms", () => {
+                        if (RegionHistogramData.histograms[0].binWidth !== 0) {
+                            expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(histogramData.histograms[0].binWidth, assertItem.precisionDigits);
+                        };
+                        if (RegionHistogramData.histograms[0].firstBinCenter !== 0) {
+                            expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(histogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
+                        };
+
+                        let filterZero = RegionHistogramData.histograms[0].bins.filter(value => value === 0);
+                        if (filterZero.length === RegionHistogramData.histograms[0].bins.length) {
+                            expect(RegionHistogramData.histograms[0].bins.length).toEqual(histogramData.histograms[0].numBins);
+                        } else {
+                            expect(RegionHistogramData.histograms[0].numBins).toEqual(histogramData.histograms[0].numBins);
+                        };
+                        expect(RegionHistogramData.histograms[0].bins).toEqual(histogramData.histograms[0].bins);
                     });
                 });
             });
