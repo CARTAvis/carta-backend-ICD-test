@@ -1,4 +1,4 @@
-import { AckStream, Client, IOpenFile } from "./CLIENT";
+import { AckStream, Client } from "./CLIENT";
 import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 
@@ -8,7 +8,7 @@ let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 let regionTimeout = config.timeout.region;
 
-type regionAck = {
+type IRegionAck = {
     success: boolean,
     message: string,
     regionNumber: number,
@@ -18,7 +18,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     importRegion: CARTA.IImportRegion[];
-    importRegionAck: regionAck[];
+    importRegionAck: IRegionAck[];
 };
 
 let assertItem: AssertItem = {
@@ -120,7 +120,7 @@ describe("IMPORT_MULTIPLE_REGION: Opening multiple region files at once", () => 
         }, openFileTimeout);
 
         assertItem.importRegion.map((region, index) => {
-            describe(`import file : ${region.file}`, () => {
+            describe(`import region file : ${region.file}`, () => {
                 let importRegion: CARTA.ImportRegionAck;
                 test(`IMPORT_REGION_ACK should arrive within ${openFileTimeout} ms".`, async () => {
                     await Connection.send(CARTA.ImportRegion, region);
@@ -134,7 +134,7 @@ describe("IMPORT_MULTIPLE_REGION: Opening multiple region files at once", () => 
 
                 test(`IMPORT_REGION_ACK.regionStyles = ${JSON.stringify(assertItem.importRegionAck[index].regionStyles)}`, () => {
                     Object.values(importRegion.regionStyles).map(style => {
-                        for(let key in Object(assertItem.importRegionAck[index].regionStyles)){
+                        for (let key in Object(assertItem.importRegionAck[index].regionStyles)) {
                             expect(style[key]).toEqual(assertItem.importRegionAck[index].regionStyles[key]);
                         }
                     });
@@ -143,7 +143,7 @@ describe("IMPORT_MULTIPLE_REGION: Opening multiple region files at once", () => 
                 test(`IMPORT_REGION_ACK.region.length = ${assertItem.importRegionAck[index].regionNumber}`, () => {
                     expect(Object.keys(importRegion.regions).length).toEqual(assertItem.importRegionAck[index].regionNumber);
                 });
-                
+
                 test(`IMPORT_REGION_ACK.message = "${assertItem.importRegionAck[index].message}"`, () => {
                     expect(importRegion.message).toEqual(assertItem.importRegionAck[index].message);
                 });
