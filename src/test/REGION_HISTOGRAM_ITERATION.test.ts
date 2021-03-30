@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
@@ -353,7 +353,7 @@ describe("REGION_HISTOGRAM_ITERATION test: Testing histogram with different rota
             await Connection.openFile(assertItem.openFile);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor);
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesRequire);
-            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync && data.endSync);
         });
 
 
