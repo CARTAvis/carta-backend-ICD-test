@@ -378,8 +378,6 @@ describe("REGION_HISTOGRAM_ITERATION test: Testing histogram with different rota
                     test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
                         RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
-                        // console.log(RegionHistogramData)
-                        // console.log(RegionHistogramData.histograms[0].bins)
                     }, regionTimeout);
     
                     test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {
