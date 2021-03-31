@@ -92,7 +92,11 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
         let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            ack = await Connection.streamUntil(
+                (type, data, ack) =>
+                    ack.RegionHistogramData.length == assertItem.momentRequest.moments.length &&
+                    ack.MomentResponse.length > 0
+            );
             FileId = ack.RegionHistogramData.map(data => data.fileId);
             expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
@@ -163,7 +167,7 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
                     compressionType: CARTA.CompressionType.NONE,
                     compressionQuality: 0,
                 });
-                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false).then(ack => {
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync && data.endSync).then(ack => {
                     RasterTileSync.push(...ack.RasterTileSync.slice(-1));
                     RasterTileData.push(...ack.RasterTileData);
                 });
