@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
-let testSubdirectory = config.path.QA + "/nonstandard_headers";
+let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
 
@@ -21,57 +21,36 @@ let assertItem: AssertItem = {
     openFile: [
         {
             directory: testSubdirectory,
-            file: "cube_disorder_header01.fits",
+            file: "M17_SWex.fits",
             fileId: 100,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
-            file: "cube_disorder_header02.fits",
+            file: "M17_SWex.image",
             fileId: 101,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
-            file: "cube_disorder_header03.fits",
+            file: "broken_header.mirad",
             fileId: 102,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
-            file: "Jordan_case.fits",
+            file: "M17_SWex.hdf5",
             fileId: 103,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
-            file: "cube_ra_dec_sponge_bob.fits",
+            file: "M17_SWex.miriad",
             fileId: 104,
-            hdu: "",
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory,
-            file: "cube_ra_dec_sponge_bob2.fits",
-            fileId: 105,
-            hdu: "",
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory,
-            file: "cube_ra_dec_freq_stokes.fits",
-            fileId: 106,
-            hdu: "",
-            renderMode: CARTA.RenderMode.RASTER,
-        },
-        {
-            directory: testSubdirectory,
-            file: "cube_ra_dec_stokes_freq.fits",
-            fileId: 107,
             hdu: "",
             renderMode: CARTA.RenderMode.RASTER,
         },
@@ -79,16 +58,13 @@ let assertItem: AssertItem = {
     openFileSuccess: [
         true,
         true,
-        true,
         false,
-        true,
-        true,
         true,
         true,
     ],
 };
 
-describe("FILEINFO_FITS_NONSTANDARD: Opening multiple FITS image files with non-standard header", () => {
+describe("IMPORT_MULTIPLE_IMAGE: Opening multiple image files at once", () => {
 
     let Connection: Client;
     beforeAll(async () => {
