@@ -82,6 +82,20 @@ docker run -ti -p 3002:7777 -v <frontend location>:/carta-backend/build/../share
 
 
 
-## To Do:
+## Dockerfile with carta-backend and carta-frontend:
 
-Maybe try adding a built frontend into the container.
+The Dockerfile `Dockerfile-carta-with-frontend_U20.04` includes a built carta-frontend taken from an npm package.
+Build it as follows where the resulting container name can be anything. In this example, we call it `carta-dev`.
+
+```
+docker build -f Dockerfile-carta-with-frontend_U20.04 -t carta-dev .
+```
+
+Then one way to run it as follows:
+
+```
+docker run -ti -p 3002:3002 -v $PWD:/images carta-dev /images   
+```
+
+Enter the unique URL that you see in your local web-browser. CARTA should start up with the chosen directory in its file-browser (In this example we are using the current local directory, `$PWD`).
+
