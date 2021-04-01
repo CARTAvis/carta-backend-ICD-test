@@ -45,14 +45,30 @@ RUN \
   echo "#!/bin/bash \n ./carta-backend/build/carta_backend \$@" >> /start.sh && \
   chmod 755 /start.sh
 
+###############################################
+# Temporary additions needed for building the 
+# older 'master' (v1.4) carta-backend branch
+RUN \
+  apt-get install libfmt-dev
+
+RUN \
+  add-apt-repository -y ppa:cartavis/uws && \
+  apt-get update && \
+  apt-get install uws
+#
+# also needed to add 
+# -DCMAKE_CXX_FLAGS="-I/usr/include/casacode" 
+# to the cmake command below
+##############################################
+
 # Clone and build the carta-backend
 RUN \
   git clone https://github.com/CARTAvis/carta-backend.git && \
   cd carta-backend && \
   git checkout master && \
-  git submodule update --init --recursive && \
+  git submodule init && git submodule update && \
   mkdir build && cd build && \
-  cmake .. && make -j2
+  cmake ..  -DCMAKE_CXX_FLAGS="-I/usr/include/casacode" && make -j2
 
 # Add a non-root user and run carta_backend and startup script as this user
 RUN groupadd -g 5555 carta && \
