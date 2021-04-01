@@ -61,7 +61,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
         let MomentResponse: CARTA.MomentResponse;
         test(`Request a moment progress but cancel after receiving 5 MomentProgress`, async () => {
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length==5);
+            ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length == 5);
             FileId = ack.RegionHistogramData.map(data => data.fileId);
             await Connection.send(CARTA.StopMomentCalc, { fileId: 0 });
             MomentResponse = await Connection.receive(CARTA.MomentResponse);
@@ -100,7 +100,9 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
                 ...assertItem.momentRequest,
                 moments: [12],
             });
-            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            ack = await Connection.streamUntil(
+                type => type == CARTA.MomentResponse
+            );
             expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
