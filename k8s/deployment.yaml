@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: carta-backend-dev-service
+  name: carta-dev-service
 spec:
   selector:
-    app: carta-backend-dev
+    app: carta-dev
   ports:
   - protocol: "TCP"
     port: 3002
@@ -14,20 +14,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: carta-backend-dev
+  name: carta-dev
 spec:
   selector:
     matchLabels:
-      app: carta-backend-dev
-  replicas: 1
+      app: carta-dev
+  replicas: 2
   template:
     metadata:
       labels:
-        app: carta-backend-dev
+        app: carta-dev
     spec:
       containers:
-      - name: carta-backend-dev
-        image: carta-backend-dev:latest
+      - name: carta-dev
+        image: carta-dev:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 3002
@@ -37,5 +37,5 @@ spec:
       volumes:
       - name: images
         hostPath: 
-          path: /CARTA/Images
+          path: /Images
           type: Directory
