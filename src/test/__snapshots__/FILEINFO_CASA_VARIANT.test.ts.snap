@@ -1,0 +1,1995 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should arrive within 2100 ms". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": "1575484577",
+    "name": "UVamp.image",
+    "size": "1968708",
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "UVamp.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[300, 300, 5]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "UU, VV",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[151, 151]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 lambda, 0 lambda]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1718.87 lambda, 1718.87 lambda",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92354\\" X 1.76939\\", -17.8188 deg",
+        },
+      ],
+      "depth": 5,
+      "dimensions": 3,
+      "headerEntries": Array [
+        Object {
+          "comment": "Standard FITS",
+          "entryType": "INT",
+          "name": "SIMPLE",
+          "numericValue": 1,
+          "value": "T",
+        },
+        Object {
+          "comment": "Floating point (32 bit)",
+          "entryType": "INT",
+          "name": "BITPIX",
+          "numericValue": -32,
+          "value": "-32",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS",
+          "numericValue": 3,
+          "value": "3",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS1",
+          "numericValue": 300,
+          "value": "300",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS2",
+          "numericValue": 300,
+          "value": "300",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS3",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+          "entryType": "FLOAT",
+          "name": "BSCALE",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BZERO",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "BTYPE",
+          "value": "Intensity",
+        },
+        Object {
+          "name": "OBJECT",
+          "value": "IRC+10216",
+        },
+        Object {
+          "comment": "Brightness (pixel) unit",
+          "name": "BUNIT",
+          "value": "Jy/beam",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_1",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "name": "CTYPE1",
+          "value": "UU",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT1",
+          "numericValue": -1718.8733853924696,
+          "value": "-1.718873385392E+03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX1",
+          "numericValue": 151,
+          "value": "151",
+        },
+        Object {
+          "name": "CUNIT1",
+          "value": "lambda",
+        },
+        Object {
+          "name": "CTYPE2",
+          "value": "VV",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT2",
+          "numericValue": 1718.8733853924696,
+          "value": "1.718873385392E+03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX2",
+          "numericValue": 151,
+          "value": "151",
+        },
+        Object {
+          "name": "CUNIT2",
+          "value": "lambda",
+        },
+        Object {
+          "name": "CTYPE3",
+          "value": "FREQ",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL3",
+          "numericValue": 36392354380.64446,
+          "value": "3.639235438064E+10",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT3",
+          "numericValue": 125014.59922790527,
+          "value": "1.250145992279E+05",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX3",
+          "numericValue": -10,
+          "value": "-10",
+        },
+        Object {
+          "name": "CUNIT3",
+          "value": "Hz",
+        },
+        Object {
+          "comment": "Rest Frequency (Hz)",
+          "entryType": "FLOAT",
+          "name": "RESTFRQ",
+          "numericValue": 36392319999.99999,
+          "value": "3.639232000000E+10",
+        },
+        Object {
+          "comment": "Spectral reference frame",
+          "name": "SPECSYS",
+          "value": "LSRK",
+        },
+        Object {
+          "comment": "Alternate frequency reference value",
+          "entryType": "FLOAT",
+          "name": "ALTRVAL",
+          "numericValue": -283.22068812680686,
+          "value": "-2.832206881268E+02",
+        },
+        Object {
+          "comment": "Alternate frequency reference pixel",
+          "entryType": "FLOAT",
+          "name": "ALTRPIX",
+          "numericValue": -10,
+          "value": "-10",
+        },
+        Object {
+          "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+          "entryType": "INT",
+          "name": "VELREF",
+          "numericValue": 257,
+          "value": "257",
+        },
+        Object {
+          "name": "TELESCOP",
+          "value": "EVLA",
+        },
+        Object {
+          "name": "OBSERVER",
+          "value": "Mark J. Mark Claussen",
+        },
+        Object {
+          "name": "DATE-OBS",
+          "value": "2010-04-26T03:23:44.000000",
+        },
+        Object {
+          "name": "TIMESYS",
+          "value": "UTC",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSRA",
+          "numericValue": 146.98909166671865,
+          "value": "1.469890916667E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSDEC",
+          "numericValue": 13.277961108781836,
+          "value": "1.327796110878E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-X",
+          "numericValue": -1601156.673287362,
+          "value": "-1.601156673287E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Y",
+          "numericValue": -5041988.986065895,
+          "value": "-5.041988986066E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Z",
+          "numericValue": 3554879.2368205097,
+          "value": "3.554879236821E+06",
+        },
+        Object {
+          "name": "INSTRUME",
+          "value": "EVLA",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "DISTANCE",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "USEWEIGH",
+          "value": "F",
+        },
+        Object {
+          "comment": "CASA multiple BEAMS table present",
+          "entryType": "INT",
+          "name": "CASAMBM",
+          "numericValue": 1,
+          "value": "T",
+        },
+      ],
+      "height": 300,
+      "stokes": 1,
+      "width": 300,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should arrive within 2100 ms". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": "1575484583",
+    "name": "UVphase.image",
+    "size": "1968704",
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "UVphase.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[300, 300, 5]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "UU, VV",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[151, 151]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 lambda, 0 lambda]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1718.87 lambda, 1718.87 lambda",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "deg",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92354\\" X 1.76939\\", -17.8188 deg",
+        },
+      ],
+      "depth": 5,
+      "dimensions": 3,
+      "headerEntries": Array [
+        Object {
+          "comment": "Standard FITS",
+          "entryType": "INT",
+          "name": "SIMPLE",
+          "numericValue": 1,
+          "value": "T",
+        },
+        Object {
+          "comment": "Floating point (32 bit)",
+          "entryType": "INT",
+          "name": "BITPIX",
+          "numericValue": -32,
+          "value": "-32",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS",
+          "numericValue": 3,
+          "value": "3",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS1",
+          "numericValue": 300,
+          "value": "300",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS2",
+          "numericValue": 300,
+          "value": "300",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS3",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+          "entryType": "FLOAT",
+          "name": "BSCALE",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BZERO",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "BTYPE",
+          "value": "Intensity",
+        },
+        Object {
+          "name": "OBJECT",
+          "value": "IRC+10216",
+        },
+        Object {
+          "comment": "Brightness (pixel) unit",
+          "name": "BUNIT",
+          "value": "deg",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_1",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "name": "CTYPE1",
+          "value": "UU",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT1",
+          "numericValue": -1718.8733853924696,
+          "value": "-1.718873385392E+03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX1",
+          "numericValue": 151,
+          "value": "151",
+        },
+        Object {
+          "name": "CUNIT1",
+          "value": "lambda",
+        },
+        Object {
+          "name": "CTYPE2",
+          "value": "VV",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT2",
+          "numericValue": 1718.8733853924696,
+          "value": "1.718873385392E+03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX2",
+          "numericValue": 151,
+          "value": "151",
+        },
+        Object {
+          "name": "CUNIT2",
+          "value": "lambda",
+        },
+        Object {
+          "name": "CTYPE3",
+          "value": "FREQ",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL3",
+          "numericValue": 36392354380.64446,
+          "value": "3.639235438064E+10",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT3",
+          "numericValue": 125014.59922790527,
+          "value": "1.250145992279E+05",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX3",
+          "numericValue": -10,
+          "value": "-10",
+        },
+        Object {
+          "name": "CUNIT3",
+          "value": "Hz",
+        },
+        Object {
+          "comment": "Rest Frequency (Hz)",
+          "entryType": "FLOAT",
+          "name": "RESTFRQ",
+          "numericValue": 36392319999.99999,
+          "value": "3.639232000000E+10",
+        },
+        Object {
+          "comment": "Spectral reference frame",
+          "name": "SPECSYS",
+          "value": "LSRK",
+        },
+        Object {
+          "comment": "Alternate frequency reference value",
+          "entryType": "FLOAT",
+          "name": "ALTRVAL",
+          "numericValue": -283.22068812680686,
+          "value": "-2.832206881268E+02",
+        },
+        Object {
+          "comment": "Alternate frequency reference pixel",
+          "entryType": "FLOAT",
+          "name": "ALTRPIX",
+          "numericValue": -10,
+          "value": "-10",
+        },
+        Object {
+          "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+          "entryType": "INT",
+          "name": "VELREF",
+          "numericValue": 257,
+          "value": "257",
+        },
+        Object {
+          "name": "TELESCOP",
+          "value": "EVLA",
+        },
+        Object {
+          "name": "OBSERVER",
+          "value": "Mark J. Mark Claussen",
+        },
+        Object {
+          "name": "DATE-OBS",
+          "value": "2010-04-26T03:23:44.000000",
+        },
+        Object {
+          "name": "TIMESYS",
+          "value": "UTC",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSRA",
+          "numericValue": 146.98909166671865,
+          "value": "1.469890916667E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSDEC",
+          "numericValue": 13.277961108781836,
+          "value": "1.327796110878E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-X",
+          "numericValue": -1601156.673287362,
+          "value": "-1.601156673287E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Y",
+          "numericValue": -5041988.986065895,
+          "value": "-5.041988986066E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Z",
+          "numericValue": 3554879.2368205097,
+          "value": "3.554879236821E+06",
+        },
+        Object {
+          "name": "INSTRUME",
+          "value": "EVLA",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "DISTANCE",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "USEWEIGH",
+          "value": "F",
+        },
+        Object {
+          "comment": "CASA multiple BEAMS table present",
+          "entryType": "INT",
+          "name": "CASAMBM",
+          "numericValue": 1,
+          "value": "T",
+        },
+      ],
+      "height": 300,
+      "stokes": 1,
+      "width": 300,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should arrive within 2100 ms". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": "1575483289",
+    "name": "componentlist.image",
+    "size": "1880126",
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "componentlist.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[512, 512, 1, 1]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Right Ascension, Declination",
+        },
+        Object {
+          "name": "Projection",
+          "value": "SIN",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[256, 257]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[01:37:41.2994, +033.09.35.1330]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[24.4221 deg, 33.1598 deg]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1\\", 1\\"",
+        },
+        Object {
+          "name": "Celestial frame",
+          "value": "FK5, J2000",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "TOPO",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Restoring beam",
+          "value": "5.24988\\" X 5.24988\\", 0 deg",
+        },
+      ],
+      "depth": 1,
+      "dimensions": 4,
+      "headerEntries": Array [
+        Object {
+          "comment": "Standard FITS",
+          "entryType": "INT",
+          "name": "SIMPLE",
+          "numericValue": 1,
+          "value": "T",
+        },
+        Object {
+          "comment": "Floating point (32 bit)",
+          "entryType": "INT",
+          "name": "BITPIX",
+          "numericValue": -32,
+          "value": "-32",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS",
+          "numericValue": 4,
+          "value": "4",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS1",
+          "numericValue": 512,
+          "value": "512",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS2",
+          "numericValue": 512,
+          "value": "512",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS3",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS4",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+          "entryType": "FLOAT",
+          "name": "BSCALE",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BZERO",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BMAJ",
+          "numericValue": 0.0014583,
+          "value": "1.458300000000E-03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BMIN",
+          "numericValue": 0.0014583,
+          "value": "1.458300000000E-03",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BPA",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "BTYPE",
+          "value": "Intensity",
+        },
+        Object {
+          "name": "OBJECT",
+          "value": "J0137+33",
+        },
+        Object {
+          "comment": "Brightness (pixel) unit",
+          "name": "BUNIT",
+          "value": "Jy/beam",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "EQUINOX",
+          "numericValue": 2000,
+          "value": "2000",
+        },
+        Object {
+          "name": "RADESYS",
+          "value": "FK5",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "LONPOLE",
+          "numericValue": 180,
+          "value": "1.800000000000E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "LATPOLE",
+          "numericValue": 33.1597591651,
+          "value": "3.315975916510E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_1",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_1",
+          "value": "-0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_4",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "name": "CTYPE1",
+          "value": "RA---SIN",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL1",
+          "numericValue": 24.4220809634,
+          "value": "2.442208096340E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT1",
+          "numericValue": -0.0002777777845,
+          "value": "-2.777777845000E-04",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX1",
+          "numericValue": 256,
+          "value": "256",
+        },
+        Object {
+          "name": "CUNIT1",
+          "value": "deg",
+        },
+        Object {
+          "name": "CTYPE2",
+          "value": "DEC--SIN",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL2",
+          "numericValue": 33.1597591651,
+          "value": "3.315975916510E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT2",
+          "numericValue": 0.0002777777845,
+          "value": "2.777777845000E-04",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX2",
+          "numericValue": 257,
+          "value": "257",
+        },
+        Object {
+          "name": "CUNIT2",
+          "value": "deg",
+        },
+        Object {
+          "name": "CTYPE3",
+          "value": "FREQ",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL3",
+          "numericValue": 327558039.393,
+          "value": "3.275580393930E+08",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT3",
+          "numericValue": 11750000,
+          "value": "1.175000000000E+07",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX3",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT3",
+          "value": "Hz",
+        },
+        Object {
+          "name": "CTYPE4",
+          "value": "STOKES",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL4",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT4",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX4",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT4",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PV2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PV2_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "TELESCOP",
+          "value": "EVLA",
+        },
+        Object {
+          "name": "OBSERVER",
+          "value": "Richard",
+        },
+        Object {
+          "name": "DATE-OBS",
+          "value": "2014-02-16T00:00:00.000000",
+        },
+        Object {
+          "name": "TIMESYS",
+          "value": "UTC",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSRA",
+          "numericValue": 24.422080963399996,
+          "value": "2.442208096340E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSDEC",
+          "numericValue": 33.1597591651,
+          "value": "3.315975916510E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-X",
+          "numericValue": -1601156.673287362,
+          "value": "-1.601156673287E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Y",
+          "numericValue": -5041988.986065895,
+          "value": "-5.041988986066E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Z",
+          "numericValue": 3554879.2368205097,
+          "value": "3.554879236821E+06",
+        },
+        Object {
+          "name": "INSTRUME",
+          "value": "EVLA",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "ALTRPIX",
+          "numericValue": 1,
+          "value": "1",
+        },
+      ],
+      "height": 512,
+      "stokes": 1,
+      "width": 512,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should arrive within 2100 ms". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": "1575483289",
+    "name": "concatenated.image",
+    "size": "1134908779",
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "concatenated.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[378, 378, 1, 1918]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 1918,
+          "value": "1918",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Right Ascension, Declination",
+        },
+        Object {
+          "name": "Projection",
+          "value": "SIN",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[190, 190]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[17:20:53.4486, -035.46.57.8004]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[260.223 deg, -35.7827 deg]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-0.03\\", 0.03\\"",
+        },
+        Object {
+          "name": "Celestial frame",
+          "value": "ICRS",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+      ],
+      "depth": 1918,
+      "dimensions": 4,
+      "headerEntries": Array [
+        Object {
+          "comment": "Standard FITS",
+          "entryType": "INT",
+          "name": "SIMPLE",
+          "numericValue": 1,
+          "value": "T",
+        },
+        Object {
+          "comment": "Floating point (32 bit)",
+          "entryType": "INT",
+          "name": "BITPIX",
+          "numericValue": -32,
+          "value": "-32",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS",
+          "numericValue": 4,
+          "value": "4",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS1",
+          "numericValue": 378,
+          "value": "378",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS2",
+          "numericValue": 378,
+          "value": "378",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS3",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS4",
+          "numericValue": 1918,
+          "value": "1918",
+        },
+        Object {
+          "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+          "entryType": "FLOAT",
+          "name": "BSCALE",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BZERO",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "BTYPE",
+          "value": "Intensity",
+        },
+        Object {
+          "name": "OBJECT",
+          "value": "NGC6334I",
+        },
+        Object {
+          "comment": "Brightness (pixel) unit",
+          "name": "BUNIT",
+        },
+        Object {
+          "name": "RADESYS",
+          "value": "ICRS",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "LONPOLE",
+          "numericValue": 180,
+          "value": "1.800000000000E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "LATPOLE",
+          "numericValue": -35.78272233083669,
+          "value": "-3.578272233084E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_1",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_4",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC4_4",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "name": "CTYPE1",
+          "value": "RA---SIN",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL1",
+          "numericValue": 260.22270266829605,
+          "value": "2.602227026683E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT1",
+          "numericValue": -0.000008333333314261814,
+          "value": "-8.333333314262E-06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX1",
+          "numericValue": 190,
+          "value": "190",
+        },
+        Object {
+          "name": "CUNIT1",
+          "value": "deg",
+        },
+        Object {
+          "name": "CTYPE2",
+          "value": "DEC--SIN",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL2",
+          "numericValue": -35.78272233083669,
+          "value": "-3.578272233084E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT2",
+          "numericValue": 0.000008333333314261814,
+          "value": "8.333333314262E-06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX2",
+          "numericValue": 190,
+          "value": "190",
+        },
+        Object {
+          "name": "CUNIT2",
+          "value": "deg",
+        },
+        Object {
+          "name": "CTYPE3",
+          "value": "STOKES",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX3",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT3",
+        },
+        Object {
+          "name": "CTYPE4",
+          "value": "FREQ",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL4",
+          "numericValue": 895831133963,
+          "value": "8.958311339630E+11",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT4",
+          "numericValue": 976651.55078125,
+          "value": "9.766515507812E+05",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX4",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT4",
+          "value": "Hz",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PV2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PV2_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "comment": "Rest Frequency (Hz)",
+          "entryType": "FLOAT",
+          "name": "RESTFRQ",
+          "numericValue": 896740000000,
+          "value": "8.967400000000E+11",
+        },
+        Object {
+          "comment": "Spectral reference frame",
+          "name": "SPECSYS",
+          "value": "LSRK",
+        },
+        Object {
+          "comment": "Alternate frequency reference value",
+          "entryType": "FLOAT",
+          "name": "ALTRVAL",
+          "numericValue": 303846.35816953244,
+          "value": "3.038463581695E+05",
+        },
+        Object {
+          "comment": "Alternate frequency reference pixel",
+          "entryType": "FLOAT",
+          "name": "ALTRPIX",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+          "entryType": "INT",
+          "name": "VELREF",
+          "numericValue": 257,
+          "value": "257",
+        },
+        Object {
+          "name": "TELESCOP",
+          "value": "ALMA",
+        },
+        Object {
+          "name": "OBSERVER",
+          "value": "bmcguire",
+        },
+        Object {
+          "name": "DATE-OBS",
+          "value": "2018-04-05T09:28:43.872000",
+        },
+        Object {
+          "name": "TIMESYS",
+          "value": "UTC",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSRA",
+          "numericValue": 260.2227025066983,
+          "value": "2.602227025067E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSDEC",
+          "numericValue": -35.782722330836705,
+          "value": "-3.578272233084E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-X",
+          "numericValue": 2225142.180268967,
+          "value": "2.225142180269E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Y",
+          "numericValue": -5440307.370348562,
+          "value": "-5.440307370349E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Z",
+          "numericValue": -2481029.851873547,
+          "value": "-2.481029851874E+06",
+        },
+        Object {
+          "name": "INSTRUME",
+          "value": "ALMA",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "DISTANCE",
+          "value": "0.000000000000E+00",
+        },
+      ],
+      "height": 378,
+      "stokes": 1,
+      "width": 378,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should arrive within 2100 ms". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": "1575485001",
+    "name": "pVimage.image",
+    "size": "110455",
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "pVimage.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[160, 1, 52]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 52,
+          "value": "52",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Offset, Frequency",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[80, 1]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 arcsec, 3.63924e+10 Hz]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[0 deg, 3.63924e+10 Hz]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "0.4\\", 125015 Hz",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92337\\" X 1.76931\\", -17.8188 deg",
+        },
+      ],
+      "depth": 1,
+      "dimensions": 3,
+      "headerEntries": Array [
+        Object {
+          "comment": "Standard FITS",
+          "entryType": "INT",
+          "name": "SIMPLE",
+          "numericValue": 1,
+          "value": "T",
+        },
+        Object {
+          "comment": "Floating point (32 bit)",
+          "entryType": "INT",
+          "name": "BITPIX",
+          "numericValue": -32,
+          "value": "-32",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS",
+          "numericValue": 3,
+          "value": "3",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS1",
+          "numericValue": 160,
+          "value": "160",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS2",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "NAXIS3",
+          "numericValue": 52,
+          "value": "52",
+        },
+        Object {
+          "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+          "entryType": "FLOAT",
+          "name": "BSCALE",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "BZERO",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "name": "BTYPE",
+          "value": "Intensity",
+        },
+        Object {
+          "name": "OBJECT",
+          "value": "IRC+10216",
+        },
+        Object {
+          "comment": "Brightness (pixel) unit",
+          "name": "BUNIT",
+          "value": "Jy/beam",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_1",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_2",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC1_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC2_3",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "PC3_3",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "name": "CTYPE1",
+          "value": "OFFSET",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL1",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT1",
+          "numericValue": 0.40000000160599447,
+          "value": "4.000000016060E-01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX1",
+          "numericValue": 80,
+          "value": "80",
+        },
+        Object {
+          "name": "CUNIT1",
+          "value": "arcsec",
+        },
+        Object {
+          "name": "CTYPE2",
+          "value": "STOKES",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT2",
+          "numericValue": 1,
+          "value": "1.000000000000E+00",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX2",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT2",
+        },
+        Object {
+          "name": "CTYPE3",
+          "value": "FREQ",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRVAL3",
+          "numericValue": 36392354380.64446,
+          "value": "3.639235438064E+10",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CDELT3",
+          "numericValue": 125014.59922790527,
+          "value": "1.250145992279E+05",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "CRPIX3",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "CUNIT3",
+          "value": "Hz",
+        },
+        Object {
+          "comment": "Rest Frequency (Hz)",
+          "entryType": "FLOAT",
+          "name": "RESTFRQ",
+          "numericValue": 36392319999.99999,
+          "value": "3.639232000000E+10",
+        },
+        Object {
+          "comment": "Spectral reference frame",
+          "name": "SPECSYS",
+          "value": "LSRK",
+        },
+        Object {
+          "comment": "Alternate frequency reference value",
+          "entryType": "FLOAT",
+          "name": "ALTRVAL",
+          "numericValue": -283.22068812680686,
+          "value": "-2.832206881268E+02",
+        },
+        Object {
+          "comment": "Alternate frequency reference pixel",
+          "entryType": "FLOAT",
+          "name": "ALTRPIX",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+          "entryType": "INT",
+          "name": "VELREF",
+          "numericValue": 257,
+          "value": "257",
+        },
+        Object {
+          "name": "TELESCOP",
+          "value": "EVLA",
+        },
+        Object {
+          "name": "OBSERVER",
+          "value": "Mark J. Mark Claussen",
+        },
+        Object {
+          "name": "DATE-OBS",
+          "value": "2010-04-26T03:23:44.000000",
+        },
+        Object {
+          "name": "TIMESYS",
+          "value": "UTC",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSRA",
+          "numericValue": 146.98909166671865,
+          "value": "1.469890916667E+02",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSDEC",
+          "numericValue": 13.277961108781836,
+          "value": "1.327796110878E+01",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-X",
+          "numericValue": -1601156.673287362,
+          "value": "-1.601156673287E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Y",
+          "numericValue": -5041988.986065895,
+          "value": "-5.041988986066E+06",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "OBSGEO-Z",
+          "numericValue": 3554879.2368205097,
+          "value": "3.554879236821E+06",
+        },
+        Object {
+          "name": "INSTRUME",
+          "value": "EVLA",
+        },
+        Object {
+          "entryType": "FLOAT",
+          "name": "DISTANCE",
+          "value": "0.000000000000E+00",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "USEWEIGH",
+          "value": "F",
+        },
+        Object {
+          "comment": "CASA multiple BEAMS table present",
+          "entryType": "INT",
+          "name": "CASAMBM",
+          "numericValue": 1,
+          "value": "T",
+        },
+      ],
+      "height": 52,
+      "stokes": 1,
+      "width": 160,
+    },
+  },
+  "success": true,
+}
+`;
