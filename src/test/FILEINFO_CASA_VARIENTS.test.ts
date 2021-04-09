@@ -4,7 +4,7 @@ import { Client } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
-let testSubdirectory = '/set_casaImageVarients';
+let testSubdirectory = config.path.casa_varients;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;

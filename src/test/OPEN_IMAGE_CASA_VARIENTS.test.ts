@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, IOpenFile } from "./CLIENT";
 import config from "./config.json";
 let testServerUrl: string = config.serverURL;
-let testSubdirectory: string = '/set_casaImageVarients';
+let testSubdirectory: string = config.path.casa_varients;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
