@@ -1,0 +1,782 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 1`] = `
+Object {
+  "beamTable": Array [
+    Object {
+      "channel": -1,
+      "majorAxis": 2.061048984527588,
+      "minorAxis": 1.4912588596343994,
+      "pa": -74.6267318725586,
+      "stokes": -1,
+    },
+  ],
+  "fileId": 200,
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "name": "M17_SWex_pv.fits",
+    "size": "149760",
+    "type": "FITS",
+  },
+  "fileInfoExtended": Object {
+    "computedEntries": Array [
+      Object {
+        "name": "Name",
+        "value": "M17_SWex_pv.fits",
+      },
+      Object {
+        "name": "HDU",
+        "value": "0",
+      },
+      Object {
+        "name": "Shape",
+        "value": "[482, 25, 1]",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of channels",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "Coordinate type",
+        "value": "OFFSET, Frequency",
+      },
+      Object {
+        "name": "Image reference pixels",
+        "value": "[241, 1]",
+      },
+      Object {
+        "name": "Image reference coords",
+        "value": "[0 arcsec, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Image ref coords (deg)",
+        "value": "[0 deg, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Pixel increment",
+        "value": "0.4\\", -244238 Hz",
+      },
+      Object {
+        "name": "Spectral frame",
+        "value": "LSRK",
+      },
+      Object {
+        "name": "Velocity definition",
+        "value": "RADIO",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
+        "name": "Restoring beam",
+        "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
+      },
+    ],
+    "depth": 1,
+    "dimensions": 3,
+    "headerEntries": Array [
+      Object {
+        "comment": "Standard FITS",
+        "entryType": "INT",
+        "name": "SIMPLE",
+        "numericValue": 1,
+        "value": "T",
+      },
+      Object {
+        "comment": "Floating point (32 bit)",
+        "entryType": "INT",
+        "name": "BITPIX",
+        "numericValue": -32,
+        "value": "-32",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS",
+        "numericValue": 3,
+        "value": "3",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS1",
+        "numericValue": 482,
+        "value": "482",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS2",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS3",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+        "entryType": "FLOAT",
+        "name": "BSCALE",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BZERO",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BMAJ",
+        "numericValue": 0.0005725136068132,
+        "value": "5.725136068132E-04",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BMIN",
+        "numericValue": 0.0004142385721207,
+        "value": "4.142385721207E-04",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BPA",
+        "numericValue": -74.62673187256,
+        "value": "-7.462673187256E+01",
+      },
+      Object {
+        "name": "BTYPE",
+        "value": "Intensity",
+      },
+      Object {
+        "name": "OBJECT",
+        "value": "M17SW",
+      },
+      Object {
+        "comment": "Brightness (pixel) unit",
+        "name": "BUNIT",
+        "value": "Jy/beam",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_1",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_2",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_2",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_2",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_3",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_3",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "name": "CTYPE1",
+        "value": "OFFSET",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT1",
+        "numericValue": 0.4000000145635,
+        "value": "4.000000145635E-01",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX1",
+        "numericValue": 241,
+        "value": "241",
+      },
+      Object {
+        "name": "CUNIT1",
+        "value": "arcsec",
+      },
+      Object {
+        "name": "CTYPE2",
+        "value": "FREQ",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL2",
+        "numericValue": 86751396188.4,
+        "value": "8.675139618840E+10",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT2",
+        "numericValue": -244237.7011414,
+        "value": "-2.442377011414E+05",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX2",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "CUNIT2",
+        "value": "Hz",
+      },
+      Object {
+        "name": "CTYPE3",
+        "value": "STOKES",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX3",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "CUNIT3",
+      },
+      Object {
+        "comment": "Rest Frequency (Hz)",
+        "entryType": "FLOAT",
+        "name": "RESTFRQ",
+        "numericValue": 86754290000,
+        "value": "8.675429000000E+10",
+      },
+      Object {
+        "comment": "Spectral reference frame",
+        "name": "SPECSYS",
+        "value": "LSRK",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "ALTRVAL",
+        "numericValue": 9999.99991417096,
+        "value": "9.999999914171E+03",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "ALTRPIX",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+        "entryType": "INT",
+        "name": "VELREF",
+        "numericValue": 257,
+        "value": "257",
+      },
+      Object {
+        "name": "TELESCOP",
+        "value": "ALMA",
+      },
+      Object {
+        "name": "OBSERVER",
+        "value": "sishii",
+      },
+      Object {
+        "name": "DATE-OBS",
+        "value": "2016-04-03T13:02:58.800000",
+      },
+      Object {
+        "name": "TIMESYS",
+        "value": "UTC",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSRA",
+        "numericValue": 275.0875000001,
+        "value": "2.750875000001E+02",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSDEC",
+        "numericValue": -16.202777777790004,
+        "value": "-1.620277777779E+01",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-X",
+        "numericValue": 2225142.180269,
+        "value": "2.225142180269E+06",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-Y",
+        "numericValue": -5440307.370349,
+        "value": "-5.440307370349E+06",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-Z",
+        "numericValue": -2481029.851874,
+        "value": "-2.481029851874E+06",
+      },
+    ],
+    "height": 25,
+    "stokes": 1,
+    "width": 482,
+  },
+  "success": true,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 1`] = `
+Object {
+  "beamTable": Array [
+    Object {
+      "channel": -1,
+      "majorAxis": 2.061048984527588,
+      "minorAxis": 1.4912588596343994,
+      "pa": -74.6267318725586,
+      "stokes": -1,
+    },
+  ],
+  "fileId": 201,
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "name": "M17_SWex_pv.image",
+    "size": "97766",
+  },
+  "fileInfoExtended": Object {
+    "computedEntries": Array [
+      Object {
+        "name": "Name",
+        "value": "M17_SWex_pv.image",
+      },
+      Object {
+        "name": "Shape",
+        "value": "[482, 25, 1]",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of channels",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "Coordinate type",
+        "value": "Offset, Frequency",
+      },
+      Object {
+        "name": "Image reference pixels",
+        "value": "[241, 1]",
+      },
+      Object {
+        "name": "Image reference coords",
+        "value": "[0 arcsec, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Image ref coords (deg)",
+        "value": "[0 deg, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Pixel increment",
+        "value": "0.4\\", -244238 Hz",
+      },
+      Object {
+        "name": "Spectral frame",
+        "value": "LSRK",
+      },
+      Object {
+        "name": "Velocity definition",
+        "value": "RADIO",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
+        "name": "Restoring beam",
+        "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
+      },
+    ],
+    "depth": 1,
+    "dimensions": 3,
+    "headerEntries": Array [
+      Object {
+        "comment": "Standard FITS",
+        "entryType": "INT",
+        "name": "SIMPLE",
+        "numericValue": 1,
+        "value": "T",
+      },
+      Object {
+        "comment": "Floating point (32 bit)",
+        "entryType": "INT",
+        "name": "BITPIX",
+        "numericValue": -32,
+        "value": "-32",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS",
+        "numericValue": 3,
+        "value": "3",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS1",
+        "numericValue": 482,
+        "value": "482",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS2",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "NAXIS3",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+        "entryType": "FLOAT",
+        "name": "BSCALE",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BZERO",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BMAJ",
+        "numericValue": 0.0005725136068132,
+        "value": "5.725136068132E-04",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BMIN",
+        "numericValue": 0.0004142385721207,
+        "value": "4.142385721207E-04",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "BPA",
+        "numericValue": -74.62673187256,
+        "value": "-7.462673187256E+01",
+      },
+      Object {
+        "name": "BTYPE",
+        "value": "Intensity",
+      },
+      Object {
+        "name": "OBJECT",
+        "value": "M17SW",
+      },
+      Object {
+        "comment": "Brightness (pixel) unit",
+        "name": "BUNIT",
+        "value": "Jy/beam",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_1",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_2",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_2",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_2",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC1_3",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC2_3",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "PC3_3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "name": "CTYPE1",
+        "value": "OFFSET",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL1",
+        "value": "0.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT1",
+        "numericValue": 0.4000000145635144,
+        "value": "4.000000145635E-01",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX1",
+        "numericValue": 241,
+        "value": "241",
+      },
+      Object {
+        "name": "CUNIT1",
+        "value": "arcsec",
+      },
+      Object {
+        "name": "CTYPE2",
+        "value": "FREQ",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL2",
+        "numericValue": 86751396188.4,
+        "value": "8.675139618840E+10",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT2",
+        "numericValue": -244237.7011414,
+        "value": "-2.442377011414E+05",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX2",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "CUNIT2",
+        "value": "Hz",
+      },
+      Object {
+        "name": "CTYPE3",
+        "value": "STOKES",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRVAL3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CDELT3",
+        "numericValue": 1,
+        "value": "1.000000000000E+00",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "CRPIX3",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "CUNIT3",
+      },
+      Object {
+        "comment": "Rest Frequency (Hz)",
+        "entryType": "FLOAT",
+        "name": "RESTFRQ",
+        "numericValue": 86754290000,
+        "value": "8.675429000000E+10",
+      },
+      Object {
+        "comment": "Spectral reference frame",
+        "name": "SPECSYS",
+        "value": "LSRK",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "ALTRVAL",
+        "numericValue": 9999.99991417096,
+        "value": "9.999999914171E+03",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "ALTRPIX",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+        "entryType": "INT",
+        "name": "VELREF",
+        "numericValue": 257,
+        "value": "257",
+      },
+      Object {
+        "name": "TELESCOP",
+        "value": "ALMA",
+      },
+      Object {
+        "name": "OBSERVER",
+        "value": "sishii",
+      },
+      Object {
+        "name": "DATE-OBS",
+        "value": "2016-04-03T13:02:58.800000",
+      },
+      Object {
+        "name": "TIMESYS",
+        "value": "UTC",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSRA",
+        "numericValue": 275.0875000001,
+        "value": "2.750875000001E+02",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSDEC",
+        "numericValue": -16.202777777790004,
+        "value": "-1.620277777779E+01",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-X",
+        "numericValue": 2225142.1802689997,
+        "value": "2.225142180269E+06",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-Y",
+        "numericValue": -5440307.370349,
+        "value": "-5.440307370349E+06",
+      },
+      Object {
+        "entryType": "FLOAT",
+        "name": "OBSGEO-Z",
+        "numericValue": -2481029.851874,
+        "value": "-2.481029851874E+06",
+      },
+    ],
+    "height": 25,
+    "stokes": 1,
+    "width": 482,
+  },
+  "success": true,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder set image channel for the file "M17_SWex_pv.fits" RASTER_TILE_DATA should match snapshot 1`] = `
+Object {
+  "compressionQuality": 11,
+  "compressionType": "ZFP",
+  "fileId": 200,
+  "tiles": Array [
+    Object {
+      "height": 13,
+      "imageData": "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",
+      "nanEncodings": "PQwAAA==",
+      "width": 241,
+    },
+  ],
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder set image channel for the file "M17_SWex_pv.image" RASTER_TILE_DATA should match snapshot 1`] = `
+Object {
+  "compressionQuality": 11,
+  "compressionType": "ZFP",
+  "fileId": 201,
+  "tiles": Array [
+    Object {
+      "height": 13,
+      "imageData": "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",
+      "nanEncodings": "PQwAAA==",
+      "width": 241,
+    },
+  ],
+}
+`;
