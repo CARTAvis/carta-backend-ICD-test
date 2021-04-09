@@ -67,6 +67,9 @@ describe("FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images i
                         ...fileInfoRequest,
                     });
                     FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
+                }, openFileTimeout);
+
+                test(`FILE_INFO_RESPONSE should match snapshot".`, async () => {
                     expect(FileInfoResponse).toMatchSnapshot();
                 }, openFileTimeout);
             });
