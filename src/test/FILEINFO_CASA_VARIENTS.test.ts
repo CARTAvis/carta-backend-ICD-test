@@ -43,7 +43,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend", () => {
+describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend", () => {
 
     let Connection: Client;
     beforeAll(async () => {

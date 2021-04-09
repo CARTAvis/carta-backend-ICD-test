@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
   "fileInfo": Object {
     "HDUList": Array [
@@ -360,7 +360,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
   "fileInfo": Object {
     "HDUList": Array [
@@ -720,7 +720,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
   "fileInfo": Object {
     "HDUList": Array [
@@ -1172,7 +1172,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
   "fileInfo": Object {
     "HDUList": Array [
@@ -1624,7 +1624,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIANT: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
   "fileInfo": Object {
     "HDUList": Array [
