@@ -140,6 +140,13 @@ describe("OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa ima
                 test(`OPEN_FILE_ACK should match snapshot`, () => {
                     expect(ack.OpenFileAck).toMatchSnapshot();
                 });
+
+                test(`REGION_HISTOGRAM_DATA should match snapshot`, () => {
+                    expect(ack.RegionHistogramData.fileId).toMatchSnapshot();
+                    expect(ack.RegionHistogramData.progress).toMatchSnapshot();
+                    expect(ack.RegionHistogramData.regionId).toMatchSnapshot();
+                    expect(ack.RegionHistogramData.stokes).toMatchSnapshot();
+                });
             });
 
             describe(`set image channel for the file "${fileOpen.file}"`, () => {

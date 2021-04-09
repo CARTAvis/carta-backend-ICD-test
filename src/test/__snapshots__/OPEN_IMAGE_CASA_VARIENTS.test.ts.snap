@@ -389,6 +389,14 @@ Object {
 }
 `;
 
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVamp.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `203`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVamp.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVamp.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVamp.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
+
 exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVphase.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
   "beamTable": Array [
@@ -777,6 +785,14 @@ Object {
   "success": true,
 }
 `;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVphase.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `204`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVphase.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVphase.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "UVphase.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
 
 exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "componentlist.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
@@ -1236,6 +1252,14 @@ Object {
 }
 `;
 
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "componentlist.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `200`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "componentlist.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "componentlist.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "componentlist.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
+
 exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "concatenated.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
   "fileId": 201,
@@ -1685,6 +1709,14 @@ Object {
   "success": true,
 }
 `;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "concatenated.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `201`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "concatenated.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "concatenated.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "concatenated.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
 
 exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "pVimage.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
@@ -2366,6 +2398,14 @@ Object {
   "success": true,
 }
 `;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "pVimage.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `202`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "pVimage.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "pVimage.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder open/append the file "pVimage.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
 
 exports[`OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa images Go to "/set_casaImageVarients" folder set image channel for the file "UVamp.image" RASTER_TILE_DATA should match snapshot 1`] = `
 Object {

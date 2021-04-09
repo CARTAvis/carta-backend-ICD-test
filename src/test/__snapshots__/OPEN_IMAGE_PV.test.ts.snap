@@ -377,6 +377,14 @@ Object {
 }
 `;
 
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" REGION_HISTOGRAM_DATA should match snapshot 1`] = `200`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
+
 exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
   "beamTable": Array [
@@ -748,6 +756,14 @@ Object {
   "success": true,
 }
 `;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `201`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" REGION_HISTOGRAM_DATA should match snapshot 2`] = `1`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" REGION_HISTOGRAM_DATA should match snapshot 3`] = `-1`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" REGION_HISTOGRAM_DATA should match snapshot 4`] = `0`;
 
 exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder set image channel for the file "M17_SWex_pv.fits" RASTER_TILE_DATA should match snapshot 1`] = `
 Object {
