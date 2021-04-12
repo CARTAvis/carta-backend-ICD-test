@@ -95,7 +95,7 @@ describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images 
                             expect(item).toMatchSnapshot();
                         }
                     });
-                }, openFileTimeout);
+                });
             });
         });
     });

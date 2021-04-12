@@ -8,6 +8,7 @@ let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
+    precisionDigit?: number;
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile[];
     setImageChannel: CARTA.ISetImageChannels[];
@@ -18,6 +19,7 @@ let assertItem: AssertItem = {
         apiKey: "",
         clientFeatureFlags: 5,
     },
+    precisionDigit: 4,
     filelist: { directory: testSubdirectory },
     fileOpen: [
         {
@@ -138,14 +140,28 @@ describe("OPEN_IMAGE_CASA_VARIENTS: Testing the case of opening variant casa ima
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK should match snapshot`, () => {
-                    expect(ack.OpenFileAck).toMatchSnapshot();
+                    let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
+                    expect(OpenFileAck).toMatchSnapshot({
+                        fileInfoExtended: {
+                            headerEntries: expect.any(Object),
+                        },
+                    });
+                    OpenFileAck.fileInfoExtended.headerEntries.map(item => {
+                        if (item["numericValue"]) {
+                            expect(item).toMatchSnapshot({
+                                numericValue: expect.any(Number),
+                            });
+                            expect(item["numericValue"].toFixed(assertItem.precisionDigit)).toMatchSnapshot();
+                        } else {
+                            expect(item).toMatchSnapshot();
+                        }
+                    });
                 });
 
                 test(`REGION_HISTOGRAM_DATA should match snapshot`, () => {
-                    expect(ack.RegionHistogramData.fileId).toMatchSnapshot();
-                    expect(ack.RegionHistogramData.progress).toMatchSnapshot();
-                    expect(ack.RegionHistogramData.regionId).toMatchSnapshot();
-                    expect(ack.RegionHistogramData.stokes).toMatchSnapshot();
+                    expect(ack.RegionHistogramData).toMatchSnapshot({
+                        histograms: expect.any(Object),
+                    });
                 });
             });
 
