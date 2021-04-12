@@ -6,11 +6,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "date": Object {
-      "high": Any<Number>,
-      "low": Any<Number>,
-      "unsigned": false,
-    },
+    "date": Any<Object>,
     "name": "UVamp.image",
     "size": Long {
       "high": 0,
@@ -587,11 +583,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "date": Object {
-      "high": Any<Number>,
-      "low": Any<Number>,
-      "unsigned": false,
-    },
+    "date": Any<Object>,
     "name": "UVphase.image",
     "size": Long {
       "high": 0,
@@ -1168,11 +1160,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "date": Object {
-      "high": Any<Number>,
-      "low": Any<Number>,
-      "unsigned": false,
-    },
+    "date": Any<Object>,
     "name": "componentlist.image",
     "size": Long {
       "high": 0,
@@ -1902,11 +1890,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "date": Object {
-      "high": Any<Number>,
-      "low": Any<Number>,
-      "unsigned": false,
-    },
+    "date": Any<Object>,
     "name": "concatenated.image",
     "size": Long {
       "high": 0,
@@ -2639,11 +2623,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "date": Object {
-      "high": Any<Number>,
-      "low": Any<Number>,
-      "unsigned": false,
-    },
+    "date": Any<Object>,
     "name": "pVimage.image",
     "size": Long {
       "high": 0,

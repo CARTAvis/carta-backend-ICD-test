@@ -74,14 +74,12 @@ describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images 
                 test(`FILE_INFO_RESPONSE should match snapshot".`, async () => {
                     expect(FileInfoResponse).toMatchSnapshot({
                         fileInfo: {
-                            // Date as creating file is not constant
-                            date: {
-                                "high": expect.any(Number),
-                                "low": expect.any(Number),
-                            },
+                            // Date for creating a file is not a constant
+                            date: expect.any(Object), // Might be a Number or Long
                         },
                         fileInfoExtended: {
                             "": {
+                                // Skip this
                                 headerEntries: expect.any(Object),
                             },
                         },
