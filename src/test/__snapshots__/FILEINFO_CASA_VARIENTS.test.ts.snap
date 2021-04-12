@@ -87,7 +87,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
 Object {
@@ -99,7 +99,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-32.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
 Object {
@@ -110,7 +110,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
 Object {
@@ -121,7 +121,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"300.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.0000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
 Object {
@@ -132,7 +132,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"300.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.0000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
 Object {
@@ -143,7 +143,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
 Object {
@@ -155,7 +155,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
 Object {
@@ -196,7 +196,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
 Object {
@@ -231,7 +231,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
 Object {
@@ -266,7 +266,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
 Object {
@@ -292,7 +292,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1718.8734"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1.7189e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
 Object {
@@ -303,7 +303,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"151.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"1.5100e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
 Object {
@@ -336,7 +336,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1718.8734"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1.7189e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
 Object {
@@ -347,7 +347,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"151.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"1.5100e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
 Object {
@@ -372,7 +372,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"36392354380.6445"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 49`] = `
 Object {
@@ -383,7 +383,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"125014.5992"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"1.2501e+5"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 51`] = `
 Object {
@@ -394,7 +394,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-10.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-1.0000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 53`] = `
 Object {
@@ -413,7 +413,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"36392320000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 56`] = `
 Object {
@@ -433,7 +433,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-283.2207"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.8322e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
 Object {
@@ -445,7 +445,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-10.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-1.0000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
 Object {
@@ -457,7 +457,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"257.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"2.5700e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
 Object {
@@ -496,7 +496,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"146.9891"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"1.4699e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
 Object {
@@ -507,7 +507,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"13.2780"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"1.3278e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
 Object {
@@ -518,7 +518,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1601156.6733"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1.6012e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
 Object {
@@ -529,7 +529,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5041988.9861"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5.0420e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
 Object {
@@ -540,7 +540,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3554879.2368"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3.5549e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
 Object {
@@ -575,7 +575,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
@@ -664,7 +664,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
 Object {
@@ -676,7 +676,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-32.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
 Object {
@@ -687,7 +687,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
 Object {
@@ -698,7 +698,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"300.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.0000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
 Object {
@@ -709,7 +709,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"300.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.0000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
 Object {
@@ -720,7 +720,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
 Object {
@@ -732,7 +732,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
 Object {
@@ -773,7 +773,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
 Object {
@@ -808,7 +808,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
 Object {
@@ -843,7 +843,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
 Object {
@@ -869,7 +869,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1718.8734"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1.7189e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
 Object {
@@ -880,7 +880,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"151.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"1.5100e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
 Object {
@@ -913,7 +913,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1718.8734"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1.7189e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
 Object {
@@ -924,7 +924,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"151.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"1.5100e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
 Object {
@@ -949,7 +949,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"36392354380.6445"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 49`] = `
 Object {
@@ -960,7 +960,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"125014.5992"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"1.2501e+5"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 51`] = `
 Object {
@@ -971,7 +971,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-10.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-1.0000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 53`] = `
 Object {
@@ -990,7 +990,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"36392320000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 56`] = `
 Object {
@@ -1010,7 +1010,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-283.2207"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.8322e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
 Object {
@@ -1022,7 +1022,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-10.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-1.0000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
 Object {
@@ -1034,7 +1034,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"257.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"2.5700e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
 Object {
@@ -1073,7 +1073,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"146.9891"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"1.4699e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
 Object {
@@ -1084,7 +1084,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"13.2780"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"1.3278e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
 Object {
@@ -1095,7 +1095,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1601156.6733"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1.6012e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
 Object {
@@ -1106,7 +1106,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5041988.9861"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5.0420e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
 Object {
@@ -1117,7 +1117,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3554879.2368"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3.5549e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
 Object {
@@ -1152,7 +1152,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
@@ -1259,7 +1259,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
 Object {
@@ -1271,7 +1271,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-32.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
 Object {
@@ -1282,7 +1282,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
 Object {
@@ -1293,7 +1293,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"512.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"5.1200e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
 Object {
@@ -1304,7 +1304,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"512.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"5.1200e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
 Object {
@@ -1315,7 +1315,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
 Object {
@@ -1326,7 +1326,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
 Object {
@@ -1338,7 +1338,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
 Object {
@@ -1357,7 +1357,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 20`] = `"0.0015"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 20`] = `"1.4583e-3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 21`] = `
 Object {
@@ -1368,7 +1368,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 22`] = `"0.0015"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 22`] = `"1.4583e-3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
 Object {
@@ -1409,7 +1409,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"2000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"2.0000e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
 Object {
@@ -1427,7 +1427,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"180.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.8000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
 Object {
@@ -1438,7 +1438,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 33`] = `"33.1598"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 33`] = `"3.3160e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 34`] = `
 Object {
@@ -1449,7 +1449,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
 Object {
@@ -1492,7 +1492,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 42`] = `
 Object {
@@ -1535,7 +1535,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 47`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 47`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 48`] = `
 Object {
@@ -1578,7 +1578,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
 Object {
@@ -1596,7 +1596,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"24.4221"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"2.4422e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
 Object {
@@ -1607,7 +1607,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-0.0003"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.7778e-4"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
 Object {
@@ -1618,7 +1618,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"256.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"2.5600e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
 Object {
@@ -1643,7 +1643,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 64`] = `"33.1598"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 64`] = `"3.3160e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 65`] = `
 Object {
@@ -1654,7 +1654,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 66`] = `"0.0003"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 66`] = `"2.7778e-4"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 67`] = `
 Object {
@@ -1665,7 +1665,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"257.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"2.5700e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
 Object {
@@ -1690,7 +1690,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"327558039.3930"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"3.2756e+8"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
 Object {
@@ -1701,7 +1701,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"11750000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"1.1750e+7"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
 Object {
@@ -1712,7 +1712,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
 Object {
@@ -1737,7 +1737,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 80`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 80`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 81`] = `
 Object {
@@ -1748,7 +1748,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 83`] = `
 Object {
@@ -1759,7 +1759,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 84`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 84`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 85`] = `
 Object {
@@ -1820,7 +1820,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 93`] = `"24.4221"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 93`] = `"2.4422e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 94`] = `
 Object {
@@ -1831,7 +1831,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"33.1598"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"3.3160e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 96`] = `
 Object {
@@ -1842,7 +1842,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-1601156.6733"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-1.6012e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 98`] = `
 Object {
@@ -1853,7 +1853,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"-5041988.9861"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"-5.0420e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 100`] = `
 Object {
@@ -1864,7 +1864,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"3554879.2368"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"3.5549e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 102`] = `
 Object {
@@ -1882,7 +1882,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 104`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 104`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
 Object {
@@ -1981,7 +1981,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
 Object {
@@ -1993,7 +1993,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-32.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
 Object {
@@ -2004,7 +2004,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
 Object {
@@ -2015,7 +2015,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"378.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.7800e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
 Object {
@@ -2026,7 +2026,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"378.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.7800e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
 Object {
@@ -2037,7 +2037,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
 Object {
@@ -2048,7 +2048,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1918.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.9180e+3"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
 Object {
@@ -2060,7 +2060,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
 Object {
@@ -2107,7 +2107,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 24`] = `"180.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 24`] = `"1.8000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
 Object {
@@ -2118,7 +2118,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"-35.7827"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"-3.5783e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
 Object {
@@ -2129,7 +2129,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
 Object {
@@ -2172,7 +2172,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 34`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 34`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 35`] = `
 Object {
@@ -2215,7 +2215,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 40`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 40`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 41`] = `
 Object {
@@ -2258,7 +2258,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 46`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 46`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 47`] = `
 Object {
@@ -2276,7 +2276,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"260.2227"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"2.6022e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 50`] = `
 Object {
@@ -2287,7 +2287,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"-0.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"-8.3333e-6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 52`] = `
 Object {
@@ -2298,7 +2298,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"190.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.9000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
 Object {
@@ -2323,7 +2323,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 57`] = `"-35.7827"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 57`] = `"-3.5783e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 58`] = `
 Object {
@@ -2334,7 +2334,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"0.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"8.3333e-6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 60`] = `
 Object {
@@ -2345,7 +2345,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"190.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"1.9000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 62`] = `
 Object {
@@ -2370,7 +2370,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 65`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 65`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 66`] = `
 Object {
@@ -2381,7 +2381,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 67`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 67`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 68`] = `
 Object {
@@ -2392,7 +2392,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 70`] = `
 Object {
@@ -2416,7 +2416,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"895831133963.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"8.9583e+11"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 74`] = `
 Object {
@@ -2427,7 +2427,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"976651.5508"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"9.7665e+5"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 76`] = `
 Object {
@@ -2438,7 +2438,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
 Object {
@@ -2473,7 +2473,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"896740000000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"8.9674e+11"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 83`] = `
 Object {
@@ -2493,7 +2493,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 85`] = `"303846.3582"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 85`] = `"3.0385e+5"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 86`] = `
 Object {
@@ -2505,7 +2505,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 87`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 87`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 88`] = `
 Object {
@@ -2517,7 +2517,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 89`] = `"257.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 89`] = `"2.5700e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 90`] = `
 Object {
@@ -2556,7 +2556,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"260.2227"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"2.6022e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 96`] = `
 Object {
@@ -2567,7 +2567,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-35.7827"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-3.5783e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 98`] = `
 Object {
@@ -2578,7 +2578,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"2225142.1803"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"2.2251e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 100`] = `
 Object {
@@ -2589,7 +2589,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"-5440307.3703"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"-5.4403e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 102`] = `
 Object {
@@ -2600,7 +2600,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 103`] = `"-2481029.8519"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 103`] = `"-2.4810e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 104`] = `
 Object {
@@ -2714,7 +2714,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
 Object {
@@ -2726,7 +2726,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-32.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
 Object {
@@ -2737,7 +2737,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
 Object {
@@ -2748,7 +2748,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"160.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"1.6000e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
 Object {
@@ -2759,7 +2759,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
 Object {
@@ -2770,7 +2770,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"52.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.2000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
 Object {
@@ -2782,7 +2782,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
 Object {
@@ -2823,7 +2823,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
 Object {
@@ -2858,7 +2858,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
 Object {
@@ -2893,7 +2893,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
 Object {
@@ -2919,7 +2919,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"0.4000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"4.0000e-1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
 Object {
@@ -2930,7 +2930,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"80.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"8.0000e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
 Object {
@@ -2955,7 +2955,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 42`] = `
 Object {
@@ -2966,7 +2966,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 43`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 43`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 44`] = `
 Object {
@@ -2977,7 +2977,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 45`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 45`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 46`] = `
 Object {
@@ -3001,7 +3001,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"36392354380.6445"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 50`] = `
 Object {
@@ -3012,7 +3012,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"125014.5992"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"1.2501e+5"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 52`] = `
 Object {
@@ -3023,7 +3023,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
 Object {
@@ -3042,7 +3042,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"36392320000.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"3.6392e+10"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
 Object {
@@ -3062,7 +3062,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"-283.2207"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"-2.8322e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 60`] = `
 Object {
@@ -3074,7 +3074,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"1.0000e+0"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 62`] = `
 Object {
@@ -3086,7 +3086,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 63`] = `"257.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 63`] = `"2.5700e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 64`] = `
 Object {
@@ -3125,7 +3125,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"146.9891"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"1.4699e+2"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 70`] = `
 Object {
@@ -3136,7 +3136,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 71`] = `"13.2780"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 71`] = `"1.3278e+1"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 72`] = `
 Object {
@@ -3147,7 +3147,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"-1601156.6733"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"-1.6012e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 74`] = `
 Object {
@@ -3158,7 +3158,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"-5041988.9861"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"-5.0420e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 76`] = `
 Object {
@@ -3169,7 +3169,7 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"3554879.2368"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"3.5549e+6"`;
 
 exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
 Object {
@@ -3204,4 +3204,4 @@ Object {
 }
 `;
 
-exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000"`;
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000e+0"`;

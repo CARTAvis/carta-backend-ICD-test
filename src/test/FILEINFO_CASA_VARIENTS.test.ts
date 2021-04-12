@@ -90,7 +90,7 @@ describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images 
                             expect(item).toMatchSnapshot({
                                 numericValue: expect.any(Number),
                             });
-                            expect(item["numericValue"].toFixed(assertItem.precisionDigit)).toMatchSnapshot();
+                            expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();
                         }else{
                             expect(item).toMatchSnapshot();
                         }

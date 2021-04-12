@@ -97,7 +97,7 @@ describe("OPEN_IMAGE_PV: Testing the case of opening multiple images one by one 
                             expect(item).toMatchSnapshot({
                                 numericValue: expect.any(Number),
                             });
-                            expect(item["numericValue"].toFixed(assertItem.precisionDigit)).toMatchSnapshot();
+                            expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();
                         } else {
                             expect(item).toMatchSnapshot();
                         }
