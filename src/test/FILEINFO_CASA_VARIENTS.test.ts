@@ -12,6 +12,7 @@ let openFileTimeout = config.timeout.openFile;
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest[];
+    precisionDigit?: number;
 };
 
 let assertItem: AssertItem = {
@@ -19,6 +20,7 @@ let assertItem: AssertItem = {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
+    precisionDigit: 4,
     fileInfoRequest: [
         {
             file: "componentlist.image",
@@ -58,7 +60,7 @@ describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images 
             await Connection.send(CARTA.FileListRequest, { directory: "$BASE" });
             basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
         }, listFileTimeout);
-        assertItem.fileInfoRequest.map(fileInfoRequest=>{
+        assertItem.fileInfoRequest.map(fileInfoRequest => {
             describe(`query the info of file : ${fileInfoRequest.file}`, () => {
                 let FileInfoResponse: CARTA.FileInfoResponse;
                 test(`FILE_INFO_RESPONSE should arrive within ${openFileTimeout} ms".`, async () => {
@@ -70,7 +72,31 @@ describe("FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images 
                 }, openFileTimeout);
 
                 test(`FILE_INFO_RESPONSE should match snapshot".`, async () => {
-                    expect(FileInfoResponse).toMatchSnapshot();
+                    expect(FileInfoResponse).toMatchSnapshot({
+                        fileInfo: {
+                            // Date as creating file is not constant
+                            date: {
+                                "high": expect.any(Number),
+                                "low": expect.any(Number),
+                            },
+                        },
+                        fileInfoExtended: {
+                            "": {
+                                headerEntries: expect.any(Object),
+                            },
+                        },
+                    });
+                    // Tolerance for precision digits 
+                    FileInfoResponse.fileInfoExtended[""].headerEntries.map(item => {
+                        if (item["numericValue"]) {
+                            expect(item).toMatchSnapshot({
+                                numericValue: expect.any(Number),
+                            });
+                            expect(item["numericValue"].toFixed(assertItem.precisionDigit)).toMatchSnapshot();
+                        }else{
+                            expect(item).toMatchSnapshot();
+                        }
+                    });
                 }, openFileTimeout);
             });
         });
