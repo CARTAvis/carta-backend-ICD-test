@@ -7,7 +7,6 @@
         "pidusage": "^2.0.21",
         "procfs-stats": "^1.0.2",
         "react-scripts": "^3.4.4",
-        "usage": "^0.7.1",
         "ws": "^7.4.2",
         "zstd-codec": "^0.1.2"
     },
