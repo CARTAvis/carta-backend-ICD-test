@@ -9,6 +9,7 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let momentTimeout = config.timeout.moment;
+const setFileId = 200;
 interface AssertItem {
     precisionDigit: number;
     registerViewer: CARTA.IRegisterViewer;
@@ -26,11 +27,11 @@ let assertItem: AssertItem = {
         directory: testSubdirectory,
         file: "HD163296_CO_2_1.fits",
         hdu: "",
-        fileId: 0,
+        fileId: setFileId,
         renderMode: CARTA.RenderMode.RASTER,
     },
     momentRequest: {
-        fileId: 0,
+        fileId: setFileId,
         regionId: 0,
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
@@ -63,9 +64,8 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length == 5);
             FileId = ack.RegionHistogramData.map(data => data.fileId);
-            await Connection.send(CARTA.StopMomentCalc, { fileId: 0 });
-            MomentResponse = await Connection.receive(CARTA.MomentResponse);
-            expect(ack.MomentProgress.length).toEqual(5);
+            await Connection.send(CARTA.StopMomentCalc, { fileId: setFileId });
+            MomentResponse = (await Connection.streamUntil(type => type==CARTA.MomentResponse)).MomentResponse[0];
         }, momentTimeout);
 
         test(`Assert MomentProgress.progress < 1.0`, () => {
