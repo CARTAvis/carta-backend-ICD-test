@@ -7,6 +7,7 @@
         "base": "$BASE",
         "directory": ".",
         "QA": "set_QA",
+        "casa_varients": "/set_casaImageVarients",
         "region": "set_QA/set_QA_regionTest",
         "performance": "set_QA_performance",
         "moment": "set_HD163296",

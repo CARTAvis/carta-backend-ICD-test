@@ -1,0 +1,3207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": Any<Object>,
+    "name": "UVamp.image",
+    "size": Long {
+      "high": 0,
+      "low": 1968708,
+      "unsigned": false,
+    },
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "UVamp.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[300, 300, 5]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "UU, VV",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[151, 151]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 lambda, 0 lambda]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1718.87 lambda, 1718.87 lambda",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92354\\" X 1.76939\\", -17.8188 deg",
+        },
+      ],
+      "depth": 5,
+      "dimensions": 3,
+      "headerEntries": Any<Object>,
+      "height": 300,
+      "stokes": 1,
+      "stokesVals": Array [],
+      "width": 300,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "3",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "300",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.0000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "300",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.0000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "5",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 17`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
+Object {
+  "name": "OBJECT",
+  "value": "IRC+10216",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 19`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 20`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 30`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "UU",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 34`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "-1.718873385392E+03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1.7189e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "151",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"1.5100e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "lambda",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 39`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "VV",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 41`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "1.718873385392E+03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1.7189e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "151",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"1.5100e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "lambda",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 46`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 47`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "3.639235438064E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 49`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.250145992279E+05",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"1.2501e+5"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 51`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "-10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-1.0000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 53`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "3.639232000000E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 56`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
+Object {
+  "comment": "Alternate frequency reference value",
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "-2.832206881268E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.8322e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
+Object {
+  "comment": "Alternate frequency reference pixel",
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "-10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-1.0000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"2.5700e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 64`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "Mark J. Mark Claussen",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 65`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2010-04-26T03:23:44.000000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 66`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 67`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "1.469890916667E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"1.4699e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "1.327796110878E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"1.3278e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "-1.601156673287E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1.6012e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.041988986066E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5.0420e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "3.554879236821E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3.5549e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 79`] = `
+Object {
+  "entryType": "INT",
+  "name": "USEWEIGH",
+  "value": "F",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 80`] = `
+Object {
+  "comment": "CASA multiple BEAMS table present",
+  "entryType": 2,
+  "name": "CASAMBM",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVamp.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": Any<Object>,
+    "name": "UVphase.image",
+    "size": Long {
+      "high": 0,
+      "low": 1968704,
+      "unsigned": false,
+    },
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "UVphase.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[300, 300, 5]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 5,
+          "value": "5",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "UU, VV",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[151, 151]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 lambda, 0 lambda]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1718.87 lambda, 1718.87 lambda",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "deg",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92354\\" X 1.76939\\", -17.8188 deg",
+        },
+      ],
+      "depth": 5,
+      "dimensions": 3,
+      "headerEntries": Any<Object>,
+      "height": 300,
+      "stokes": 1,
+      "stokesVals": Array [],
+      "width": 300,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "3",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "300",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.0000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "300",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.0000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "5",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 17`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
+Object {
+  "name": "OBJECT",
+  "value": "IRC+10216",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 19`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "deg",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 20`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 30`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "UU",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 34`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "-1.718873385392E+03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"-1.7189e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "151",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"1.5100e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "lambda",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 39`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "VV",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 41`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "1.718873385392E+03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 42`] = `"1.7189e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "151",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 44`] = `"1.5100e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "lambda",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 46`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 47`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "3.639235438064E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 48`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 49`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.250145992279E+05",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 50`] = `"1.2501e+5"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 51`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "-10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 52`] = `"-1.0000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 53`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "3.639232000000E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 55`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 56`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
+Object {
+  "comment": "Alternate frequency reference value",
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "-2.832206881268E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.8322e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
+Object {
+  "comment": "Alternate frequency reference pixel",
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "-10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"-1.0000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 62`] = `"2.5700e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 64`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "Mark J. Mark Claussen",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 65`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2010-04-26T03:23:44.000000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 66`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 67`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "1.469890916667E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"1.4699e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "1.327796110878E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 70`] = `"1.3278e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "-1.601156673287E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"-1.6012e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.041988986066E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"-5.0420e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "3.554879236821E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"3.5549e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 79`] = `
+Object {
+  "entryType": "INT",
+  "name": "USEWEIGH",
+  "value": "F",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 80`] = `
+Object {
+  "comment": "CASA multiple BEAMS table present",
+  "entryType": 2,
+  "name": "CASAMBM",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : UVphase.image FILE_INFO_RESPONSE should match snapshot". 81`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": Any<Object>,
+    "name": "componentlist.image",
+    "size": Long {
+      "high": 0,
+      "low": 1880126,
+      "unsigned": false,
+    },
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "componentlist.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[512, 512, 1, 1]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Right Ascension, Declination",
+        },
+        Object {
+          "name": "Projection",
+          "value": "SIN",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[256, 257]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[01:37:41.2994, +033.09.35.1330]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[24.4221 deg, 33.1598 deg]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-1\\", 1\\"",
+        },
+        Object {
+          "name": "Celestial frame",
+          "value": "FK5, J2000",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "TOPO",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Restoring beam",
+          "value": "5.24988\\" X 5.24988\\", 0 deg",
+        },
+      ],
+      "depth": 1,
+      "dimensions": 4,
+      "headerEntries": Any<Object>,
+      "height": 512,
+      "stokes": 1,
+      "stokesVals": Array [],
+      "width": 512,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "4",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "512",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"5.1200e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "512",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"5.1200e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 19`] = `
+Object {
+  "entryType": 1,
+  "name": "BMAJ",
+  "numericValue": Any<Number>,
+  "value": "1.458300000000E-03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 20`] = `"1.4583e-3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 21`] = `
+Object {
+  "entryType": 1,
+  "name": "BMIN",
+  "numericValue": Any<Number>,
+  "value": "1.458300000000E-03",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 22`] = `"1.4583e-3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BPA",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 24`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
+Object {
+  "name": "OBJECT",
+  "value": "J0137+33",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 26`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
+Object {
+  "entryType": 1,
+  "name": "EQUINOX",
+  "numericValue": Any<Number>,
+  "value": "2000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"2.0000e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
+Object {
+  "name": "RADESYS",
+  "value": "FK5",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 30`] = `
+Object {
+  "entryType": 1,
+  "name": "LONPOLE",
+  "numericValue": Any<Number>,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.8000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
+Object {
+  "entryType": 1,
+  "name": "LATPOLE",
+  "numericValue": Any<Number>,
+  "value": "3.315975916510E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 33`] = `"3.3160e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 34`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "-0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 40`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 46`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 47`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 51`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 52`] = `
+Object {
+  "entryType": 1,
+  "name": "PC4_4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 55`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL1",
+  "numericValue": Any<Number>,
+  "value": "2.442208096340E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"2.4422e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "-2.777777845000E-04",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 58`] = `"-2.7778e-4"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 59`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "256",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 60`] = `"2.5600e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 61`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 62`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL2",
+  "numericValue": Any<Number>,
+  "value": "3.315975916510E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 64`] = `"3.3160e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 65`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "2.777777845000E-04",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 66`] = `"2.7778e-4"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 67`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 68`] = `"2.5700e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 69`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 70`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "3.275580393930E+08",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 72`] = `"3.2756e+8"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 73`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.175000000000E+07",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 74`] = `"1.1750e+7"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 75`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 76`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 77`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 79`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 80`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 81`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 83`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 84`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 85`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 86`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 87`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 88`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 89`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "Richard",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 90`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2014-02-16T00:00:00.000000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 91`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 92`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "2.442208096340E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 93`] = `"2.4422e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 94`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "3.315975916510E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"3.3160e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 96`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "-1.601156673287E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-1.6012e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 98`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.041988986066E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"-5.0420e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 100`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "3.554879236821E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"3.5549e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 102`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 103`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : componentlist.image FILE_INFO_RESPONSE should match snapshot". 104`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": Any<Object>,
+    "name": "concatenated.image",
+    "size": Long {
+      "high": 0,
+      "low": 1134908779,
+      "unsigned": false,
+    },
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "concatenated.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[378, 378, 1, 1918]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 1918,
+          "value": "1918",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Right Ascension, Declination",
+        },
+        Object {
+          "name": "Projection",
+          "value": "SIN",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[190, 190]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[17:20:53.4486, -035.46.57.8004]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[260.223 deg, -35.7827 deg]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "-0.03\\", 0.03\\"",
+        },
+        Object {
+          "name": "Celestial frame",
+          "value": "ICRS",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+      ],
+      "depth": 1918,
+      "dimensions": 4,
+      "headerEntries": Any<Object>,
+      "height": 378,
+      "stokes": 1,
+      "stokesVals": Array [],
+      "width": 378,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "4",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"4.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "378",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"3.7800e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "378",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"3.7800e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS4",
+  "numericValue": Any<Number>,
+  "value": "1918",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.9180e+3"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 17`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 19`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 20`] = `
+Object {
+  "name": "OBJECT",
+  "value": "NGC6334I",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 21`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
+Object {
+  "entryType": 1,
+  "name": "LONPOLE",
+  "numericValue": Any<Number>,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 24`] = `"1.8000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
+Object {
+  "entryType": 1,
+  "name": "LATPOLE",
+  "numericValue": Any<Number>,
+  "value": "-3.578272233084E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"-3.5783e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 28`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 33`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 34`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 39`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 40`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 41`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 43`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 45`] = `
+Object {
+  "entryType": 1,
+  "name": "PC4_4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 46`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 47`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 48`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL1",
+  "numericValue": Any<Number>,
+  "value": "2.602227026683E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"2.6022e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 50`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "-8.333333314262E-06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"-8.3333e-6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 52`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "190",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.9000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 55`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 56`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL2",
+  "numericValue": Any<Number>,
+  "value": "-3.578272233084E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 57`] = `"-3.5783e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 58`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "8.333333314262E-06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"8.3333e-6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 60`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "190",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"1.9000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 62`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 63`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "STOKES",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 64`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 65`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 66`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 67`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 68`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 70`] = `
+Object {
+  "name": "CUNIT3",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 71`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "FREQ",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 72`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL4",
+  "numericValue": Any<Number>,
+  "value": "8.958311339630E+11",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"8.9583e+11"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 74`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT4",
+  "numericValue": Any<Number>,
+  "value": "9.766515507812E+05",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"9.7665e+5"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 76`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
+Object {
+  "name": "CUNIT4",
+  "value": "Hz",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 79`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 80`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 81`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "8.967400000000E+11",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"8.9674e+11"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 83`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 84`] = `
+Object {
+  "comment": "Alternate frequency reference value",
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "3.038463581695E+05",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 85`] = `"3.0385e+5"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 86`] = `
+Object {
+  "comment": "Alternate frequency reference pixel",
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 87`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 88`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 89`] = `"2.5700e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 90`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 91`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "bmcguire",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 92`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2018-04-05T09:28:43.872000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 93`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 94`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "2.602227025067E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 95`] = `"2.6022e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 96`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "-3.578272233084E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 97`] = `"-3.5783e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 98`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 99`] = `"2.2251e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 100`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 101`] = `"-5.4403e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 102`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 103`] = `"-2.4810e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 104`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "ALMA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : concatenated.image FILE_INFO_RESPONSE should match snapshot". 105`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 1`] = `
+Object {
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "date": Any<Object>,
+    "name": "pVimage.image",
+    "size": Long {
+      "high": 0,
+      "low": 110455,
+      "unsigned": false,
+    },
+  },
+  "fileInfoExtended": Object {
+    "": Object {
+      "computedEntries": Array [
+        Object {
+          "name": "Name",
+          "value": "pVimage.image",
+        },
+        Object {
+          "name": "Shape",
+          "value": "[160, 1, 52]",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of channels",
+          "numericValue": 52,
+          "value": "52",
+        },
+        Object {
+          "entryType": "INT",
+          "name": "Number of stokes",
+          "numericValue": 1,
+          "value": "1",
+        },
+        Object {
+          "name": "Coordinate type",
+          "value": "Offset, Frequency",
+        },
+        Object {
+          "name": "Image reference pixels",
+          "value": "[80, 1]",
+        },
+        Object {
+          "name": "Image reference coords",
+          "value": "[0 arcsec, 3.63924e+10 Hz]",
+        },
+        Object {
+          "name": "Image ref coords (deg)",
+          "value": "[0 deg, 3.63924e+10 Hz]",
+        },
+        Object {
+          "name": "Pixel increment",
+          "value": "0.4\\", 125015 Hz",
+        },
+        Object {
+          "name": "Spectral frame",
+          "value": "LSRK",
+        },
+        Object {
+          "name": "Velocity definition",
+          "value": "RADIO",
+        },
+        Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
+          "name": "Median area beam",
+          "value": "2.92337\\" X 1.76931\\", -17.8188 deg",
+        },
+      ],
+      "depth": 1,
+      "dimensions": 3,
+      "headerEntries": Any<Object>,
+      "height": 52,
+      "stokes": 1,
+      "stokesVals": Array [],
+      "width": 160,
+    },
+  },
+  "success": true,
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 3`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 5`] = `"-3.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "3",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 7`] = `"3.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "160",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 9`] = `"1.6000e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 11`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "52",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 13`] = `"5.2000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 14`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 15`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 17`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 18`] = `
+Object {
+  "name": "OBJECT",
+  "value": "IRC+10216",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 19`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 20`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 21`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 25`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 26`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 30`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 31`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 32`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "OFFSET",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 34`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "4.000000016060E-01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 35`] = `"4.0000e-1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 36`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "80",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 37`] = `"8.0000e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 38`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "arcsec",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 39`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "STOKES",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 40`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 41`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 42`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 43`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 44`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 45`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 46`] = `
+Object {
+  "name": "CUNIT2",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 47`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 48`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "3.639235438064E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 49`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 50`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.250145992279E+05",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 51`] = `"1.2501e+5"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 52`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 53`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 54`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 55`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "3.639232000000E+10",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 56`] = `"3.6392e+10"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 57`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 58`] = `
+Object {
+  "comment": "Alternate frequency reference value",
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "-2.832206881268E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 59`] = `"-2.8322e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 60`] = `
+Object {
+  "comment": "Alternate frequency reference pixel",
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 61`] = `"1.0000e+0"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 62`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 63`] = `"2.5700e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 64`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 65`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "Mark J. Mark Claussen",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 66`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2010-04-26T03:23:44.000000",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 67`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 68`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "1.469890916667E+02",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 69`] = `"1.4699e+2"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 70`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "1.327796110878E+01",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 71`] = `"1.3278e+1"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 72`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "-1.601156673287E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 73`] = `"-1.6012e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 74`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.041988986066E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 75`] = `"-5.0420e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 76`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "3.554879236821E+06",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 77`] = `"3.5549e+6"`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 78`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "EVLA",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 79`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 80`] = `
+Object {
+  "entryType": "INT",
+  "name": "USEWEIGH",
+  "value": "F",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 81`] = `
+Object {
+  "comment": "CASA multiple BEAMS table present",
+  "entryType": 2,
+  "name": "CASAMBM",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`FILEINFO_CASA_VARIENTS: Testing if file info of a variant CASA images is correctly delivered by the backend Go to "/set_casaImageVarients" folder query the info of file : pVimage.image FILE_INFO_RESPONSE should match snapshot". 82`] = `"1.0000e+0"`;
