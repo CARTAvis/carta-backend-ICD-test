@@ -102,11 +102,11 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     test(`(Step 3) Set SET_IMAGE_CHANNELS and then CLOSE_FILE during the tile streaming & Check whether the backend is alive:`, async () => {
         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
         // Interupt during the tile, we will receive the number <  assertItem.setImageChannel.requiredTiles.tiles.length
-        await Connection.streamUntil((type, data, ack: AckStream) => ack.RasterTileData.length == 6);
+        await Connection.stream(2);
         // CLOSE_FILE during the tile streaming
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
         await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        
+
         await Connection.send(CARTA.FileListRequest, assertItem.filelist);
         let BackendStatus = await Connection.receive(CARTA.FileListResponse);
         expect(BackendStatus).toBeDefined();
