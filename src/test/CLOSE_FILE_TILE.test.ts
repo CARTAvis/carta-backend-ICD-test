@@ -105,7 +105,7 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
         await Connection.stream(2);
         // CLOSE_FILE during the tile streaming
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
-        await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+        //await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
 
         await Connection.send(CARTA.FileListRequest, assertItem.filelist);
         let BackendStatus = await Connection.receive(CARTA.FileListResponse);
