@@ -1,5 +1,4 @@
 import { CARTA } from "carta-protobuf";
-
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
@@ -65,7 +64,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
             ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length == 5);
             FileId = ack.RegionHistogramData.map(data => data.fileId);
             await Connection.send(CARTA.StopMomentCalc, { fileId: setFileId });
-            MomentResponse = (await Connection.streamUntil(type => type==CARTA.MomentResponse)).MomentResponse[0];
+            MomentResponse = (await Connection.streamUntil(type => type == CARTA.MomentResponse)).MomentResponse[0];
         }, momentTimeout);
 
         test(`Assert MomentProgress.progress < 1.0`, () => {
@@ -101,7 +100,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
                 moments: [12],
             });
             ack = await Connection.streamUntil(
-                type => type == CARTA.MomentResponse
+                (type, data, ack) => type == CARTA.MomentResponse && ack.RegionHistogramData.length > 0
             );
             expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
