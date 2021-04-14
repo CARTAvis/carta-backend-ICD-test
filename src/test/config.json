@@ -21,7 +21,7 @@
         "openFile": 2100,
         "readFile": 4100,
         "saveFile": 3000,
-        "readLargeImage": 18000,
+        "readLargeImage": 30000,
         "changeChannel": 3000,
         "playImages": 8000,
         "renderImages": 5000,
