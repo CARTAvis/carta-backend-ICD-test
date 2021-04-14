@@ -1,0 +1,1232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 1`] = `
+Object {
+  "beamTable": Array [
+    Object {
+      "channel": -1,
+      "majorAxis": 2.061048984527588,
+      "minorAxis": 1.4912588596343994,
+      "pa": -74.6267318725586,
+      "stokes": -1,
+    },
+  ],
+  "fileId": 200,
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "name": "M17_SWex_pv.fits",
+    "size": "149760",
+    "type": "FITS",
+  },
+  "fileInfoExtended": Object {
+    "computedEntries": Array [
+      Object {
+        "name": "Name",
+        "value": "M17_SWex_pv.fits",
+      },
+      Object {
+        "name": "HDU",
+        "value": "0",
+      },
+      Object {
+        "name": "Shape",
+        "value": "[482, 25, 1]",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of channels",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "Coordinate type",
+        "value": "OFFSET, Frequency",
+      },
+      Object {
+        "name": "Image reference pixels",
+        "value": "[241, 1]",
+      },
+      Object {
+        "name": "Image reference coords",
+        "value": "[0 arcsec, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Image ref coords (deg)",
+        "value": "[0 deg, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Pixel increment",
+        "value": "0.4\\", -244238 Hz",
+      },
+      Object {
+        "name": "Spectral frame",
+        "value": "LSRK",
+      },
+      Object {
+        "name": "Velocity definition",
+        "value": "RADIO",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
+        "name": "Restoring beam",
+        "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
+      },
+    ],
+    "depth": 1,
+    "dimensions": 3,
+    "headerEntries": Any<Object>,
+    "height": 25,
+    "stokes": 1,
+    "stokesVals": Array [],
+    "width": 482,
+  },
+  "success": true,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 3`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 5`] = `"-3.2000e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "3",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 7`] = `"3.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "482",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 9`] = `"4.8200e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "25",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 11`] = `"2.5000e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 13`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "entryType": 1,
+  "name": "BMAJ",
+  "numericValue": Any<Number>,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 18`] = `"5.7251e-4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "entryType": 1,
+  "name": "BMIN",
+  "numericValue": Any<Number>,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 20`] = `"4.1424e-4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": 1,
+  "name": "BPA",
+  "numericValue": Any<Number>,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 22`] = `"-7.4627e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 27`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 32`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 37`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "OFFSET",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "4.000000145635E-01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 41`] = `"4.0000e-1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "241",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 43`] = `"2.4100e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "arcsec",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "FREQ",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL2",
+  "numericValue": Any<Number>,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 47`] = `"8.6751e+10"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 49`] = `"-2.4424e+5"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 51`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "Hz",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "STOKES",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 55`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 57`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 59`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "name": "CUNIT3",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 62`] = `"8.6754e+10"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 65`] = `"1.0000e+4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 67`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 69`] = `"2.5700e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 74`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 75`] = `"2.7509e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 76`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 77`] = `"-1.6203e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 78`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 79`] = `"2.2251e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 80`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 81`] = `"-5.4403e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 82`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" OPEN_FILE_ACK should match snapshot 83`] = `"-2.4810e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.fits" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
+Object {
+  "fileId": 200,
+  "histograms": Any<Object>,
+  "progress": 1,
+  "regionId": -1,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 1`] = `
+Object {
+  "beamTable": Array [
+    Object {
+      "channel": -1,
+      "majorAxis": 2.061048984527588,
+      "minorAxis": 1.4912588596343994,
+      "pa": -74.6267318725586,
+      "stokes": -1,
+    },
+  ],
+  "fileId": 201,
+  "fileInfo": Object {
+    "HDUList": Array [
+      "",
+    ],
+    "name": "M17_SWex_pv.image",
+    "size": "97766",
+  },
+  "fileInfoExtended": Object {
+    "computedEntries": Array [
+      Object {
+        "name": "Name",
+        "value": "M17_SWex_pv.image",
+      },
+      Object {
+        "name": "Shape",
+        "value": "[482, 25, 1]",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of channels",
+        "numericValue": 25,
+        "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
+      },
+      Object {
+        "name": "Coordinate type",
+        "value": "Offset, Frequency",
+      },
+      Object {
+        "name": "Image reference pixels",
+        "value": "[241, 1]",
+      },
+      Object {
+        "name": "Image reference coords",
+        "value": "[0 arcsec, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Image ref coords (deg)",
+        "value": "[0 deg, 8.67514e+10 Hz]",
+      },
+      Object {
+        "name": "Pixel increment",
+        "value": "0.4\\", -244238 Hz",
+      },
+      Object {
+        "name": "Spectral frame",
+        "value": "LSRK",
+      },
+      Object {
+        "name": "Velocity definition",
+        "value": "RADIO",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
+        "name": "Restoring beam",
+        "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
+      },
+    ],
+    "depth": 1,
+    "dimensions": 3,
+    "headerEntries": Any<Object>,
+    "height": 25,
+    "stokes": 1,
+    "stokesVals": Array [],
+    "width": 482,
+  },
+  "success": true,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": 2,
+  "name": "SIMPLE",
+  "numericValue": Any<Number>,
+  "value": "T",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 3`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": 2,
+  "name": "BITPIX",
+  "numericValue": Any<Number>,
+  "value": "-32",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 5`] = `"-3.2000e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS",
+  "numericValue": Any<Number>,
+  "value": "3",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 7`] = `"3.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS1",
+  "numericValue": Any<Number>,
+  "value": "482",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 9`] = `"4.8200e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS2",
+  "numericValue": Any<Number>,
+  "value": "25",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 11`] = `"2.5000e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": 2,
+  "name": "NAXIS3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 13`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": 1,
+  "name": "BSCALE",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "entryType": 1,
+  "name": "BMAJ",
+  "numericValue": Any<Number>,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 18`] = `"5.7251e-4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "entryType": 1,
+  "name": "BMIN",
+  "numericValue": Any<Number>,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 20`] = `"4.1424e-4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": 1,
+  "name": "BPA",
+  "numericValue": Any<Number>,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 22`] = `"-7.4627e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": 1,
+  "name": "PC1_1",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 27`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": 1,
+  "name": "PC2_2",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 32`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": 1,
+  "name": "PC3_3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 37`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "OFFSET",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT1",
+  "numericValue": Any<Number>,
+  "value": "4.000000145635E-01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 41`] = `"4.0000e-1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX1",
+  "numericValue": Any<Number>,
+  "value": "241",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 43`] = `"2.4100e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "arcsec",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "FREQ",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL2",
+  "numericValue": Any<Number>,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 47`] = `"8.6751e+10"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT2",
+  "numericValue": Any<Number>,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 49`] = `"-2.4424e+5"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX2",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 51`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "Hz",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "STOKES",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 55`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT3",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 57`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX3",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 59`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "name": "CUNIT3",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 62`] = `"8.6754e+10"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 65`] = `"1.0000e+4"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 67`] = `"1.0000e+0"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": 2,
+  "name": "VELREF",
+  "numericValue": Any<Number>,
+  "value": "257",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 69`] = `"2.5700e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 74`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSRA",
+  "numericValue": Any<Number>,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 75`] = `"2.7509e+2"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 76`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSDEC",
+  "numericValue": Any<Number>,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 77`] = `"-1.6203e+1"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 78`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-X",
+  "numericValue": Any<Number>,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 79`] = `"2.2251e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 80`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Y",
+  "numericValue": Any<Number>,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 81`] = `"-5.4403e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 82`] = `
+Object {
+  "entryType": 1,
+  "name": "OBSGEO-Z",
+  "numericValue": Any<Number>,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" OPEN_FILE_ACK should match snapshot 83`] = `"-2.4810e+6"`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder open/append the file "M17_SWex_pv.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
+Object {
+  "fileId": 201,
+  "histograms": Any<Object>,
+  "progress": 1,
+  "regionId": -1,
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder set image channel for the file "M17_SWex_pv.fits" RASTER_TILE_DATA should match snapshot 1`] = `
+Object {
+  "compressionQuality": 11,
+  "compressionType": "ZFP",
+  "fileId": 200,
+  "tiles": Array [
+    Object {
+      "height": 13,
+      "imageData": "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",
+      "nanEncodings": "PQwAAA==",
+      "width": 241,
+    },
+  ],
+}
+`;
+
+exports[`OPEN_IMAGE_PV: Testing the case of opening multiple images one by one without closing former ones Go to "set_QA" folder set image channel for the file "M17_SWex_pv.image" RASTER_TILE_DATA should match snapshot 1`] = `
+Object {
+  "compressionQuality": 11,
+  "compressionType": "ZFP",
+  "fileId": 201,
+  "tiles": Array [
+    Object {
+      "height": 13,
+      "imageData": "8bgBoBBYnWd51TjphUM2TfA+62YeEjMO9yfILboCXw5rWP3EeARKaqQ7/q7XtFqg+Hda3nKLh4ycN+TtV+T3/pl+6HZlWhePADKROUE1bWV++fg+VjO9Gm88ZDLi3SD97AS71IGZkHBt2HjIdLb5fvGpBNWh/G7YGVuN36HHRkN94O7MCS4X1wiLSx9R3tGALqxM5GafkXpawoBHu6Dq5TtkxqwgKeI//7SUn7+p3UeZ/HhsCIwlwD2FfcYDmUEJPOLMO0FjDQcALWI+6NA+pzwbumDxysRDQJGBYpcgG/JA0RMt73OR55EquWAS8BhJilwDo86H4x0BNOapmASi7NlG0TkBttxMTmAethnCdfCedK0SPK78G9mPR6powAV0ZIfSvNkWvrzGg/PPqApGGPXtEMukoOks+Y4AEA4sHeRHhR+J7EjYW6vHNrd4yNzRIzz9nAMqTK90yzJo8dhPcpzeub0plMgKYhzpFZuHVMhGkZoy0n0+n/a3suOxvXh5j1ZHTvgTqqDf8R3iIWiOrPVb8gtheQx7nBh5hwP0cAKLd+6StrlDpj2i2/KOxLBm81R/Txy/ObDjrXmbDPFIlUQ2NqP0F4BFVhH7kNN4CCA2JRAUxhBfpHM+RLe6xiPxCJfP/1v/I6pvz8LAxz6MR0CBWgrR+uL+n3ydtytG3S8egsIo1dCaGLrNeMJ0LcdGPMRiW7U9iM7PoloRNodJp++4mh3ssxilLGZncrlIH3YoLt+hAUbHZmiT6dcZb94LKLIDvvOQaj2GvpXEE99PcMB4AOJJhFRKAvhJ1lRPh8tlaYuNh9AMenQLh8vhoSdQ69XEIx6pATQjUYq/xn+dAALj/l4DO49UCaBGan9GdXY/hZ2GxjweARmGXOAkUbYeQGLQDYM5Ip7zECPXEAuVQUucMNbFxFn+qB4CiEQDbNHE1699mxnpujcPB+hEAuRCdshNi9H5LgBB9bCflqjBy8BWTvP4lpdTPVIhgcQ8pFaRLPLrzG1WD+8vNJoVNjfL+r3PnMHx2ADtmlwldh2jxsQSq3olpHjIjGREeu5xz6LVrYTdVpspHv7rZccnv2HEwdFLtsNg8Y6Pxgpurz0/Yjq5Rm1390U3t3jYZkM33gTvja8utJohoKx4LPcYtBLV6NBVrwGlyPH0Fw/BaE8aBGLXXpS5iW8nV57xkDdQD2Q9nuKOC67dNYXbBVs8ZH5QOUgFqB60QVtU3zzG1TYe2wwQQ3DBqeEfgeNO/gyBdfY8tomNe3Td4x5sL1WYoN2YnMc2gZIgMZ+wSm1sZcdbwjxEG6BCS/Pl1Cul1+NWZT8eziAGs4w62W9XkNXO/mc7DOORCQREBApBgUBUohDM4w/0YEKBjExIp6EUsf119Zj65pGJtMVITSx8m/slAjsIRB1pHgEUoMfCKoUUnpDLEM46b0Ec80i9lOjSsShyouIPbL/3Z59HuoVthaJMhBW1sGeEohsszOMa5UFFtjaK8+e7T2JGlY/mkYEITIKwJIUOIVzjIgeSn2ai5xFAIGBBoglWwODh8wUDycKcRwABAASEQKE2u5WLAWuVs8wjgAhUSioWO8P8LC9BBL/Y/YgnETJSMG5ZjrlwvJwWaqHWCXgekjhx8UMjJee7mGJTZh4BVEgihEUj/D8IEAPlyBLxZD6PADLAAdkL4mU6Jd9sYvTvtm7z2NSNaVbL4MU1F43koazxPo+LgUQ0QrKpLPdAcpP4Dajmsfwfs3ymyEf9rUvMS/FdlebhBoYWgLQg6ZJ1EzTeKzNyBeMRQAzSZZUulHEmzSUVb5Mu9vVwqKxaEs1yEU9fFnJCAK0nCAREJKQVSFOEr9BZsoU79v0eqaFACDXMZNQ5iR/Bw5W6h8OoVYiEBqFOBHj2rF/v1u/hMApRKXugXVVkLOJ4IOl6+BiNqOFkGQtSHzNbVu8k5x4O0IDJROIhZi01IIsy18uHG4hAADoQsGtixZb2L8+HG4hEIVJhiQStfi3fRq98+DmhgUwA4M2SFQz5Wv49MqMTHYBFwyZaWRQCCR1/vve4CjcmFwqGgIYz/Kew8m97j7WpcBBP8t7KYc2svsfaNEZrJvSpJL1xHqjBe6yfjgiXowwgLQ3P+P7weshADdh0gn5xe8+CarJj3HpsA5XAkGRr5cinL4eTwxl3D+k3hhSFsASc5EJhWmeg5PLhBhoxiUAsgIPQKo7EyTYtH0FlFOBKWJOytgxoJKeQgWDy4WZEauq1ekgtZOl9NUbujOXDDZsKJRFRoEBnpk78HYhfH/cIIhWRAp4MrVvJLgS/fYfeI4jkBGqASuP8d8gY9TtQrHsEuZwibeqhBbe1tDLrz4t9j0OhTF5BoV64Qv6gFSbH+QgiOdwIwEQoJfSqueUsz4ebgUShBVCmUMGxY7eMtMnC/XAojEJIJbI0iOeAMwyaL/ahkRlToaQicJLSpKyKl07Jx6FQIETF69ZaHKdZqcuUjyWMAHSCAVPgwXAWB+4eh0JHZAJCkwFUfhrniATmHkszIsCDWY5zRN/AjwO29TgUKiIQlBB4ikft1RDWYNxjaUYBCjGrFCpYouvjJKEeh0JFhUfLeHoLtVAWCypS5nE1EDgRnnyVa6BXPQH+NwrGeghGIIrwbxlu7hpkqUYkmo16OEAFojEEqVdVdzHZymkaPw8Ncj+IOvoUIVNBJ5y2kFy2HodCAAIoiAhEggLNQwxysSvF5V93T/++UrEkGh8PAaAYCcqnn0SoCXFwy1xRfB46Z7xyvAEd1Jg8ENBjoZh4yEwkQwtoJRNEx7PAshuvR/Fww9agwoIrWnu8xrDB8zo1JB42bNyrrjIZaAPARdtuIuh4JMLBIsBPU/wtjoqPaESa8h16OPI5cD0/L1I2bvq2leuCeAiYUh1lCOk7k1j35Y01G7C+4xiK+BZwN5fv1ACywy/1ir97TDwCCMbVtZj250DdKJ4LbojkQntHQJBhecDNRsjl5cWa54bUyFS+IwAEIpEY+ublow5zHRrNe0jUx0NQX7hpjMf9BafxzjatzDuO5oRm4YKIF4NhcSLycOEgxEMwEAlEPrqp38c316d+XNXpHRsYQxFRVa6Hmfn18ycrKgYiHja77o0LbNf89rtzyJw5iocbAIVASUCkGHVbuQUjI51YzMPVRDU0KYXCh80H481/Hg85fnEYljcTgv7pqL+ETd8RUGBzCzZ14jr2+DMDQGXU8YfvyADikbAOki/Xrf8ejA0Vc0HeOxwoICObFAz1tS/rAxibS5F4SO5tpC0Dgr4Y8Vo2t77O8A5uxuwPvMKaROJFExbk1al3COAWDBfBtKKjOzM4x1EVJh4OgNagMlMTOHZqiXNgzdcI8/B7RgCG5oFJknS+8opLbuIhx40KD/Vm0CoYF88mlsa8IwAkQ9mw0HpbwwHd5RFotfryvSMIxPyntlt0YHWQ02HGd9hu75CBiRBGDMgNtlv0egwQ0IDlHTIe1jnV1qP0/x4hPFBt9NDtO24qAyMoebIv1fXruTaTz6AC9g6xvIw0jitxX02ogG6zhPbviJGikR7lT0NElhsPcIGz24rGQ9QZ8DzwI8R17ctfD+TPTjwE0Ir2WYr/wd6El2wr08K9I4AY9Eso46+FYW57AknVOMQlHmTMSO03+40ANPJhUW+3ah6uJnL/mIt0QRkaGyOSrYfr9/TsVWkv3/yjyHiu7egermZLVSUk1F0te7mbOv3xEADQIJhDJmOMQVYKjOHzwhwPjRO3OB79y2RMuIEUkqS3xmNpwIK1iMcnqOIbhPv1nIrHVTowenUSy935Jc8qOqonjIdYPesMuRVx8bMWPVQIcs1D0FmL/QuHz7LEaUoQOAkqHoIRjfTO/rnQSqjr7PxxKoyHxoP04LhIx1Ka0nUM8OsvQ+8ozwPXbTdpGCyEDQ2NQEUHXfqOBuiESpOej5kMSd5rfQ5EmmHNI4AABABoEz3cK7HI18B/IPV4bADhOHmRf8RAEMMooGlTEIpH4rYxNM+FzMGFzHVMuuitFI8AEpAgofz+zy4yQ2nmSIjti3gIBihEngzGdr7dUNoHQdUIJx5RLv6NUmZ2l+4RhN1c28X9O4kpjApAghIEqEQgKlA8AQIogIEmkigigQKIaJ5lO9BEEwQkkQTvhKAhRhNFNFFEAUgQjxCMApAggAgCCCiAeLyRUQACACCBQBO9YwOKKKCAIIAIAgjeUSPQQABEAFAAAb3DBwIAAgkkAECiid7h0zSjAAaAIAKI3jHGaAIJBhBIggDe8U4xggAgAQCKCKJ2AgSQBBEIAEBAAAQkUDwczSiiAQaICIIA3nEEBREUI4giGKCdAAUUQEACTCAQRBJA9I4jGAkEwQQASSTQQPE4ikQUUQADDRBQBO/wKZhABIAEEAjwDk2CjACYSKIIBGjHJxkBFBEAEwEwUUTvcCQjACaAKKAJJGinVEYQSRTQRBFIMFA83gg0kQACBABBBO8s0QAiiACYYKKA2tkICkIU0UQTDTTBO8sZTQTQQAJAFFAA7wjNaKIJJohooIkieEfTBMxooIgEiEiCeHhnNAEAEgUwgQDv+DSJSIKAJJBooojaCUGDMKIIIpgAIoDa2SkGkkAAACaS4J1aTkAwBJHQjtkpktEEEkAkQDsmRhIBAEFEEQ0wwTvMckYTARBBBO/wgSCCCCIIBhAIgnZKBhJIookAGigggN7xRiCAJgpooIAiaEfTBMwoAoECGGiid9TKSACJIhpoogjesStNQhTICKJ3QhAgjUiAiCQYYKJ3lCkSUQQQSRCBAO8IQSMSKAKABoAgoHjsSUYAQSSABAAI8I53CpFAEkUgwUQCtOOpjCQYKCIBAIrgneUUzQgAAASISIB3OCAJBgBooIECEugdzUggACQQaKKBIoIgHt4ZTTTBBAFEAFA8BpcCRSQQBO+oEwAigSaQQCII3tmAAIoAIAkigAiCgdopEzSiiQQaIKCIIopHoYwGAAAiASKQKB4aKIIBBJJIogAEisceKKCIIhpgAokGeCcUo4AmAAgAAQKIQKB3FkQUAAAAAAA=",
+      "nanEncodings": "PQwAAA==",
+      "width": 241,
+    },
+  ],
+}
+`;
