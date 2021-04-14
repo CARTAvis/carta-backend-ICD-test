@@ -9,7 +9,7 @@ export interface IOpenFile {
     RegionHistogramData: CARTA.RegionHistogramData;
 }
 export class Client {
-    IcdVersion: number = 19;
+    IcdVersion: number = 20;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -74,6 +74,8 @@ export class Client {
         [66, CARTA.SaveFileAck],
         [67, CARTA.SpectralLineRequest],
         [68, CARTA.SpectralLineResponse],
+        [69, CARTA.ConcatStokesFiles],
+        [70, CARTA.ConcatStokesFilesAck],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
