@@ -75,7 +75,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("PER_CONTOUR_DATA_2D", () => {
+describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different SmoothingMode & SmoothingFactor", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -120,8 +120,8 @@ describe("PER_CONTOUR_DATA_2D", () => {
             let newnumber = SF_number.sort(() => Math.random() - 0.5);
             console.log('New Contour smoothing factor (random between 1 and 5):', newnumber);
 
-            [0, 1].map((number, idx) => {
-                test(`(Step 3.${idx}) Change Smooth Mode and Smooth Factor with random number: ${number} and ${newnumber[idx]}`, async () => {
+            [1, 2].map((number, idx) => {
+                test(`(Step 3.${idx}) Change contour smoothing: Smooth Mode of ${number} & Smooth Factor of ${newnumber[idx]} (random number)`, async () => {
                     await Connection.send(CARTA.SetContourParameters,
                         {
                             ...assertItem.setContour[1],
