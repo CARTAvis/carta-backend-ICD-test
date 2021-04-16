@@ -9,6 +9,7 @@ let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
 let regionTimeout = config.timeout.region;
 let momentTimeout = config.timeout.moment;
+const setFileId = 200;
 interface AssertItem {
     precisionDigit: number;
     registerViewer: CARTA.IRegisterViewer;
@@ -28,11 +29,11 @@ let assertItem: AssertItem = {
         directory: testSubdirectory,
         file: "HD163296_CO_2_1.fits",
         hdu: "",
-        fileId: 0,
+        fileId: setFileId,
         renderMode: CARTA.RenderMode.RASTER,
     },
     setRegion: {
-        fileId: 0,
+        fileId: setFileId,
         regionId: -1,
         regionInfo: {
             regionType: CARTA.RegionType.RECTANGLE,
@@ -41,12 +42,12 @@ let assertItem: AssertItem = {
         },
     },
     setSpectralRequirements: {
-        fileId: 0,
+        fileId: setFileId,
         regionId: 1,
         spectralProfiles: [{ coordinate: "z", statsTypes: [CARTA.StatsType.Sum] }],
     },
     momentRequest: {
-        fileId: 0,
+        fileId: setFileId,
         regionId: 1,
         axis: CARTA.MomentAxis.SPECTRAL,
         mask: CARTA.MomentMask.Include,
@@ -92,13 +93,20 @@ describe("MOMENTS_GENERATOR_FITS: Testing moments generator for a given region o
         let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
-            ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
+            await Connection.streamUntil(
+                (type, data, ack) =>
+                    ack.RegionHistogramData.length == assertItem.momentRequest.moments.length &&
+                    ack.MomentResponse.length > 0
+            ).then(thisAck => {
+                ack = thisAck;
+                FileId = ack.RegionHistogramData.map(data => data.fileId);
+            });
             FileId = ack.RegionHistogramData.map(data => data.fileId);
             expect(ack.MomentProgress.length).toBeGreaterThan(0);
         }, momentTimeout);
 
         test(`Receive ${assertItem.momentRequest.moments.length} REGION_HISTOGRAM_DATA`, () => {
-            expect(FileId.length).toEqual(assertItem.momentRequest.moments.length);
+            expect(ack.RegionHistogramData.length).toEqual(assertItem.momentRequest.moments.length);
         });
 
         test(`Assert MomentResponse.success = true`, () => {
@@ -163,7 +171,7 @@ describe("MOMENTS_GENERATOR_FITS: Testing moments generator for a given region o
                     compressionType: CARTA.CompressionType.NONE,
                     compressionQuality: 0,
                 });
-                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false).then(ack => {
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync && data.endSync).then(ack => {
                     RasterTileSync.push(...ack.RasterTileSync.slice(-1));
                     RasterTileData.push(...ack.RasterTileData);
                 });

@@ -58,7 +58,7 @@ let assertItem: AssertItem = {
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 1013,
+            dataSize: 1034,
             lengthOfheaders: 19,
             speciesOfline1st: "gGG'g-CH2OHCH2CH2OH",
             speciesOflineIndex1st: 0,
@@ -69,7 +69,7 @@ let assertItem: AssertItem = {
         },
         {
             success: true,
-            dataSize: 771,
+            dataSize: 789,
             lengthOfheaders: 19,
             speciesOfline1st: "gGG'g-CH2OHCH2CH2OH",
             speciesOflineIndex1st: 0,
@@ -80,7 +80,7 @@ let assertItem: AssertItem = {
         },
         {
             success: true,
-            dataSize: 303,
+            dataSize: 310,
             lengthOfheaders: 19,
             speciesOfline1st: "CH3CHNH2COOH-I",
             speciesOflineIndex1st: 0,
@@ -91,7 +91,7 @@ let assertItem: AssertItem = {
         },
         {
             success: true,
-            dataSize: 18,
+            dataSize: 21,
             lengthOfheaders: 19,
             speciesOfline1st: "30SiC2",
             speciesOflineIndex1st: 0,
@@ -156,18 +156,34 @@ assertItem.setSpectralLineReq.map((request, index) => {
                     expect(response2.headers.length).toEqual(assertItem.SpectraLineResponse[index].lengthOfheaders);
                     expect(response2.spectralLineData[0].stringData.length).toEqual(assertItem.SpectraLineResponse[index].dataSize)
                 } else {
-                    console.warn("Does not receive proper SpectralLineResponse")
+                    console.warn("Does not receive proper SpectralLineResponse");
+                    expect(response2.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
                 }
             });
 
             test(`(Step 3)Check the information of the first and the last molecular species`,async()=>{
                 if (response2 != undefined && response2.dataSize === assertItem.SpectraLineResponse[index].dataSize) {
-                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
-                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
-                    expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
-                    expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
+                    if (index == 4 || index == 5){
+                        expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].speciesOfline1st);
+                        expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndex1st]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOfline1st);
+                        expect(response2.spectralLineData[0].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].speciesOflineLast);
+                        expect(response2.spectralLineData[2].stringData[assertItem.SpectraLineResponse[index].speciesOflineIndexLast]).toEqual(assertItem.SpectraLineResponse[index].freqSpeciesOflineLast);
+                    } else {
+                        // check at least two molecules freq inside a returned array
+                    expect(response2.spectralLineData[2].stringData).toEqual(expect.arrayContaining([assertItem.SpectraLineResponse[index].freqSpeciesOfline1st]));
+                    expect(response2.spectralLineData[2].stringData).toEqual(expect.arrayContaining([assertItem.SpectraLineResponse[index].freqSpeciesOflineLast]));
+                    // find the index of these two molecules freq
+                    const is1st = (element) => element ===  assertItem.SpectraLineResponse[index].freqSpeciesOfline1st;
+                    let tar1Index = response2.spectralLineData[2].stringData.findIndex(is1st);
+                    const islast = (element) => element ===  assertItem.SpectraLineResponse[index].freqSpeciesOflineLast;
+                    let tarlastIndex = response2.spectralLineData[2].stringData.findIndex(islast);
+                    // matching these two molecules' name
+                    expect(response2.spectralLineData[0].stringData[tar1Index]).toMatch(assertItem.SpectraLineResponse[index].speciesOfline1st)
+                    expect(response2.spectralLineData[0].stringData[tarlastIndex]).toMatch(assertItem.SpectraLineResponse[index].speciesOflineLast)
+                    }
                 } else {
-                    console.warn("Does not receive proper SpectralLineResponse")
+                    console.warn("Does not receive proper SpectralLineResponse");
+                    expect(response2.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
                 };
             })
         })

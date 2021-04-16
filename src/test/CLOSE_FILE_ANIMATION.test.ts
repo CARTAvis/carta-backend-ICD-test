@@ -141,6 +141,11 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
             );
             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
         };
+        // Pick up the streaming messages
+        // Channel 3 & 4: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
+        let RetreiveMessages = await Connection.stream(assertItem.startAnimation.requiredTiles.tiles.length * 2 + 4 + 2 + 2);
+        
+        // Send StopAnimator
         expect(AnimateStreamData.length).toEqual(assertItem.AnimatorStopChannel);
 
         // CLOSE_FILE before STOP_ANIMATION (NO STOP_ANIMATION in this test!)

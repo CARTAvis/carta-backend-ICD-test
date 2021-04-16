@@ -37,15 +37,15 @@ let assertItem: AssertItem = {
             frequencyRange: { min: 420000, max: 440000 },
             lineIntensityLowerLimit: -5,
         },
-        {
-            frequencyRange: { min: 420000, max: 440000 },
-            lineIntensityLowerLimit: NaN,
-        },
+        // {
+        //     frequencyRange: { min: 420000, max: 440000 },
+        //     lineIntensityLowerLimit: NaN,
+        // },
     ],
     SpectraLineResponse: [
         {
             success: true,
-            dataSize: 75718,
+            dataSize: 77539,
             lengthOfheaders: 19,
             speciesOfline1st: "HOCH2CN",
             speciesOflineIndex1st: 0,
@@ -105,6 +105,7 @@ assertItem.setSpectralLineReq.map((request, index) => {
                     expect(response2.spectralLineData[0].stringData.length).toEqual(assertItem.SpectraLineResponse[index].dataSize)
                 } else {
                     console.warn("Does not receive proper SpectralLineResponse")
+                    expect(response2.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
                 }
             });
 
@@ -123,6 +124,7 @@ assertItem.setSpectralLineReq.map((request, index) => {
                     expect(response2.spectralLineData[0].stringData[tarlastIndex]).toMatch(assertItem.SpectraLineResponse[index].speciesOflineLast)
                 } else {
                     console.warn("Does not receive proper SpectralLineResponse")
+                    expect(response2.dataSize).toEqual(assertItem.SpectraLineResponse[index].dataSize);
                 };
             })
         });
