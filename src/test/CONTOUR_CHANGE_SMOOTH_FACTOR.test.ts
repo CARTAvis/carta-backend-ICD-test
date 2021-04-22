@@ -1,10 +1,11 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, ProcessContourData } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
+const ZstdCodec = require('zstd-codec').ZstdCodec;
 
-let testServerUrl: string = config.serverURL;
+let testServerUrl: string = config.serverURL0;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
@@ -15,7 +16,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
     openFile: CARTA.IOpenFile;
-    addTilesReq: CARTA.IAddRequiredTiles[];
+    addTilesReq: CARTA.IAddRequiredTiles;
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
     setContour: CARTA.ISetContourParameters[];
@@ -34,14 +35,12 @@ let assertItem: AssertItem = {
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    addTilesReq: [
-        {
+    addTilesReq: {
             fileId: 0,
             compressionQuality: 11,
             compressionType: CARTA.CompressionType.ZFP,
-            tiles: [33558529, 33558528, 33554433, 33562625, 33554432, 33562624, 33558530, 33554434, 33562626],
-        },
-    ],
+            tiles: [0],
+    },
     setCursor: {
         fileId: 0,
         point: { x: 1, y: 1 },
@@ -55,9 +54,9 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             referenceFileId: 0,
-            smoothingMode: 0,
+            smoothingMode: CARTA.SmoothingMode.BlockAverage,
             smoothingFactor: 4,
-            levels: [1.1014473195533452, 1.9245819583813286, 2.747716597209312, 3.5708512360372953, 4.393985874865279],
+            levels: [0.6],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
@@ -66,7 +65,7 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             referenceFileId: 0,
-            levels: [1.1014473195533452, 1.9245819583813286, 2.747716597209312, 3.5708512360372953, 4.393985874865279],
+            levels: [10.0],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
@@ -76,6 +75,13 @@ let assertItem: AssertItem = {
 };
 
 describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different SmoothingMode & SmoothingFactor", () => {
+    let zstdSimple: any;
+    test(`prepare zstd`, done => {
+        ZstdCodec.run(zstd => {
+            zstdSimple = new zstd.Simple();
+            done();
+        });
+    }, config.timeout.wasm);
 
     let Connection: Client;
     beforeAll(async () => {
@@ -102,9 +108,9 @@ describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different Smoo
             test(`Initialised WCS info from frame: ADD_REQUIRED_TILES, SET_CURSOR, and SET_SPATIAL_REQUIREMENTS, then check them are all returned correctly:`, async () => {
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
-                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
                 Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-                expect(Ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length);
+                expect(Ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length);
             }, playImageTimeout);
         });
 
@@ -116,22 +122,25 @@ describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different Smoo
                 );
             }, contourTimeout);
 
-            let SF_number = new Array(5).fill(1).map((_, i) => i + 1);
-            let newnumber = SF_number.sort(() => Math.random() - 0.5);
-            console.log('New Contour smoothing factor (random between 1 and 5):', newnumber);
-
+            let ContourImageData: CARTA.ContourImageData;
             [1, 2].map((number, idx) => {
-                test(`(Step 3.${idx}) Change contour smoothing: Smooth Mode of ${number} & Smooth Factor of ${newnumber[idx]} (random number)`, async () => {
+                test(`(Step 3-${idx}) Change contour smoothing setting: Smooth Mode of Gaussian & Smooth Factor of ${number}:`, async () => {
                     await Connection.send(CARTA.SetContourParameters,
                         {
                             ...assertItem.setContour[1],
-                            smoothingMode: number,
-                            smoothingFactor: newnumber[idx],
+                            smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+                            smoothingFactor: number,
                         }
                     );
-                    await Connection.streamUntil(
-                        (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[1].levels.length
-                    );
+                    // await Connection.streamUntil(
+                    //     (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[1].levels.length
+                    // );
+                    ContourImageData = await Connection.receive(CARTA.ContourImageData);
+                    console.log(ContourImageData);
+                    // console.log(ContourImageData.contourSets)
+                    let floatData = ProcessContourData(ContourImageData, zstdSimple).contourSets[0].coordinates;
+                    console.log(floatData);
+                    
                 }, contourTimeout);
             });
         });
