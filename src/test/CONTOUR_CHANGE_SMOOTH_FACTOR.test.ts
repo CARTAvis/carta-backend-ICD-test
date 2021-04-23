@@ -54,22 +54,35 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             referenceFileId: 0,
-            smoothingMode: CARTA.SmoothingMode.BlockAverage,
-            smoothingFactor: 4,
             levels: [0.6],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
             contourChunkSize: 100000,
+            smoothingMode: CARTA.SmoothingMode.BlockAverage,
+            smoothingFactor: 4,
         },
         {
             fileId: 0,
             referenceFileId: 0,
-            levels: [10.0],
+            levels: [0.85],
             imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
             decimationFactor: 4,
             compressionLevel: 8,
             contourChunkSize: 100000,
+            smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+            smoothingFactor: 6,
+        },
+        {
+            fileId: 0,
+            referenceFileId: 0,
+            levels: [0.1],
+            imageBounds: { xMin: 0, xMax: 8600, yMin: 0, yMax: 12200 },
+            decimationFactor: 4,
+            compressionLevel: 8,
+            contourChunkSize: 100000,
+            smoothingMode: CARTA.SmoothingMode.NoSmoothing,
+            smoothingFactor: 2,
         },
     ],
 };
@@ -115,34 +128,78 @@ describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different Smoo
         });
 
         describe(`(Contour Tests)`, () => {
-            test(`(Step 2) Set Default Contour Parameters:`, async () => {
-                await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
-                await Connection.streamUntil(
-                    (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
-                );
-            }, contourTimeout);
-
             let ContourImageData: CARTA.ContourImageData;
-            [1, 2].map((number, idx) => {
-                test(`(Step 3-${idx}) Change contour smoothing setting: Smooth Mode of Gaussian & Smooth Factor of ${number}:`, async () => {
-                    await Connection.send(CARTA.SetContourParameters,
-                        {
-                            ...assertItem.setContour[1],
-                            smoothingMode: CARTA.SmoothingMode.GaussianBlur,
-                            smoothingFactor: number,
-                        }
-                    );
-                    // await Connection.streamUntil(
-                    //     (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[1].levels.length
-                    // );
-                    ContourImageData = await Connection.receive(CARTA.ContourImageData);
-                    console.log(ContourImageData);
-                    // console.log(ContourImageData.contourSets)
-                    let floatData = ProcessContourData(ContourImageData, zstdSimple).contourSets[0].coordinates;
-                    console.log(floatData);
+            assertItem.setContour.map((input,index)=>{
+                test(`(Step ${index+2})`,async()=>{
+                    await Connection.send(CARTA.SetContourParameters,input);
+                    let temp = await Connection.streamUntil((type,data,ack)=>ack.ContourImageData.filter(data => data.progress == 1).length == input.levels.length);
+                    // console.log(temp)
+                    ContourImageData = temp.ContourImageData[temp.ContourImageData.length-1];
+                    expect(ContourImageData).toMatchSnapshot();
+                    // console.log(ContourImageData)
+                })
+            })
+
+            // test(`(Step 2) Set Default Contour Parameters:`, async () => {
+            //     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[0]);
+            //     let temp1 = await Connection.streamUntil(
+            //         (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
+            //     );
+            //     console.log(temp1);
+            // }, contourTimeout);
+
+            // test(`(Step 3) Set Default Contour Parameters:`, async () => {
+            //     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[1]);
+            //     let temp2 = await Connection.streamUntil(
+            //         (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
+            //     );
+            //     console.log(temp2);
+            // }, contourTimeout);
+
+            // test(`(Step 4) Set Default Contour Parameters:`, async () => {
+            //     await Connection.send(CARTA.SetContourParameters, assertItem.setContour[2]);
+            //     let temp3 = await Connection.streamUntil(
+            //         (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
+            //     );
+            //     console.log(temp3);
+            // }, contourTimeout);
+
+            // let ContourImageData: CARTA.ContourImageData;
+            // [4].map((number, idx) => {
+            //     test(`(Step 3-${idx}) Change contour smoothing setting: Smooth Mode of Gaussian & Smooth Factor of ${number}:`, async () => {
+            //         let yy = {
+            //             ...assertItem.setContour[1],
+            //             smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+            //             smoothingFactor: number,
+            //         };
+            //         console.log(yy);
+            //         console.log(assertItem.setContour[2])
+            //         await Connection.send(CARTA.SetContourParameters,assertItem.setContour[2]);
+            //         let temp2 = await Connection.streamUntil(
+            //             (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[0].levels.length
+            //         );
+            //         console.log(temp2);
+
+            //         // await Connection.send(CARTA.SetContourParameters,
+            //         //     {
+            //         //         ...assertItem.setContour[1],
+            //         //         // smoothingMode: CARTA.SmoothingMode.GaussianBlur,
+            //         //         // smoothingFactor: number,
+            //         //     }
+            //         // );
+            //         // await Connection.streamUntil(
+            //         //     (type, data, ack) => ack.ContourImageData.filter(data => data.progress == 1).length == assertItem.setContour[1].levels.length
+            //         // );
+
+            //         // ContourImageData = await Connection.receive(CARTA.ContourImageData);
+            //         // expect(ContourImageData).toMatchSnapshot();
+            //         // console.log(ContourImageData.contourSets[0]);
+            //         // console.log(ContourImageData.contourSets)
+            //         // let floatData = ProcessContourData(ContourImageData, zstdSimple).contourSets[0].coordinates;
+            //         // console.log(floatData);
                     
-                }, contourTimeout);
-            });
+            //     }, contourTimeout);
+            // });
         });
     });
     afterAll(() => Connection.close());
