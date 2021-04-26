@@ -5,7 +5,7 @@ import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 const ZstdCodec = require('zstd-codec').ZstdCodec;
 
-let testServerUrl: string = config.serverURL0;
+let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
