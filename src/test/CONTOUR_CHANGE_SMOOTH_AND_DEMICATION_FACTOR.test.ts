@@ -87,7 +87,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different SmoothingMode & SmoothingFactor", () => {
+describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different SmoothingFactor & DemicationFactor", () => {
     let zstdSimple: any;
     test(`prepare zstd`, done => {
         ZstdCodec.run(zstd => {
