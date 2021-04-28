@@ -122,7 +122,7 @@ describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different Smoo
                 await Connection.send(CARTA.SetCursor, assertItem.setCursor);
                 await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq);
                 await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
-                Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+                Ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync && data.endSync );
                 expect(Ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length);
             }, playImageTimeout);
         });
@@ -140,7 +140,7 @@ describe("CONTOUR_CHANGE_SMOOTH_MODE_FACTOR: Testing Contour with different Smoo
                     let floatData = ProcessContourData(ContourImageData, zstdSimple).contourSets[0].coordinates;
                     // console.log(floatData);
                     expect(floatData).toMatchSnapshot();
-                })
+                },contourTimeout)
             })
         });
     });
