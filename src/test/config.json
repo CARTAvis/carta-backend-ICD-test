@@ -13,7 +13,8 @@
         "moment": "set_HD163296",
         "catalogArtificial": "carta_artificial_catalog",
         "catalogLarge": "set_cosmos",
-        "save": "/tmp"
+        "save": "/tmp",
+        "concat_stokes": "set_StokesCube"
     },
     "timeout": {
         "connection": 1100,
