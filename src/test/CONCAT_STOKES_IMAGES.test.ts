@@ -113,7 +113,7 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
 
         let FileInfoResponse: CARTA.FileInfoResponse;
         assertItem.fileInfoReq.map((input,index)=>{
-            test(`FILE_INFO_RESPONSE-${index} should arrive within ${openFileTimeout} ms" | `, async () => {
+            test(`FILE_INFO_RESPONSE-${index+1} should arrive within ${openFileTimeout} ms" | `, async () => {
                 await Connection.send(CARTA.FileInfoRequest, {
                     directory: `${basePath}/` + testSubdirectory,
                     ...input,
