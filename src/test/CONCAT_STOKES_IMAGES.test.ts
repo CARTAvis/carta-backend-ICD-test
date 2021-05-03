@@ -123,7 +123,7 @@ describe("CONCAT_STOKES_IMAGES test: ", () => {
                     ...input,
                 });
                 FileInfoResponse = await Connection.receive(CARTA.FileInfoResponse);
-                // console.log(FileInfoResponse.fileInfoExtended);
+                expect(FileInfoResponse.success).toEqual(true);
             }, openFileTimeout);
         });
 
