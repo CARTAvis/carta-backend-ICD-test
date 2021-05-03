@@ -124,7 +124,7 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
         });
 
         let ConcatStokesResponse: CARTA.ConcatStokesFilesAck;
-        test(`(Step 2) Modify assert concatenate directory and request CONCAT_STOKES_FILES_ACK | `,async()=>{
+        test(`(Step 2) Modify assert concatenate directory and request CONCAT_STOKES_FILES_ACK within ${concatStokeTimeout} ms | `,async()=>{
             assertItem.ConcatReq.stokesFiles.map((input,index)=>{
                 assertItem.ConcatReq.stokesFiles[index].directory = basePath + `/` + testSubdirectory; //`${basePath}/` + testSubdirectory;
             });
