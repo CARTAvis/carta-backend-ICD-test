@@ -95,7 +95,7 @@ let assertItem: AssertItem = {
     }
 };
 
-describe("CONCAT_STOKES_IMAGES test: ", () => {
+describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into single image", () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -103,10 +103,6 @@ describe("CONCAT_STOKES_IMAGES test: ", () => {
         await Connection.open();
         await Connection.registerViewer(assertItem.register);
     }, connectTimeout);
-
-    test(`(Step 0) Connection open? | `, () => {
-        expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
-    });
     
     let basePath: string;
     describe(`Go to "${testSubdirectory}" folder`,()=>{
