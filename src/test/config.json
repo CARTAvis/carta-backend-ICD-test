@@ -1,6 +1,6 @@
 {
-    "serverURL0": "wss://carta.asiaa.sinica.edu.tw/socketdev",
-    "serverURL": "ws://127.0.0.1:3002",
+    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
+    "serverURL0": "ws://127.0.0.1:3002",
     "serverURL1": "ws://cartaviewer:5000",
     "path": {
         "root": ".",
