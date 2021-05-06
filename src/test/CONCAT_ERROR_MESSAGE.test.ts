@@ -15,6 +15,7 @@ interface AssertItem {
     filelist: CARTA.IFileListRequest;
     fileOpen: CARTA.IOpenFile;
     ConcatReq: CARTA.IConcatStokesFiles;
+    ConcatReqShape: CARTA.IConcatStokesFiles;
     ConcatResponse: string[];
 };
 
@@ -38,6 +39,24 @@ let assertItem: AssertItem = {
                 directory: testSubdirectory, 
                 hdu:"",
                 file:'IRCp10216_sci.spw0.cube.U.manual.pbcor.fits',
+                stokesType: 3
+            },
+        ],
+    },
+    ConcatReqShape:{
+        fileId: 0,
+        renderMode: 0,
+        stokesFiles:[
+            {
+                directory: testSubdirectory,
+                hdu:"",
+                file:'IRCp10216_sci.spw0.cube.Q.manual.pbcor.fits',
+                stokesType: 2
+            },
+            {
+                directory: testSubdirectory, 
+                hdu:"",
+                file:'IRCp10216_sci.spw0.cube.U.dropdeg.manual.pbcor.fits',
                 stokesType: 3
             },
         ],
@@ -75,8 +94,28 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReq);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
                 // console.log(ConcatStokesResponse.message);
-                // console.log(assertItem.ConcatResponse[0])
                 expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[0]);
+            
+            },concatStokeTimeout);
+        });
+
+        describe(`Case 2: Q & U Image shape inconsistent`,()=>{
+            test(`(Step 1) Assert FileListRequest |`, async()=>{
+                await Connection.send(CARTA.FileListRequest,assertItem.filelist);
+                basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+            });
+
+            let ConcatStokesResponse: CARTA.ConcatStokesFilesAck;
+            test(`(Step 2) Modify assert concatenate directory and request CONCAT_STOKES_FILES_ACK within ${concatStokeTimeout} ms | `,async()=>{
+                assertItem.ConcatReqShape.stokesFiles.map((input,index)=>{
+                    assertItem.ConcatReqShape.stokesFiles[index].directory = basePath + `/` + testSubdirectory; //`${basePath}/` + testSubdirectory;
+                });
+
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+                await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqShape);
+                ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
+                // console.log(ConcatStokesResponse.message);
+                expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[1]);
             
             },concatStokeTimeout);
         });
