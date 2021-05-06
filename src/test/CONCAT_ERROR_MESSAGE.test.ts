@@ -16,6 +16,7 @@ interface AssertItem {
     fileOpen: CARTA.IOpenFile;
     ConcatReq: CARTA.IConcatStokesFiles;
     ConcatReqShape: CARTA.IConcatStokesFiles;
+    ConcatReqDeplicate: CARTA.IConcatStokesFiles;
     ConcatResponse: string[];
 };
 
@@ -61,9 +62,28 @@ let assertItem: AssertItem = {
             },
         ],
     },
+    ConcatReqDeplicate:{
+        fileId: 0,
+        renderMode: 0,
+        stokesFiles:[
+            {
+                directory: testSubdirectory,
+                hdu:"",
+                file:'IRCp10216_sci.spw0.cube.Q.manual.pbcor.fits',
+                stokesType: 2
+            },
+            {
+                directory: testSubdirectory, 
+                hdu:"",
+                file:'IRCp10216_sci.spw0.cube.Q.dropdeg.manual.pbcor.fits',
+                stokesType: 2
+            },
+        ],
+    },
     ConcatResponse:[
         'is not allowed!',
-        'are not consistent!'
+        'are not consistent!',
+        'Duplicate Stokes type found'
     ]
 };
 
@@ -116,6 +136,27 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
                 // console.log(ConcatStokesResponse.message);
                 expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[1]);
+            
+            },concatStokeTimeout);
+        });
+
+        describe(`Case 3: Q & axis-degeneracy Q, duplicated Stokes type`,()=>{
+            test(`(Step 1) Assert FileListRequest |`, async()=>{
+                await Connection.send(CARTA.FileListRequest,assertItem.filelist);
+                basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+            });
+
+            let ConcatStokesResponse: CARTA.ConcatStokesFilesAck;
+            test(`(Step 2) Modify assert concatenate directory and request CONCAT_STOKES_FILES_ACK within ${concatStokeTimeout} ms | `,async()=>{
+                assertItem.ConcatReqDeplicate.stokesFiles.map((input,index)=>{
+                    assertItem.ConcatReqDeplicate.stokesFiles[index].directory = basePath + `/` + testSubdirectory; //`${basePath}/` + testSubdirectory;
+                });
+
+                await Connection.send(CARTA.CloseFile, { fileId: -1 });
+                await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqDeplicate);
+                ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
+                // console.log(ConcatStokesResponse.message);
+                expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[2]);
             
             },concatStokeTimeout);
         });
