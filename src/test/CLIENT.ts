@@ -76,7 +76,7 @@ export class Client {
         [68, CARTA.SpectralLineResponse],
         [69, CARTA.ConcatStokesFiles],
         [70, CARTA.ConcatStokesFilesAck],
-        [71, CARTA.FileListProgress],
+        [71, CARTA.ListProgress],
         [72, CARTA.StopFileList],
     ]);
     CartaTypeValue(type: any): number {
