@@ -17,7 +17,7 @@ Object {
       "",
     ],
     "name": "M17_SWex.fits",
-    "size": "51301440",
+    "size": "51304320",
     "type": "FITS",
   },
   "fileInfoExtended": Object {
@@ -32,13 +32,19 @@ Object {
       },
       Object {
         "name": "Shape",
-        "value": "[640, 800, 25]",
+        "value": "[640, 800, 25, 1]",
       },
       Object {
         "entryType": "INT",
         "name": "Number of channels",
         "numericValue": 25,
         "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
       },
       Object {
         "name": "Coordinate type",
@@ -86,7 +92,7 @@ Object {
       },
     ],
     "depth": 25,
-    "dimensions": 3,
+    "dimensions": 4,
     "headerEntries": Any<Object>,
     "height": 800,
     "stokes": 1,
@@ -126,11 +132,11 @@ Object {
   "entryType": 2,
   "name": "NAXIS",
   "numericValue": Any<Number>,
-  "value": "3",
+  "value": "4",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 7`] = `"3.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 7`] = `"4.0000e+0"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 8`] = `
 Object {
@@ -167,6 +173,17 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reope
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 14`] = `
 Object {
+  "entryType": 2,
+  "name": "NAXIS4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
   "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
   "entryType": 1,
   "name": "BSCALE",
@@ -175,9 +192,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 17`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 16`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 18`] = `
 Object {
   "entryType": "FLOAT",
   "name": "BZERO",
@@ -185,7 +202,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 17`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 19`] = `
 Object {
   "entryType": 1,
   "name": "BMAJ",
@@ -194,9 +211,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 18`] = `"5.7251e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 20`] = `"5.7251e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 19`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 21`] = `
 Object {
   "entryType": 1,
   "name": "BMIN",
@@ -205,9 +222,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 20`] = `"4.1424e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 22`] = `"4.1424e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 21`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 23`] = `
 Object {
   "entryType": 1,
   "name": "BPA",
@@ -216,23 +233,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 22`] = `"-7.4627e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 24`] = `"-7.4627e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 23`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 25`] = `
 Object {
   "name": "BTYPE",
   "value": "Intensity",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 24`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 26`] = `
 Object {
   "name": "OBJECT",
   "value": "M17SW",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 25`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 27`] = `
 Object {
   "comment": "Brightness (pixel) unit",
   "name": "BUNIT",
@@ -240,14 +257,14 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 26`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 28`] = `
 Object {
   "name": "RADESYS",
   "value": "ICRS",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 27`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 29`] = `
 Object {
   "entryType": 1,
   "name": "LONPOLE",
@@ -256,9 +273,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 28`] = `"1.8000e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 30`] = `"1.8000e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 29`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 31`] = `
 Object {
   "entryType": 1,
   "name": "LATPOLE",
@@ -267,9 +284,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 30`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 32`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 31`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 33`] = `
 Object {
   "entryType": 1,
   "name": "PC1_1",
@@ -278,9 +295,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 32`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 34`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 33`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 35`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_1",
@@ -288,7 +305,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 34`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 36`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_1",
@@ -296,7 +313,15 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 35`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 38`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_2",
@@ -304,7 +329,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 36`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 39`] = `
 Object {
   "entryType": 1,
   "name": "PC2_2",
@@ -313,9 +338,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 37`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 40`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 38`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 41`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_2",
@@ -323,7 +348,15 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 39`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 43`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_3",
@@ -331,7 +364,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 40`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 44`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_3",
@@ -339,7 +372,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 41`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 45`] = `
 Object {
   "entryType": 1,
   "name": "PC3_3",
@@ -348,16 +381,59 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 42`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 46`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 43`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "entryType": 1,
+  "name": "PC4_4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 52`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 53`] = `
 Object {
   "name": "CTYPE1",
   "value": "RA---SIN",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 44`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 54`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL1",
@@ -366,9 +442,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 45`] = `"2.7509e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 55`] = `"2.7509e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 46`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 56`] = `
 Object {
   "entryType": 1,
   "name": "CDELT1",
@@ -377,9 +453,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 47`] = `"-1.1111e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 57`] = `"-1.1111e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 48`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 58`] = `
 Object {
   "entryType": 1,
   "name": "CRPIX1",
@@ -388,23 +464,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 49`] = `"3.2100e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 59`] = `"3.2100e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 50`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 60`] = `
 Object {
   "name": "CUNIT1",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 51`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 61`] = `
 Object {
   "name": "CTYPE2",
   "value": "DEC--SIN",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 52`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 62`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL2",
@@ -413,9 +489,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 53`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 63`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 54`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 64`] = `
 Object {
   "entryType": 1,
   "name": "CDELT2",
@@ -424,9 +500,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 55`] = `"1.1111e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 65`] = `"1.1111e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 56`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 66`] = `
 Object {
   "entryType": 1,
   "name": "CRPIX2",
@@ -435,23 +511,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 57`] = `"4.0100e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 67`] = `"4.0100e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 58`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 68`] = `
 Object {
   "name": "CUNIT2",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 59`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 69`] = `
 Object {
   "name": "CTYPE3",
   "value": "FREQ",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 60`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 70`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL3",
@@ -460,9 +536,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 61`] = `"8.6751e+10"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 71`] = `"8.6751e+10"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 62`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 72`] = `
 Object {
   "entryType": 1,
   "name": "CDELT3",
@@ -471,77 +547,12 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 63`] = `"-2.4424e+5"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 64`] = `
-Object {
-  "entryType": 1,
-  "name": "CRPIX3",
-  "numericValue": Any<Number>,
-  "value": "1",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 65`] = `"1.0000e+0"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 66`] = `
-Object {
-  "name": "CUNIT3",
-  "value": "Hz",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 67`] = `
-Object {
-  "entryType": "FLOAT",
-  "name": "PV2_1",
-  "value": "0.000000000000E+00",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 68`] = `
-Object {
-  "entryType": "FLOAT",
-  "name": "PV2_2",
-  "value": "0.000000000000E+00",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 69`] = `
-Object {
-  "comment": "Rest Frequency (Hz)",
-  "entryType": 1,
-  "name": "RESTFRQ",
-  "numericValue": Any<Number>,
-  "value": "8.675429000000E+10",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 70`] = `"8.6754e+10"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 71`] = `
-Object {
-  "comment": "Spectral reference frame",
-  "name": "SPECSYS",
-  "value": "LSRK",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 72`] = `
-Object {
-  "entryType": 1,
-  "name": "ALTRVAL",
-  "numericValue": Any<Number>,
-  "value": "9.999999914171E+03",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 73`] = `"1.0000e+4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 73`] = `"-2.4424e+5"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 74`] = `
 Object {
   "entryType": 1,
-  "name": "ALTRPIX",
+  "name": "CRPIX3",
   "numericValue": Any<Number>,
   "value": "1",
 }
@@ -551,6 +562,117 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reope
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 76`] = `
 Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 77`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 78`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 79`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 80`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 81`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 82`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 83`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 84`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 85`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 86`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 87`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 88`] = `"8.6754e+10"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 89`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 90`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 91`] = `"1.0000e+4"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 92`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 93`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 94`] = `
+Object {
   "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
   "entryType": 2,
   "name": "VELREF",
@@ -559,37 +681,37 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 77`] = `"2.5700e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 95`] = `"2.5700e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 78`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 96`] = `
 Object {
   "name": "TELESCOP",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 79`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 97`] = `
 Object {
   "name": "OBSERVER",
   "value": "sishii",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 80`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 98`] = `
 Object {
   "name": "DATE-OBS",
   "value": "2016-04-03T13:02:58.800000",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 81`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 99`] = `
 Object {
   "name": "TIMESYS",
   "value": "UTC",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 82`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 100`] = `
 Object {
   "entryType": 1,
   "name": "OBSRA",
@@ -598,9 +720,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 83`] = `"2.7509e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 101`] = `"2.7509e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 84`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 102`] = `
 Object {
   "entryType": 1,
   "name": "OBSDEC",
@@ -609,9 +731,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 85`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 103`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 86`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 104`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-X",
@@ -620,9 +742,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 87`] = `"2.2251e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 105`] = `"2.2251e+6"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 88`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 106`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-Y",
@@ -631,9 +753,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 89`] = `"-5.4403e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 107`] = `"-5.4403e+6"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 90`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 108`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-Z",
@@ -642,7 +764,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 91`] = `"-2.4810e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 109`] = `"-2.4810e+6"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25, 1] 1`] = `"[640, 800, 25, 1]"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.fits" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
 Object {
@@ -670,7 +794,7 @@ Object {
       "",
     ],
     "name": "M17_SWex.image",
-    "size": "53008687",
+    "size": "53009741",
   },
   "fileInfoExtended": Object {
     "computedEntries": Array [
@@ -680,13 +804,19 @@ Object {
       },
       Object {
         "name": "Shape",
-        "value": "[640, 800, 25]",
+        "value": "[640, 800, 25, 1]",
       },
       Object {
         "entryType": "INT",
         "name": "Number of channels",
         "numericValue": 25,
         "value": "25",
+      },
+      Object {
+        "entryType": "INT",
+        "name": "Number of stokes",
+        "numericValue": 1,
+        "value": "1",
       },
       Object {
         "name": "Coordinate type",
@@ -734,7 +864,7 @@ Object {
       },
     ],
     "depth": 25,
-    "dimensions": 3,
+    "dimensions": 4,
     "headerEntries": Any<Object>,
     "height": 800,
     "stokes": 1,
@@ -774,11 +904,11 @@ Object {
   "entryType": 2,
   "name": "NAXIS",
   "numericValue": Any<Number>,
-  "value": "3",
+  "value": "4",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 7`] = `"3.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 7`] = `"4.0000e+0"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 8`] = `
 Object {
@@ -815,6 +945,17 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reope
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 14`] = `
 Object {
+  "entryType": 2,
+  "name": "NAXIS4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
   "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
   "entryType": 1,
   "name": "BSCALE",
@@ -823,9 +964,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 15`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 17`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 16`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 18`] = `
 Object {
   "entryType": "FLOAT",
   "name": "BZERO",
@@ -833,7 +974,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 17`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 19`] = `
 Object {
   "entryType": 1,
   "name": "BMAJ",
@@ -842,9 +983,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 18`] = `"5.7251e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 20`] = `"5.7251e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 19`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 21`] = `
 Object {
   "entryType": 1,
   "name": "BMIN",
@@ -853,9 +994,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 20`] = `"4.1424e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 22`] = `"4.1424e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 21`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 23`] = `
 Object {
   "entryType": 1,
   "name": "BPA",
@@ -864,23 +1005,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 22`] = `"-7.4627e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 24`] = `"-7.4627e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 23`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 25`] = `
 Object {
   "name": "BTYPE",
   "value": "Intensity",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 24`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 26`] = `
 Object {
   "name": "OBJECT",
   "value": "M17SW",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 25`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 27`] = `
 Object {
   "comment": "Brightness (pixel) unit",
   "name": "BUNIT",
@@ -888,14 +1029,14 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 26`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 28`] = `
 Object {
   "name": "RADESYS",
   "value": "ICRS",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 27`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 29`] = `
 Object {
   "entryType": 1,
   "name": "LONPOLE",
@@ -904,9 +1045,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 28`] = `"1.8000e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 30`] = `"1.8000e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 29`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 31`] = `
 Object {
   "entryType": 1,
   "name": "LATPOLE",
@@ -915,9 +1056,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 30`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 32`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 31`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 33`] = `
 Object {
   "entryType": 1,
   "name": "PC1_1",
@@ -926,9 +1067,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 32`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 34`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 33`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 35`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_1",
@@ -936,7 +1077,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 34`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 36`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_1",
@@ -944,7 +1085,15 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 35`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 38`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_2",
@@ -952,7 +1101,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 36`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 39`] = `
 Object {
   "entryType": 1,
   "name": "PC2_2",
@@ -961,9 +1110,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 37`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 40`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 38`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 41`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_2",
@@ -971,7 +1120,15 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 39`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 43`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_3",
@@ -979,7 +1136,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 40`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 44`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_3",
@@ -987,7 +1144,7 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 41`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 45`] = `
 Object {
   "entryType": 1,
   "name": "PC3_3",
@@ -996,16 +1153,59 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 42`] = `"1.0000e+0"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 46`] = `"1.0000e+0"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 43`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "entryType": 1,
+  "name": "PC4_4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 52`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 53`] = `
 Object {
   "name": "CTYPE1",
   "value": "RA---SIN",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 44`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 54`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL1",
@@ -1014,9 +1214,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 45`] = `"2.7509e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 55`] = `"2.7509e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 46`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 56`] = `
 Object {
   "entryType": 1,
   "name": "CDELT1",
@@ -1025,9 +1225,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 47`] = `"-1.1111e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 57`] = `"-1.1111e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 48`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 58`] = `
 Object {
   "entryType": 1,
   "name": "CRPIX1",
@@ -1036,23 +1236,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 49`] = `"3.2100e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 59`] = `"3.2100e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 50`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 60`] = `
 Object {
   "name": "CUNIT1",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 51`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 61`] = `
 Object {
   "name": "CTYPE2",
   "value": "DEC--SIN",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 52`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 62`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL2",
@@ -1061,9 +1261,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 53`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 63`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 54`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 64`] = `
 Object {
   "entryType": 1,
   "name": "CDELT2",
@@ -1072,9 +1272,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 55`] = `"1.1111e-4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 65`] = `"1.1111e-4"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 56`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 66`] = `
 Object {
   "entryType": 1,
   "name": "CRPIX2",
@@ -1083,23 +1283,23 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 57`] = `"4.0100e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 67`] = `"4.0100e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 58`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 68`] = `
 Object {
   "name": "CUNIT2",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 59`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 69`] = `
 Object {
   "name": "CTYPE3",
   "value": "FREQ",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 60`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 70`] = `
 Object {
   "entryType": 1,
   "name": "CRVAL3",
@@ -1108,9 +1308,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 61`] = `"8.6751e+10"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 71`] = `"8.6751e+10"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 62`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 72`] = `
 Object {
   "entryType": 1,
   "name": "CDELT3",
@@ -1119,77 +1319,12 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 63`] = `"-2.4424e+5"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 64`] = `
-Object {
-  "entryType": 1,
-  "name": "CRPIX3",
-  "numericValue": Any<Number>,
-  "value": "1",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 65`] = `"1.0000e+0"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 66`] = `
-Object {
-  "name": "CUNIT3",
-  "value": "Hz",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 67`] = `
-Object {
-  "entryType": "FLOAT",
-  "name": "PV2_1",
-  "value": "0.000000000000E+00",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 68`] = `
-Object {
-  "entryType": "FLOAT",
-  "name": "PV2_2",
-  "value": "0.000000000000E+00",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 69`] = `
-Object {
-  "comment": "Rest Frequency (Hz)",
-  "entryType": 1,
-  "name": "RESTFRQ",
-  "numericValue": Any<Number>,
-  "value": "8.675429000000E+10",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 70`] = `"8.6754e+10"`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 71`] = `
-Object {
-  "comment": "Spectral reference frame",
-  "name": "SPECSYS",
-  "value": "LSRK",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 72`] = `
-Object {
-  "entryType": 1,
-  "name": "ALTRVAL",
-  "numericValue": Any<Number>,
-  "value": "9.999999914171E+03",
-}
-`;
-
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 73`] = `"1.0000e+4"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 73`] = `"-2.4424e+5"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 74`] = `
 Object {
   "entryType": 1,
-  "name": "ALTRPIX",
+  "name": "CRPIX3",
   "numericValue": Any<Number>,
   "value": "1",
 }
@@ -1199,6 +1334,117 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reope
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 76`] = `
 Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 77`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 78`] = `
+Object {
+  "entryType": 1,
+  "name": "CRVAL4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 79`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 80`] = `
+Object {
+  "entryType": 1,
+  "name": "CDELT4",
+  "numericValue": Any<Number>,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 81`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 82`] = `
+Object {
+  "entryType": 1,
+  "name": "CRPIX4",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 83`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 84`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 85`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 86`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 87`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": 1,
+  "name": "RESTFRQ",
+  "numericValue": Any<Number>,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 88`] = `"8.6754e+10"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 89`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 90`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRVAL",
+  "numericValue": Any<Number>,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 91`] = `"1.0000e+4"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 92`] = `
+Object {
+  "entryType": 1,
+  "name": "ALTRPIX",
+  "numericValue": Any<Number>,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 93`] = `"1.0000e+0"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 94`] = `
+Object {
   "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
   "entryType": 2,
   "name": "VELREF",
@@ -1207,37 +1453,37 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 77`] = `"2.5700e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 95`] = `"2.5700e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 78`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 96`] = `
 Object {
   "name": "TELESCOP",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 79`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 97`] = `
 Object {
   "name": "OBSERVER",
   "value": "sishii",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 80`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 98`] = `
 Object {
   "name": "DATE-OBS",
   "value": "2016-04-03T13:02:58.800000",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 81`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 99`] = `
 Object {
   "name": "TIMESYS",
   "value": "UTC",
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 82`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 100`] = `
 Object {
   "entryType": 1,
   "name": "OBSRA",
@@ -1246,9 +1492,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 83`] = `"2.7509e+2"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 101`] = `"2.7509e+2"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 84`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 102`] = `
 Object {
   "entryType": 1,
   "name": "OBSDEC",
@@ -1257,9 +1503,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 85`] = `"-1.6203e+1"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 103`] = `"-1.6203e+1"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 86`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 104`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-X",
@@ -1268,9 +1514,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 87`] = `"2.2251e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 105`] = `"2.2251e+6"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 88`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 106`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-Y",
@@ -1279,9 +1525,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 89`] = `"-5.4403e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 107`] = `"-5.4403e+6"`;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 90`] = `
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 108`] = `
 Object {
   "entryType": 1,
   "name": "OBSGEO-Z",
@@ -1290,7 +1536,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 91`] = `"-2.4810e+6"`;
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 109`] = `"-2.4810e+6"`;
+
+exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25, 1] 1`] = `"[640, 800, 25, 1]"`;
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification reopen the exported file "M17_SWex.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
 Object {

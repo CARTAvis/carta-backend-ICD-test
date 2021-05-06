@@ -37,12 +37,14 @@ let assertItem: AssertItem = {
             outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex.fits",
             outputFileType: CARTA.FileType.FITS,
+            keepDegenerate: true,
         },
         {
             fileId: 200,
             outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex.image",
             outputFileType: CARTA.FileType.CASA,
+            keepDegenerate: true,
         },
     ],
     exportedFileOpen: [
@@ -98,6 +100,11 @@ describe("EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification", ()
             test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                 ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
             }, openFileTimeout);
+
+            test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25, 1]`, () => {
+                let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
+                expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
+            });
 
             test(`OPEN_FILE_ACK should match snapshot`, () => {
                 let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
