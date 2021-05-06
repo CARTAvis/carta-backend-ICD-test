@@ -1,6 +1,6 @@
 import { CARTA } from "carta-protobuf";
 
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -92,6 +92,7 @@ describe("MOMENTS_GENERATOR_CASA: Testing moments generator for a given region o
     describe(`Moment generator`, () => {
         let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
+            await Wait(200);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             await Connection.streamUntil(
                 (type, data, ack) =>

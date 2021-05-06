@@ -1,6 +1,5 @@
 import { CARTA } from "carta-protobuf";
-
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -69,6 +68,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
             await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
         test(`Request 3 moment images`, async () => {
+            await Wait(200);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest[0]);
             await Connection.streamUntil(type => type == CARTA.MomentResponse);
         }, momentTimeout);
@@ -78,6 +78,7 @@ describe("MOMENTS_GENERATOR_EXCEPTION: Testing moments generator for exception",
     describe(`Moment generator again`, () => {
         let ack: AckStream;
         test(`Receive a series of moment progress & MomentProgress.progress < 1`, async () => {
+            await Wait(200);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest[1]);
             ack = await Connection.streamUntil(
                 (type, data, ack) =>

@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
@@ -60,6 +60,7 @@ describe("MOMENTS_GENERATOR_CANCEL: Testing to cancel a moment generator for an 
         let ack: AckStream;
         let MomentResponse: CARTA.MomentResponse;
         test(`Request a moment progress but cancel after receiving 5 MomentProgress`, async () => {
+            await Wait(200);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             ack = await Connection.streamUntil((type, data, ack) => ack.MomentProgress.length == 5);
             FileId = ack.RegionHistogramData.map(data => data.fileId);

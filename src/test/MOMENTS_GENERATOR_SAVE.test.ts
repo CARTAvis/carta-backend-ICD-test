@@ -1,5 +1,4 @@
 import { CARTA } from "carta-protobuf";
-
 import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 
@@ -79,8 +78,7 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
 
     describe(`Preparation`, () => {
         test(`Open image`, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
 
     });
@@ -89,6 +87,7 @@ describe("MOMENTS_GENERATOR_SAVE: Testing moments generator for saving resultant
     describe(`Moment generator`, () => {
         let ack: AckStream;
         test(`Receive a series of moment progress`, async () => {
+            await Wait(200);
             await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
             FileId = ack.RegionHistogramData.map(data => data.fileId);
