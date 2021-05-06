@@ -88,64 +88,65 @@ describe("EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification", ()
 
     assertItem.saveFile.map((saveFile, fileIndex) => {
 
-        describe(`try to save image`, () => {
-            test(`save image as "${saveFile.outputFileName}"`, async () => {
+        describe(`try to save image "${saveFile.outputFileName}"`, () => {
+            test(`save image`, async () => {
                 await Connection.send(CARTA.SaveFile, saveFile);
                 await Connection.receiveAny();
             }, saveFileTimeout);
-        });
 
-        describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
-            let ack: IOpenFile;
-            test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
-            }, openFileTimeout);
+            describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
+                let ack: IOpenFile;
+                test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
+                    ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
+                }, openFileTimeout);
 
-            test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25, 1]`, () => {
-                let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
-                expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
-            });
-
-            test(`OPEN_FILE_ACK should match snapshot`, () => {
-                let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
-                expect(OpenFileAck).toMatchSnapshot({
-                    fileInfoExtended: {
-                        headerEntries: expect.any(Object),
-                    },
+                test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25, 1]`, () => {
+                    let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
+                    expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
                 });
-                OpenFileAck.fileInfoExtended.headerEntries.map(item => {
-                    if (item["numericValue"]) {
-                        expect(item).toMatchSnapshot({
-                            numericValue: expect.any(Number),
-                        });
-                        expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();
-                    } else {
-                        expect(item).toMatchSnapshot();
-                    }
+
+                test(`OPEN_FILE_ACK should match snapshot`, () => {
+                    let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
+                    expect(OpenFileAck).toMatchSnapshot({
+                        fileInfoExtended: {
+                            headerEntries: expect.any(Object),
+                        },
+                    });
+                    OpenFileAck.fileInfoExtended.headerEntries.map(item => {
+                        if (item["numericValue"]) {
+                            expect(item).toMatchSnapshot({
+                                numericValue: expect.any(Number),
+                            });
+                            expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();
+                        } else {
+                            expect(item).toMatchSnapshot();
+                        }
+                    });
+                });
+
+                test(`REGION_HISTOGRAM_DATA should match snapshot`, () => {
+                    expect(ack.RegionHistogramData).toMatchSnapshot({
+                        histograms: expect.any(Object),
+                    });
                 });
             });
 
-            test(`REGION_HISTOGRAM_DATA should match snapshot`, () => {
-                expect(ack.RegionHistogramData).toMatchSnapshot({
-                    histograms: expect.any(Object),
+            describe(`request raster image of the file "${saveFile.outputFileName}"`, () => {
+                let RasterTileDataTemp: CARTA.RasterTileData;
+                test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
+                    await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
+                    RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                }, readFileTimeout);
+
+                test(`RASTER_TILE_DATA should match snapshot`, () => {
+                    expect(RasterTileDataTemp).toMatchSnapshot();
+                });
+
+                afterAll(async () => {
+                    await Connection.send(CARTA.CloseFile, { fileId: assertItem.setImageChannel.fileId });
                 });
             });
-        });
 
-        describe(`request raster image of the file "${saveFile.outputFileName}"`, () => {
-            let RasterTileDataTemp: CARTA.RasterTileData;
-            test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
-                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
-            }, readFileTimeout);
-
-            test(`RASTER_TILE_DATA should match snapshot`, () => {
-                expect(RasterTileDataTemp).toMatchSnapshot();
-            });
-
-            afterAll(async () => {
-                await Connection.send(CARTA.CloseFile, { fileId: assertItem.setImageChannel.fileId });
-            });
         });
     });
 
