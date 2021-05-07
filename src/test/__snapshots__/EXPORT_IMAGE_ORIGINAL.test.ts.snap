@@ -11,7 +11,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 201,
+  "fileId": 300,
   "fileInfo": Object {
     "HDUList": Array [
       "",
@@ -770,7 +770,7 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try t
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try to save image "M17_SWex.fits" reopen the exported file "M17_SWex.fits" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
 Object {
-  "fileId": 201,
+  "fileId": 300,
   "histograms": Any<Object>,
   "progress": 1,
   "regionId": -1,
@@ -781,7 +781,7 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try t
 Object {
   "compressionQuality": 11,
   "compressionType": "ZFP",
-  "fileId": 201,
+  "fileId": 300,
   "tiles": Array [
     Object {
       "height": 200,
@@ -804,7 +804,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 201,
+  "fileId": 300,
   "fileInfo": Object {
     "HDUList": Array [
       "",
@@ -1558,7 +1558,7 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try t
 
 exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try to save image "M17_SWex.image" reopen the exported file "M17_SWex.image" REGION_HISTOGRAM_DATA should match snapshot 1`] = `
 Object {
-  "fileId": 201,
+  "fileId": 300,
   "histograms": Any<Object>,
   "progress": 1,
   "regionId": -1,
@@ -1569,7 +1569,7 @@ exports[`EXPORT_IMAGE_ORIGINAL: Exporting of an image without modification try t
 Object {
   "compressionQuality": 11,
   "compressionType": "ZFP",
-  "fileId": 201,
+  "fileId": 300,
   "tiles": Array [
     Object {
       "height": 200,

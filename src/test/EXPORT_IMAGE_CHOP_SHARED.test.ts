@@ -11,7 +11,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     precisionDigit?: number;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
+    fileOpen: CARTA.IOpenFile[];
     setRegion: CARTA.ISetRegion[];
     saveFile: CARTA.ISaveFile[];
     exportedFileOpen: CARTA.IOpenFile[];
@@ -25,13 +25,22 @@ let assertItem: AssertItem = {
     },
     precisionDigit: 4,
     filelist: { directory: testSubdirectory },
-    fileOpen: {
-        directory: testSubdirectory,
-        file: "M17_SWex.fits",
-        hdu: "",
-        fileId: 200,
-        renderMode: CARTA.RenderMode.RASTER,
-    },
+    fileOpen: [
+        {
+            directory: testSubdirectory,
+            file: "M17_SWex.fits",
+            hdu: "",
+            fileId: 200,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory,
+            file: "M17_SWex.image",
+            hdu: "",
+            fileId: 201,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+    ],
     setRegion: [
         {
             fileId: 200,
@@ -54,17 +63,17 @@ let assertItem: AssertItem = {
     ],
     saveFile: [
         {
-            fileId: 200,
+            fileId: 201,
             outputFileDirectory: saveSubdirectory,
-            outputFileName: "M17_SWex_Chop.fits",
+            outputFileName: "M17_SWex_Chop_Shared.fits",
             outputFileType: CARTA.FileType.FITS,
             regionId: 100,
             keepDegenerate: true,
         },
         {
-            fileId: 200,
+            fileId: 201,
             outputFileDirectory: saveSubdirectory,
-            outputFileName: "M17_SWex_Chop.image",
+            outputFileName: "M17_SWex_Chop_Shared.image",
             outputFileType: CARTA.FileType.CASA,
             regionId: 100,
             keepDegenerate: true,
@@ -73,14 +82,14 @@ let assertItem: AssertItem = {
     exportedFileOpen: [
         {
             directory: saveSubdirectory,
-            file: "M17_SWex_Chop.fits",
+            file: "M17_SWex_Chop_Shared.fits",
             hdu: "",
             fileId: 300,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: saveSubdirectory,
-            file: "M17_SWex_Chop.image",
+            file: "M17_SWex_Chop_Shared.image",
             hdu: "",
             fileId: 300,
             renderMode: CARTA.RenderMode.RASTER,
@@ -99,14 +108,16 @@ let assertItem: AssertItem = {
     },
 }
 
-describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
+describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
         await Connection.registerViewer(assertItem.registerViewer);
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
-        await Connection.openFile(assertItem.fileOpen);
+        for (let fileOpen of assertItem.fileOpen) {
+            await Connection.openFile(fileOpen);
+        }
     }, openFileTimeout);
 
     assertItem.setRegion.map((region, regionIndex) => {
