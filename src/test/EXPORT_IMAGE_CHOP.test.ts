@@ -56,14 +56,14 @@ let assertItem: AssertItem = {
         {
             fileId: 200,
             outputFileDirectory: saveSubdirectory,
-            outputFileName: "M17_SWex.fits",
+            outputFileName: "M17_SWex_Chop.fits",
             outputFileType: CARTA.FileType.FITS,
             keepDegenerate: true,
         },
         {
             fileId: 200,
             outputFileDirectory: saveSubdirectory,
-            outputFileName: "M17_SWex.image",
+            outputFileName: "M17_SWex_Chop.image",
             outputFileType: CARTA.FileType.CASA,
             keepDegenerate: true,
         },
@@ -71,14 +71,14 @@ let assertItem: AssertItem = {
     exportedFileOpen: [
         {
             directory: saveSubdirectory,
-            file: "M17_SWex.fits",
+            file: "M17_SWex_Chop.fits",
             hdu: "",
             fileId: 201,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: saveSubdirectory,
-            file: "M17_SWex.image",
+            file: "M17_SWex_Chop.image",
             hdu: "",
             fileId: 201,
             renderMode: CARTA.RenderMode.RASTER,
