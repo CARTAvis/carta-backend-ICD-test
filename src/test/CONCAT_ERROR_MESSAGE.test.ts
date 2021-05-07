@@ -119,7 +119,7 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
             },concatStokeTimeout);
         });
 
-        describe(`Case 2: Q & U Image shape inconsistent`,()=>{
+        describe(`Case 2: Q & axis-degeneracy U, Image shape inconsistent`,()=>{
             test(`(Step 1) Assert FileListRequest |`, async()=>{
                 await Connection.send(CARTA.FileListRequest,assertItem.filelist);
                 basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
