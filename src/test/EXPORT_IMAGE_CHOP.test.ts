@@ -58,6 +58,7 @@ let assertItem: AssertItem = {
             outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex_Chop.fits",
             outputFileType: CARTA.FileType.FITS,
+            regionId: 100,
             keepDegenerate: true,
         },
         {
@@ -65,6 +66,7 @@ let assertItem: AssertItem = {
             outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex_Chop.image",
             outputFileType: CARTA.FileType.CASA,
+            regionId: 100,
             keepDegenerate: true,
         },
     ],
@@ -128,7 +130,7 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                             ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
                         }, openFileTimeout);
 
-                        test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [350, 350, 25, 1]`, () => {
+                        test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [351, 351, 25, 1]`, () => {
                             let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
                             expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
                         });
