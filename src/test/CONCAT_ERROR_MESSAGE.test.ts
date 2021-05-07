@@ -113,7 +113,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReq);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse.message);
                 expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[0]);
             
             },concatStokeTimeout);
@@ -134,7 +133,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqShape);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse.message);
                 expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[1]);
             
             },concatStokeTimeout);
@@ -155,7 +153,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.CloseFile, { fileId: -1 });
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqDeplicate);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse.message);
                 expect(ConcatStokesResponse.message).toContain(assertItem.ConcatResponse[2]);
             
             },concatStokeTimeout);

@@ -16,7 +16,6 @@ interface ConcatStokesFilesAckExt extends CARTA.IConcatStokesFilesAck {
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile;
     fileInfoReq: CARTA.IFileInfoRequest[];
     ConcatReq: CARTA.IConcatStokesFiles;
     ConcatReqIV: CARTA.IConcatStokesFiles;
@@ -294,7 +293,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReq);
                 await Connection.receive(CARTA.RegionHistogramData);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse);
             
             },concatStokeTimeout);
 
@@ -340,7 +338,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqIV);
                 await Connection.receive(CARTA.RegionHistogramData);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse);
             
             },concatStokeTimeout);
 
@@ -386,7 +383,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqQU);
                 await Connection.receive(CARTA.RegionHistogramData);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse);
             
             },concatStokeTimeout);
 
@@ -432,7 +428,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqIQU);
                 await Connection.receive(CARTA.RegionHistogramData);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse);
             
             },concatStokeTimeout);
 
@@ -478,7 +473,6 @@ describe("CONCAT_STOKES_IMAGES test: concatenate different stokes images into si
                 await Connection.send(CARTA.ConcatStokesFiles,assertItem.ConcatReqQUV);
                 await Connection.receive(CARTA.RegionHistogramData);
                 ConcatStokesResponse = await Connection.receive(CARTA.ConcatStokesFilesAck);
-                // console.log(ConcatStokesResponse);
             
             },concatStokeTimeout);
 
