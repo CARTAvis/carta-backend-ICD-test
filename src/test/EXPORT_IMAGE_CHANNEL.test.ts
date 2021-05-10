@@ -80,13 +80,13 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
             expect(SaveFileResponse.success).toEqual(true);
         });
 
-        test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
+        test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms & match the expect`,async()=>{
             await Connection.send(CARTA.OpenFile,{
                 directory: `${basePath}/` + tmpdirectory,
                 ...assertItem.fileOpen[1]});
             let responses = await Connection.stream(2) as AckStream;
-            let computedEntries = responses.Responce[0].fileInfoExtended.computedEntries;
-            expect(computedEntries).toMatchSnapshot();
+            let responses_openFileAck = responses.Responce[0]
+            expect(responses_openFileAck).toMatchSnapshot();
         });
     });
 
