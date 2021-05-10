@@ -13,11 +13,13 @@ let openFileTimeout: number = config.timeout.openFile;
 interface AssertItem {
     register: CARTA.IRegisterViewer;
     filelist: CARTA.IFileListRequest;
-    fileOpen: CARTA.IOpenFile[];
+    fileOpen: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor;
     setSpatialReq: CARTA.ISetSpatialRequirements;
     saveFileReq: CARTA.ISaveFile[];
+    exportFileOpen: CARTA.IOpenFile[];
+    shapeSize: string[]
 };
 
 let assertItem: AssertItem = {
@@ -26,28 +28,43 @@ let assertItem: AssertItem = {
         clientFeatureFlags: 5,
     },
     filelist: { directory: testSubdirectory },
-    fileOpen: [
-        {
+    fileOpen: {
         directory: testSubdirectory,
         file: "M17_SWex.fits",
         hdu: "",
-        fileId: 200,
+        fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
-    {
-        file: "M17_SWex_Partial.image",
-        hdu: "",
-        fileId: 300,
-        renderMode: CARTA.RenderMode.RASTER,
-    }],
     saveFileReq:[
     {
         outputFileName: "M17_SWex_Partial.image",
         outputFileType: CARTA.FileType.CASA,
-        fileId: 200,
+        fileId: 0,
         channels: [5, 20, 1],
         keepDegenerate: true,
-    }]
+    },
+    {
+        outputFileName: "M17_SWex_Partial.fits",
+        outputFileType: CARTA.FileType.FITS,
+        fileId: 0,
+        channels: [5, 20, 1],
+        keepDegenerate: true,
+    },],
+    exportFileOpen: [
+        {
+            file: "M17_SWex_Partial.image",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            file: "M17_SWex_Partial.fits",
+            hdu: "",
+            fileId: 0,
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+    ],
+    shapeSize: ['[640, 800, 16, 1]','[640, 800, 11, 1]']
 };
 
 describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube", () => {
@@ -66,27 +83,40 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
             basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
         }, listFileTimeout);
 
-        test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-            await Connection.send(CARTA.CloseFile, { fileId: 0 });
-            await Connection.openFile(assertItem.fileOpen[0]);
-        }, openFileTimeout);
-
-        test(`(Step 2) SAVE_FILE_ACK should arrive within ? ms | `, async() => {
-            await Connection.send(CARTA.SaveFile,{
-                outputFileDirectory: `${basePath}/` + tmpdirectory,
-                ...assertItem.saveFileReq[0]
-            });
-            let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
-            expect(SaveFileResponse.success).toEqual(true);
+        test(`(Step 0) Connection open? | `, () => {
+            expect(Connection.connection.readyState).toBe(WebSocket.OPEN);
         });
 
-        test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms & match the expect`,async()=>{
-            await Connection.send(CARTA.OpenFile,{
-                directory: `${basePath}/` + tmpdirectory,
-                ...assertItem.fileOpen[1]});
-            let responses = await Connection.stream(2) as AckStream;
-            let responses_openFileAck = responses.Responce[0]
-            expect(responses_openFileAck).toMatchSnapshot();
+        test(`(Step 1) OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
+            await Connection.send(CARTA.CloseFile, { fileId: 0 });
+            await Connection.openFile(assertItem.fileOpen);
+        }, openFileTimeout);
+
+        assertItem.saveFileReq.map((SaveFileInput,index)=>{
+            describe(`Save Image: ${SaveFileInput.outputFileName}`,()=>{
+                test(`(Step 2) SAVE_FILE_ACK should arrive within ? ms | `, async() => {
+                    await Connection.send(CARTA.SaveFile,{
+                        outputFileDirectory: `${basePath}/` + tmpdirectory,
+                        ...SaveFileInput
+                    });
+                    let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
+                    expect(SaveFileResponse.success).toEqual(true);
+                });
+
+                let responses_openFileAck: any;
+                test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
+                    await Connection.send(CARTA.OpenFile,{
+                        directory: `${basePath}/` + tmpdirectory,
+                        ...assertItem.exportFileOpen[index]});
+                    let responses = await Connection.stream(2) as AckStream;
+                    responses_openFileAck = responses.Responce[0]
+                },openFileTimeout);
+
+                test(`(Step 4) Mactch the returned message`,()=>{
+                    expect(responses_openFileAck).toMatchSnapshot();
+                    expect(responses_openFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toEqual(assertItem.shapeSize[index]);
+                })
+            });
         });
     });
 
