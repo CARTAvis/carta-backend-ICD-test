@@ -3,12 +3,13 @@ import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
-let testServerUrl: string = config.serverURL0;
+let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let tmpdirectory: string = config.path.save;
 let connectTimeout: number = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
 let openFileTimeout: number = config.timeout.openFile;
+let saveFileTimeout: number = config.timeout.saveFile
 
 interface AssertItem {
     register: CARTA.IRegisterViewer;
@@ -101,7 +102,7 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
                     });
                     let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
                     expect(SaveFileResponse.success).toEqual(true);
-                });
+                },saveFileTimeout);
 
                 let responses_openFileAck: any;
                 test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
