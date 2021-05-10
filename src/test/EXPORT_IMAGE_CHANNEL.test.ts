@@ -55,17 +55,17 @@ let assertItem: AssertItem = {
         {
             file: "M17_SWex_Partial.image",
             hdu: "",
-            fileId: 0,
+            fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             file: "M17_SWex_Partial.fits",
             hdu: "",
-            fileId: 0,
+            fileId: 2,
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    shapeSize: ['[640, 800, 16, 1]','[640, 800, 11, 1]']
+    shapeSize: ['[640, 800, 16, 1]','[640, 800, 16, 1]']
 };
 
 describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube", () => {
@@ -120,5 +120,5 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
             });
         });
     });
-
+    afterAll(() => Connection.close());
 });
