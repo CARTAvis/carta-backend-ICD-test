@@ -110,7 +110,7 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
                         directory: `${basePath}/` + tmpdirectory,
                         ...assertItem.exportFileOpen[index]});
                     let responses = await Connection.stream(2) as AckStream;
-                    responses_openFileAck = responses.Responce[0]
+                    responses_openFileAck = responses.Responce[0];
                 },openFileTimeout);
 
                 test(`(Step 4) Mactch the returned message`,()=>{

@@ -41,15 +41,17 @@ let assertItem: AssertItem = {
         outputFileName: "IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image",
         outputFileType: CARTA.FileType.CASA,
         fileId: 0,
-        channels: [5, 20, 1],
+        channels: [0, 479, 1],
         keepDegenerate: true,
+        stokes:[ 1, 2, 1],
     },
     {
         outputFileName: "IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits",
         outputFileType: CARTA.FileType.FITS,
         fileId: 0,
-        channels: [5, 20, 1],
+        channels: [0, 479, 1],
         keepDegenerate: true,
+        stokes:[ 1, 2, 1]
     },],
     exportFileOpen: [
         {
@@ -65,7 +67,7 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
-    // shapeSize: ['[640, 800, 16, 1]','[640, 800, 11, 1]']
+    shapeSize: ['[256, 256, 480, 2]','[256, 256, 480, 2]']
 };
 
 describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube", () => {
@@ -93,32 +95,32 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
             await Connection.openFile(assertItem.fileOpen);
         }, openFileTimeout);
 
-        // assertItem.saveFileReq.map((SaveFileInput,index)=>{
-        //     describe(`Save Image: ${SaveFileInput.outputFileName}`,()=>{
-        //         test(`(Step 2) SAVE_FILE_ACK should arrive within ? ms | `, async() => {
-        //             await Connection.send(CARTA.SaveFile,{
-        //                 outputFileDirectory: `${basePath}/` + tmpdirectory,
-        //                 ...SaveFileInput
-        //             });
-        //             let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
-        //             expect(SaveFileResponse.success).toEqual(true);
-        //         },saveFileTimeout);
+        assertItem.saveFileReq.map((SaveFileInput,index)=>{
+            describe(`Save Image: ${SaveFileInput.outputFileName}`,()=>{
+                test(`(Step 2) SAVE_FILE_ACK should arrive within ? ms | `, async() => {
+                    await Connection.send(CARTA.SaveFile,{
+                        outputFileDirectory: `${basePath}/` + tmpdirectory,
+                        ...SaveFileInput
+                    });
+                    let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
+                    expect(SaveFileResponse.success).toEqual(true);
+                },saveFileTimeout);
 
-        //         let responses_openFileAck: any;
-        //         test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
-        //             await Connection.send(CARTA.OpenFile,{
-        //                 directory: `${basePath}/` + tmpdirectory,
-        //                 ...assertItem.exportFileOpen[index]});
-        //             let responses = await Connection.stream(2) as AckStream;
-        //             responses_openFileAck = responses.Responce[0]
-        //         },openFileTimeout);
+                let responses_openFileAck: any;
+                test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
+                    await Connection.send(CARTA.OpenFile,{
+                        directory: `${basePath}/` + tmpdirectory,
+                        ...assertItem.exportFileOpen[index]});
+                    let responses = await Connection.stream(2) as AckStream;
+                    responses_openFileAck = responses.Responce[0];
+                },openFileTimeout);
 
-        //         test(`(Step 4) Mactch the returned message`,()=>{
-        //             expect(responses_openFileAck).toMatchSnapshot();
-        //             expect(responses_openFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toEqual(assertItem.shapeSize[index]);
-        //         })
-        //     });
-        // });
+                test(`(Step 4) Mactch the returned message`,()=>{
+                    expect(responses_openFileAck).toMatchSnapshot();
+                    expect(responses_openFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toEqual(assertItem.shapeSize[index]);
+                })
+            });
+        });
     });
     afterAll(() => Connection.close());
 });

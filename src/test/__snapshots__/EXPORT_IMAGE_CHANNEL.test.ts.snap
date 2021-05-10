@@ -11,12 +11,13 @@ Object {
       "stokes": -1,
     },
   ],
+  "fileId": 2,
   "fileInfo": Object {
     "HDUList": Array [
       "",
     ],
     "name": "M17_SWex_Partial.fits",
-    "size": "22633920",
+    "size": "32872320",
     "type": "FITS",
   },
   "fileInfoExtended": Object {
@@ -31,13 +32,13 @@ Object {
       },
       Object {
         "name": "Shape",
-        "value": "[640, 800, 11, 1]",
+        "value": "[640, 800, 16, 1]",
       },
       Object {
         "entryType": "INT",
         "name": "Number of channels",
-        "numericValue": 11,
-        "value": "11",
+        "numericValue": 16,
+        "value": "16",
       },
       Object {
         "entryType": "INT",
@@ -90,7 +91,7 @@ Object {
         "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
       },
     ],
-    "depth": 11,
+    "depth": 16,
     "dimensions": 4,
     "headerEntries": Array [
       Object {
@@ -127,8 +128,8 @@ Object {
       Object {
         "entryType": "INT",
         "name": "NAXIS3",
-        "numericValue": 11,
-        "value": "11",
+        "numericValue": 16,
+        "value": "16",
       },
       Object {
         "entryType": "INT",
@@ -350,8 +351,8 @@ Object {
       Object {
         "entryType": "FLOAT",
         "name": "CRPIX3",
-        "numericValue": -9,
-        "value": "-9",
+        "numericValue": -4,
+        "value": "-4",
       },
       Object {
         "name": "CUNIT3",
@@ -413,8 +414,8 @@ Object {
       Object {
         "entryType": "FLOAT",
         "name": "ALTRPIX",
-        "numericValue": -9,
-        "value": "-9",
+        "numericValue": -4,
+        "value": "-4",
       },
       Object {
         "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
@@ -489,6 +490,7 @@ Object {
       "stokes": -1,
     },
   ],
+  "fileId": 1,
   "fileInfo": Object {
     "HDUList": Array [
       "",
