@@ -63,7 +63,6 @@ Array [
     "value": "T",
   },
   Object {
-    "comment": "Floating point (32 bit)",
     "entryType": "INT",
     "name": "BITPIX",
     "numericValue": -64,
@@ -320,7 +319,6 @@ Array [
     "value": "T",
   },
   Object {
-    "comment": "Floating point (32 bit)",
     "entryType": "INT",
     "name": "BITPIX",
     "numericValue": -64,
@@ -577,7 +575,6 @@ Array [
     "value": "T",
   },
   Object {
-    "comment": "Floating point (32 bit)",
     "entryType": "INT",
     "name": "BITPIX",
     "numericValue": -64,
