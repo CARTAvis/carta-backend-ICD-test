@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -6708,7 +6708,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {

@@ -70,7 +70,7 @@ let assertItem: AssertItem = {
     shapeSize: ['[256, 256, 480, 2]','[256, 256, 480, 2]']
 };
 
-describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an image cube", () => {
+describe("EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube", () => {
 
     let Connection: Client;
     beforeAll(async () => {
