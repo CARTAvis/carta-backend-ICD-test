@@ -99,7 +99,7 @@ describe("EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an 
             describe(`Save Image: ${SaveFileInput.outputFileName}`,()=>{
                 test(`(Step 2) SAVE_FILE_ACK should arrive within ? ms | `, async() => {
                     await Connection.send(CARTA.SaveFile,{
-                        outputFileDirectory: `${basePath}/` + tmpdirectory,
+                        outputFileDirectory: tmpdirectory,
                         ...SaveFileInput
                     });
                     let SaveFileResponse = await Connection.receive(CARTA.SaveFileAck);
@@ -109,7 +109,7 @@ describe("EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an 
                 let responses_openFileAck: any;
                 test(`(Step 3) Open the saved file, OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`,async()=>{
                     await Connection.send(CARTA.OpenFile,{
-                        directory: `${basePath}/` + tmpdirectory,
+                        directory: tmpdirectory,
                         ...assertItem.exportFileOpen[index]});
                     let responses = await Connection.stream(2) as AckStream;
                     responses_openFileAck = responses.Responce[0];

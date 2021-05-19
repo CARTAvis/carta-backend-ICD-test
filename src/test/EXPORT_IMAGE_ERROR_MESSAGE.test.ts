@@ -99,7 +99,7 @@ describe("EXPORT_IMAGE_ERROR_MESSAGE: Exporting of a region out of the image", (
         assertItem.saveFile.map((SaveImageInput,index)=>{
             test(`Save imagd "${SaveImageInput.outputFileName}" & Check the error message:`,async()=>{
                 await Connection.send(CARTA.SaveFile,{
-                    outputFileDirectory: `${basePath}/` + tmpdirectory,
+                    outputFileDirectory: tmpdirectory,
                     ...SaveImageInput
                 });
                 let SaveImageResponse = await Connection.receive(CARTA.SaveFileAck);
