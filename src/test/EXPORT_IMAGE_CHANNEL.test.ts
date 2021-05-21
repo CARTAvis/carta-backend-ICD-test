@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
+import { execSync } from "child_process";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
@@ -82,6 +83,7 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
         beforeAll(async () => {
             await Connection.send(CARTA.FileListRequest, { directory: "$BASE" });
             basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
+            console.log(basePath);
         }, listFileTimeout);
 
         test(`(Step 0) Connection open? | `, () => {
@@ -120,5 +122,12 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
             });
         });
     });
-    afterAll(() => Connection.close());
+    
+    afterAll(() => {
+        Connection.close();
+        describe(`Delete test image`,()=>{
+            const output = execSync('rm -r /tmp/M17_SWex_Partial.image /tmp/M17_SWex_Partial.fits',{encoding: 'utf-8'});
+            console.log(output);
+        });
+    });
 });
