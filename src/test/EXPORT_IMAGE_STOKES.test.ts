@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
+import { execSync } from "child_process";
 
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.concat_stokes;
@@ -122,5 +123,11 @@ describe("EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an 
             });
         });
     });
-    afterAll(() => Connection.close());
+    afterAll(() => {
+        Connection.close();
+        describe(`Delete test image`,()=>{
+            const output = execSync('rm -r /tmp/IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image /tmp/IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits',{encoding: 'utf-8'});
+            console.log(output);
+        });
+    });
 });
