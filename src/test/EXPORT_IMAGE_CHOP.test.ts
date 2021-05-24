@@ -120,7 +120,7 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                 describe(`try to save image "${saveFile.outputFileName}"`, () => {
                     test(`save image`, async () => {
                         await Connection.send(CARTA.SaveFile, {
-                            directory: tmpdirectory,
+                            outputFileDirectory: tmpdirectory,
                             ...saveFile});
                         await Connection.receiveAny();
                     }, saveFileTimeout);
