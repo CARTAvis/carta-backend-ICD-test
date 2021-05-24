@@ -32,12 +32,12 @@ let assertItem: AssertItem = {
         directory: testSubdirectory,
         file: "M17_SWex.fits",
         hdu: "",
-        fileId: 200,
+        fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
     },
     setRegion: [
         {
-            fileId: 200,
+            fileId: 0,
             regionId: 100,
             regionInfo: {
                 regionType: CARTA.RegionType.RECTANGLE,
@@ -46,7 +46,7 @@ let assertItem: AssertItem = {
             },
         },
         {
-            fileId: 200,
+            fileId: 0,
             regionId: 100,
             regionInfo: {
                 regionType: CARTA.RegionType.POLYGON,
@@ -57,14 +57,14 @@ let assertItem: AssertItem = {
     ],
     saveFile: [
         {
-            fileId: 200,
+            fileId: 0,
             outputFileName: "M17_SWex_Chop.fits",
             outputFileType: CARTA.FileType.FITS,
             regionId: 100,
             keepDegenerate: true,
         },
         {
-            fileId: 200,
+            fileId: 0,
             outputFileName: "M17_SWex_Chop.image",
             outputFileType: CARTA.FileType.CASA,
             regionId: 100,
@@ -75,22 +75,22 @@ let assertItem: AssertItem = {
         {
             file: "M17_SWex_Chop.fits",
             hdu: "",
-            fileId: 300,
+            fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             file: "M17_SWex_Chop.image",
             hdu: "",
-            fileId: 300,
+            fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
     setImageChannel: {
-        fileId: 300,
+        fileId: 1,
         channel: 0,
         stokes: 0,
         requiredTiles: {
-            fileId: 300,
+            fileId: 1,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
             tiles: [0],

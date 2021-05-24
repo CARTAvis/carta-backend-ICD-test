@@ -11,7 +11,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 300,
+  "fileId": 1,
   "fileInfo": Object {
     "HDUList": Array [
       "",
@@ -492,7 +492,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 300,
+  "fileId": 1,
   "fileInfo": Object {
     "HDUList": Array [
       "",
@@ -969,7 +969,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 300,
+  "fileId": 1,
   "fileInfo": Object {
     "HDUList": Array [
       "",
@@ -1450,7 +1450,7 @@ Object {
       "stokes": -1,
     },
   ],
-  "fileId": 300,
+  "fileId": 1,
   "fileInfo": Object {
     "HDUList": Array [
       "",
