@@ -1,5 +1,5 @@
 import { CARTA } from "carta-protobuf";
-import { Client, IOpenFile } from "./CLIENT";
+import { Client, IOpenFile, AckStream } from "./CLIENT";
 import config from "./config.json";
 import { execSync } from "child_process";
 
@@ -149,7 +149,6 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
                         }, openFileTimeout);
 
                         test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [351, 351, 25, 1]`, () => {
-                            // let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
                             expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
                         });
 
