@@ -37,26 +37,26 @@ let assertItem: AssertItem = {
     saveFile: [
         {
             fileId: 200,
-            outputFileName: "M17_SWex.fits",
+            outputFileName: "M17_SWex_Drop_Deg.fits",
             outputFileType: CARTA.FileType.FITS,
             keepDegenerate: false,
         },
         {
             fileId: 200,
-            outputFileName: "M17_SWex.image",
+            outputFileName: "M17_SWex_Drop_Deg.image",
             outputFileType: CARTA.FileType.CASA,
             keepDegenerate: false,
         },
     ],
     exportedFileOpen: [
         {
-            file: "M17_SWex.fits",
+            file: "M17_SWex_Drop_Deg.fits",
             hdu: "",
             fileId: 300,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
-            file: "M17_SWex.image",
+            file: "M17_SWex_Drop_Deg.image",
             hdu: "",
             fileId: 300,
             renderMode: CARTA.RenderMode.RASTER,
@@ -96,14 +96,13 @@ describe("EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but 
             }, saveFileTimeout);
 
             describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
-                let ack: IOpenFile;
                 let OpenFileAck: CARTA.IOpenFileAck
                 test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                     await Connection.send(CARTA.OpenFile,{
                         directory: tmpdirectory,
                         ...assertItem.exportedFileOpen[fileIndex]});
                     let responses = await Connection.stream(2) as AckStream;
-                    OpenFileAck = responses.Responce[0];//ack.OpenFileAck;
+                    OpenFileAck = responses.Responce[0];
                 }, openFileTimeout);
 
                 test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25]`, () => {
@@ -134,7 +133,7 @@ describe("EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but 
     afterAll(() => {
         Connection.close();
         describe(`Delete test image`,()=>{
-            const output = execSync('rm -r /tmp/M17_SWex_Chop.fits /tmp/M17_SWex_Chop.image',{encoding: 'utf-8'});
+            const output = execSync('rm -r /tmp/M17_SWex_Drop_Deg.fits /tmp/M17_SWex_Drop_Deg.image',{encoding: 'utf-8'});
             console.log(output);
         });
     });

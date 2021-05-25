@@ -137,15 +137,13 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
                     }, saveFileTimeout);
 
                     describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
-                        let ack: IOpenFile;
                         let OpenFileAck: CARTA.IOpenFileAck
                         test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                            // ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
                             await Connection.send(CARTA.OpenFile,{
                                 directory: tmpdirectory,
                                 ...assertItem.exportedFileOpen[fileIndex]});
                             let responses = await Connection.stream(2) as AckStream;
-                            OpenFileAck = responses.Responce[0];//ack.OpenFileAck;
+                            OpenFileAck = responses.Responce[0];
                         }, openFileTimeout);
 
                         test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [351, 351, 25, 1]`, () => {
@@ -179,7 +177,7 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
     afterAll(() => {
         Connection.close();
         describe(`Delete test image`,()=>{
-            const output = execSync('rm -r /tmp/M17_SWex_Chop.fits /tmp/M17_SWex_Chop.image',{encoding: 'utf-8'});
+            const output = execSync('rm -r /tmp/M17_SWex_Chop_Shared.fits /tmp/M17_SWex_Chop_Shared.image',{encoding: 'utf-8'});
             console.log(output);
         });
     });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex.fits" reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK should match snapshot 1`] = `
+exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex_Drop_Deg.fits" reopen the exported file "M17_SWex_Drop_Deg.fits" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -16,7 +16,7 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "name": "M17_SWex.fits",
+    "name": "M17_SWex_Drop_Deg.fits",
     "size": "51301440",
     "type": "FITS",
   },
@@ -24,7 +24,7 @@ Object {
     "computedEntries": Array [
       Object {
         "name": "Name",
-        "value": "M17_SWex.fits",
+        "value": "M17_SWex_Drop_Deg.fits",
       },
       Object {
         "name": "HDU",
@@ -406,9 +406,9 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex.fits" reopen the exported file "M17_SWex.fits" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25] 1`] = `"[640, 800, 25]"`;
+exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex_Drop_Deg.fits" reopen the exported file "M17_SWex_Drop_Deg.fits" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25] 1`] = `"[640, 800, 25]"`;
 
-exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex.image" reopen the exported file "M17_SWex.image" OPEN_FILE_ACK should match snapshot 1`] = `
+exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex_Drop_Deg.image" reopen the exported file "M17_SWex_Drop_Deg.image" OPEN_FILE_ACK should match snapshot 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -424,14 +424,14 @@ Object {
     "HDUList": Array [
       "",
     ],
-    "name": "M17_SWex.image",
+    "name": "M17_SWex_Drop_Deg.image",
     "size": "53008687",
   },
   "fileInfoExtended": Object {
     "computedEntries": Array [
       Object {
         "name": "Name",
-        "value": "M17_SWex.image",
+        "value": "M17_SWex_Drop_Deg.image",
       },
       Object {
         "name": "Shape",
@@ -810,4 +810,4 @@ Object {
 }
 `;
 
-exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex.image" reopen the exported file "M17_SWex.image" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25] 1`] = `"[640, 800, 25]"`;
+exports[`EXPORT_IMAGE_DROP_DEG: Exporting of an image without modification but only drop degenerated axes try to save image "M17_SWex_Drop_Deg.image" reopen the exported file "M17_SWex_Drop_Deg.image" OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [640, 800, 25] 1`] = `"[640, 800, 25]"`;

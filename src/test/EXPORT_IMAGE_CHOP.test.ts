@@ -126,14 +126,13 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                     }, saveFileTimeout);
 
                     describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
-                        let ack: IOpenFile;
                         let OpenFileAck: CARTA.IOpenFileAck
                         test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
                             await Connection.send(CARTA.OpenFile,{
                                 directory: tmpdirectory,
                                 ...assertItem.exportedFileOpen[fileIndex]});
                             let responses = await Connection.stream(2) as AckStream;
-                            OpenFileAck = responses.Responce[0];//ack.OpenFileAck;
+                            OpenFileAck = responses.Responce[0];
                         }, openFileTimeout);
 
                         test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [351, 351, 25, 1]`, () => {
