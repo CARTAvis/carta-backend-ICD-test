@@ -1,12 +1,15 @@
 import { CARTA } from "carta-protobuf";
 import { Client, IOpenFile } from "./CLIENT";
 import config from "./config.json";
+import { execSync } from "child_process";
+
 let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
-let saveSubdirectory: string = config.path.save;
+let tmpdirectory: string = config.path.save;
 let openFileTimeout: number = config.timeout.openFile;
 let readFileTimeout: number = config.timeout.readFile;
 let saveFileTimeout: number = config.timeout.saveFile;
+
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     precisionDigit?: number;
@@ -64,7 +67,6 @@ let assertItem: AssertItem = {
     saveFile: [
         {
             fileId: 201,
-            outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex_Chop_Shared.fits",
             outputFileType: CARTA.FileType.FITS,
             regionId: 100,
@@ -72,7 +74,6 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 201,
-            outputFileDirectory: saveSubdirectory,
             outputFileName: "M17_SWex_Chop_Shared.image",
             outputFileType: CARTA.FileType.CASA,
             regionId: 100,
@@ -81,14 +82,12 @@ let assertItem: AssertItem = {
     ],
     exportedFileOpen: [
         {
-            directory: saveSubdirectory,
             file: "M17_SWex_Chop_Shared.fits",
             hdu: "",
             fileId: 300,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
-            directory: saveSubdirectory,
             file: "M17_SWex_Chop_Shared.image",
             hdu: "",
             fileId: 300,
@@ -131,44 +130,31 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
 
                 describe(`try to save image "${saveFile.outputFileName}"`, () => {
                     test(`save image`, async () => {
-                        await Connection.send(CARTA.SaveFile, saveFile);
+                        await Connection.send(CARTA.SaveFile, {
+                            outputFileDirectory: tmpdirectory,
+                            ...saveFile});
                         await Connection.receiveAny();
                     }, saveFileTimeout);
 
                     describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
                         let ack: IOpenFile;
+                        let OpenFileAck: CARTA.IOpenFileAck
                         test(`OPEN_FILE_ACK and REGION_HISTOGRAM_DATA should arrive within ${openFileTimeout} ms`, async () => {
-                            ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
+                            // ack = await Connection.openFile(assertItem.exportedFileOpen[fileIndex]);
+                            await Connection.send(CARTA.OpenFile,{
+                                directory: tmpdirectory,
+                                ...assertItem.exportedFileOpen[fileIndex]});
+                            let responses = await Connection.stream(2) as AckStream;
+                            OpenFileAck = responses.Responce[0];//ack.OpenFileAck;
                         }, openFileTimeout);
 
                         test(`OPEN_FILE_ACK.fileInfoExtended.computedEntries['Shape'] = [351, 351, 25, 1]`, () => {
-                            let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
+                            // let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
                             expect(OpenFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toMatchSnapshot();
                         });
 
                         test(`OPEN_FILE_ACK should match snapshot`, () => {
-                            let OpenFileAck: CARTA.IOpenFileAck = ack.OpenFileAck;
-                            expect(OpenFileAck).toMatchSnapshot({
-                                fileInfoExtended: {
-                                    headerEntries: expect.any(Object),
-                                },
-                            });
-                            OpenFileAck.fileInfoExtended.headerEntries.map(item => {
-                                if (item["numericValue"]) {
-                                    expect(item).toMatchSnapshot({
-                                        numericValue: expect.any(Number),
-                                    });
-                                    expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();
-                                } else {
-                                    expect(item).toMatchSnapshot();
-                                }
-                            });
-                        });
-
-                        test(`REGION_HISTOGRAM_DATA should match snapshot`, () => {
-                            expect(ack.RegionHistogramData).toMatchSnapshot({
-                                histograms: expect.any(Object),
-                            });
+                            expect(OpenFileAck).toMatchSnapshot();
                         });
                     });
 
@@ -177,11 +163,8 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
                         test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                             await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
                             RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                            expect(RasterTileDataTemp.tiles.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length);
                         }, readFileTimeout);
-
-                        test(`RASTER_TILE_DATA should match snapshot`, () => {
-                            expect(RasterTileDataTemp).toMatchSnapshot();
-                        });
 
                         afterAll(async () => {
                             await Connection.send(CARTA.CloseFile, { fileId: assertItem.setImageChannel.fileId });
@@ -194,5 +177,11 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
         });
     });
 
-    afterAll(() => Connection.close());
+    afterAll(() => {
+        Connection.close();
+        describe(`Delete test image`,()=>{
+            const output = execSync('rm -r /tmp/M17_SWex_Chop.fits /tmp/M17_SWex_Chop.image',{encoding: 'utf-8'});
+            console.log(output);
+        });
+    });
 });
