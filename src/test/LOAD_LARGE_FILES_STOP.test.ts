@@ -51,9 +51,9 @@ describe("LOAD_LARGE_FILES_STOP test: Test ListProgress & StopFileList ICD with 
 
         let temp: any;
         let Progress: number;
-        test(`Receive a series of *THREE* ListProgress than requst StopFileList:`,async()=>{
+        test(`Receive a series of *One* ListProgress than requst StopFileList:`,async()=>{
             await Connection.send(CARTA.FileListRequest, { directory: basepath + '/' + assertItem.filelist.directory });
-            for (let i=0; i<3; i++){
+            for (let i=0; i<1; i++){
                 temp = await Connection.receive(CARTA.ListProgress);
                 Progress = temp.percentage;
                 console.log("List Progress: ", Progress, "%");
