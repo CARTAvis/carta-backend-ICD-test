@@ -41,7 +41,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         await Connection.send(CARTA.FileListRequest,{ directory: "$BASE" });
         let path = await Connection.receiveAny();
         basepath = path.directory;
-        console.log(basepath);
+        console.log('basepath:', basepath);
     });
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
@@ -54,7 +54,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
         test(`Receive a series of *THREE* ListProgress than requst StopFileList:`,async()=>{
             await Connection.send(CARTA.FileListRequest, { directory: basepath + '/' + assertItem.filelist.directory});
             for (let i=0; i<3; i++){
-                temp = await Connection.receiveAny();
+                temp = await Connection.receive(CARTA.ListProgress);
                 Progress = temp.percentage;
                 console.log("List Progress: ", Progress, "%");
             }
