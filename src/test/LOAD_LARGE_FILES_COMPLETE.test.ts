@@ -51,7 +51,7 @@ describe("LOAD_LARGE_FILES_COMPLETE test: Test ListProgress with loading the fol
 
         let temp: any;
         let Progress: number;
-        test(`Receive a series of *THREE* ListProgress than requst StopFileList:`,async()=>{
+        test(`Receive a series of ListProgress until the backend sent FileListResponse:`,async()=>{
             await Connection.send(CARTA.FileListRequest, { directory: basepath + '/' + assertItem.filelist.directory });
             temp = await Connection.streamUntil(type => type == CARTA.FileListResponse);
             expect(temp.Responce[temp.Responce.length-1].success).toEqual(true);
