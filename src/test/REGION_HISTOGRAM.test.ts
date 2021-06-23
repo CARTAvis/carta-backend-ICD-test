@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let regionTimeout = config.timeout.region;
@@ -36,13 +36,13 @@ let assertItem: AssertItem = {
                 hdu: "",
                 renderMode: CARTA.RenderMode.RASTER,
             },
-            // {
-            //     directory: testSubdirectory,
-            //     file: "M17_SWex.hdf5",
-            //     fileId: 0,
-            //     hdu: "",
-            //     renderMode: CARTA.RenderMode.RASTER,
-            // },
+            {
+                directory: testSubdirectory,
+                file: "M17_SWex.hdf5",
+                fileId: 0,
+                hdu: "",
+                renderMode: CARTA.RenderMode.RASTER,
+            },
         ],
     setCursor: {
         fileId: 0,
@@ -181,7 +181,6 @@ describe("REGION_HISTOGRAM test: Testing histogram with rectangle regions", () =
                     test(`REGION_HISTOGRAM_DATA should arrive within ${regionTimeout} ms`, async () => {
                         await Connection.send(CARTA.SetHistogramRequirements, assertItem.histogram[index]);
                         RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
-                        console.log(RegionHistogramData);
                     }, regionTimeout);
 
                     test(`REGION_HISTOGRAM_DATA.region_id = ${histogramData.regionId}`, () => {
