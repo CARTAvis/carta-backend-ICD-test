@@ -213,7 +213,8 @@ assertItem.catalogFileInfoReq.map((data, index) => {
             let CatalogListAck = await Connection.receive(CARTA.CatalogListResponse);
             expect(CatalogListAck.directory).toEqual(assertItem.catalogListResponse.directory);
             expect(CatalogListAck.success).toEqual(assertItem.catalogListResponse.success);
-            expect(CatalogListAck.subdirectories).toEqual(expect.arrayContaining(assertItem.catalogListResponse.subdirectories));
+            let CatalogListAckTempSubdirectories = CatalogListAck.subdirectories.map(f => f.name);
+            expect(CatalogListAckTempSubdirectories).toEqual(expect.arrayContaining(assertItem.catalogListResponse.subdirectories));
         });
 
         test(`(Step 4) Request CatalogFileInfo & check CatalogFileInfoAck | `, async () => {
