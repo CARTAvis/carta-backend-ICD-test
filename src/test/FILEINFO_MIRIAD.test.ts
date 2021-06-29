@@ -15,6 +15,7 @@ interface AssertItem {
     fileInfoResponse: CARTA.IFileInfoResponse;
     lenComputedEntries: number,
     lenHeaderEntries: number,
+    precisionDigit?: number;
 };
 
 let assertItem: AssertItem = {
@@ -26,6 +27,7 @@ let assertItem: AssertItem = {
         file: "M17_SWex.miriad",
         hdu: "",
     },
+    precisionDigit: 4,
     fileInfoResponse: {
         success: true,
         message: "",
@@ -137,7 +139,16 @@ describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly 
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].headerEntries).toMatchSnapshot();
+                FileInfoResponse.fileInfoExtended[''].headerEntries.map(item => {
+                    if(item["numericValue"]){
+                        expect(item).toMatchSnapshot({
+                            numericValue: expect.any(Number),
+                        });
+                        expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();;
+                    } else {
+                        expect(item).toMatchSnapshot();
+                    }
+                })
             });
         });
     });
