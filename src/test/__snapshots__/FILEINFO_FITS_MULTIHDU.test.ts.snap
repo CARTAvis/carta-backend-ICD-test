@@ -56,11 +56,9 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '1': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "Standard FITS",
-    "entryType": "INT",
-    "name": "SIMPLE",
-    "numericValue": 1,
-    "value": "T",
+    "comment": "IMAGE extension",
+    "name": "XTENSION",
+    "value": "IMAGE",
   },
   Object {
     "entryType": "INT",
@@ -85,6 +83,17 @@ Array [
     "name": "NAXIS2",
     "numericValue": 870,
     "value": "870",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "PCOUNT",
+    "value": "0",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "GCOUNT",
+    "numericValue": 1,
+    "value": "1",
   },
   Object {
     "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
@@ -312,11 +321,9 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '6': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "Standard FITS",
-    "entryType": "INT",
-    "name": "SIMPLE",
-    "numericValue": 1,
-    "value": "T",
+    "comment": "IMAGE extension",
+    "name": "XTENSION",
+    "value": "IMAGE",
   },
   Object {
     "entryType": "INT",
@@ -341,6 +348,17 @@ Array [
     "name": "NAXIS2",
     "numericValue": 870,
     "value": "870",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "PCOUNT",
+    "value": "0",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "GCOUNT",
+    "numericValue": 1,
+    "value": "1",
   },
   Object {
     "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
@@ -568,11 +586,9 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '7': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "Standard FITS",
-    "entryType": "INT",
-    "name": "SIMPLE",
-    "numericValue": 1,
-    "value": "T",
+    "comment": "IMAGE extension",
+    "name": "XTENSION",
+    "value": "IMAGE",
   },
   Object {
     "entryType": "INT",
@@ -597,6 +613,17 @@ Array [
     "name": "NAXIS2",
     "numericValue": 870,
     "value": "870",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "PCOUNT",
+    "value": "0",
+  },
+  Object {
+    "entryType": "INT",
+    "name": "GCOUNT",
+    "numericValue": 1,
+    "value": "1",
   },
   Object {
     "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
