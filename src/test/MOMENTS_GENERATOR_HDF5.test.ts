@@ -146,9 +146,9 @@ describe("MOMENTS_GENERATOR_HDF5: Testing moments generator for a given region o
             });
         });
 
-        test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 76`, () => {
+        test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 78`, () => {
             ack.MomentResponse[0].openFileAcks.map((ack, index) => {
-                expect(ack.fileInfoExtended.headerEntries.length).toEqual(76);
+                expect(ack.fileInfoExtended.headerEntries.length).toEqual(78);
             });
         });
 

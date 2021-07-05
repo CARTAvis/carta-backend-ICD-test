@@ -129,7 +129,8 @@ describe("FILETYPE_PARSER test: Testing if all supported image types can be dete
         describe(`Assert the folder inside "${testSubdirectory}"`, () => {
             assertItem.foldersNull.map(folder => {
                 test(`the folder "${folder}" should exist.`, () => {
-                    expect(FileListResponseTemp.subdirectories).toContainEqual(folder);
+                    let FileListResponseTempSubdirectories = FileListResponseTemp.subdirectories.map(f => f.name);
+                    expect(FileListResponseTempSubdirectories).toContainEqual(folder);
                 });
             });
         });

@@ -101,7 +101,7 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
                             // let FileListResponseTempSubdirectories = FileListResponseTemp.subdirectories.map(function (f, index) {
                             //     return f;
                             // })
-                            let FileListResponseTempSubdirectories = FileListResponseTemp.subdirectories
+                            let FileListResponseTempSubdirectories = FileListResponseTemp.subdirectories.map(f => f.name);
                             expect(FileListResponseTempSubdirectories).toEqual(expect.arrayContaining([subdir]));
                         })
                     })
