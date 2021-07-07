@@ -134,7 +134,7 @@ let assertItem: AssertItem = {
         {
             fileId: 100,
             regionId: 0,
-            spatialProfiles: ["x", "y"],
+            spatialProfiles: [{coordinate:"x",mip:1}, {coordinate:"y",mip:1}],
         },
         {
             fileId: 100,
@@ -144,7 +144,7 @@ let assertItem: AssertItem = {
         {
             fileId: 103,
             regionId: 0,
-            spatialProfiles: ["x", "y"],
+            spatialProfiles: [{coordinate:"x",mip:1}, {coordinate:"y",mip:1}],
         },
     ],
     profiles: [
