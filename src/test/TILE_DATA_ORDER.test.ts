@@ -124,7 +124,7 @@ let assertItem: AssertItem = {
     initSpatialReq: {
         fileId: 0,
         regionId: 0,
-        spatialProfiles: ["x", "y"]
+        spatialProfiles: [{coordinate:"x"}, {coordinate:"y"}]
     },
 };
 
