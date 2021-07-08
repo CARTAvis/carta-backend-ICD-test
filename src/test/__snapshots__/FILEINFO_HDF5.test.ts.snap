@@ -70,6 +70,10 @@ Array [
     "name": "Restoring beam",
     "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
   },
+  Object {
+    "name": "Has mipmaps",
+    "value": "T",
+  },
 ]
 `;
 

@@ -58,7 +58,7 @@ let assertItem: AssertItem = {
     {
         fileId: 0,
         regionId: 0,
-        spatialProfiles: ["x", "y"],
+        spatialProfiles: [{coordinate:"x",mip:1}, {coordinate:"y",mip:1}],
     },
     setCursor:
         [
