@@ -13,8 +13,8 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoResponse: CARTA.IFileInfoResponse;
-    lenComputedEntries: number,
-    lenHeaderEntries: number,
+    lenComputedEntries: number;
+    lenHeaderEntries: number;
 };
 
 let assertItem: AssertItem = {

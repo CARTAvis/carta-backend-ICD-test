@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL;
+let testServerUrl = config.serverURL0;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
