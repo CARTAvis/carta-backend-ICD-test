@@ -51,7 +51,7 @@ let assertItem: AssertItem = {
     {
         fileId: 0,
         regionId: 0,
-        spatialProfiles: ["x", "y"]
+        spatialProfiles: [{coordinate:"x"}, {coordinate:"y"}]
     },
     setImageChannel:
     {
@@ -63,7 +63,7 @@ let assertItem: AssertItem = {
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
             // tiles: [0]
-            tiles: [33558529, 33562625, 33558530, 33562626, 33558528, 33554433, 33562624, 33554434, 33566721, 33558531, 33566722, 33562627, 33554432, 33566720, 33554435, 33566723],
+            tiles: [33558530,33558531,33562626,33562627,33554434,33554435,33558529,33562625,33554433,33558528,33562624,33554432],
         },
     },
 
@@ -102,11 +102,12 @@ describe("Testing CLOSE_FILE with large-size image and test CLOSE_FILE during th
     test(`(Step 3) Set SET_IMAGE_CHANNELS and then CLOSE_FILE during the tile streaming & Check whether the backend is alive:`, async () => {
         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
         // Interupt during the tile, we will receive the number <  assertItem.setImageChannel.requiredTiles.tiles.length
-        await Connection.streamUntil((type, data, ack: AckStream) => ack.RasterTileData.length == 6);
+        await Connection.stream(2);
         // CLOSE_FILE during the tile streaming
         await Connection.send(CARTA.CloseFile, { fileId: 0 });
+        //await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+
         await Connection.send(CARTA.FileListRequest, assertItem.filelist);
-        await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         let BackendStatus = await Connection.receive(CARTA.FileListResponse);
         expect(BackendStatus).toBeDefined();
         expect(BackendStatus.success).toBe(true);

@@ -1,6 +1,5 @@
 import { CARTA } from "carta-protobuf";
-
-import { Client, AckStream } from "./CLIENT";
+import { Client, AckStream, Wait } from "./CLIENT";
 import config from "./config.json";
 
 let testServerUrl = config.serverURL;
@@ -67,8 +66,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
 
     describe(`Preparation`, () => {
         test(`Open image ${assertItem.openFile.file}`, async () => {
-            await Connection.send(CARTA.OpenFile, assertItem.openFile);
-            await Connection.stream(2);
+            await Connection.openFile(assertItem.openFile);
         }, readFileTimeout);
         test(`Set region`, async () => {
             await Connection.send(CARTA.SetRegion, assertItem.setRegion);
@@ -79,6 +77,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
             await Connection.send(CARTA.SetSpectralRequirements, assertItem.setSpectralRequirements);
             let ack = await Connection.streamUntil((type, data, ack) => ack.SpectralProfileData.length == 2) as AckStream;
             expect(ack.SpectralProfileData.slice(-1)[0].progress).toBeLessThan(1);
+            await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
         }, readFileTimeout);
     });
 
@@ -86,7 +85,6 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
     describe(`Moment generator after starting spectral profile`, () => {
         let ack: AckStream;
         test(`Request moment image and receive a few SpectralProfileData`, async () => {
-            await Connection.send(CARTA.MomentRequest, assertItem.momentRequest);
             ack = await Connection.streamUntil(type => type == CARTA.MomentResponse);
             FileId = ack.RegionHistogramData.map(data => data.fileId);
             expect(ack.SpectralProfileData.length).toBeLessThanOrEqual(2);
@@ -122,7 +120,7 @@ describe("MOMENTS_GENERATOR_PROFILE_STREAM: Testing moments generator while stre
         });
 
         test(`Receive any message until a SpectralProfileData.progress = 1`, async () => {
-            await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData ? data.progress == 1 : false);
+            await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
         }, momentTimeout);
     });
 

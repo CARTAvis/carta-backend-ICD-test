@@ -185,6 +185,11 @@ describe("ANIMATOR_CONTOUR_MATCH: Testing animator playback with matching two se
                         }
                     );
                 };
+                // // Pick up the streaming messages
+                // // Channel 11 & 12: RasterTileData + RasterTileSync(start & end) + RegionHistogramData + ContourImageData
+                // let RetreiveMessages = await Connection.stream(2 + 4 + 4 + 8);
+                let RetreiveMessages = await Connection.stream(18);
+                // console.log(RetreiveMessages);
 
             }, playAnimatorTimeout)
 

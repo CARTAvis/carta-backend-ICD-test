@@ -1,0 +1,67 @@
+FROM ubuntu:20.04
+
+# Install the basic packages
+RUN \
+  apt-get update && \
+  apt-get -y upgrade && \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y apt-utils autoconf bison build-essential cmake curl fftw3-dev flex gcc g++ \
+    gdb gfortran git git-lfs googletest libblas-dev libcfitsio-dev libcurl4-gnutls-dev \
+    libgrpc-dev libgrpc++-dev libgsl-dev libgtest-dev libhdf5-dev liblapack-dev libncurses-dev \
+    libprotobuf-dev libpugixml-dev libreadline-dev libssl-dev libstarlink-ast-dev \
+    libtool libtbb-dev libxml2-dev libxslt1-dev libzstd-dev pkg-config protobuf-compiler-grpc \
+    software-properties-common unzip wcslib-dev wget uuid-dev
+
+# Get carta dependencies
+# casacore data from Kernsuite PPA
+RUN \
+  apt-add-repository -y -s ppa:kernsuite/kern-7 && \
+  apt-get update && \
+  apt-get -y install casacore-data
+
+# carta-casacore from cartavis PPA
+RUN \
+  add-apt-repository -y ppa:cartavis/carta-casacore && \
+  apt-get update && \
+  apt-get install carta-casacore
+
+# zfp from cartavis PPA
+RUN \
+  add-apt-repository -y ppa:cartavis/zfp && \
+  apt-get update && \
+  apt-get install zfp
+
+# Forward port so that the webapp can properly access it from outside of the container
+EXPOSE 3002
+# Do the same with the gRPC service port
+EXPOSE 50051
+
+# Required for running the backend 
+ENV LD_LIBRARY_PATH "/usr/lib64:/usr/local/lib:$LD_LIBRARY_PATH"
+ENV CASAPATH "/usr/share/casacore linux local `hostname`"
+
+# Create the startup scipt
+RUN \
+  echo "#!/bin/bash \n ./carta-backend/build/carta_backend --verbosity 6 --no_log --no_http --no_browser --debug_no_auth  /Images \$@" >> /start.sh && \
+  chmod 755 /start.sh
+
+# Clone and build the carta-backend
+RUN \
+  git clone https://github.com/CARTAvis/carta-backend.git && \
+  cd carta-backend && \
+  git checkout dev && \
+  git submodule update --init --recursive && \
+  mkdir build && cd build && \
+  cmake .. && make -j2
+
+# Add a non-root user and run carta_backend and startup script as this user
+RUN groupadd -g 5555 carta && \
+  useradd -u 5555 -g carta -ms /bin/bash carta
+
+RUN chown -R carta:carta /carta-backend/build/carta_backend
+
+RUN chown -R carta:carta /start.sh
+
+USER carta
+
+ENTRYPOINT ["/start.sh"]

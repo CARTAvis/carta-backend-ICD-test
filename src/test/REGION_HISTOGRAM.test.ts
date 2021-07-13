@@ -131,8 +131,8 @@ let assertItem: AssertItem = {
             regionId: 3,
             histograms: [
                 {
-                    numBins: 6,
-                    bins: [0, 0, 0, 0, 0, 0],
+                    numBins: 1,
+                    bins: [0],
                 },
             ],
             progress: 1,
