@@ -33,7 +33,7 @@ let assertItem: AssertItem = {
     ]
 };
 
-describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly delivered by the backend", () => {
+describe(`Compare FILEINFO between FITS & HDF5: match "${assertItem.fileInfoRequest[1].file} FILEINFO to "${assertItem.fileInfoRequest[0].file} FILEINFO"`, () => {
 
     let Connection: Client;
     beforeAll(async () => {
