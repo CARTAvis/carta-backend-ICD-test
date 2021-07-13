@@ -64,7 +64,7 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
                     ...assertItem.fileInfoRequest[0],
                 });
                 FileInfo_fits_Response = await Connection.receive(CARTA.FileInfoResponse);
-                fitsHeaderEntries =  FileInfo_fits_Response.fileInfoExtended['0'].headerEntries//.fileInfoExtended['0'].headerEntries);
+                fitsHeaderEntries =  FileInfo_fits_Response.fileInfoExtended['0'].headerEntries;
             });
 
             let FileInfo_hdf5_Response: CARTA.FileInfoResponse;
@@ -75,7 +75,7 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
                     ...assertItem.fileInfoRequest[1],
                 });
                 FileInfo_hdf5_Response = await Connection.receive(CARTA.FileInfoResponse);
-                hdf5HeaderEntries = FileInfo_hdf5_Response.fileInfoExtended['0'].headerEntries//.fileInfoExtended['0'].headerEntries);
+                hdf5HeaderEntries = FileInfo_hdf5_Response.fileInfoExtended['0'].headerEntries;
             });
 
             test(`Match each header entry of hdf5 to fits`,()=>{
@@ -94,22 +94,20 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
                 let difference_hdf5 = hdf5HeaderArray.filter(x => !fitsHeaderArray.includes(x));
                 if (difference_hdf5.length != 0){
                     console.warn("Additional header entries in hdf5:",difference_hdf5);
-                }
+                };
 
                 let difference_fits = fitsHeaderArray.filter(x => !hdf5HeaderArray.includes(x));
                 if (difference_fits.length != 0){
                     console.warn("Additional header entries in fits:",difference_fits);
-                }
+                };
 
                 intersection.map((input,index)=>{
                    let hdf5Index = hdf5HeaderEntries.findIndex(x => x.name == input);
                    let fitsIndex = fitsHeaderEntries.findIndex(y => y.name == input);
-                //    if(input != "OBSGEO-X" && input != "OBSGEO-Y" && input != "OBSGEO-Z"){
-                    //    console.log(input)
-                       expect(hdf5HeaderEntries[hdf5Index].value).toEqual(fitsHeaderEntries[fitsIndex].value)
-                //    }
-                //    console.log(hdf5HeaderEntries[hdf5Index].value);
-                //    console.log(fitsHeaderEntries[fitsIndex].value);
+
+                   if (input != "SIMPLE" && input != "EXTEND" && input != "CASAMBM"){
+                    expect(hdf5HeaderEntries[hdf5Index].numericValue).toEqual(fitsHeaderEntries[fitsIndex].numericValue);
+                   }
                 });
             });
         });
