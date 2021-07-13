@@ -32,15 +32,7 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[07:09:13.1081, -010.36.38.5952]",
-  },
-  Object {
-    "name": "Image ref coords (deg)",
-    "value": "[107.305 deg, -10.6107 deg]",
-  },
-  Object {
-    "name": "Pixel increment",
-    "value": "-14\\", 14\\"",
+    "value": "[107.305, -10.6107]",
   },
   Object {
     "name": "Celestial frame",
@@ -56,7 +48,7 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '1': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "IMAGE extension",
+    "comment": " Java FITS: Wed Oct 01 10:15:59 CEST 2014",
     "name": "XTENSION",
     "value": "IMAGE",
   },
@@ -67,6 +59,7 @@ Array [
     "value": "-64",
   },
   Object {
+    "comment": " Dimensionality",
     "entryType": "INT",
     "name": "NAXIS",
     "numericValue": 2,
@@ -85,145 +78,30 @@ Array [
     "value": "870",
   },
   Object {
+    "comment": " No extra parameters",
     "entryType": "INT",
     "name": "PCOUNT",
     "value": "0",
   },
   Object {
+    "comment": " One group",
     "entryType": "INT",
     "name": "GCOUNT",
     "numericValue": 1,
     "value": "1",
   },
   Object {
-    "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-    "entryType": "FLOAT",
-    "name": "BSCALE",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "BZERO",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "name": "BTYPE",
-    "value": "Intensity",
-  },
-  Object {
-    "name": "OBJECT",
-  },
-  Object {
-    "comment": "Brightness (pixel) unit",
-    "name": "BUNIT",
-    "value": "MJy/sr",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "EQUINOX",
-    "numericValue": 2000,
-    "value": "2000",
-  },
-  Object {
-    "name": "RADESYS",
-    "value": "FK5",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LONPOLE",
-    "numericValue": 180,
-    "value": "1.800000000000E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LATPOLE",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_1",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_1",
-    "value": "-0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_2",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_2",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "name": "CTYPE1",
-    "value": "RA---TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL1",
-    "numericValue": 107.30461727023817,
-    "value": "1.073046172702E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT1",
-    "numericValue": -0.003888888888889,
-    "value": "-3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX1",
-    "numericValue": 371,
-    "value": "371",
-  },
-  Object {
-    "name": "CUNIT1",
-    "value": "deg",
-  },
-  Object {
-    "name": "CTYPE2",
-    "value": "DEC--TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL2",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT2",
-    "numericValue": 0.003888888888889,
-    "value": "3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX2",
-    "numericValue": 421,
-    "value": "421",
-  },
-  Object {
-    "name": "CUNIT2",
-    "value": "deg",
-  },
-  Object {
+    "comment": " The OGIP long string convention may be used.",
     "name": "LONGSTRN",
     "value": "OGIP 1.0",
   },
   Object {
+    "comment": " name of this HDU",
     "name": "EXTNAME",
     "value": "image",
   },
   Object {
+    "comment": " java representation",
     "name": "CLASS___",
     "value": "herschel.ia.dataset.ArrayDataset",
   },
@@ -232,35 +110,105 @@ Array [
     "value": "Image",
   },
   Object {
+    "comment": " java Data",
     "name": "DATA____",
     "value": "herschel.ia.numeric.Double2d",
   },
   Object {
+    "comment": " Unit of the data",
     "name": "QTTY____",
     "value": "MJy/sr",
   },
   Object {
+    "comment": " Unit of the data",
+    "name": "BUNIT",
+    "value": "MJy/sr",
+  },
+  Object {
+    "comment": " [] WCS: Number of Axes",
     "entryType": "INT",
     "name": "META_0",
     "numericValue": 2,
     "value": "2",
   },
   Object {
+    "comment": " [] WCS: Reference pixel position axis 1, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX1",
+    "numericValue": 371,
+    "value": "371",
+  },
+  Object {
+    "comment": " [] WCS: Reference pixel position axis 2, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX2",
+    "numericValue": 421,
+    "value": "421",
+  },
+  Object {
+    "comment": " [] WCS: First coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL1",
+    "numericValue": 107.30461727023817,
+    "value": "1.073046172702E+02",
+  },
+  Object {
+    "comment": " [] WCS: Second coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL2",
+    "numericValue": -10.610720896516849,
+    "value": "-1.061072089652E+01",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 1, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT1",
+    "numericValue": -0.0038888888888890002,
+    "value": "-3.888888888889E-03",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 2, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT2",
+    "numericValue": 0.0038888888888890002,
+    "value": "3.888888888889E-03",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 1, default=\\"LINEAR\\"",
+    "name": "CTYPE1",
+    "value": "RA---TAN",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 2, default=\\"LINEAR\\"",
+    "name": "CTYPE2",
+    "value": "DEC--TAN",
+  },
+  Object {
+    "comment": " [] WCS: Equinox, unit=Duration",
+    "entryType": "FLOAT",
+    "name": "EQUINOX",
+    "numericValue": 2000,
+    "value": "2000",
+  },
+  Object {
+    "comment": " [] The Rotation angle",
+    "entryType": "FLOAT",
+    "name": "CROTA",
+    "value": "0.000000000000E+00",
+  },
+  Object {
+    "comment": " [] The number of columns",
     "entryType": "INT",
     "name": "META_1",
     "numericValue": 830,
     "value": "830",
   },
   Object {
+    "comment": " [] The number of rows",
     "entryType": "INT",
     "name": "META_2",
     "numericValue": 870,
     "value": "870",
-  },
-  Object {
-    "comment": "Time system for HDU",
-    "name": "TIMESYS",
-    "value": "UTC",
   },
 ]
 `;
@@ -297,15 +245,7 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[07:09:13.1081, -010.36.38.5952]",
-  },
-  Object {
-    "name": "Image ref coords (deg)",
-    "value": "[107.305 deg, -10.6107 deg]",
-  },
-  Object {
-    "name": "Pixel increment",
-    "value": "-14\\", 14\\"",
+    "value": "[107.305, -10.6107]",
   },
   Object {
     "name": "Celestial frame",
@@ -321,7 +261,7 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '6': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "IMAGE extension",
+    "comment": " Java FITS: Wed Oct 01 10:15:59 CEST 2014",
     "name": "XTENSION",
     "value": "IMAGE",
   },
@@ -332,6 +272,7 @@ Array [
     "value": "-64",
   },
   Object {
+    "comment": " Dimensionality",
     "entryType": "INT",
     "name": "NAXIS",
     "numericValue": 2,
@@ -350,145 +291,30 @@ Array [
     "value": "870",
   },
   Object {
+    "comment": " No extra parameters",
     "entryType": "INT",
     "name": "PCOUNT",
     "value": "0",
   },
   Object {
+    "comment": " One group",
     "entryType": "INT",
     "name": "GCOUNT",
     "numericValue": 1,
     "value": "1",
   },
   Object {
-    "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-    "entryType": "FLOAT",
-    "name": "BSCALE",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "BZERO",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "name": "BTYPE",
-    "value": "Intensity",
-  },
-  Object {
-    "name": "OBJECT",
-  },
-  Object {
-    "comment": "Brightness (pixel) unit",
-    "name": "BUNIT",
-    "value": "MJy/sr",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "EQUINOX",
-    "numericValue": 2000,
-    "value": "2000",
-  },
-  Object {
-    "name": "RADESYS",
-    "value": "FK5",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LONPOLE",
-    "numericValue": 180,
-    "value": "1.800000000000E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LATPOLE",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_1",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_1",
-    "value": "-0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_2",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_2",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "name": "CTYPE1",
-    "value": "RA---TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL1",
-    "numericValue": 107.30461727023817,
-    "value": "1.073046172702E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT1",
-    "numericValue": -0.003888888888889,
-    "value": "-3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX1",
-    "numericValue": 371,
-    "value": "371",
-  },
-  Object {
-    "name": "CUNIT1",
-    "value": "deg",
-  },
-  Object {
-    "name": "CTYPE2",
-    "value": "DEC--TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL2",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT2",
-    "numericValue": 0.003888888888889,
-    "value": "3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX2",
-    "numericValue": 421,
-    "value": "421",
-  },
-  Object {
-    "name": "CUNIT2",
-    "value": "deg",
-  },
-  Object {
+    "comment": " The OGIP long string convention may be used.",
     "name": "LONGSTRN",
     "value": "OGIP 1.0",
   },
   Object {
+    "comment": " name of this HDU",
     "name": "EXTNAME",
     "value": "error",
   },
   Object {
+    "comment": " java representation",
     "name": "CLASS___",
     "value": "herschel.ia.dataset.ArrayDataset",
   },
@@ -497,35 +323,105 @@ Array [
     "value": "Statistical error on the pixel values",
   },
   Object {
+    "comment": " java Data",
     "name": "DATA____",
     "value": "herschel.ia.numeric.Double2d",
   },
   Object {
+    "comment": " Unit of the data",
     "name": "QTTY____",
     "value": "MJy/sr",
   },
   Object {
+    "comment": " Unit of the data",
+    "name": "BUNIT",
+    "value": "MJy/sr",
+  },
+  Object {
+    "comment": " [] WCS: Number of Axes",
     "entryType": "INT",
     "name": "META_0",
     "numericValue": 2,
     "value": "2",
   },
   Object {
+    "comment": " [] WCS: Reference pixel position axis 1, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX1",
+    "numericValue": 371,
+    "value": "371",
+  },
+  Object {
+    "comment": " [] WCS: Reference pixel position axis 2, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX2",
+    "numericValue": 421,
+    "value": "421",
+  },
+  Object {
+    "comment": " [] WCS: First coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL1",
+    "numericValue": 107.30461727023817,
+    "value": "1.073046172702E+02",
+  },
+  Object {
+    "comment": " [] WCS: Second coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL2",
+    "numericValue": -10.610720896516849,
+    "value": "-1.061072089652E+01",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 1, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT1",
+    "numericValue": -0.0038888888888890002,
+    "value": "-3.888888888889E-03",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 2, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT2",
+    "numericValue": 0.0038888888888890002,
+    "value": "3.888888888889E-03",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 1, default=\\"LINEAR\\"",
+    "name": "CTYPE1",
+    "value": "RA---TAN",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 2, default=\\"LINEAR\\"",
+    "name": "CTYPE2",
+    "value": "DEC--TAN",
+  },
+  Object {
+    "comment": " [] WCS: Equinox, unit=Duration",
+    "entryType": "FLOAT",
+    "name": "EQUINOX",
+    "numericValue": 2000,
+    "value": "2000",
+  },
+  Object {
+    "comment": " [] The Rotation angle",
+    "entryType": "FLOAT",
+    "name": "CROTA",
+    "value": "0.000000000000E+00",
+  },
+  Object {
+    "comment": " [] The number of columns",
     "entryType": "INT",
     "name": "META_1",
     "numericValue": 830,
     "value": "830",
   },
   Object {
+    "comment": " [] The number of rows",
     "entryType": "INT",
     "name": "META_2",
     "numericValue": 870,
     "value": "870",
-  },
-  Object {
-    "comment": "Time system for HDU",
-    "name": "TIMESYS",
-    "value": "UTC",
   },
 ]
 `;
@@ -562,15 +458,7 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[07:09:13.1081, -010.36.38.5952]",
-  },
-  Object {
-    "name": "Image ref coords (deg)",
-    "value": "[107.305 deg, -10.6107 deg]",
-  },
-  Object {
-    "name": "Pixel increment",
-    "value": "-14\\", 14\\"",
+    "value": "[107.305, -10.6107]",
   },
   Object {
     "name": "Celestial frame",
@@ -586,7 +474,7 @@ Array [
 exports[`FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is correctly delivered by the backend Go to "set_QA" folder query the info of file : spire500_ext.fits FileInfoExtended of '7': assert FILE_INFO_RESPONSE.file_info_extended.header_entries 1`] = `
 Array [
   Object {
-    "comment": "IMAGE extension",
+    "comment": " Java FITS: Wed Oct 01 10:15:59 CEST 2014",
     "name": "XTENSION",
     "value": "IMAGE",
   },
@@ -597,6 +485,7 @@ Array [
     "value": "-64",
   },
   Object {
+    "comment": " Dimensionality",
     "entryType": "INT",
     "name": "NAXIS",
     "numericValue": 2,
@@ -615,145 +504,30 @@ Array [
     "value": "870",
   },
   Object {
+    "comment": " No extra parameters",
     "entryType": "INT",
     "name": "PCOUNT",
     "value": "0",
   },
   Object {
+    "comment": " One group",
     "entryType": "INT",
     "name": "GCOUNT",
     "numericValue": 1,
     "value": "1",
   },
   Object {
-    "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-    "entryType": "FLOAT",
-    "name": "BSCALE",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "BZERO",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "name": "BTYPE",
-    "value": "Intensity",
-  },
-  Object {
-    "name": "OBJECT",
-  },
-  Object {
-    "comment": "Brightness (pixel) unit",
-    "name": "BUNIT",
-    "value": "1",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "EQUINOX",
-    "numericValue": 2000,
-    "value": "2000",
-  },
-  Object {
-    "name": "RADESYS",
-    "value": "FK5",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LONPOLE",
-    "numericValue": 180,
-    "value": "1.800000000000E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "LATPOLE",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_1",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_1",
-    "value": "-0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC1_2",
-    "value": "0.000000000000E+00",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "PC2_2",
-    "numericValue": 1,
-    "value": "1.000000000000E+00",
-  },
-  Object {
-    "name": "CTYPE1",
-    "value": "RA---TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL1",
-    "numericValue": 107.30461727023817,
-    "value": "1.073046172702E+02",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT1",
-    "numericValue": -0.003888888888889,
-    "value": "-3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX1",
-    "numericValue": 371,
-    "value": "371",
-  },
-  Object {
-    "name": "CUNIT1",
-    "value": "deg",
-  },
-  Object {
-    "name": "CTYPE2",
-    "value": "DEC--TAN",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRVAL2",
-    "numericValue": -10.610720896516849,
-    "value": "-1.061072089652E+01",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CDELT2",
-    "numericValue": 0.003888888888889,
-    "value": "3.888888888889E-03",
-  },
-  Object {
-    "entryType": "FLOAT",
-    "name": "CRPIX2",
-    "numericValue": 421,
-    "value": "421",
-  },
-  Object {
-    "name": "CUNIT2",
-    "value": "deg",
-  },
-  Object {
+    "comment": " The OGIP long string convention may be used.",
     "name": "LONGSTRN",
     "value": "OGIP 1.0",
   },
   Object {
+    "comment": " name of this HDU",
     "name": "EXTNAME",
     "value": "coverage",
   },
   Object {
+    "comment": " java representation",
     "name": "CLASS___",
     "value": "herschel.ia.dataset.ArrayDataset",
   },
@@ -762,35 +536,105 @@ Array [
     "value": "Coverage",
   },
   Object {
+    "comment": " java Data",
     "name": "DATA____",
     "value": "herschel.ia.numeric.Double2d",
   },
   Object {
+    "comment": " Unit of the data",
     "name": "QTTY____",
     "value": "1",
   },
   Object {
+    "comment": " Unit of the data",
+    "name": "BUNIT",
+    "value": "1",
+  },
+  Object {
+    "comment": " [] WCS: Number of Axes",
     "entryType": "INT",
     "name": "META_0",
     "numericValue": 2,
     "value": "2",
   },
   Object {
+    "comment": " [] WCS: Reference pixel position axis 1, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX1",
+    "numericValue": 371,
+    "value": "371",
+  },
+  Object {
+    "comment": " [] WCS: Reference pixel position axis 2, uni&",
+    "entryType": "FLOAT",
+    "name": "CRPIX2",
+    "numericValue": 421,
+    "value": "421",
+  },
+  Object {
+    "comment": " [] WCS: First coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL1",
+    "numericValue": 107.30461727023817,
+    "value": "1.073046172702E+02",
+  },
+  Object {
+    "comment": " [] WCS: Second coordinate of reference pixel",
+    "entryType": "FLOAT",
+    "name": "CRVAL2",
+    "numericValue": -10.610720896516849,
+    "value": "-1.061072089652E+01",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 1, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT1",
+    "numericValue": -0.0038888888888890002,
+    "value": "-3.888888888889E-03",
+  },
+  Object {
+    "comment": " [] WCS: Pixel scale axis 2, unit=Angle",
+    "entryType": "FLOAT",
+    "name": "CDELT2",
+    "numericValue": 0.0038888888888890002,
+    "value": "3.888888888889E-03",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 1, default=\\"LINEAR\\"",
+    "name": "CTYPE1",
+    "value": "RA---TAN",
+  },
+  Object {
+    "comment": " WCS: Projection type axis 2, default=\\"LINEAR\\"",
+    "name": "CTYPE2",
+    "value": "DEC--TAN",
+  },
+  Object {
+    "comment": " [] WCS: Equinox, unit=Duration",
+    "entryType": "FLOAT",
+    "name": "EQUINOX",
+    "numericValue": 2000,
+    "value": "2000",
+  },
+  Object {
+    "comment": " [] The Rotation angle",
+    "entryType": "FLOAT",
+    "name": "CROTA",
+    "value": "0.000000000000E+00",
+  },
+  Object {
+    "comment": " [] The number of columns",
     "entryType": "INT",
     "name": "META_1",
     "numericValue": 830,
     "value": "830",
   },
   Object {
+    "comment": " [] The number of rows",
     "entryType": "INT",
     "name": "META_2",
     "numericValue": 870,
     "value": "870",
-  },
-  Object {
-    "comment": "Time system for HDU",
-    "name": "TIMESYS",
-    "value": "UTC",
   },
 ]
 `;
