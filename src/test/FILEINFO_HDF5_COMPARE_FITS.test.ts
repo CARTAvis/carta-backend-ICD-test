@@ -13,6 +13,7 @@ let openFileTimeout = config.timeout.openFile;
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest[];
+    precisionDigits: number;
 };
 
 let assertItem: AssertItem = {
@@ -30,10 +31,11 @@ let assertItem: AssertItem = {
             file: "SDC335.579-0.292.spw0.line.hdf5",
             hdu: "",
         },
-    ]
+    ],
+    precisionDigits: 4,
 };
 
-describe(`Compare FILEINFO between FITS & HDF5: match "${assertItem.fileInfoRequest[1].file} FILEINFO to "${assertItem.fileInfoRequest[0].file} FILEINFO"`, () => {
+describe(`Compare FILEINFO between FITS & HDF5: match ${assertItem.fileInfoRequest[1].file} FILEINFO to ${assertItem.fileInfoRequest[0].file} FILEINFO`, () => {
 
     let Connection: Client;
     beforeAll(async () => {
@@ -106,7 +108,9 @@ describe(`Compare FILEINFO between FITS & HDF5: match "${assertItem.fileInfoRequ
                    let fitsIndex = fitsHeaderEntries.findIndex(y => y.name == input);
 
                    if (input != "SIMPLE" && input != "EXTEND" && input != "CASAMBM"){
-                    expect(hdf5HeaderEntries[hdf5Index].numericValue).toEqual(fitsHeaderEntries[fitsIndex].numericValue);
+                       expect(hdf5HeaderEntries[hdf5Index].numericValue).toBeCloseTo(fitsHeaderEntries[fitsIndex].numericValue, assertItem.precisionDigits);
+                   } else {
+                       expect(hdf5HeaderEntries[hdf5Index].value).toEqual(fitsHeaderEntries[fitsIndex].value);
                    }
                 });
             });
