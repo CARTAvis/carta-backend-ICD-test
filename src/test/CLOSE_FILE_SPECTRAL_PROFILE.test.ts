@@ -172,7 +172,7 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
     let SetRegionAckTemp: CARTA.SetRegionAck;
     let SpectralProfileDataTemp: CARTA.SpectralProfileData;
     let ReceiveProgress: number;
-    test(`(Step 3) Set REGION & SPECTRAL_PROFILE streaming, once progress>0.5 then CLOSE_FILE & Check whether the backend is alive:`, async () => {
+    test(`(Step 3) Set REGION & SPECTRAL_PROFILE streaming, once progress>0.3 then CLOSE_FILE & Check whether the backend is alive:`, async () => {
         // Set REGION
         await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
         SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
@@ -184,13 +184,13 @@ describe("[Case 1] Request SPECTRAL_REQUIREMENTS and then CLOSE_FILE when data i
         SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
         ReceiveProgress = SpectralProfileDataTemp.progress;
         if (ReceiveProgress != 1) {
-            while (ReceiveProgress <= 0.5) {
+            while (ReceiveProgress <= 0.3) {
                 SpectralProfileDataTemp = await Connection.receive(CARTA.SpectralProfileData);
                 ReceiveProgress = SpectralProfileDataTemp.progress;
                 console.warn('' + assertItem.openFile[0].file + ' SPECTRAL_PROFILE progress :', ReceiveProgress);
             };
 
-            //Once progress>0.5, then CLOSE_FILE
+            //Once progress>0.3, then CLOSE_FILE
             await Connection.send(CARTA.CloseFile, { fileId: 0 });
 
             //Check whether the backend ist alive?
@@ -259,7 +259,7 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
     let ReceiveProgress1: number;
     let SpectralProfileDataTemp2: CARTA.SpectralProfileData;
     let ReceiveProgress2: number;
-    test(`(Step 5) Set REGION & SPECTRAL_PROFILE streaming, once progress1>0.5 -> progress2>0.5 -> CLOSE_FILE two images & Check whether the backend is alive:`, async () => {
+    test(`(Step 5) Set REGION & SPECTRAL_PROFILE streaming, once progress1>0.3 -> progress2>0.3 -> CLOSE_FILE two images & Check whether the backend is alive:`, async () => {
         // Set REGION
         await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
         SetRegionAckTemp = await Connection.receive(CARTA.SetRegionAck);
@@ -269,7 +269,7 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
         SpectralProfileDataTemp1 = await Connection.receive(CARTA.SpectralProfileData);
         ReceiveProgress1 = SpectralProfileDataTemp1.progress;
         if (ReceiveProgress1 != 1) {
-            while (ReceiveProgress1 <= 0.5) {
+            while (ReceiveProgress1 <= 0.3) {
                 SpectralProfileDataTemp1 = await Connection.receive(CARTA.SpectralProfileData);
                 ReceiveProgress1 = SpectralProfileDataTemp1.progress;
                 console.warn('(Case 2) ' + assertItem.openFile[0].file + ' SPECTRAL_PROFILE progress :', ReceiveProgress1);
@@ -281,12 +281,12 @@ describe("[Case 2] Request SPECTRAL_REQUIREMENTS of TWO images and then CLOSE_FI
             SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
             ReceiveProgress2 = SpectralProfileDataTemp2.progress;
             if (ReceiveProgress2 != 1) {
-                while (ReceiveProgress2! < 0.5) {
+                while (ReceiveProgress2! < 0.3) {
                     SpectralProfileDataTemp2 = await Connection.receive(CARTA.SpectralProfileData);
                     ReceiveProgress2 = SpectralProfileDataTemp2.progress;
                     console.warn('(Case 2) ' + assertItem.openFile[1].file + ' SPECTRAL_PROFILE progress :', ReceiveProgress2);
                 };
-                //Once ReceiveProgress2>0.5, then CLOSE_FILE to 1st & 2nd image
+                //Once ReceiveProgress2>0.3, then CLOSE_FILE to 1st & 2nd image
                 await Connection.send(CARTA.CloseFile, { fileId: 0 });
                 await Connection.send(CARTA.CloseFile, { fileId: 1 });
 
