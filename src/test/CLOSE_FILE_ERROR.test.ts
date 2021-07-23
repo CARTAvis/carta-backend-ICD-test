@@ -30,14 +30,14 @@ let assertItem: AssertItem = {
         {
             directory: testSubdirectory,
             file: "M17_SWex.fits",
-            hdu: "",
+            hdu: "0",
             fileId: 0,
             renderMode: CARTA.RenderMode.RASTER,
         },
         {
             directory: testSubdirectory,
             file: "M17_SWex.hdf5",
-            hdu: "",
+            hdu: "0",
             fileId: 1,
             renderMode: CARTA.RenderMode.RASTER,
         }
