@@ -32,15 +32,23 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[107.305, -10.6107]",
+    "value": "[07:09:13.1085, -010.36.38.5943]",
   },
   Object {
-    "name": "Celestial frame",
-    "value": "FK5, J2000",
+    "name": "Image ref coords (deg)",
+    "value": "[107.305 deg, -10.6107 deg]",
+  },
+  Object {
+    "name": "Pixel increment",
+    "value": "-14\\", 14\\"",
   },
   Object {
     "name": "Pixel unit",
     "value": "MJy/sr",
+  },
+  Object {
+    "name": "Celestial frame",
+    "value": "FK5, J2000",
   },
 ]
 `;
@@ -245,15 +253,23 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[107.305, -10.6107]",
+    "value": "[07:09:13.1085, -010.36.38.5943]",
   },
   Object {
-    "name": "Celestial frame",
-    "value": "FK5, J2000",
+    "name": "Image ref coords (deg)",
+    "value": "[107.305 deg, -10.6107 deg]",
+  },
+  Object {
+    "name": "Pixel increment",
+    "value": "-14\\", 14\\"",
   },
   Object {
     "name": "Pixel unit",
     "value": "MJy/sr",
+  },
+  Object {
+    "name": "Celestial frame",
+    "value": "FK5, J2000",
   },
 ]
 `;
@@ -458,15 +474,23 @@ Array [
   },
   Object {
     "name": "Image reference coords",
-    "value": "[107.305, -10.6107]",
+    "value": "[07:09:13.1085, -010.36.38.5943]",
   },
   Object {
-    "name": "Celestial frame",
-    "value": "FK5, J2000",
+    "name": "Image ref coords (deg)",
+    "value": "[107.305 deg, -10.6107 deg]",
+  },
+  Object {
+    "name": "Pixel increment",
+    "value": "-14\\", 14\\"",
   },
   Object {
     "name": "Pixel unit",
     "value": "1",
+  },
+  Object {
+    "name": "Celestial frame",
+    "value": "FK5, J2000",
   },
 ]
 `;

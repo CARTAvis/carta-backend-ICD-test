@@ -48,16 +48,16 @@ Object {
           "value": "-1718.87 lambda, 1718.87 lambda",
         },
         Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
           "name": "Spectral frame",
           "value": "LSRK",
         },
         Object {
           "name": "Velocity definition",
           "value": "RADIO",
-        },
-        Object {
-          "name": "Pixel unit",
-          "value": "Jy/beam",
         },
         Object {
           "name": "Median area beam",
@@ -640,16 +640,16 @@ Object {
           "value": "-1718.87 lambda, 1718.87 lambda",
         },
         Object {
+          "name": "Pixel unit",
+          "value": "deg",
+        },
+        Object {
           "name": "Spectral frame",
           "value": "LSRK",
         },
         Object {
           "name": "Velocity definition",
           "value": "RADIO",
-        },
-        Object {
-          "name": "Pixel unit",
-          "value": "deg",
         },
         Object {
           "name": "Median area beam",
@@ -1246,6 +1246,10 @@ Object {
           "value": "-1\\", 1\\"",
         },
         Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
           "name": "Celestial frame",
           "value": "FK5, J2000",
         },
@@ -1256,10 +1260,6 @@ Object {
         Object {
           "name": "Velocity definition",
           "value": "RADIO",
-        },
-        Object {
-          "name": "Pixel unit",
-          "value": "Jy/beam",
         },
         Object {
           "name": "Restoring beam",
@@ -2735,16 +2735,16 @@ Object {
           "value": "0.4\\", 125015 Hz",
         },
         Object {
+          "name": "Pixel unit",
+          "value": "Jy/beam",
+        },
+        Object {
           "name": "Spectral frame",
           "value": "LSRK",
         },
         Object {
           "name": "Velocity definition",
           "value": "RADIO",
-        },
-        Object {
-          "name": "Pixel unit",
-          "value": "Jy/beam",
         },
         Object {
           "name": "Median area beam",
