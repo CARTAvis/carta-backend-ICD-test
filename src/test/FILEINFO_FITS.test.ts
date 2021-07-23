@@ -46,7 +46,7 @@ let assertItem: AssertItem = {
             },
         },
     },
-    lenComputedEntries: 16,
+    lenComputedEntries: 15,
     lenHeaderEntries: 73,
 };
 
