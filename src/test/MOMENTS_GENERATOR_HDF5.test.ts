@@ -27,7 +27,7 @@ let assertItem: AssertItem = {
     openFile: {
         directory: testSubdirectory,
         file: "HD163296_CO_2_1.hdf5",
-        hdu: "",
+        hdu: "0",
         fileId: setFileId,
         renderMode: CARTA.RenderMode.RASTER,
     },
