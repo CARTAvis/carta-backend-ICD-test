@@ -7,10 +7,6 @@ Array [
     "value": "M17_SWex.hdf5",
   },
   Object {
-    "name": "HDU",
-    "value": "0",
-  },
-  Object {
     "name": "Shape",
     "value": "[640, 800, 25, 1]",
   },
@@ -51,20 +47,16 @@ Array [
     "value": "-0.4\\", 0.4\\"",
   },
   Object {
+    "name": "Pixel unit",
+    "value": "Jy/beam",
+  },
+  Object {
     "name": "Celestial frame",
     "value": "ICRS",
   },
   Object {
     "name": "Spectral frame",
     "value": "LSRK",
-  },
-  Object {
-    "name": "Velocity definition",
-    "value": "RADIO",
-  },
-  Object {
-    "name": "Pixel unit",
-    "value": "Jy/beam",
   },
   Object {
     "name": "Restoring beam",
@@ -173,9 +165,9 @@ Array [
     "value": "M17SW",
   },
   Object {
-    "comment": "/beam'",
+    "comment": "beam'",
     "name": "BUNIT",
-    "value": "Jy",
+    "value": "Jy/beam",
   },
   Object {
     "name": "RADESYS",

@@ -47,6 +47,10 @@ Array [
     "value": "-0.4\\", 0.4\\"",
   },
   Object {
+    "name": "Pixel unit",
+    "value": "Jy/beam",
+  },
+  Object {
     "name": "Celestial frame",
     "value": "ICRS",
   },
@@ -57,10 +61,6 @@ Array [
   Object {
     "name": "Velocity definition",
     "value": "RADIO",
-  },
-  Object {
-    "name": "Pixel unit",
-    "value": "Jy/beam",
   },
   Object {
     "name": "Restoring beam",
