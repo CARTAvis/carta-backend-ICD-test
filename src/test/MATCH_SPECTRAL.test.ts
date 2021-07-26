@@ -13,7 +13,9 @@ interface AssertItem {
     precisionDigits: number;
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
+    addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor[];
+    setSpatialReq: CARTA.ISetSpatialRequirements[];
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
     setRegion: CARTA.ISetRegion[];
 }
@@ -53,6 +55,32 @@ let assertItem: AssertItem = {
             renderMode: CARTA.RenderMode.RASTER,
         },
     ],
+    addTilesReq: [
+        {
+            fileId: 100,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+        {
+            fileId: 101,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+        {
+            fileId: 102,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+        {
+            fileId: 103,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+    ],
     setCursor: [
         {
             fileId: 100,
@@ -69,6 +97,28 @@ let assertItem: AssertItem = {
         {
             fileId: 103,
             point: { x: 200.0, y: 200.0 },
+        },
+    ],
+    setSpatialReq: [
+        {
+            fileId: 100,
+            regionId: 0,
+            spatialProfiles: [{coordinate:"x", mip:1}, {coordinate:"y", mip:1}]
+        },
+        {
+            fileId: 101,
+            regionId: 0,
+            spatialProfiles: [{coordinate:"x", mip:1}, {coordinate:"y", mip:1}]
+        },
+        {
+            fileId: 102,
+            regionId: 0,
+            spatialProfiles: [{coordinate:"x", mip:1}, {coordinate:"y", mip:1}]
+        },
+        {
+            fileId: 103,
+            regionId: 0,
+            spatialProfiles: [{coordinate:"x", mip:1}, {coordinate:"y", mip:1}]
         },
     ],
     setSpectralRequirements: [
@@ -131,9 +181,13 @@ describe("MATCH_SPECTRAL: Test region spectral profile with spatially and spectr
             }, openFileTimeout);
         }
         for (const [index, cursor] of assertItem.setCursor.entries()) {
-            test(`Should set cursor ${index}`, async () => {
+            let ack: AckStream;
+            test(`Prepare image ${index}`, async () => {
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[index]);
                 await Connection.send(CARTA.SetCursor, cursor);
-                await Connection.receiveAny();
+                await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[index]);
+                // await Connection.receiveAny();
+                ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, cursorTimeout);
         }
         test(`Should set region 1`, async () => {
