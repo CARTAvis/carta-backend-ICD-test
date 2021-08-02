@@ -232,6 +232,7 @@ let assertItem: AssertItem = {
         firstFrame: { channel: 3, stokes: 0 },
         lastFrame: { channel: 10, stokes: 0 },
         deltaFrame: { channel: 7, stokes: 0 },
+        matchedFrames: {},
         requiredTiles: {
             fileId: 0,
             tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
@@ -239,6 +240,8 @@ let assertItem: AssertItem = {
             compressionQuality: 9,
         },
         looping: true,
+        frameRate: 5,
+        reverse: false,
     },
 };
 
@@ -528,7 +531,7 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 }
-                await Connection.send(CARTA.StopAnimation, assertItem.startAnimation[0]);
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, playAnimatorTimeout);
