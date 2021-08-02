@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL;
+let testServerUrl = config.serverURL0;
 let testSubdirectory = config.path.QA;
 let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
@@ -92,7 +92,7 @@ let assertItem: AssertItem = {
             '6': {
                 controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 20 }],
                 regionType: CARTA.RegionType.ELLIPSE,
-                rotation: 45,
+                rotation: 315,
             },
             '7': {
                 controlPoints: [{ x: 320, y: 300 }],
