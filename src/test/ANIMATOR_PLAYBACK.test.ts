@@ -200,38 +200,38 @@ let assertItem: AssertItem = {
         ],
     reverseAnimation:
         [
-            {
-                fileId: 0,
-                startFrame: { channel: 20, stokes: 0 },
-                firstFrame: { channel: 10, stokes: 0 },
-                lastFrame: { channel: 20, stokes: 0 },
-                deltaFrame: { channel: 1, stokes: 0 },
-                requiredTiles: {
-                    fileId: 0,
-                    tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
-                    compressionType: CARTA.CompressionType.ZFP,
-                    compressionQuality: 9,
-                },
-                reverse: true,
-                looping: true,
-                matchedFrames: {},
-            },
             // {
             //     fileId: 0,
             //     startFrame: { channel: 20, stokes: 0 },
             //     firstFrame: { channel: 10, stokes: 0 },
             //     lastFrame: { channel: 20, stokes: 0 },
-            //     deltaFrame: { channel: -1, stokes: 0 },
+            //     deltaFrame: { channel: 1, stokes: 0 },
             //     requiredTiles: {
             //         fileId: 0,
             //         tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
             //         compressionType: CARTA.CompressionType.ZFP,
             //         compressionQuality: 9,
             //     },
-            //     reverse: false,
+            //     reverse: true,
             //     looping: true,
             //     matchedFrames: {},
             // },
+            {
+                fileId: 0,
+                startFrame: { channel: 20, stokes: 0 },
+                firstFrame: { channel: 10, stokes: 0 },
+                lastFrame: { channel: 20, stokes: 0 },
+                deltaFrame: { channel: -1, stokes: 0 },
+                requiredTiles: {
+                    fileId: 0,
+                    tiles: [33554432, 33558528, 33562624, 33566720, 33554433, 33558529, 33562625, 33566721, 33554434, 33558530, 33562626, 33566722],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 9,
+                },
+                reverse: false,
+                looping: true,
+                matchedFrames: {},
+            },
         ],
     blinkAnimation:
     {
