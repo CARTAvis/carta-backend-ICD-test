@@ -85,6 +85,7 @@ let assertItem: AssertItem = {
                     compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 9,
                 },
+                matchedFrames: {},
             },
             {
                 fileId: 0,
@@ -98,6 +99,7 @@ let assertItem: AssertItem = {
                     compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 9,
                 },
+                matchedFrames: {},
             },
             {
                 fileId: 0,
@@ -111,6 +113,7 @@ let assertItem: AssertItem = {
                     compressionType: CARTA.CompressionType.ZFP,
                     compressionQuality: 9,
                 },
+                matchedFrames: {},
             },
         ],
     stopAnimation:
@@ -435,44 +438,45 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
-        // describe(`(Step 5) Play images round-trip`, () => {
-        //     let AnimateStreamData: AckStream[] = [];
-        //     let sequence: number[] = [];
-        //     test(`Image should return one after one`, async () => {
-        //         await sleep(sleepTimeout);
-        //         await Connection.send(CARTA.StartAnimation, {
-        //             ...assertItem.startAnimation[0],
-        //             reverse: true,
-        //         });
-        //         await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
-        //         await Connection.receive(CARTA.StartAnimationAck);
+        describe(`(Step 5) Play images round-trip`, () => {
+            let AnimateStreamData: AckStream[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await sleep(sleepTimeout);
+                await Connection.send(CARTA.StartAnimation, {
+                    ...assertItem.startAnimation[0],
+                    reverse: true,
+                    looping: true,
+                });
+                await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+                await Connection.receive(CARTA.StartAnimationAck);
 
-        //         for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
-        //             // console.log(i);
-        //             AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
-        //             await Connection.send(CARTA.AnimationFlowControl,
-        //                 {
-        //                     ...assertItem.animationFlowControl[3],
-        //                     receivedFrame: {
-        //                         channel: AnimateStreamData[i].RasterTileData[0].channel,
-        //                         stokes: 0,
-        //                     },
-        //                     timestamp: Long.fromNumber(Date.now()),
-        //                 }
-        //             );
-        //             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
-        //         };
-        //         await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
-        //         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
-        //         await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        //     }, playAnimatorTimeout);
+                for (let i = 0; i < 3 * Math.abs(assertItem.startAnimation[0].lastFrame.channel - assertItem.startAnimation[0].firstFrame.channel); i++) {
+                    // console.log(i);
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl[3],
+                            receivedFrame: {
+                                channel: AnimateStreamData[i].RasterTileData[0].channel,
+                                stokes: 0,
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
+                };
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[2]);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[2])
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            }, playAnimatorTimeout);
 
-        //     test(`Received image channels should be in sequence and then reverse:`, async () => {
-        //         console.warn(`(Step 5) Channel index in roundtrip: ${sequence}`);
-        //         let previous: number = assertItem.startAnimation[0].lastFrame.channel;
-        //         expect(Math.abs(sequence[sequence.length - 1] - previous)).toEqual(0);
-        //     });
-        // });
+            test(`Received image channels should be in sequence and then reverse:`, async () => {
+                console.warn(`(Step 5) Channel index in roundtrip: ${sequence}`);
+                let previous: number = assertItem.startAnimation[0].lastFrame.channel;
+                expect(Math.abs(sequence[sequence.length - 1] - previous)).toEqual(0);
+            });
+        });
 
         // assertItem.reverseAnimation.map((animation, index) => {
         //     describe(`(Step 6) Play all images backwardly using method${index + 1}`, () => {
