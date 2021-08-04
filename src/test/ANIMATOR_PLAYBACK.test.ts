@@ -504,6 +504,9 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 }
+                //Channel 10 & 11: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.reverseAnimation[0].requiredTiles.tiles.length * 2 + 4 + 2 + 2);
+
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
@@ -538,6 +541,9 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
                     );
                     sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
                 }
+                //Channel 10: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.reverseAnimation[1].requiredTiles.tiles.length * 1 + 2 + 1 + 1);
+
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
