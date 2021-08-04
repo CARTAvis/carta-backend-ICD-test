@@ -557,75 +557,42 @@ describe("ANIMATOR_PLAYBACK test: Testing animation playback", () => {
             });
         });
 
-        // assertItem.reverseAnimation.map((animation, index) => {
-        //     describe(`(Step 6) Play all images backwardly using method${index + 1}`, () => {
-        //         let AnimateStreamData: AckStream[] = [];
-        //         let sequence: number[] = [];
-        //         test(`Image should return one after one`, async () => {
-        //             await sleep(sleepTimeout);
-        //             await Connection.send(CARTA.StartAnimation, animation);
-        //             await Connection.receive(CARTA.StartAnimationAck);
-        //             for (let i = 0; i < Math.abs(animation.lastFrame.channel - animation.firstFrame.channel); i++) {
-        //                 AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
-        //                 await Connection.send(CARTA.AnimationFlowControl,
-        //                     {
-        //                         ...assertItem.animationFlowControl[4 + index],
-        //                         receivedFrame: {
-        //                             channel: AnimateStreamData[i].RasterTileData[0].channel,
-        //                             stokes: 0
-        //                         },
-        //                         timestamp: Long.fromNumber(Date.now()),
-        //                     }
-        //                 );
-        //                 sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
-        //             }
-        //             await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
-        //             await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-        //             await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        //         }, playAnimatorTimeout);
+        describe(`(Step 7) Blink images between ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
+            let AnimateStreamData: AckStream[] = [];
+            let sequence: number[] = [];
+            test(`Image should return one after one`, async () => {
+                await sleep(sleepTimeout);
+                await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
+                await Connection.receive(CARTA.StartAnimationAck);
+                for (let i = 0; i < 11; i++) {
+                    AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
+                    await Connection.send(CARTA.AnimationFlowControl,
+                        {
+                            ...assertItem.animationFlowControl[6],
+                            receivedFrame: {
+                                channel: AnimateStreamData[i].RasterTileData[0].channel,
+                                stokes: 0
+                            },
+                            timestamp: Long.fromNumber(Date.now()),
+                        }
+                    );
+                    sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
+                }
+                //Channel 10: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.reverseAnimation[0].requiredTiles.tiles.length * 1 + 2 + 1 + 1);
 
-        //         test(`Received image channels should be in sequence`, async () => {
-        //             console.warn(`(Step 6) Backward channel index with method${index + 1}: ${sequence}`);
-        //             AnimateStreamData.map((imageData, index) => {
-        //                 expect(sequence[index]).toEqual(animation.startFrame.channel - index);
-        //             });
-        //         });
-        //     });
-        // });
+                await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
+                await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
+                await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            }, playAnimatorTimeout);
 
-        // describe(`(Step 7) Blink images between ${assertItem.blinkAnimation.firstFrame.channel} and ${assertItem.blinkAnimation.lastFrame.channel}`, () => {
-        //     let AnimateStreamData: AckStream[] = [];
-        //     let sequence: number[] = [];
-        //     test(`Image should return one after one`, async () => {
-        //         await sleep(sleepTimeout);
-        //         await Connection.send(CARTA.StartAnimation, assertItem.blinkAnimation);
-        //         await Connection.receive(CARTA.StartAnimationAck);
-        //         for (let i = 0; i < 11; i++) {
-        //             AnimateStreamData.push(await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false) as AckStream);
-        //             await Connection.send(CARTA.AnimationFlowControl,
-        //                 {
-        //                     ...assertItem.animationFlowControl[6],
-        //                     receivedFrame: {
-        //                         channel: AnimateStreamData[i].RasterTileData[0].channel,
-        //                         stokes: 0
-        //                     },
-        //                     timestamp: Long.fromNumber(Date.now()),
-        //                 }
-        //             );
-        //             sequence.push(AnimateStreamData[i].RasterTileData[0].channel);
-        //         }
-        //         await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
-        //         await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0])
-        //         await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        //     }, playAnimatorTimeout);
-
-        //     test(`Received image channels should be in sequence`, async () => {
-        //         console.warn(`(Step 7) Blink channel index: ${sequence}`);
-        //         AnimateStreamData.map((imageData, index) => {
-        //             expect(imageData.RasterTileData[0].channel === assertItem.blinkAnimation.firstFrame.channel || imageData.RasterTileData[0].channel === assertItem.blinkAnimation.lastFrame.channel).toBe(true);
-        //         });
-        //     });
-        // });
+            test(`Received image channels should be in sequence`, async () => {
+                console.warn(`(Step 7) Blink channel index: ${sequence}`);
+                AnimateStreamData.map((imageData, index) => {
+                    expect(imageData.RasterTileData[0].channel === assertItem.blinkAnimation.firstFrame.channel || imageData.RasterTileData[0].channel === assertItem.blinkAnimation.lastFrame.channel).toBe(true);
+                });
+            });
+        });
     });
 
     test(`close file`, async () => {
