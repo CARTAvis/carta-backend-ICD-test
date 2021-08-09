@@ -18,7 +18,7 @@ Array [
   },
   Object {
     "entryType": "INT",
-    "name": "Number of stokes",
+    "name": "Number of polarizations",
     "numericValue": 1,
     "value": "1",
   },
