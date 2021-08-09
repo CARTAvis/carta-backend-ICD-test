@@ -124,14 +124,16 @@ let assertItem: AssertItem = {
             stokes: 1,
             regionId: -1,
             progress: 1,
-            histograms: [{ channel: 2 }],
+            histograms: {},
+            channel: 2 ,
         },
         {
             fileId: 1,
             stokes: 0,
             regionId: -1,
             progress: 1,
-            histograms: [{ channel: 12 }],
+            histograms: {},
+            channel: 12 ,
         },
         {},
         {},
@@ -141,7 +143,8 @@ let assertItem: AssertItem = {
             stokes: 0,
             regionId: -1,
             progress: 1,
-            histograms: [{ channel: 0 }],
+            histograms: {},
+            channel: 0 
         },
     ],
     rasterTileDatas: [
@@ -233,8 +236,8 @@ describe("ANIMATOR_NAVIGATION: Testing using animator to see different frames/ch
                         expect(ack.RegionHistogramData[0].progress).toEqual(assertItem.regionHistogramDatas[index].progress);
                     });
 
-                    test(`REGION_HISTOGRAM_DATA.histograms.channel = ${assertItem.regionHistogramDatas[index].histograms[0].channel}`, () => {
-                        expect(ack.RegionHistogramData[0].histograms[0].channel).toEqual(assertItem.regionHistogramDatas[index].histograms[0].channel);
+                    test(`REGION_HISTOGRAM_DATA.histograms.channel = ${assertItem.regionHistogramDatas[index].channel}`, () => {
+                        expect(ack.RegionHistogramData[0].channel).toEqual(assertItem.regionHistogramDatas[index].channel);
                     });
 
                     test(`RASTER_IMAGE_DATA should arrive within ${changeChannelTimeout} ms.`, async () => {
