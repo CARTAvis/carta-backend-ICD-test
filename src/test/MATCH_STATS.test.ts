@@ -91,44 +91,148 @@ let assertItem: AssertItem = {
             {
                 fileId: 100,
                 regionId: 1,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 2,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 3,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 100,
                 regionId: 4,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
         [
             {
                 fileId: 101,
                 regionId: 1,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 2,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 3,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
             {
                 fileId: 101,
                 regionId: 4,
-                stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
+                statsConfigs:[
+                    {coordinate:"z", statsTypes:[
+                        CARTA.StatsType.NumPixels,
+                        CARTA.StatsType.Sum,
+                        CARTA.StatsType.FluxDensity,
+                        CARTA.StatsType.Mean,
+                        CARTA.StatsType.RMS,
+                        CARTA.StatsType.Sigma,
+                        CARTA.StatsType.SumSq,
+                        CARTA.StatsType.Min,
+                        CARTA.StatsType.Max,
+                    ]}
+                ],
+                // stats: [0, 2, 3, 4, 5, 6, 7, 8, 9],
             },
         ],
     ]
@@ -189,7 +293,7 @@ describe("MATCH_STATS: Testing region stats with spatially and spectrally matche
             //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics);
             //     console.log(RegionStatsData.find(data => data.fileId == assertItem.openFile[1].fileId && data.regionId == region.regionId).statistics);
             // });
-            for (const [statsIdx, statsType] of assertItem.setStatsRequirements[0][regionIdx].stats.entries()) {
+            for (const [statsIdx, statsType] of assertItem.setStatsRequirements[0][regionIdx].statsConfigs[0].statsTypes.entries()) {
                 test(`Assert the ${CARTA.StatsType[statsType]} of region ${region.regionId} for first image equal to that for the second image`, () => {
                     const left = RegionStatsData.find(data => data.fileId == assertItem.openFile[0].fileId && data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value;
                     const right = RegionStatsData.find(data => data.fileId == assertItem.openFile[1].fileId && data.regionId == region.regionId).statistics.find(data => data.statsType == statsType).value;
