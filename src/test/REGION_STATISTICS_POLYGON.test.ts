@@ -145,98 +145,182 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: 1,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
         {
             fileId: 0,
             regionId: 2,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
         {
             fileId: 0,
             regionId: 3,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
         {
             fileId: 0,
             regionId: 4,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
         {
             fileId: 0,
             regionId: 5,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
         {
             fileId: 0,
             regionId: 6,
-            stats: [
-                CARTA.StatsType.NumPixels,
-                CARTA.StatsType.Sum,
-                CARTA.StatsType.FluxDensity,
-                CARTA.StatsType.Mean,
-                CARTA.StatsType.RMS,
-                CARTA.StatsType.Sigma,
-                CARTA.StatsType.SumSq,
-                CARTA.StatsType.Min,
-                CARTA.StatsType.Max,
-                CARTA.StatsType.Extrema
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.Sum,
+                    CARTA.StatsType.FluxDensity,
+                    CARTA.StatsType.Mean,
+                    CARTA.StatsType.RMS,
+                    CARTA.StatsType.Sigma,
+                    CARTA.StatsType.SumSq,
+                    CARTA.StatsType.Min,
+                    CARTA.StatsType.Max,
+                    CARTA.StatsType.Extrema
+                ]}
             ],
+            // stats: [
+            //     CARTA.StatsType.NumPixels,
+            //     CARTA.StatsType.Sum,
+            //     CARTA.StatsType.FluxDensity,
+            //     CARTA.StatsType.Mean,
+            //     CARTA.StatsType.RMS,
+            //     CARTA.StatsType.Sigma,
+            //     CARTA.StatsType.SumSq,
+            //     CARTA.StatsType.Min,
+            //     CARTA.StatsType.Max,
+            //     CARTA.StatsType.Extrema
+            // ],
         },
     ],
     regionStatsData: [

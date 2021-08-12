@@ -65,14 +65,13 @@ let assertItem: AssertItem = {
     },
     regionHistogramData: {
         regionId: -2,
-        histograms: [
-            {
-                channel: -2,
-                numBins: 2775,
-                binWidth: 0.7235205769538879,
-                firstBinCenter: -1773.2998046875,
-            },
-        ],
+        channel: -2,
+        histograms: 
+        {
+            numBins: 2775,
+            binWidth: 0.7235205769538879,
+            firstBinCenter: -1773.2998046875,
+        },
         lengthOfHistogramBins: 2775,
         binValues: [{ index: 2500, value: 9359604 },],
         mean: 18.742310255027036,
@@ -149,14 +148,14 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
                     RegionHistogramData = ack.RegionHistogramData.slice(-1)[0];
                     ReceiveProgress = RegionHistogramData.progress;
                     expect(ReceiveProgress).toEqual(1);
-                    expect(RegionHistogramData.histograms[0].binWidth).toBeCloseTo(assertItem.regionHistogramData.histograms[0].binWidth, assertItem.precisionDigits);
-                    expect(RegionHistogramData.histograms[0].bins.length).toEqual(assertItem.regionHistogramData.lengthOfHistogramBins);
-                    expect(RegionHistogramData.histograms[0].bins[2500]).toEqual(assertItem.regionHistogramData.binValues[0].value);
-                    expect(RegionHistogramData.histograms[0].channel).toEqual(assertItem.regionHistogramData.histograms[0].channel);
-                    expect(RegionHistogramData.histograms[0].firstBinCenter).toBeCloseTo(assertItem.regionHistogramData.histograms[0].firstBinCenter, assertItem.precisionDigits);
-                    expect(RegionHistogramData.histograms[0].numBins).toEqual(assertItem.regionHistogramData.histograms[0].numBins);
-                    expect(RegionHistogramData.histograms[0].mean).toBeCloseTo(assertItem.regionHistogramData.mean, assertItem.precisionDigits)
-                    expect(RegionHistogramData.histograms[0].stdDev).toBeCloseTo(assertItem.regionHistogramData.stdDev, assertItem.precisionDigits)
+                    expect(RegionHistogramData.histograms.binWidth).toBeCloseTo(assertItem.regionHistogramData.histograms.binWidth, assertItem.precisionDigits);
+                    expect(RegionHistogramData.histograms.bins.length).toEqual(assertItem.regionHistogramData.lengthOfHistogramBins);
+                    expect(RegionHistogramData.histograms.bins[2500]).toEqual(assertItem.regionHistogramData.binValues[0].value);
+                    expect(RegionHistogramData.channel).toEqual(assertItem.regionHistogramData.channel);
+                    expect(RegionHistogramData.histograms.firstBinCenter).toBeCloseTo(assertItem.regionHistogramData.histograms.firstBinCenter, assertItem.precisionDigits);
+                    expect(RegionHistogramData.histograms.numBins).toEqual(assertItem.regionHistogramData.histograms.numBins);
+                    expect(RegionHistogramData.histograms.mean).toBeCloseTo(assertItem.regionHistogramData.mean, assertItem.precisionDigits)
+                    expect(RegionHistogramData.histograms.stdDev).toBeCloseTo(assertItem.regionHistogramData.stdDev, assertItem.precisionDigits)
                     expect(RegionHistogramData.regionId).toEqual(assertItem.regionHistogramData.regionId);
                 }, cubeHistogramTimeout);
             });

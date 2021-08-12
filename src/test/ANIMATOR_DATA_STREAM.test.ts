@@ -44,15 +44,19 @@ let assertItem: AssertItem = {
     stats: {
         fileId: 0,
         regionId: -1,
-        stats: [
-            CARTA.StatsType.NumPixels,
-            CARTA.StatsType.Sum,
-            CARTA.StatsType.Mean,
-            CARTA.StatsType.RMS,
-            CARTA.StatsType.Sigma,
-            CARTA.StatsType.SumSq,
-            CARTA.StatsType.Min,
-            CARTA.StatsType.Max
+        statsConfigs:[
+            {coordinate:"z", statsTypes:[
+                CARTA.StatsType.NumPixels,
+                CARTA.StatsType.Sum,
+                CARTA.StatsType.FluxDensity,
+                CARTA.StatsType.Mean,
+                CARTA.StatsType.RMS,
+                CARTA.StatsType.Sigma,
+                CARTA.StatsType.SumSq,
+                CARTA.StatsType.Min,
+                CARTA.StatsType.Max,
+                CARTA.StatsType.Extrema
+            ]}
         ],
     },
     histogram: {

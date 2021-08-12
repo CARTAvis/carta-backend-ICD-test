@@ -17,7 +17,6 @@ interface AssertItem {
 let assertItem: AssertItem = {
     register: {
         sessionId: 0,
-        apiKey: "",
         clientFeatureFlags: 5,
     },
     precisionDigits: 4,
@@ -68,12 +67,26 @@ let assertItem: AssertItem = {
         {
             fileId: 0,
             regionId: 1,
-            stats: [0, 1, 2,],
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.NanCount,
+                    CARTA.StatsType.Sum,
+                ]}
+            ],
+            // stats: [0, 1, 2,],
         },
         {
             fileId: 1,
             regionId: 2,
-            stats: [0, 1, 2,],
+            statsConfigs:[
+                {coordinate:"z", statsTypes:[
+                    CARTA.StatsType.NumPixels,
+                    CARTA.StatsType.NanCount,
+                    CARTA.StatsType.Sum,
+                ]}
+            ],
+            // stats: [0, 1, 2,],
         },
     ],
 }
