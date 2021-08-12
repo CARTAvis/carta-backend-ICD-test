@@ -61,7 +61,7 @@ let assertItem: AssertItem = {
         {
             numBins: 2775,
             binWidth: 0.7235205573004645,
-            firstBinCenter: -1773.2998046875,
+            firstBinCenter: -1773.2998608150997,
         },
         lengthOfHistogramBins: 2775,
         binValues: [{ index: 2500, value: 9359604 },],
