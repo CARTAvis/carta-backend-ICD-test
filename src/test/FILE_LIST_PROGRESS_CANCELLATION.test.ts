@@ -24,7 +24,7 @@ let assertItem: AssertItem = {
     checkBackendlist: { directory: testBackendSubdirectory},
 };
 
-describe("LOAD_LARGE_FILES_COMPLETE test: Test ListProgress with loading the folder which contains many files and wait until loading all files.", () => {
+describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList ICD with loading the folder which contains many files.", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -51,10 +51,16 @@ describe("LOAD_LARGE_FILES_COMPLETE test: Test ListProgress with loading the fol
 
         let temp: any;
         let Progress: number;
-        test(`Receive a series of ListProgress until the backend sent FileListResponse:`,async()=>{
+        test(`Receive a series of *One* ListProgress than requst StopFileList:`,async()=>{
             await Connection.send(CARTA.FileListRequest, { directory: basepath + '/' + assertItem.filelist.directory });
-            temp = await Connection.streamUntil(type => type == CARTA.FileListResponse);
-            expect(temp.Responce[temp.Responce.length-1].success).toEqual(true);
+            for (let i=0; i<1; i++){
+                temp = await Connection.receive(CARTA.ListProgress);
+                Progress = temp.percentage;
+                console.log("List Progress: ", Progress, "%");
+            }
+            await Connection.send(CARTA.StopFileList,{fileListType: 0});
+            let Response = await Connection.receiveAny(1000, false);
+            expect(Response).toEqual(null);
         },openLargeFilesTimeout);
 
         test(`Check the backend is still alive:`,async()=>{
