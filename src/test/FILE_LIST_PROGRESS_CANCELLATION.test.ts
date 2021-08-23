@@ -42,7 +42,7 @@ describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList
         let path = await Connection.receiveAny();
         basepath = path.directory;
         console.log('basepath:', basepath);
-    });
+    },openLargeFilesTimeout);
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
         beforeAll(async () => {
@@ -68,7 +68,7 @@ describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList
             let BackendStatus = await Connection.receive(CARTA.FileListResponse);
             expect(BackendStatus).toBeDefined();
             expect(BackendStatus.success).toBe(true);
-        },10000);
+        },openLargeFilesTimeout);
     });
     afterAll(() => Connection.close());
 });
