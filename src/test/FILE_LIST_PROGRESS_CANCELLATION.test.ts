@@ -56,7 +56,7 @@ describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList
             for (let i=0; i<1; i++){
                 temp = await Connection.receiveAny();
                 if (temp.percentage != undefined){
-                    console.log("List Progress: ", Progress, "%");
+                    console.log("List Progress: ", temp.percentage, "%");
                 };
             }
             await Connection.send(CARTA.StopFileList,{fileListType: 0});
