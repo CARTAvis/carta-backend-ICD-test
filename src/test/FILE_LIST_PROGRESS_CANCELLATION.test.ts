@@ -68,7 +68,7 @@ describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList
             let BackendStatus = await Connection.receive(CARTA.FileListResponse);
             expect(BackendStatus).toBeDefined();
             expect(BackendStatus.success).toBe(true);
-        });
+        },10000);
     });
     afterAll(() => Connection.close());
 });
