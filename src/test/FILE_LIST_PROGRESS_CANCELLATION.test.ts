@@ -54,9 +54,10 @@ describe("FILE_LIST_PROGRESS_CANCELLATION test: Test ListProgress & StopFileList
         test(`Receive a series of *One* ListProgress than requst StopFileList:`,async()=>{
             await Connection.send(CARTA.FileListRequest, { directory: basepath + '/' + assertItem.filelist.directory });
             for (let i=0; i<1; i++){
-                temp = await Connection.receive(CARTA.ListProgress);
-                Progress = temp.percentage;
-                console.log("List Progress: ", Progress, "%");
+                temp = await Connection.receiveAny();
+                if (temp.percentage != undefined){
+                    console.log("List Progress: ", Progress, "%");
+                };
             }
             await Connection.send(CARTA.StopFileList,{fileListType: 0});
             let Response = await Connection.receiveAny(1000, false);
