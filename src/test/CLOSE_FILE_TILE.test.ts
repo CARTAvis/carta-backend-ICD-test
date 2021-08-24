@@ -30,7 +30,7 @@ let assertItem: AssertItem = {
     fileOpen:
     {
         directory: testSubdirectory,
-        file: "S255_IR_sci.spw29.cube.I.pbcor.fits",
+        file: "M17_SWex.fits",
         hdu: "",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -56,14 +56,14 @@ let assertItem: AssertItem = {
     setImageChannel:
     {
         fileId: 0,
-        channel: 100,
+        channel: 10,
         stokes: 0,
         requiredTiles: {
             fileId: 0,
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 11,
             // tiles: [0]
-            tiles: [33558530,33558531,33562626,33562627,33554434,33554435,33558529,33562625,33554433,33558528,33562624,33554432],
+            tiles: [33558529, 33558528, 33562625, 33554433, 33562624, 33558530, 33554432, 33562626, 33554434, 33566721, 33566720, 33566722],
         },
     },
 

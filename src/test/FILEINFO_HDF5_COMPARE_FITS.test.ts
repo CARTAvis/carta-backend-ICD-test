@@ -24,12 +24,12 @@ let assertItem: AssertItem = {
     fileInfoRequest: 
     [
         {
-            file: "SDC335.579-0.292.spw0.line.fits",
-            hdu: "",
+            file: "M17_SWex.fits",
+            hdu: "0",
         },
         {
-            file: "SDC335.579-0.292.spw0.line.hdf5",
-            hdu: "",
+            file: "M17_SWex.hdf5",
+            hdu: "0",
         },
     ],
     precisionDigits: 4,
