@@ -3,7 +3,7 @@ import { Client, IOpenFile, AckStream } from "./CLIENT";
 import config from "./config.json";
 import { execSync } from "child_process";
 
-let testServerUrl: string = config.serverURL0;
+let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let tmpdirectory: string = config.path.save;
 let openFileTimeout: number = config.timeout.openFile;
