@@ -116,7 +116,7 @@ describe("EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an 
                     responses_openFileAck = responses.Responce[0];
                 },openFileTimeout);
 
-                test(`(Step 4) Mactch the returned message`,()=>{
+                test(`(Step 4) Match the returned message`,()=>{
                     expect(responses_openFileAck).toMatchSnapshot({
                         fileInfoExtended: {
                             headerEntries: expect.any(Object)
