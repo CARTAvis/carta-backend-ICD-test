@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -6330,7 +6330,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 2`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 2`] = `
 Object {
   "comment": "Standard FITS",
   "entryType": "INT",
@@ -6340,7 +6340,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 3`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 3`] = `
 Object {
   "entryType": "INT",
   "name": "BITPIX",
@@ -6349,7 +6349,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 4`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 4`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS",
@@ -6358,7 +6358,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 5`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 5`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS1",
@@ -6367,7 +6367,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 6`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 6`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS2",
@@ -6376,7 +6376,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 7`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 7`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS3",
@@ -6385,7 +6385,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 8`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 8`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS4",
@@ -6394,7 +6394,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 9`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 9`] = `
 Object {
   "entryType": "INT",
   "name": "EXTEND",
@@ -6403,7 +6403,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 10`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 10`] = `
 Object {
   "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
   "entryType": "FLOAT",
@@ -6413,7 +6413,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 11`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 11`] = `
 Object {
   "entryType": "FLOAT",
   "name": "BZERO",
@@ -6421,21 +6421,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 12`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 12`] = `
 Object {
   "name": "BTYPE",
   "value": "Intensity",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 13`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 13`] = `
 Object {
   "name": "OBJECT",
   "value": "IRC+10216",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 14`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 14`] = `
 Object {
   "comment": "Brightness (pixel) unit",
   "name": "BUNIT",
@@ -6443,14 +6443,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 15`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 15`] = `
 Object {
   "name": "RADESYS",
   "value": "ICRS",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 16`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 16`] = `
 Object {
   "entryType": "FLOAT",
   "name": "LONPOLE",
@@ -6459,7 +6459,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 17`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 17`] = `
 Object {
   "entryType": "FLOAT",
   "name": "LATPOLE",
@@ -6468,7 +6468,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 18`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 18`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_1",
@@ -6477,7 +6477,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 19`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 19`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_1",
@@ -6485,7 +6485,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 20`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 20`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_1",
@@ -6493,7 +6493,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 21`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 21`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_1",
@@ -6501,7 +6501,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 22`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 22`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_2",
@@ -6509,7 +6509,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 23`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 23`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_2",
@@ -6518,7 +6518,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 24`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 24`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_2",
@@ -6526,7 +6526,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 25`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 25`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_2",
@@ -6534,7 +6534,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 26`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 26`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_3",
@@ -6542,7 +6542,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 27`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 27`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_3",
@@ -6550,7 +6550,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 28`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 28`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_3",
@@ -6559,7 +6559,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 29`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 29`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_3",
@@ -6567,7 +6567,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 30`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 30`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_4",
@@ -6575,7 +6575,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 31`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 31`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_4",
@@ -6583,7 +6583,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 32`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 32`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_4",
@@ -6591,7 +6591,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 33`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 33`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_4",
@@ -6600,14 +6600,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 34`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 34`] = `
 Object {
   "name": "CTYPE1",
   "value": "RA---SIN",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 35`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 35`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL1",
@@ -6616,7 +6616,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 36`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 36`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT1",
@@ -6625,7 +6625,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 37`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 37`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX1",
@@ -6634,21 +6634,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 38`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 38`] = `
 Object {
   "name": "CUNIT1",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 39`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 39`] = `
 Object {
   "name": "CTYPE2",
   "value": "DEC--SIN",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 40`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 40`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL2",
@@ -6657,7 +6657,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 41`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 41`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT2",
@@ -6666,7 +6666,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 42`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 42`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX2",
@@ -6675,21 +6675,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 43`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 43`] = `
 Object {
   "name": "CUNIT2",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 44`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 44`] = `
 Object {
   "name": "CTYPE3",
   "value": "FREQ",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 45`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 45`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL3",
@@ -6698,7 +6698,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 46`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 46`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT3",
@@ -6707,7 +6707,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 47`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 47`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX3",
@@ -6716,21 +6716,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 48`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 48`] = `
 Object {
   "name": "CUNIT3",
   "value": "Hz",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 49`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 49`] = `
 Object {
   "name": "CTYPE4",
   "value": "STOKES",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 50`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 50`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL4",
@@ -6739,7 +6739,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 51`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 51`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT4",
@@ -6748,7 +6748,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 52`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 52`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX4",
@@ -6757,13 +6757,13 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 53`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 53`] = `
 Object {
   "name": "CUNIT4",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 54`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 54`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PV2_1",
@@ -6771,7 +6771,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 55`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 55`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PV2_2",
@@ -6779,7 +6779,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 56`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 56`] = `
 Object {
   "comment": "Rest Frequency (Hz)",
   "entryType": "FLOAT",
@@ -6789,7 +6789,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 57`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 57`] = `
 Object {
   "comment": "Spectral reference frame",
   "name": "SPECSYS",
@@ -6797,7 +6797,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 58`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 58`] = `
 Object {
   "entryType": "FLOAT",
   "name": "ALTRVAL",
@@ -6806,7 +6806,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 59`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 59`] = `
 Object {
   "entryType": "FLOAT",
   "name": "ALTRPIX",
@@ -6815,7 +6815,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 60`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 60`] = `
 Object {
   "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
   "entryType": "INT",
@@ -6825,35 +6825,35 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 61`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 61`] = `
 Object {
   "name": "TELESCOP",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 62`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 62`] = `
 Object {
   "name": "OBSERVER",
   "value": "wvlemmings",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 63`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 63`] = `
 Object {
   "name": "DATE-OBS",
   "value": "2018-05-20T20:52:21.071999",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 64`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 64`] = `
 Object {
   "name": "TIMESYS",
   "value": "UTC",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 65`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 65`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSRA",
@@ -6862,7 +6862,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 66`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 66`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSDEC",
@@ -6871,7 +6871,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 67`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 67`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-X",
@@ -6880,7 +6880,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 68`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 68`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-Y",
@@ -6889,7 +6889,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 69`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 69`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-Z",
@@ -6898,14 +6898,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 70`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 70`] = `
 Object {
   "name": "INSTRUME",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 71`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 71`] = `
 Object {
   "entryType": "FLOAT",
   "name": "DISTANCE",
@@ -6913,7 +6913,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 72`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 72`] = `
 Object {
   "comment": "CASA multiple BEAMS table present",
   "entryType": "INT",
@@ -6923,7 +6923,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 73`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 73`] = `
 Object {
   "comment": "Date FITS file was written",
   "name": "DATE",
@@ -6931,14 +6931,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 74`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 74`] = `
 Object {
   "name": "ORIGIN",
   "value": "casacore-3.4.0",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -13267,7 +13267,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 2`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 2`] = `
 Object {
   "comment": "IMAGE extension",
   "name": "XTENSION",
@@ -13275,7 +13275,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 3`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 3`] = `
 Object {
   "comment": "Floating point (32 bit)",
   "entryType": "INT",
@@ -13285,7 +13285,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 4`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 4`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS",
@@ -13294,7 +13294,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 5`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 5`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS1",
@@ -13303,7 +13303,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 6`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 6`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS2",
@@ -13312,7 +13312,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 7`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 7`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS3",
@@ -13321,7 +13321,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 8`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 8`] = `
 Object {
   "entryType": "INT",
   "name": "NAXIS4",
@@ -13330,7 +13330,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 9`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 9`] = `
 Object {
   "entryType": "INT",
   "name": "PCOUNT",
@@ -13338,7 +13338,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 10`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 10`] = `
 Object {
   "entryType": "INT",
   "name": "GCOUNT",
@@ -13347,7 +13347,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 11`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 11`] = `
 Object {
   "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
   "entryType": "FLOAT",
@@ -13357,7 +13357,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 12`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 12`] = `
 Object {
   "entryType": "FLOAT",
   "name": "BZERO",
@@ -13365,21 +13365,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 13`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 13`] = `
 Object {
   "name": "BTYPE",
   "value": "Intensity",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 14`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 14`] = `
 Object {
   "name": "OBJECT",
   "value": "IRC+10216",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 15`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 15`] = `
 Object {
   "comment": "Brightness (pixel) unit",
   "name": "BUNIT",
@@ -13387,14 +13387,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 16`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 16`] = `
 Object {
   "name": "RADESYS",
   "value": "ICRS",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 17`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 17`] = `
 Object {
   "entryType": "FLOAT",
   "name": "LONPOLE",
@@ -13403,7 +13403,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 18`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 18`] = `
 Object {
   "entryType": "FLOAT",
   "name": "LATPOLE",
@@ -13412,7 +13412,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 19`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 19`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_1",
@@ -13421,7 +13421,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 20`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 20`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_1",
@@ -13429,7 +13429,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 21`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 21`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_1",
@@ -13437,7 +13437,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 22`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 22`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_1",
@@ -13445,7 +13445,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 23`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 23`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_2",
@@ -13453,7 +13453,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 24`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 24`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_2",
@@ -13462,7 +13462,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 25`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 25`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_2",
@@ -13470,7 +13470,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 26`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 26`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_2",
@@ -13478,7 +13478,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 27`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 27`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_3",
@@ -13486,7 +13486,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 28`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 28`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_3",
@@ -13494,7 +13494,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 29`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 29`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_3",
@@ -13503,7 +13503,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 30`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 30`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_3",
@@ -13511,7 +13511,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 31`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 31`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC1_4",
@@ -13519,7 +13519,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 32`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 32`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC2_4",
@@ -13527,7 +13527,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 33`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 33`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC3_4",
@@ -13535,7 +13535,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 34`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 34`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PC4_4",
@@ -13544,14 +13544,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 35`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 35`] = `
 Object {
   "name": "CTYPE1",
   "value": "RA---SIN",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 36`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 36`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL1",
@@ -13560,7 +13560,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 37`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 37`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT1",
@@ -13569,7 +13569,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 38`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 38`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX1",
@@ -13578,21 +13578,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 39`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 39`] = `
 Object {
   "name": "CUNIT1",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 40`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 40`] = `
 Object {
   "name": "CTYPE2",
   "value": "DEC--SIN",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 41`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 41`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL2",
@@ -13601,7 +13601,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 42`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 42`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT2",
@@ -13610,7 +13610,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 43`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 43`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX2",
@@ -13619,21 +13619,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 44`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 44`] = `
 Object {
   "name": "CUNIT2",
   "value": "deg",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 45`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 45`] = `
 Object {
   "name": "CTYPE3",
   "value": "FREQ",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 46`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 46`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL3",
@@ -13642,7 +13642,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 47`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 47`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT3",
@@ -13651,7 +13651,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 48`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 48`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX3",
@@ -13660,21 +13660,21 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 49`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 49`] = `
 Object {
   "name": "CUNIT3",
   "value": "Hz",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 50`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 50`] = `
 Object {
   "name": "CTYPE4",
   "value": "STOKES",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 51`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 51`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRVAL4",
@@ -13683,7 +13683,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 52`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 52`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CDELT4",
@@ -13692,7 +13692,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 53`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 53`] = `
 Object {
   "entryType": "FLOAT",
   "name": "CRPIX4",
@@ -13701,13 +13701,13 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 54`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 54`] = `
 Object {
   "name": "CUNIT4",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 55`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 55`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PV2_1",
@@ -13715,7 +13715,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 56`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 56`] = `
 Object {
   "entryType": "FLOAT",
   "name": "PV2_2",
@@ -13723,7 +13723,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 57`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 57`] = `
 Object {
   "comment": "Rest Frequency (Hz)",
   "entryType": "FLOAT",
@@ -13733,7 +13733,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 58`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 58`] = `
 Object {
   "comment": "Spectral reference frame",
   "name": "SPECSYS",
@@ -13741,7 +13741,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 59`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 59`] = `
 Object {
   "entryType": "FLOAT",
   "name": "ALTRVAL",
@@ -13750,7 +13750,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 60`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 60`] = `
 Object {
   "entryType": "FLOAT",
   "name": "ALTRPIX",
@@ -13759,7 +13759,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 61`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 61`] = `
 Object {
   "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
   "entryType": "INT",
@@ -13769,35 +13769,35 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 62`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 62`] = `
 Object {
   "name": "TELESCOP",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 63`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 63`] = `
 Object {
   "name": "OBSERVER",
   "value": "wvlemmings",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 64`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 64`] = `
 Object {
   "name": "DATE-OBS",
   "value": "2018-05-20T20:52:21.071999",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 65`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 65`] = `
 Object {
   "name": "TIMESYS",
   "value": "UTC",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 66`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 66`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSRA",
@@ -13806,7 +13806,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 67`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 67`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSDEC",
@@ -13815,7 +13815,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 68`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 68`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-X",
@@ -13824,7 +13824,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 69`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 69`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-Y",
@@ -13833,7 +13833,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 70`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 70`] = `
 Object {
   "entryType": "FLOAT",
   "name": "OBSGEO-Z",
@@ -13842,14 +13842,14 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 71`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 71`] = `
 Object {
   "name": "INSTRUME",
   "value": "ALMA",
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 72`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 72`] = `
 Object {
   "entryType": "FLOAT",
   "name": "DISTANCE",
@@ -13857,7 +13857,7 @@ Object {
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 73`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 73`] = `
 Object {
   "comment": "CASA multiple BEAMS table present",
   "entryType": "INT",
