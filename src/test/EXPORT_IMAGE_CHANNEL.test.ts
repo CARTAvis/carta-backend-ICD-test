@@ -83,7 +83,6 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
         beforeAll(async () => {
             await Connection.send(CARTA.FileListRequest, { directory: "$BASE" });
             basePath = (await Connection.receive(CARTA.FileListResponse) as CARTA.FileListResponse).directory;
-            console.log(basePath);
         }, listFileTimeout);
 
         test(`(Step 0) Connection open? | `, () => {
@@ -116,8 +115,22 @@ describe("EXPORT IMAGE CHANNEL test: Exporting of a partial spectral range of an
                 },openFileTimeout);
 
                 test(`(Step 4) Mactch the returned message`,()=>{
-                    expect(responses_openFileAck).toMatchSnapshot();
                     expect(responses_openFileAck.fileInfoExtended.computedEntries.find(o => o.name == 'Shape').value).toEqual(assertItem.shapeSize[index]);
+
+                    expect(responses_openFileAck).toMatchSnapshot({
+                        fileInfoExtended: {
+                            headerEntries: expect.any(Object)
+                        },
+                    });
+                    responses_openFileAck.fileInfoExtended.headerEntries.map(item => {
+                        if(item.name === "DATE"){
+                            expect(item).toMatchSnapshot({
+                                value: expect.any(String)
+                            })
+                        } else {
+                            expect(item).toMatchSnapshot();
+                        }
+                    })
                 })
             });
         });
