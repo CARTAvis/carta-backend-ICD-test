@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -6245,7 +6245,7 @@ Object {
   "fileId": 2,
   "fileInfo": Object {
     "HDUList": Array [
-      "",
+      "0",
     ],
     "name": "IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits",
     "size": "251691840",
@@ -6273,7 +6273,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 2,
         "value": "2",
       },
@@ -6291,7 +6291,7 @@ Object {
       },
       Object {
         "name": "Image reference coords",
-        "value": "[09:47:57.4891, +013.16.44.0806]",
+        "value": "[09:47:57.4878, +013.16.44.0817]",
       },
       Object {
         "name": "Image ref coords (deg)",
@@ -6302,6 +6302,10 @@ Object {
         "value": "-0.18\\", 0.18\\"",
       },
       Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
         "name": "Celestial frame",
         "value": "ICRS",
       },
@@ -6310,405 +6314,631 @@ Object {
         "value": "LSRK",
       },
       Object {
-        "name": "Velocity definition",
-        "value": "RADIO",
-      },
-      Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Median area beam",
         "value": "0.929399\\" X 0.841518\\", 42.6921 deg",
       },
     ],
     "depth": 480,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 256,
-        "value": "256",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 256,
-        "value": "256",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 480,
-        "value": "480",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 2,
-        "value": "2",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "IRC+10216",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": 13.27891127641,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 146.9895377994,
-        "value": "1.469895377994E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.00005,
-        "value": "-5.000000000000E-05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 129,
-        "value": "129",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": 13.27891127641,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.00005,
-        "value": "5.000000000000E-05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": 129,
-        "value": "129",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 344091293718.7,
-        "value": "3.440912937187E+11",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": 3906722.973755,
-        "value": "3.906722973755E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 2,
-        "value": "2.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 345000000000,
-        "value": "3.450000000000E+11",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 789632.7236839473,
-        "value": "7.896327236839E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "wvlemmings",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2018-05-20T20:52:21.071999",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 146.9895377994,
-        "value": "1.469895377994E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": 13.27891127641,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.180269,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-      Object {
-        "name": "INSTRUME",
-        "value": "ALMA",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "DISTANCE",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "CASA multiple BEAMS table present",
-        "entryType": "INT",
-        "name": "CASAMBM",
-        "numericValue": 1,
-        "value": "T",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 256,
     "stokes": 2,
+    "stokesVals": Array [],
     "width": 256,
   },
   "success": true,
 }
 `;
 
-exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Mactch the returned message 1`] = `
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": "INT",
+  "name": "SIMPLE",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 3`] = `
+Object {
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 256,
+  "value": "256",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 256,
+  "value": "256",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 480,
+  "value": "480",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 2,
+  "value": "2",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "EXTEND",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 10`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 11`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 12`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 13`] = `
+Object {
+  "name": "OBJECT",
+  "value": "IRC+10216",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 14`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 15`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 16`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 17`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": 13.27891127641,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 18`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 19`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 34`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 146.9895377994,
+  "value": "1.469895377994E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.00005,
+  "value": "-5.000000000000E-05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 129,
+  "value": "129",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 38`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 39`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": 13.27891127641,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 41`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.00005,
+  "value": "5.000000000000E-05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": 129,
+  "value": "129",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 43`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 44`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 344091293718.7,
+  "value": "3.440912937187E+11",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 46`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": 3906722.973755,
+  "value": "3.906722973755E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 47`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 48`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 49`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 2,
+  "value": "2.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 51`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 52`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 53`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 54`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 56`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 345000000000,
+  "value": "3.450000000000E+11",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 57`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 58`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 789632.7236839,
+  "value": "7.896327236839E+05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 59`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 60`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 61`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 62`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "wvlemmings",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 63`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2018-05-20T20:52:21.071999",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 64`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 65`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 146.9895377994,
+  "value": "1.469895377994E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 66`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": 13.27891127641,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 67`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.180269,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 68`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 70`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 71`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 72`] = `
+Object {
+  "comment": "CASA multiple BEAMS table present",
+  "entryType": "INT",
+  "name": "CASAMBM",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 73`] = `
+Object {
+  "comment": "Date FITS file was written",
+  "name": "DATE",
+  "value": Any<String>,
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.fits (Step 4) Match the returned message 74`] = `
+Object {
+  "name": "ORIGIN",
+  "value": "casacore-3.4.0",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 1`] = `
 Object {
   "beamTable": Array [
     Object {
@@ -12976,7 +13206,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 2,
         "value": "2",
       },
@@ -13005,6 +13235,10 @@ Object {
         "value": "-0.18\\", 0.18\\"",
       },
       Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
         "name": "Celestial frame",
         "value": "ICRS",
       },
@@ -13017,397 +13251,618 @@ Object {
         "value": "RADIO",
       },
       Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Median area beam",
         "value": "0.929399\\" X 0.841518\\", 42.6921 deg",
       },
     ],
     "depth": 480,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "comment": "Floating point (32 bit)",
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 256,
-        "value": "256",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 256,
-        "value": "256",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 480,
-        "value": "480",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 2,
-        "value": "2",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "IRC+10216",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": 13.27891127641,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 146.9895377994,
-        "value": "1.469895377994E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.00005,
-        "value": "-5.000000000000E-05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 129,
-        "value": "129",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": 13.27891127641,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.00005,
-        "value": "5.000000000000E-05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": 129,
-        "value": "129",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 344091293718.7,
-        "value": "3.440912937187E+11",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": 3906722.973755,
-        "value": "3.906722973755E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 2,
-        "value": "2.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 345000000000,
-        "value": "3.450000000000E+11",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 789632.7236839473,
-        "value": "7.896327236839E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "wvlemmings",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2018-05-20T20:52:21.071999",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 146.9895377994,
-        "value": "1.469895377994E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": 13.278911276410001,
-        "value": "1.327891127641E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.1802689997,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-      Object {
-        "name": "INSTRUME",
-        "value": "ALMA",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "DISTANCE",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "CASA multiple BEAMS table present",
-        "entryType": "INT",
-        "name": "CASAMBM",
-        "numericValue": 1,
-        "value": "T",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 256,
     "stokes": 2,
+    "stokesVals": Array [],
     "width": 256,
   },
   "success": true,
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 2`] = `
+Object {
+  "comment": "IMAGE extension",
+  "name": "XTENSION",
+  "value": "IMAGE",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 3`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 256,
+  "value": "256",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 256,
+  "value": "256",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 480,
+  "value": "480",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 2,
+  "value": "2",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "PCOUNT",
+  "value": "0",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 10`] = `
+Object {
+  "entryType": "INT",
+  "name": "GCOUNT",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 11`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 12`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 13`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 14`] = `
+Object {
+  "name": "OBJECT",
+  "value": "IRC+10216",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 15`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 16`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 17`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 18`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": 13.27891127641,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 19`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 35`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 146.9895377994,
+  "value": "1.469895377994E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.00005,
+  "value": "-5.000000000000E-05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 38`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 129,
+  "value": "129",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 39`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 40`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 41`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": 13.27891127641,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 42`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.00005,
+  "value": "5.000000000000E-05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 43`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": 129,
+  "value": "129",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 44`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 45`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 46`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 344091293718.7,
+  "value": "3.440912937187E+11",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 47`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": 3906722.973755,
+  "value": "3.906722973755E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 49`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 50`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 51`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 2,
+  "value": "2.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 52`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 53`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 54`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 56`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 57`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 345000000000,
+  "value": "3.450000000000E+11",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 58`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 59`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 789632.7236839473,
+  "value": "7.896327236839E+05",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 60`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 61`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 62`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 63`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "wvlemmings",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 64`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2018-05-20T20:52:21.071999",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 65`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 66`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 146.9895377994,
+  "value": "1.469895377994E+02",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 67`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": 13.278911276410001,
+  "value": "1.327891127641E+01",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 68`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.1802689997,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 70`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 71`] = `
+Object {
+  "name": "INSTRUME",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 72`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "DISTANCE",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT IMAGE STOKES test: Exporting of a partial spectral range of an image cube Go to "set_StokesCube" folder Save Image: IRCp10216_sci.spw0.cube.QU.manual.pbcorx.image (Step 4) Match the returned message 73`] = `
+Object {
+  "comment": "CASA multiple BEAMS table present",
+  "entryType": "INT",
+  "name": "CASAMBM",
+  "numericValue": 1,
+  "value": "T",
 }
 `;

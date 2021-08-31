@@ -151,7 +151,20 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
                         });
 
                         test(`OPEN_FILE_ACK should match snapshot`, () => {
-                            expect(OpenFileAck).toMatchSnapshot();
+                            expect(OpenFileAck).toMatchSnapshot({
+                                fileInfoExtended: {
+                                    headerEntries: expect.any(Object)
+                                },
+                            });
+                            OpenFileAck.fileInfoExtended.headerEntries.map(item => {
+                                if(item.name === "DATE"){
+                                    expect(item).toMatchSnapshot({
+                                        value: expect.any(String)
+                                    })
+                                } else {
+                                    expect(item).toMatchSnapshot();
+                                }
+                            })
                         });
                     });
 
@@ -159,7 +172,8 @@ describe("EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared 
                         let RasterTileDataTemp: CARTA.RasterTileData;
                         test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                             await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                            RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                            let temp2 = await Connection.stream(3);  //RasterTileerTile * 1 + RasterTileSync * 2(start & end)
+                            RasterTileDataTemp = temp2.RasterTileData[0]
                             expect(RasterTileDataTemp.tiles.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length);
                         }, readFileTimeout);
 

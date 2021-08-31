@@ -122,7 +122,7 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                         await Connection.send(CARTA.SaveFile, {
                             outputFileDirectory: tmpdirectory,
                             ...saveFile});
-                        await Connection.receiveAny();
+                        await Connection.receive(CARTA.SaveFileAck);
                     }, saveFileTimeout);
 
                     describe(`reopen the exported file "${saveFile.outputFileName}"`, () => {
@@ -140,7 +140,20 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                         });
 
                         test(`OPEN_FILE_ACK should match snapshot`, () => {
-                            expect(OpenFileAck).toMatchSnapshot();
+                            expect(OpenFileAck).toMatchSnapshot({
+                                fileInfoExtended: {
+                                    headerEntries: expect.any(Object)
+                                },
+                            });
+                            OpenFileAck.fileInfoExtended.headerEntries.map(item => {
+                                if(item.name === "DATE"){
+                                    expect(item).toMatchSnapshot({
+                                        value: expect.any(String)
+                                    })
+                                } else {
+                                    expect(item).toMatchSnapshot();
+                                }
+                            })
                         });
                     });
 
@@ -148,7 +161,8 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
                         let RasterTileDataTemp: CARTA.RasterTileData;
                         test(`RASTER_TILE_DATA should arrive within ${readFileTimeout} ms`, async () => {
                             await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel);
-                            RasterTileDataTemp = await Connection.receive(CARTA.RasterTileData);
+                            let temp2 = await Connection.stream(3);  //RasterTileerTile * 1 + RasterTileSync * 2(start & end)
+                            RasterTileDataTemp = temp2.RasterTileData[0]
                             expect(RasterTileDataTemp.tiles.length).toEqual(assertItem.setImageChannel.requiredTiles.tiles.length);
                         }, readFileTimeout);
 
@@ -163,11 +177,11 @@ describe("EXPORT_IMAGE_CHOP: Exporting of a chopped image", () => {
         });
     });
 
-    afterAll(() => {
-        Connection.close();
-        describe(`Delete test image`,()=>{
-            const output = execSync('rm -r /tmp/M17_SWex_Chop.fits /tmp/M17_SWex_Chop.image',{encoding: 'utf-8'});
-            console.log(output);
-        });
-    });
+    // afterAll(() => {
+    //     Connection.close();
+    //     describe(`Delete test image`,()=>{
+    //         const output = execSync('rm -r /tmp/M17_SWex_Chop.fits /tmp/M17_SWex_Chop.image',{encoding: 'utf-8'});
+    //         console.log(output);
+    //     });
+    // });
 });
