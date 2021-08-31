@@ -17,6 +17,8 @@
         "@types/jest": "^23.3.14",
         "@types/node": "^10.17.51",
         "protobufjs": "6.9.0",
-        "typescript": "^3.9.7"
+        "typescript": "^3.9.7",
+        "mobx": "^6.1.7",
+        "rxjs": "^7.2.0"
     }
 }
