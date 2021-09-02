@@ -2,8 +2,6 @@ import {action, observable, makeObservable, runInAction} from "mobx";
 import {CARTA} from "carta-protobuf";
 import {Subject, throwError} from "rxjs";
 const WebSocket = require("ws");
-// import {RegionStore} from "stores";
-// import {mapToObject} from "utilities";
 
 export enum ConnectionStatus {
     CLOSED = 0,
@@ -43,14 +41,15 @@ export class Deferred<T> {
     }
 }
 
-export class BackendService {
-    private static staticInstance: BackendService;
+// This is similar to the BackendService in the carta-frontend depository
+export class MessageController {
+    private static staticInstance: MessageController;
 
     static get Instance() {
-        if (!BackendService.staticInstance) {
-            BackendService.staticInstance = new BackendService();
+        if (!MessageController.staticInstance) {
+            MessageController.staticInstance = new MessageController();
         }
-        return BackendService.staticInstance;
+        return MessageController.staticInstance;
     }
 
     private static readonly IcdVersion = 24;
@@ -160,18 +159,16 @@ export class BackendService {
 
         const isReconnection: boolean = url === this.serverUrl;
         let connectionAttempts = 0;
-        // const apiService = ApiService.Instance;
         this.connectionDropped = false;
         this.connectionStatus = ConnectionStatus.PENDING;
         this.serverUrl = url;
         this.connection = new WebSocket(url);
-        // this.connection = new WebSocket(apiService.accessToken ? url + `?token=${apiService.accessToken}` : url);
         this.connection.binaryType = "arraybuffer";
         this.connection.onmessage = this.messageHandler.bind(this);
         this.connection.onclose = (ev: CloseEvent) =>
             runInAction(() => {
                 // Only change to closed connection if the connection was originally active or this is a reconnection
-                if (this.connectionStatus === ConnectionStatus.ACTIVE || isReconnection || connectionAttempts >= BackendService.MaxConnectionAttempts) {
+                if (this.connectionStatus === ConnectionStatus.ACTIVE || isReconnection || connectionAttempts >= MessageController.MaxConnectionAttempts) {
                     this.connectionStatus = ConnectionStatus.CLOSED;
                 } else {
                     connectionAttempts++;
@@ -183,7 +180,7 @@ export class BackendService {
                         newConnection.onclose = this.connection.onclose;
                         newConnection.onmessage = this.connection.onmessage;
                         this.connection = newConnection;
-                    }, BackendService.ConnectionAttemptDelay);
+                    }, MessageController.ConnectionAttemptDelay);
                 }
             });
 
@@ -199,7 +196,7 @@ export class BackendService {
                 this.connectionDropped = true;
             }
             this.connectionStatus = ConnectionStatus.ACTIVE;
-            const message = CARTA.RegisterViewer.create({sessionId: this.sessionId, clientFeatureFlags: BackendService.DefaultFeatureFlags});
+            const message = CARTA.RegisterViewer.create({sessionId: this.sessionId, clientFeatureFlags: MessageController.DefaultFeatureFlags});
             // observer map is cleared, so that old subscriptions don't get incorrectly fired
 
             this.logEvent(CARTA.EventType.REGISTER_VIEWER, requestId, message, false);
@@ -219,7 +216,7 @@ export class BackendService {
         return await deferredResponse.promise;
     }
 
-    @action close = () => {
+    @action closeConnection = () => {
         if (this.connection && this.connectionStatus !== ConnectionStatus.CLOSED) {
             this.connection.close();
         }
@@ -790,8 +787,8 @@ export class BackendService {
         const eventIcdVersion = eventHeader16[1];
         const eventId = eventHeader32[0];
 
-        if (eventIcdVersion !== BackendService.IcdVersion) {
-            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${BackendService.IcdVersion}. Errors may occur`);
+        if (eventIcdVersion !== MessageController.IcdVersion) {
+            console.warn(`Server event has ICD version ${eventIcdVersion}, which differs from frontend version ${MessageController.IcdVersion}. Errors may occur`);
         }
         try {
             const decoderEntry = this.decoderMap.get(eventType);
@@ -889,7 +886,7 @@ export class BackendService {
             const eventHeader16 = new Uint16Array(eventData.buffer, 0, 2);
             const eventHeader32 = new Uint32Array(eventData.buffer, 4, 1);
             eventHeader16[0] = eventType;
-            eventHeader16[1] = BackendService.IcdVersion;
+            eventHeader16[1] = MessageController.IcdVersion;
             eventHeader32[0] = this.eventCounter;
 
             eventData.set(payload, 8);
