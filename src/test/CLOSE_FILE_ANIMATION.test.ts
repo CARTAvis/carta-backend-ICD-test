@@ -33,7 +33,7 @@ let assertItem: AssertItem = {
     fileOpen:
     {
         directory: testSubdirectory,
-        file: "S255_IR_sci.spw25.cube.I.pbcor.fits",
+        file: "M17_SWex.fits",
         hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -43,19 +43,19 @@ let assertItem: AssertItem = {
             fileId: 0,
             compressionQuality: 11,
             compressionType: CARTA.CompressionType.ZFP,
-            tiles: [33558529, 33562625, 33558530, 33562626, 33558528, 33554433, 33562624, 33554434, 33566721, 33558531, 33566722, 33562627, 33554432, 33566720, 33554435, 33566723],
+            tiles: [33558529, 33558528, 33562625, 33554433, 33562624, 33558530, 33554432, 33562626, 33554434, 33566721, 33566720, 33566722],
         },
         {
             fileId: 0,
             compressionQuality: 9,
             compressionType: CARTA.CompressionType.ZFP,
-            tiles: [33558529, 33562625, 33558530, 33562626, 33558528, 33554433, 33562624, 33554434, 33566721, 33558531, 33566722, 33562627, 33554432, 33566720, 33554435, 33566723],
+            tiles: [33558529, 33558528, 33562625, 33554433, 33562624, 33558530, 33554432, 33562626, 33554434, 33566721, 33566720, 33566722],
         },
     ],
     setCursor:
     {
         fileId: 0,
-        point: { x: 1, y: 1 },
+        point: { x: 320, y: 400 },
     },
     setSpatialReq:
     {
@@ -68,11 +68,11 @@ let assertItem: AssertItem = {
         fileId: 0,
         startFrame: { channel: 1, stokes: 0 },
         firstFrame: { channel: 0, stokes: 0 },
-        lastFrame: { channel: 1916, stokes: 0 },
+        lastFrame: { channel: 24, stokes: 0 },
         deltaFrame: { channel: 1, stokes: 0 },
         requiredTiles: {
             fileId: 0,
-            tiles: [33558529, 33562625, 33558530, 33562626, 33558528, 33554433, 33562624, 33554434, 33566721, 33558531, 33566722, 33562627, 33554432, 33566720, 33554435, 33566723],
+            tiles: [33558529, 33558528, 33562625, 33554433, 33562624, 33558530, 33554432, 33562626, 33554434, 33566721, 33566720, 33566722],
             compressionType: CARTA.CompressionType.ZFP,
             compressionQuality: 9,
         },

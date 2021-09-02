@@ -14,7 +14,7 @@ Object {
   "fileId": 300,
   "fileInfo": Object {
     "HDUList": Array [
-      "",
+      "0",
     ],
     "name": "M17_SWex_Chop_Shared.fits",
     "size": "12424320",
@@ -42,7 +42,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 1,
         "value": "1",
       },
@@ -60,15 +60,19 @@ Object {
       },
       Object {
         "name": "Image reference coords",
-        "value": "[18:20:21.0000, -016.12.10.0000]",
+        "value": "[18:20:20.9985, -016.12.10.0003]",
       },
       Object {
         "name": "Image ref coords (deg)",
-        "value": "[275.088 deg, -16.2028 deg]",
+        "value": "[275.087 deg, -16.2028 deg]",
       },
       Object {
         "name": "Pixel increment",
         "value": "-0.4\\", 0.4\\"",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
       },
       Object {
         "name": "Celestial frame",
@@ -79,403 +83,629 @@ Object {
         "value": "LSRK",
       },
       Object {
-        "name": "Velocity definition",
-        "value": "RADIO",
-      },
-      Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Restoring beam",
         "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
       },
     ],
     "depth": 25,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 25,
-        "value": "25",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMAJ",
-        "numericValue": 0.0005725136068132,
-        "value": "5.725136068132E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMIN",
-        "numericValue": 0.0004142385721207,
-        "value": "4.142385721207E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BPA",
-        "numericValue": -74.62673187256,
-        "value": "-7.462673187256E+01",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "M17SW",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.0001111111111111,
-        "value": "-1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 296,
-        "value": "296",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.0001111111111111,
-        "value": "1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": -24,
-        "value": "-24",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 86751396188.4,
-        "value": "8.675139618840E+10",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": -244237.7011414,
-        "value": "-2.442377011414E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 86754290000,
-        "value": "8.675429000000E+10",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 9999.99991417096,
-        "value": "9.999999914171E+03",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "sishii",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2016-04-03T13:02:58.800000",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": -16.202777777790004,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.180269,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 351,
     "stokes": 1,
+    "stokesVals": Array [],
     "width": 351,
   },
   "success": true,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": "INT",
+  "name": "SIMPLE",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 3`] = `
+Object {
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 25,
+  "value": "25",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "EXTEND",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 11`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMAJ",
+  "numericValue": 0.0005725136068132,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 13`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMIN",
+  "numericValue": 0.00041423857212070003,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BPA",
+  "numericValue": -74.62673187256,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 15`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 18`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.0001111111111111,
+  "value": "-1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 296,
+  "value": "296",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 41`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 43`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.0001111111111111,
+  "value": "1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": -24,
+  "value": "-24",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 86751396188.4,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": -244237.7011414,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 57`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 59`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 86754290000,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 9999.999914171,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 62`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 65`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 67`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.180269,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "comment": "Date FITS file was written",
+  "name": "DATE",
+  "value": Any<String>,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 74`] = `
+Object {
+  "name": "ORIGIN",
+  "value": "casacore-3.4.0",
 }
 `;
 
@@ -518,7 +748,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 1,
         "value": "1",
       },
@@ -547,6 +777,10 @@ Object {
         "value": "-0.4\\", 0.4\\"",
       },
       Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
         "name": "Celestial frame",
         "value": "ICRS",
       },
@@ -559,400 +793,621 @@ Object {
         "value": "RADIO",
       },
       Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Restoring beam",
         "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
       },
     ],
     "depth": 25,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "comment": "Floating point (32 bit)",
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 25,
-        "value": "25",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMAJ",
-        "numericValue": 0.0005725136068132,
-        "value": "5.725136068132E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMIN",
-        "numericValue": 0.0004142385721207,
-        "value": "4.142385721207E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BPA",
-        "numericValue": -74.62673187256,
-        "value": "-7.462673187256E+01",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "M17SW",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.00011111111111110002,
-        "value": "-1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 296,
-        "value": "296",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.00011111111111110002,
-        "value": "1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": -24,
-        "value": "-24",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 86751396188.4,
-        "value": "8.675139618840E+10",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": -244237.7011414,
-        "value": "-2.442377011414E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 86754290000,
-        "value": "8.675429000000E+10",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 9999.99991417096,
-        "value": "9.999999914171E+03",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "sishii",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2016-04-03T13:02:58.800000",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": -16.202777777790004,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.1802689997,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 351,
     "stokes": 1,
+    "stokesVals": Array [],
     "width": 351,
   },
   "success": true,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "IMAGE extension",
+  "name": "XTENSION",
+  "value": "IMAGE",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 3`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 25,
+  "value": "25",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "PCOUNT",
+  "value": "0",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "entryType": "INT",
+  "name": "GCOUNT",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 11`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 13`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMAJ",
+  "numericValue": 0.0005725136068132,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMIN",
+  "numericValue": 0.0004142385721207,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 15`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BPA",
+  "numericValue": -74.62673187256,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 18`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.00011111111111110002,
+  "value": "-1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 41`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 296,
+  "value": "296",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 43`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.00011111111111110002,
+  "value": "1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": -24,
+  "value": "-24",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 86751396188.4,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": -244237.7011414,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 57`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 59`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 86754290000,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 62`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 9999.99991417096,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 65`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 67`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": -16.202777777790004,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.1802689997,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a POLYGON region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
 }
 `;
 
@@ -972,7 +1427,7 @@ Object {
   "fileId": 300,
   "fileInfo": Object {
     "HDUList": Array [
-      "",
+      "0",
     ],
     "name": "M17_SWex_Chop_Shared.fits",
     "size": "12424320",
@@ -1000,7 +1455,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 1,
         "value": "1",
       },
@@ -1018,15 +1473,19 @@ Object {
       },
       Object {
         "name": "Image reference coords",
-        "value": "[18:20:21.0000, -016.12.10.0000]",
+        "value": "[18:20:20.9985, -016.12.10.0003]",
       },
       Object {
         "name": "Image ref coords (deg)",
-        "value": "[275.088 deg, -16.2028 deg]",
+        "value": "[275.087 deg, -16.2028 deg]",
       },
       Object {
         "name": "Pixel increment",
         "value": "-0.4\\", 0.4\\"",
+      },
+      Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
       },
       Object {
         "name": "Celestial frame",
@@ -1037,403 +1496,629 @@ Object {
         "value": "LSRK",
       },
       Object {
-        "name": "Velocity definition",
-        "value": "RADIO",
-      },
-      Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Restoring beam",
         "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
       },
     ],
     "depth": 25,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 25,
-        "value": "25",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMAJ",
-        "numericValue": 0.0005725136068132,
-        "value": "5.725136068132E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMIN",
-        "numericValue": 0.0004142385721207,
-        "value": "4.142385721207E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BPA",
-        "numericValue": -74.62673187256,
-        "value": "-7.462673187256E+01",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "M17SW",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.0001111111111111,
-        "value": "-1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 296,
-        "value": "296",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.0001111111111111,
-        "value": "1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": -24,
-        "value": "-24",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 86751396188.4,
-        "value": "8.675139618840E+10",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": -244237.7011414,
-        "value": "-2.442377011414E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 86754290000,
-        "value": "8.675429000000E+10",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 9999.99991417096,
-        "value": "9.999999914171E+03",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "sishii",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2016-04-03T13:02:58.800000",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": -16.202777777790004,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.180269,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 351,
     "stokes": 1,
+    "stokesVals": Array [],
     "width": 351,
   },
   "success": true,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "Standard FITS",
+  "entryType": "INT",
+  "name": "SIMPLE",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 3`] = `
+Object {
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 25,
+  "value": "25",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "EXTEND",
+  "numericValue": 1,
+  "value": "T",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 11`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMAJ",
+  "numericValue": 0.0005725136068132,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 13`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMIN",
+  "numericValue": 0.00041423857212070003,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BPA",
+  "numericValue": -74.62673187256,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 15`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 18`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.0001111111111111,
+  "value": "-1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 296,
+  "value": "296",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 41`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 43`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.0001111111111111,
+  "value": "1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": -24,
+  "value": "-24",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 86751396188.4,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": -244237.7011414,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 57`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 59`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 86754290000,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 9999.999914171,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 62`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 65`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 67`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.180269,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "comment": "Date FITS file was written",
+  "name": "DATE",
+  "value": Any<String>,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.fits" reopen the exported file "M17_SWex_Chop_Shared.fits" OPEN_FILE_ACK should match snapshot 74`] = `
+Object {
+  "name": "ORIGIN",
+  "value": "casacore-3.4.0",
 }
 `;
 
@@ -1476,7 +2161,7 @@ Object {
       },
       Object {
         "entryType": "INT",
-        "name": "Number of stokes",
+        "name": "Number of polarizations",
         "numericValue": 1,
         "value": "1",
       },
@@ -1505,6 +2190,10 @@ Object {
         "value": "-0.4\\", 0.4\\"",
       },
       Object {
+        "name": "Pixel unit",
+        "value": "Jy/beam",
+      },
+      Object {
         "name": "Celestial frame",
         "value": "ICRS",
       },
@@ -1517,400 +2206,621 @@ Object {
         "value": "RADIO",
       },
       Object {
-        "name": "Pixel unit",
-        "value": "Jy/beam",
-      },
-      Object {
         "name": "Restoring beam",
         "value": "2.06105\\" X 1.49126\\", -74.6267 deg",
       },
     ],
     "depth": 25,
     "dimensions": 4,
-    "headerEntries": Array [
-      Object {
-        "comment": "Standard FITS",
-        "entryType": "INT",
-        "name": "SIMPLE",
-        "numericValue": 1,
-        "value": "T",
-      },
-      Object {
-        "comment": "Floating point (32 bit)",
-        "entryType": "INT",
-        "name": "BITPIX",
-        "numericValue": -32,
-        "value": "-32",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS",
-        "numericValue": 4,
-        "value": "4",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS1",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS2",
-        "numericValue": 351,
-        "value": "351",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS3",
-        "numericValue": 25,
-        "value": "25",
-      },
-      Object {
-        "entryType": "INT",
-        "name": "NAXIS4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
-        "entryType": "FLOAT",
-        "name": "BSCALE",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BZERO",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMAJ",
-        "numericValue": 0.0005725136068132,
-        "value": "5.725136068132E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BMIN",
-        "numericValue": 0.0004142385721207,
-        "value": "4.142385721207E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "BPA",
-        "numericValue": -74.62673187256,
-        "value": "-7.462673187256E+01",
-      },
-      Object {
-        "name": "BTYPE",
-        "value": "Intensity",
-      },
-      Object {
-        "name": "OBJECT",
-        "value": "M17SW",
-      },
-      Object {
-        "comment": "Brightness (pixel) unit",
-        "name": "BUNIT",
-        "value": "Jy/beam",
-      },
-      Object {
-        "name": "RADESYS",
-        "value": "ICRS",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LONPOLE",
-        "numericValue": 180,
-        "value": "1.800000000000E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "LATPOLE",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_1",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_2",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_3",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_3",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC1_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC2_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC3_4",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PC4_4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "name": "CTYPE1",
-        "value": "RA---SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL1",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT1",
-        "numericValue": -0.00011111111111110002,
-        "value": "-1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX1",
-        "numericValue": 296,
-        "value": "296",
-      },
-      Object {
-        "name": "CUNIT1",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE2",
-        "value": "DEC--SIN",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL2",
-        "numericValue": -16.20277777779,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT2",
-        "numericValue": 0.00011111111111110002,
-        "value": "1.111111111111E-04",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX2",
-        "numericValue": -24,
-        "value": "-24",
-      },
-      Object {
-        "name": "CUNIT2",
-        "value": "deg",
-      },
-      Object {
-        "name": "CTYPE3",
-        "value": "FREQ",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL3",
-        "numericValue": 86751396188.4,
-        "value": "8.675139618840E+10",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT3",
-        "numericValue": -244237.7011414,
-        "value": "-2.442377011414E+05",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX3",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT3",
-        "value": "Hz",
-      },
-      Object {
-        "name": "CTYPE4",
-        "value": "STOKES",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRVAL4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CDELT4",
-        "numericValue": 1,
-        "value": "1.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "CRPIX4",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "name": "CUNIT4",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_1",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "PV2_2",
-        "value": "0.000000000000E+00",
-      },
-      Object {
-        "comment": "Rest Frequency (Hz)",
-        "entryType": "FLOAT",
-        "name": "RESTFRQ",
-        "numericValue": 86754290000,
-        "value": "8.675429000000E+10",
-      },
-      Object {
-        "comment": "Spectral reference frame",
-        "name": "SPECSYS",
-        "value": "LSRK",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRVAL",
-        "numericValue": 9999.99991417096,
-        "value": "9.999999914171E+03",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "ALTRPIX",
-        "numericValue": 1,
-        "value": "1",
-      },
-      Object {
-        "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
-        "entryType": "INT",
-        "name": "VELREF",
-        "numericValue": 257,
-        "value": "257",
-      },
-      Object {
-        "name": "TELESCOP",
-        "value": "ALMA",
-      },
-      Object {
-        "name": "OBSERVER",
-        "value": "sishii",
-      },
-      Object {
-        "name": "DATE-OBS",
-        "value": "2016-04-03T13:02:58.800000",
-      },
-      Object {
-        "name": "TIMESYS",
-        "value": "UTC",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSRA",
-        "numericValue": 275.0875000001,
-        "value": "2.750875000001E+02",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSDEC",
-        "numericValue": -16.202777777790004,
-        "value": "-1.620277777779E+01",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-X",
-        "numericValue": 2225142.1802689997,
-        "value": "2.225142180269E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Y",
-        "numericValue": -5440307.370349,
-        "value": "-5.440307370349E+06",
-      },
-      Object {
-        "entryType": "FLOAT",
-        "name": "OBSGEO-Z",
-        "numericValue": -2481029.851874,
-        "value": "-2.481029851874E+06",
-      },
-    ],
+    "headerEntries": Any<Object>,
     "height": 351,
     "stokes": 1,
+    "stokesVals": Array [],
     "width": 351,
   },
   "success": true,
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 2`] = `
+Object {
+  "comment": "IMAGE extension",
+  "name": "XTENSION",
+  "value": "IMAGE",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 3`] = `
+Object {
+  "comment": "Floating point (32 bit)",
+  "entryType": "INT",
+  "name": "BITPIX",
+  "numericValue": -32,
+  "value": "-32",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 4`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS",
+  "numericValue": 4,
+  "value": "4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 5`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS1",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 6`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS2",
+  "numericValue": 351,
+  "value": "351",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 7`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS3",
+  "numericValue": 25,
+  "value": "25",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 8`] = `
+Object {
+  "entryType": "INT",
+  "name": "NAXIS4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 9`] = `
+Object {
+  "entryType": "INT",
+  "name": "PCOUNT",
+  "value": "0",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 10`] = `
+Object {
+  "entryType": "INT",
+  "name": "GCOUNT",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 11`] = `
+Object {
+  "comment": "PHYSICAL = PIXEL*BSCALE + BZERO",
+  "entryType": "FLOAT",
+  "name": "BSCALE",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 12`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BZERO",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 13`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMAJ",
+  "numericValue": 0.0005725136068132,
+  "value": "5.725136068132E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 14`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BMIN",
+  "numericValue": 0.0004142385721207,
+  "value": "4.142385721207E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 15`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "BPA",
+  "numericValue": -74.62673187256,
+  "value": "-7.462673187256E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 16`] = `
+Object {
+  "name": "BTYPE",
+  "value": "Intensity",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 17`] = `
+Object {
+  "name": "OBJECT",
+  "value": "M17SW",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 18`] = `
+Object {
+  "comment": "Brightness (pixel) unit",
+  "name": "BUNIT",
+  "value": "Jy/beam",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 19`] = `
+Object {
+  "name": "RADESYS",
+  "value": "ICRS",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 20`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LONPOLE",
+  "numericValue": 180,
+  "value": "1.800000000000E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 21`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "LATPOLE",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 22`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_1",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 23`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 24`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 25`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 26`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 27`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_2",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 28`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 29`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 30`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 31`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 32`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_3",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 33`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_3",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 34`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC1_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 35`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC2_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 36`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC3_4",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 37`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PC4_4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 38`] = `
+Object {
+  "name": "CTYPE1",
+  "value": "RA---SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 39`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL1",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 40`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT1",
+  "numericValue": -0.00011111111111110002,
+  "value": "-1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 41`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX1",
+  "numericValue": 296,
+  "value": "296",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 42`] = `
+Object {
+  "name": "CUNIT1",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 43`] = `
+Object {
+  "name": "CTYPE2",
+  "value": "DEC--SIN",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 44`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL2",
+  "numericValue": -16.20277777779,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 45`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT2",
+  "numericValue": 0.00011111111111110002,
+  "value": "1.111111111111E-04",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 46`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX2",
+  "numericValue": -24,
+  "value": "-24",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 47`] = `
+Object {
+  "name": "CUNIT2",
+  "value": "deg",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 48`] = `
+Object {
+  "name": "CTYPE3",
+  "value": "FREQ",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 49`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL3",
+  "numericValue": 86751396188.4,
+  "value": "8.675139618840E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 50`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT3",
+  "numericValue": -244237.7011414,
+  "value": "-2.442377011414E+05",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 51`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX3",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 52`] = `
+Object {
+  "name": "CUNIT3",
+  "value": "Hz",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 53`] = `
+Object {
+  "name": "CTYPE4",
+  "value": "STOKES",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 54`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRVAL4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 55`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CDELT4",
+  "numericValue": 1,
+  "value": "1.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 56`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "CRPIX4",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 57`] = `
+Object {
+  "name": "CUNIT4",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 58`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_1",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 59`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "PV2_2",
+  "value": "0.000000000000E+00",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 60`] = `
+Object {
+  "comment": "Rest Frequency (Hz)",
+  "entryType": "FLOAT",
+  "name": "RESTFRQ",
+  "numericValue": 86754290000,
+  "value": "8.675429000000E+10",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 61`] = `
+Object {
+  "comment": "Spectral reference frame",
+  "name": "SPECSYS",
+  "value": "LSRK",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 62`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRVAL",
+  "numericValue": 9999.99991417096,
+  "value": "9.999999914171E+03",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 63`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "ALTRPIX",
+  "numericValue": 1,
+  "value": "1",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 64`] = `
+Object {
+  "comment": "1 LSR, 2 HEL, 3 OBS, +256 Radio",
+  "entryType": "INT",
+  "name": "VELREF",
+  "numericValue": 257,
+  "value": "257",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 65`] = `
+Object {
+  "name": "TELESCOP",
+  "value": "ALMA",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 66`] = `
+Object {
+  "name": "OBSERVER",
+  "value": "sishii",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 67`] = `
+Object {
+  "name": "DATE-OBS",
+  "value": "2016-04-03T13:02:58.800000",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 68`] = `
+Object {
+  "name": "TIMESYS",
+  "value": "UTC",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 69`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSRA",
+  "numericValue": 275.0875000001,
+  "value": "2.750875000001E+02",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 70`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSDEC",
+  "numericValue": -16.202777777790004,
+  "value": "-1.620277777779E+01",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 71`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-X",
+  "numericValue": 2225142.1802689997,
+  "value": "2.225142180269E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 72`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Y",
+  "numericValue": -5440307.370349,
+  "value": "-5.440307370349E+06",
+}
+`;
+
+exports[`EXPORT_IMAGE_CHOP_SHARED: Exporting of a chopped image via the shared region set a RECTANGLE region try to save image "M17_SWex_Chop_Shared.image" reopen the exported file "M17_SWex_Chop_Shared.image" OPEN_FILE_ACK should match snapshot 73`] = `
+Object {
+  "entryType": "FLOAT",
+  "name": "OBSGEO-Z",
+  "numericValue": -2481029.851874,
+  "value": "-2.481029851874E+06",
 }
 `;
 
