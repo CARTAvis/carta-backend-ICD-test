@@ -27,5 +27,9 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
         expect(fileListResponse.files.length).toBe(2);
     }, 2000);
 
+    test("getFileList with a wrong directory", async () => {
+        await expect(msgController.getFileList("non-exist")).rejects.toEqual("Requested directory non-exist does not exist.");
+    }, 2000);
+
     afterAll(() => msgController.closeConnection());
 });
