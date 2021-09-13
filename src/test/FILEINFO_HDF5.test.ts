@@ -377,7 +377,6 @@ describe("FILEINFO_HDF5: Testing if info of an HDF5 image file is correctly deli
             });
 
             test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                console.log(FileInfoResponse.fileInfoExtended['0'].headerEntries);
                 expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length);
             });
 
