@@ -285,7 +285,7 @@ let assertItem: AssertItem = {
                     },
                     {
                         name: "ORIGIN",
-                        value: "CASA 4.5.2-REL (r36115)0",
+                        value: "CASA 4.5.2-REL (r36115)",
                     },
                 ],
             },
@@ -373,7 +373,11 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    if (isNaN(parseFloat(entry.value))){
+                        expect(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                    } else {
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    }
                 });
             });
 
@@ -383,7 +387,11 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
-                    expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    if (isNaN(parseFloat(entry.value)) && entry.value != undefined){
+                        expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                    } else {
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended['0'].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    }
                 });
             });
         });
