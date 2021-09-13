@@ -25,7 +25,7 @@ let assertItem: AssertItem = {
         file: "spire500_ext.fits",
         hdu: "",
     },
-    fileInfoExtendedString: ['1', '6', '7'],
+    fileInfoExtendedString: ['1','6','7'],
     fileInfoResponse: {
         success: true,
         message: "",
@@ -43,6 +43,95 @@ let assertItem: AssertItem = {
                 depth: 1,
                 stokes: 1,
                 stokesVals: [],
+                computedEntries: [
+                    { name: "Name", value: "spire500_ext.fits" },
+                    { name: 'HDU', value: '1' },
+                    { name: 'Extension name', value: 'image' },
+                    { name: "Shape", value: "[830, 870]" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Projection", value: "TAN" },
+                    { name: "Image reference pixels", value: "[371, 421]" },
+                    { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
+                    { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
+                    { name: "Celestial frame", value: "FK5, J2000" },
+                    { name: "Pixel unit", value: "MJy/sr" },
+                    { name: "Pixel increment", value: "-14\", 14\"" },
+                ],
+                headerEntries: [
+                    { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
+                    { name: "BITPIX", value: "-64", entryType: 2, numericValue: -64 },
+                    { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
+                    { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
+                    { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
+                    { name: "PCOUNT", value: "0", entryType: 2, comment: " No extra parameters"},
+                    { name: "GCOUNT", value: "1", entryType: 2, numericValue:1, comment: " One group"},
+                    { name: "LONGSTRN", value: "OGIP 1.0", comment: " The OGIP long string convention may be used."},
+                    { name: "EXTNAME", value: "image", comment: " name of this HDU"},
+                    { name: "CLASS___", value: "herschel.ia.dataset.ArrayDataset", comment: " java representation" },
+                    { name: "INFO____", value: "Image" },
+                    { name: "DATA____", value: "herschel.ia.numeric.Double2d", comment:" java Data" },
+                    { name: "QTTY____", value: "MJy/sr", comment:" Unit of the data" },
+                    { name: "BUNIT", value: "MJy/sr", comment: ' Unit of the data' },
+                    {
+                        name: "META_0",
+                        value: "2",
+                        entryType: 2,
+                        numericValue: 2,
+                        comment: " [] WCS: Number of Axes"
+                    },
+                    { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
+                    { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
+                    {
+                        name: "CRVAL1",
+                        value: "1.073046172702E+02",
+                        entryType: 1,
+                        numericValue: 107.30461727023817
+                    },
+                    {
+                        name: "CRVAL2",
+                        value: "-1.061072089652E+01",
+                        entryType: 1,
+                        numericValue: -10.610720896516849
+                    },
+                    {
+                        name: "CDELT1",
+                        value: "-3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: -0.003888888888889
+                    },
+                    {
+                        name: "CDELT2",
+                        value: "3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: 0.003888888888889
+                    },
+                    { name: "CTYPE1", value: "RA---TAN" },
+                    { name: "CTYPE2", value: "DEC--TAN" },
+                    {
+                        name: "EQUINOX",
+                        value: "2000",
+                        entryType: 1,
+                        numericValue: 2000
+                    },
+                    {
+                        name: "CROTA",
+                        value: "0.000000000000E+00",
+                        entryType: 1,
+                        comment: " [] The Rotation angle"
+                    },
+                    {
+                        name: "META_1",
+                        value: "830",
+                        entryType: 2,
+                        numericValue: 830
+                    },
+                    {
+                        name: "META_2",
+                        value: "870",
+                        entryType: 2,
+                        numericValue: 870
+                    },
+                ],
             },
             '6': {
                 dimensions: 2,
@@ -51,6 +140,95 @@ let assertItem: AssertItem = {
                 depth: 1,
                 stokes: 1,
                 stokesVals: [],
+                computedEntries: [
+                    { name: "Name", value: "spire500_ext.fits" },
+                    { name: 'HDU', value: '6' },
+                    { name: 'Extension name', value: 'error' },
+                    { name: "Shape", value: "[830, 870]" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Projection", value: "TAN" },
+                    { name: "Image reference pixels", value: "[371, 421]" },
+                    { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
+                    { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
+                    { name: "Celestial frame", value: "FK5, J2000" },
+                    { name: "Pixel unit", value: "MJy/sr" },
+                    { name: "Pixel increment", value: "-14\", 14\"" },
+                ],
+                headerEntries: [
+                    { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
+                    { name: "BITPIX", value: "-64", entryType: 2, numericValue: -64 },
+                    { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
+                    { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
+                    { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
+                    { name: "PCOUNT", value: "0", entryType: 2, comment: " No extra parameters"},
+                    { name: "GCOUNT", value: "1", entryType: 2, numericValue:1, comment: " One group"},
+                    { name: "LONGSTRN", value: "OGIP 1.0", comment: " The OGIP long string convention may be used."},
+                    { name: "EXTNAME", value: "error", comment: " name of this HDU"},
+                    { name: "CLASS___", value: "herschel.ia.dataset.ArrayDataset", comment: " java representation" },
+                    { name: "INFO____", value: "Statistical error on the pixel values" },
+                    { name: "DATA____", value: "herschel.ia.numeric.Double2d", comment:" java Data" },
+                    { name: "QTTY____", value: "MJy/sr", comment:" Unit of the data" },
+                    { name: "BUNIT", value: "MJy/sr", comment: ' Unit of the data' },
+                    {
+                        name: "META_0",
+                        value: "2",
+                        entryType: 2,
+                        numericValue: 2,
+                        comment: " [] WCS: Number of Axes"
+                    },
+                    { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
+                    { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
+                    {
+                        name: "CRVAL1",
+                        value: "1.073046172702E+02",
+                        entryType: 1,
+                        numericValue: 107.30461727023817
+                    },
+                    {
+                        name: "CRVAL2",
+                        value: "-1.061072089652E+01",
+                        entryType: 1,
+                        numericValue: -10.610720896516849
+                    },
+                    {
+                        name: "CDELT1",
+                        value: "-3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: -0.003888888888889
+                    },
+                    {
+                        name: "CDELT2",
+                        value: "3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: 0.003888888888889
+                    },
+                    { name: "CTYPE1", value: "RA---TAN" },
+                    { name: "CTYPE2", value: "DEC--TAN" },
+                    {
+                        name: "EQUINOX",
+                        value: "2000",
+                        entryType: 1,
+                        numericValue: 2000
+                    },
+                    {
+                        name: "CROTA",
+                        value: "0.000000000000E+00",
+                        entryType: 1,
+                        comment: " [] The Rotation angle"
+                    },
+                    {
+                        name: "META_1",
+                        value: "830",
+                        entryType: 2,
+                        numericValue: 830
+                    },
+                    {
+                        name: "META_2",
+                        value: "870",
+                        entryType: 2,
+                        numericValue: 870
+                    },
+                ],
             },
             '7': {
                 dimensions: 2,
@@ -59,6 +237,95 @@ let assertItem: AssertItem = {
                 depth: 1,
                 stokes: 1,
                 stokesVals: [],
+                computedEntries: [
+                    { name: "Name", value: "spire500_ext.fits" },
+                    { name: 'HDU', value: '7' },
+                    { name: 'Extension name', value: 'coverage' },
+                    { name: "Shape", value: "[830, 870]" },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Projection", value: "TAN" },
+                    { name: "Image reference pixels", value: "[371, 421]" },
+                    { name: "Image reference coords", value: "[07:09:13.1081, -010.36.38.5952]" },
+                    { name: "Image ref coords (deg)", value: "[107.305 deg, -10.6107 deg]" },
+                    { name: "Celestial frame", value: "FK5, J2000" },
+                    { name: "Pixel unit", value: "1" },
+                    { name: "Pixel increment", value: "-14\", 14\"" },
+                ],
+                headerEntries: [
+                    { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
+                    { name: "BITPIX", value: "-64", entryType: 2, numericValue: -64 },
+                    { name: "NAXIS", value: "2", entryType: 2, numericValue: 2 },
+                    { name: "NAXIS1", value: "830", entryType: 2, numericValue: 830 },
+                    { name: "NAXIS2", value: "870", entryType: 2, numericValue: 870 },
+                    { name: "PCOUNT", value: "0", entryType: 2, comment: " No extra parameters"},
+                    { name: "GCOUNT", value: "1", entryType: 2, numericValue:1, comment: " One group"},
+                    { name: "LONGSTRN", value: "OGIP 1.0", comment: " The OGIP long string convention may be used."},
+                    { name: "EXTNAME", value: "coverage", comment: " name of this HDU"},
+                    { name: "CLASS___", value: "herschel.ia.dataset.ArrayDataset", comment: " java representation" },
+                    { name: "INFO____", value: "Coverage" },
+                    { name: "DATA____", value: "herschel.ia.numeric.Double2d", comment:" java Data" },
+                    { name: "QTTY____", value: "1", comment:" Unit of the data" },
+                    { name: "BUNIT", value: "1", comment: ' Unit of the data' },
+                    {
+                        name: "META_0",
+                        value: "2",
+                        entryType: 2,
+                        numericValue: 2,
+                        comment: " [] WCS: Number of Axes"
+                    },
+                    { name: "CRPIX1", value: "371", entryType: 1, numericValue: 371 },
+                    { name: "CRPIX2", value: "421", entryType: 1, numericValue: 421 },
+                    {
+                        name: "CRVAL1",
+                        value: "1.073046172702E+02",
+                        entryType: 1,
+                        numericValue: 107.30461727023817
+                    },
+                    {
+                        name: "CRVAL2",
+                        value: "-1.061072089652E+01",
+                        entryType: 1,
+                        numericValue: -10.610720896516849
+                    },
+                    {
+                        name: "CDELT1",
+                        value: "-3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: -0.003888888888889
+                    },
+                    {
+                        name: "CDELT2",
+                        value: "3.888888888889E-03",
+                        entryType: 1,
+                        numericValue: 0.003888888888889
+                    },
+                    { name: "CTYPE1", value: "RA---TAN" },
+                    { name: "CTYPE2", value: "DEC--TAN" },
+                    {
+                        name: "EQUINOX",
+                        value: "2000",
+                        entryType: 1,
+                        numericValue: 2000
+                    },
+                    {
+                        name: "CROTA",
+                        value: "0.000000000000E+00",
+                        entryType: 1,
+                        comment: " [] The Rotation angle"
+                    },
+                    {
+                        name: "META_1",
+                        value: "830",
+                        entryType: 2,
+                        numericValue: 830
+                    },
+                    {
+                        name: "META_2",
+                        value: "870",
+                        entryType: 2,
+                        numericValue: 870
+                    },
+                ],
             },
         },
     },
@@ -110,6 +377,7 @@ describe("FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is corre
 
             test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.FITS}`, () => {
                 expect(FileInfoResponse.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
+                // console.log(FileInfoResponse.fileInfoExtended[assertItem.fileInfoExtendedString[0]])
             });
 
             assertItem.fileInfoExtendedString.map((input, index) => {
@@ -142,12 +410,33 @@ describe("FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is corre
                         expect(FileInfoResponse.fileInfoExtended[input].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].stokesVals);
                     });
 
+                    test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.length}`, () => {
+                        expect(FileInfoResponse.fileInfoExtended[input].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.length);
+                    });
+
                     test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                        expect(FileInfoResponse.fileInfoExtended[input].computedEntries).toMatchSnapshot();
+                        assertItem.fileInfoResponse.fileInfoExtended[input].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                            if (isNaN(parseFloat(entry.value))){
+                                expect(FileInfoResponse.fileInfoExtended[input].computedEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                            } else {
+                                expect(parseFloat(FileInfoResponse.fileInfoExtended[input].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                            }
+                            expect(FileInfoResponse.fileInfoExtended[input].computedEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                        });
+                    });
+
+                    test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length}`, () => {
+                        expect(FileInfoResponse.fileInfoExtended[input].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length)
                     });
 
                     test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                        expect(FileInfoResponse.fileInfoExtended[input].headerEntries).toMatchSnapshot();
+                        assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                            if (isNaN(parseFloat(entry.value))){
+                                expect(FileInfoResponse.fileInfoExtended[input].headerEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                            } else {
+                                expect(parseFloat(FileInfoResponse.fileInfoExtended[input].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                            }
+                        });
                     });
                 });
             })
