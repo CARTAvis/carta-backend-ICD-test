@@ -270,21 +270,21 @@ let assertItem: AssertItem = {
                     { name: "TIMESYS", value: "UTC" },
                     {
                         name: "OBSGEO-X",
-                        value: "2.225343555074E+06",
+                        value: "2225142.180269",
                         entryType: 1,
-                        numericValue: 2225343.5550735747
+                        numericValue: 2225142.180269
                     },
                     {
                         name: "OBSGEO-Y",
-                        value: "-5.440366402327E+06",
+                        value: "-5440307.370349",
                         entryType: 1,
-                        numericValue: -5440366.402326678
+                        numericValue: -5440307.370349
                     },
                     {
                         name: "OBSGEO-Z",
-                        value: "-2.480637971459E+06",
+                        value: "-2481029.851874",
                         entryType: 1,
-                        numericValue: -2480637.971459186
+                        numericValue: -2481029.851874
                     },
                 ],
             },
