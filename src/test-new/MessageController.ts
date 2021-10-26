@@ -84,6 +84,7 @@ export class MessageController {
     readonly contourStream: Subject<CARTA.ContourImageData>;
     readonly catalogStream: Subject<CARTA.CatalogFilterResponse>;
     readonly momentProgressStream: Subject<CARTA.MomentProgress>;
+    readonly momentResponseStream: Subject<CARTA.MomentResponse>;
     readonly scriptingStream: Subject<CARTA.ScriptingRequest>;
     readonly listProgressStream: Subject<CARTA.ListProgress>;
     private readonly decoderMap: Map<CARTA.EventType, {messageClass: any; handler: HandlerFunction}>;
@@ -109,6 +110,7 @@ export class MessageController {
         this.scriptingStream = new Subject<CARTA.ScriptingRequest>();
         this.catalogStream = new Subject<CARTA.CatalogFilterResponse>();
         this.momentProgressStream = new Subject<CARTA.MomentProgress>();
+        this.momentResponseStream = new Subject<CARTA.MomentResponse>();
         this.listProgressStream = new Subject<CARTA.ListProgress>();
 
         // Construct handler and decoder maps
@@ -121,25 +123,25 @@ export class MessageController {
             // [CARTA.EventType.FILE_INFO_RESPONSE, {messageClass: CARTA.FileInfoResponse, handler: this.onDeferredResponse}],
             // [CARTA.EventType.REGION_FILE_INFO_RESPONSE, {messageClass: CARTA.RegionFileInfoResponse, handler: this.onDeferredResponse}],
             // [CARTA.EventType.CATALOG_FILE_INFO_RESPONSE, {messageClass: CARTA.CatalogFileInfoResponse, handler: this.onDeferredResponse}],
-            // [CARTA.EventType.OPEN_FILE_ACK, {messageClass: CARTA.OpenFileAck, handler: this.onDeferredResponse}],
+            [CARTA.EventType.OPEN_FILE_ACK, {messageClass: CARTA.OpenFileAck, handler: this.onDeferredResponse}],
             // [CARTA.EventType.SAVE_FILE_ACK, {messageClass: CARTA.SaveFileAck, handler: this.onDeferredResponse}],
             // [CARTA.EventType.OPEN_CATALOG_FILE_ACK, {messageClass: CARTA.OpenCatalogFileAck, handler: this.onDeferredResponse}],
             // [CARTA.EventType.IMPORT_REGION_ACK, {messageClass: CARTA.ImportRegionAck, handler: this.onDeferredResponse}],
             // [CARTA.EventType.EXPORT_REGION_ACK, {messageClass: CARTA.ExportRegionAck, handler: this.onDeferredResponse}],
-            // [CARTA.EventType.SET_REGION_ACK, {messageClass: CARTA.SetRegionAck, handler: this.onDeferredResponse}],
+            [CARTA.EventType.SET_REGION_ACK, {messageClass: CARTA.SetRegionAck, handler: this.onDeferredResponse}],
             // [CARTA.EventType.RESUME_SESSION_ACK, {messageClass: CARTA.ResumeSessionAck, handler: this.onDeferredResponse}],
-            // [CARTA.EventType.START_ANIMATION_ACK, {messageClass: CARTA.StartAnimationAck, handler: this.onStartAnimationAck}],
-            // [CARTA.EventType.RASTER_TILE_DATA, {messageClass: CARTA.RasterTileData, handler: this.onStreamedRasterTileData}],
-            // [CARTA.EventType.REGION_HISTOGRAM_DATA, {messageClass: CARTA.RegionHistogramData, handler: this.onStreamedRegionHistogramData}],
-            // [CARTA.EventType.ERROR_DATA, {messageClass: CARTA.ErrorData, handler: this.onStreamedErrorData}],
-            // [CARTA.EventType.SPATIAL_PROFILE_DATA, {messageClass: CARTA.SpatialProfileData, handler: this.onStreamedSpatialProfileData}],
-            // [CARTA.EventType.SPECTRAL_PROFILE_DATA, {messageClass: CARTA.SpectralProfileData, handler: this.onStreamedSpectralProfileData}],
+            [CARTA.EventType.START_ANIMATION_ACK, {messageClass: CARTA.StartAnimationAck, handler: this.onStartAnimationAck}],
+            [CARTA.EventType.RASTER_TILE_DATA, {messageClass: CARTA.RasterTileData, handler: this.onStreamedRasterTileData}],
+            [CARTA.EventType.REGION_HISTOGRAM_DATA, {messageClass: CARTA.RegionHistogramData, handler: this.onStreamedRegionHistogramData}],
+            [CARTA.EventType.ERROR_DATA, {messageClass: CARTA.ErrorData, handler: this.onStreamedErrorData}],
+            [CARTA.EventType.SPATIAL_PROFILE_DATA, {messageClass: CARTA.SpatialProfileData, handler: this.onStreamedSpatialProfileData}],
+            [CARTA.EventType.SPECTRAL_PROFILE_DATA, {messageClass: CARTA.SpectralProfileData, handler: this.onStreamedSpectralProfileData}],
             // [CARTA.EventType.REGION_STATS_DATA, {messageClass: CARTA.RegionStatsData, handler: this.onStreamedRegionStatsData}],
-            // [CARTA.EventType.CONTOUR_IMAGE_DATA, {messageClass: CARTA.ContourImageData, handler: this.onStreamedContourData}],
+            [CARTA.EventType.CONTOUR_IMAGE_DATA, {messageClass: CARTA.ContourImageData, handler: this.onStreamedContourData}],
             // [CARTA.EventType.CATALOG_FILTER_RESPONSE, {messageClass: CARTA.CatalogFilterResponse, handler: this.onStreamedCatalogData}],
-            // [CARTA.EventType.RASTER_TILE_SYNC, {messageClass: CARTA.RasterTileSync, handler: this.onStreamedRasterSync}],
-            // [CARTA.EventType.MOMENT_PROGRESS, {messageClass: CARTA.MomentProgress, handler: this.onStreamedMomentProgress}],
-            // [CARTA.EventType.MOMENT_RESPONSE, {messageClass: CARTA.MomentResponse, handler: this.onDeferredResponse}],
+            [CARTA.EventType.RASTER_TILE_SYNC, {messageClass: CARTA.RasterTileSync, handler: this.onStreamedRasterSync}],
+            [CARTA.EventType.MOMENT_PROGRESS, {messageClass: CARTA.MomentProgress, handler: this.onStreamedMomentProgress}],
+            [CARTA.EventType.MOMENT_RESPONSE, {messageClass: CARTA.MomentResponse, handler: this.onStreamMomentResponse}],
             // [CARTA.EventType.SCRIPTING_REQUEST, {messageClass: CARTA.ScriptingRequest, handler: this.onScriptingRequest}],
             // [CARTA.EventType.SPLATALOGUE_PONG, {messageClass: CARTA.SpectralLineResponse, handler: this.onDeferredResponse}],
             // [CARTA.EventType.SPECTRAL_LINE_RESPONSE, {messageClass: CARTA.SpectralLineResponse, handler: this.onDeferredResponse}],
@@ -369,7 +371,13 @@ export class MessageController {
     //     }
     // }
 
-    async loadFile(directory: string, file: string, hdu: string, fileId: number, renderMode: CARTA.RenderMode): Promise<CARTA.IOpenFileAck> {
+    async loadFile(input: CARTA.IOpenFile): Promise<CARTA.IOpenFileAck> {
+        let directory = input.directory;
+        let file = input.file;
+        let hdu = input.hdu;
+        let fileId = input.fileId;
+        let renderMode = input.renderMode;
+
         if (this.connectionStatus !== ConnectionStatus.ACTIVE) {
             throw new Error("Not connected");
         } else {
@@ -466,7 +474,11 @@ export class MessageController {
     }
 
     @action("set channels")
-    setChannels(fileId: number, channel: number, stokes: number, requiredTiles: CARTA.IAddRequiredTiles): boolean {
+    setChannels(input: CARTA.ISetImageChannels): boolean {
+        let fileId = input.fileId;
+        let channel = input.channel;
+        let stokes = input.stokes;
+        let requiredTiles = input.requiredTiles
         if (this.connectionStatus === ConnectionStatus.ACTIVE) {
             const message = CARTA.SetImageChannels.create({fileId, channel, stokes, requiredTiles});
             this.logEvent(CARTA.EventType.SET_IMAGE_CHANNELS, this.eventCounter, message, false);
@@ -478,7 +490,10 @@ export class MessageController {
     }
 
     @action("set cursor")
-    setCursor(fileId: number, x: number, y: number): boolean {
+    setCursor(input: CARTA.ISetCursor): boolean {
+        let fileId = input.fileId;
+        let x = input.point.x;
+        let y = input.point.y;
         if (this.connectionStatus === ConnectionStatus.ACTIVE) {
             const message = CARTA.SetCursor.create({fileId, point: {x, y}});
             this.logEvent(CARTA.EventType.SET_CURSOR, this.eventCounter, message, false);
@@ -489,31 +504,32 @@ export class MessageController {
         return false;
     }
 
-    // async setRegion(fileId: number, regionId: number, region: RegionStore): Promise<CARTA.ISetRegionAck> {
-    //     if (this.connectionStatus !== ConnectionStatus.ACTIVE) {
-    //         throw new Error("Not connected");
-    //     } else {
-    //         const message = CARTA.SetRegion.create({
-    //             fileId,
-    //             regionId,
-    //             regionInfo: {
-    //                 regionType: region.regionType,
-    //                 rotation: region.rotation,
-    //                 controlPoints: region.controlPoints.slice()
-    //             }
-    //         });
+    async setRegion(input:CARTA.ISetRegion): Promise<CARTA.ISetRegionAck> {
+        if (this.connectionStatus !== ConnectionStatus.ACTIVE) {
+            throw new Error("Not connected");
+        } else {
+            // const message = CARTA.SetRegion.create({
+            //     fileId,
+            //     regionId,
+            //     regionInfo: {
+            //         regionType: region.regionType,
+            //         rotation: region.rotation,
+            //         controlPoints: region.controlPoints.slice()
+            //     }
+            // });
+            const message = input;
 
-    //         const requestId = this.eventCounter;
-    //         this.logEvent(CARTA.EventType.SET_REGION, requestId, message, false);
-    //         if (this.sendEvent(CARTA.EventType.SET_REGION, CARTA.SetRegion.encode(message).finish())) {
-    //             const deferredResponse = new Deferred<CARTA.ISetRegionAck>();
-    //             this.deferredMap.set(requestId, deferredResponse);
-    //             return await deferredResponse.promise;
-    //         } else {
-    //             throw new Error("Could not send event");
-    //         }
-    //     }
-    // }
+            const requestId = this.eventCounter;
+            this.logEvent(CARTA.EventType.SET_REGION, requestId, message, false);
+            if (this.sendEvent(CARTA.EventType.SET_REGION, CARTA.SetRegion.encode(message).finish())) {
+                const deferredResponse = new Deferred<CARTA.ISetRegionAck>();
+                this.deferredMap.set(requestId, deferredResponse);
+                return await deferredResponse.promise;
+            } else {
+                throw new Error("Could not send event");
+            }
+        }
+    }
 
     @action("remove region")
     removeRegion(regionId: number) {
@@ -583,7 +599,11 @@ export class MessageController {
     }
 
     @action("add required tiles")
-    addRequiredTiles(fileId: number, tiles: Array<number>, quality: number): boolean {
+    addRequiredTiles(input: CARTA.IAddRequiredTiles): boolean {
+        let fileId = input.fileId;
+        let tiles = input.tiles;
+        let quality = input.compressionQuality;
+
         if (this.connectionStatus === ConnectionStatus.ACTIVE) {
             const message = CARTA.AddRequiredTiles.create({fileId, tiles, compressionQuality: quality, compressionType: CARTA.CompressionType.ZFP});
             this.logEvent(CARTA.EventType.ADD_REQUIRED_TILES, this.eventCounter, message, false);
@@ -677,19 +697,38 @@ export class MessageController {
         document.cookie = `CARTA-Authorization=${token}; path=/`;
     };
 
-    async requestMoment(message: CARTA.IMomentRequest): Promise<CARTA.IMomentResponse> {
+    // async requestMoment(message: CARTA.IMomentRequest): Promise<CARTA.IMomentResponse> {
+    //     if (this.connectionStatus !== ConnectionStatus.ACTIVE) {
+    //         throw new Error("Not connected");
+    //     } else {
+    //         const requestId = this.eventCounter;
+    //         this.logEvent(CARTA.EventType.MOMENT_REQUEST, requestId, message, false);
+    //         if (this.sendEvent(CARTA.EventType.MOMENT_REQUEST, CARTA.MomentRequest.encode(message).finish())) {
+    //             const deferredResponse = new Deferred<CARTA.IMomentResponse>();
+    //             this.deferredMap.set(requestId, deferredResponse);
+    //             return await deferredResponse.promise;
+    //         } else {
+    //             throw new Error("Could not send event");
+    //         }
+    //     }
+    // }
+
+    requestMoment(message: CARTA.IMomentRequest){
         if (this.connectionStatus !== ConnectionStatus.ACTIVE) {
             throw new Error("Not connected");
         } else {
             const requestId = this.eventCounter;
             this.logEvent(CARTA.EventType.MOMENT_REQUEST, requestId, message, false);
             if (this.sendEvent(CARTA.EventType.MOMENT_REQUEST, CARTA.MomentRequest.encode(message).finish())) {
-                const deferredResponse = new Deferred<CARTA.IMomentResponse>();
-                this.deferredMap.set(requestId, deferredResponse);
-                return await deferredResponse.promise;
-            } else {
-                throw new Error("Could not send event");
+                return true;
             }
+            //     const deferredResponse = new Deferred<CARTA.IMomentResponse>();
+            //     this.deferredMap.set(requestId, deferredResponse);
+            //     return await deferredResponse.promise;
+            // } else {
+            //     throw new Error("Could not send event");
+            // }
+            return false;
         }
     }
 
@@ -827,42 +866,42 @@ export class MessageController {
         this.onDeferredResponse(eventId, ack);
     }
 
-    // private onStartAnimationAck(eventId: number, ack: CARTA.StartAnimationAck) {
-    //     this.animationId = ack.success ? ack.animationId : INVALID_ANIMATION_ID;
-    //     this.onDeferredResponse(eventId, ack);
-    // }
+    private onStartAnimationAck(eventId: number, ack: CARTA.StartAnimationAck) {
+        this.animationId = ack.success ? ack.animationId : INVALID_ANIMATION_ID;
+        this.onDeferredResponse(eventId, ack);
+    }
 
-    // private onStreamedRasterTileData(_eventId: number, rasterTileData: CARTA.RasterTileData) {
-    //     this.rasterTileStream.next(rasterTileData);
-    // }
+    private onStreamedRasterTileData(_eventId: number, rasterTileData: CARTA.RasterTileData) {
+        this.rasterTileStream.next(rasterTileData);
+    }
 
-    // private onStreamedRasterSync(_eventId: number, rasterTileSync: CARTA.RasterTileSync) {
-    //     this.rasterSyncStream.next(rasterTileSync);
-    // }
+    private onStreamedRasterSync(_eventId: number, rasterTileSync: CARTA.RasterTileSync) {
+        this.rasterSyncStream.next(rasterTileSync);
+    }
 
-    // private onStreamedRegionHistogramData(_eventId: number, regionHistogramData: CARTA.RegionHistogramData) {
-    //     this.histogramStream.next(regionHistogramData);
-    // }
+    private onStreamedRegionHistogramData(_eventId: number, regionHistogramData: CARTA.RegionHistogramData) {
+        this.histogramStream.next(regionHistogramData);
+    }
 
-    // private onStreamedErrorData(_eventId: number, errorData: CARTA.ErrorData) {
-    //     this.errorStream.next(errorData);
-    // }
+    private onStreamedErrorData(_eventId: number, errorData: CARTA.ErrorData) {
+        this.errorStream.next(errorData);
+    }
 
-    // private onStreamedSpatialProfileData(_eventId: number, spatialProfileData: CARTA.SpatialProfileData) {
-    //     this.spatialProfileStream.next(spatialProfileData);
-    // }
+    private onStreamedSpatialProfileData(_eventId: number, spatialProfileData: CARTA.SpatialProfileData) {
+        this.spatialProfileStream.next(spatialProfileData);
+    }
 
-    // private onStreamedSpectralProfileData(_eventId: number, spectralProfileData: CARTA.SpectralProfileData) {
-    //     this.spectralProfileStream.next(spectralProfileData);
-    // }
+    private onStreamedSpectralProfileData(_eventId: number, spectralProfileData: CARTA.SpectralProfileData) {
+        this.spectralProfileStream.next(spectralProfileData);
+    }
 
     // private onStreamedRegionStatsData(_eventId: number, regionStatsData: CARTA.RegionStatsData) {
     //     this.statsStream.next(regionStatsData);
     // }
 
-    // private onStreamedContourData(_eventId: number, contourData: CARTA.ContourImageData) {
-    //     this.contourStream.next(contourData);
-    // }
+    private onStreamedContourData(_eventId: number, contourData: CARTA.ContourImageData) {
+        this.contourStream.next(contourData);
+    }
 
     // private onScriptingRequest(_eventId: number, scriptingRequest: CARTA.ScriptingRequest) {
     //     this.scriptingStream.next(scriptingRequest);
@@ -872,9 +911,13 @@ export class MessageController {
     //     this.catalogStream.next(catalogFilter);
     // }
 
-    // private onStreamedMomentProgress(_eventId: number, momentProgress: CARTA.MomentProgress) {
-    //     this.momentProgressStream.next(momentProgress);
-    // }
+    private onStreamedMomentProgress(_eventId: number, momentProgress: CARTA.MomentProgress) {
+        this.momentProgressStream.next(momentProgress);
+    }
+
+    private onStreamMomentResponse(_eventId: number, momentResponse: CARTA.MomentResponse) {
+        this.momentResponseStream.next(momentResponse);
+    }
 
     // private onStreamedListProgress(_eventId: number, listProgress: CARTA.ListProgress) {
     //     this.listProgressStream.next(listProgress);
@@ -913,8 +956,8 @@ export class MessageController {
             } else {
                 console.log(`${eventName} [${eventId}] ==>`);
             }
-            console.log(message);
-            console.log("\n");
+            // console.log(message);
+            // console.log("\n");
         }
     }
 }
