@@ -3,19 +3,21 @@ import { CARTA } from "carta-protobuf";
 import { Client } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL;
+let testServerUrl = config.serverURL0;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
+    headerCount: number;
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoResponse: CARTA.IFileInfoResponse;
 };
 
 let assertItem: AssertItem = {
+    headerCount: 2389,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -381,8 +383,23 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
                 });
             });
 
-            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length)
+            test(`len(file_info_extended.header_entries)==${assertItem.headerCount}`, () => {
+                let count = 0;
+                let nonHCount = 0
+                console.log(FileInfoResponse.fileInfoExtended['0'].headerEntries);
+                FileInfoResponse.fileInfoExtended['0'].headerEntries.find((f)=>{
+                    let f2 = String(f.name);
+                    let matched = /HISTORY/;
+                    if (f2.match(matched)){
+                        count++
+                    } else {
+                        console.log(f2)
+                        nonHCount++
+                    }
+                });
+                console.log(count);
+                console.log(nonHCount);
+                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.headerCount);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
