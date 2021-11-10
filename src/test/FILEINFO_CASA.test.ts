@@ -10,12 +10,16 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
+    headerCount: number;
+    headerHistoryCount: number;
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoResponse: CARTA.IFileInfoResponse;
 };
 
 let assertItem: AssertItem = {
+    headerCount: 1274,
+    headerHistoryCount: 1201,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -409,8 +413,20 @@ describe("FILEINFO_CASA: Testing if info of an CASA image file is correctly deli
                 });
             });
 
-            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.length}`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.length)
+            test(`len(file_info_extended.header_entries)==${assertItem.headerCount}`, () => {
+                expect(FileInfoResponse.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.headerCount);
+            });
+
+            test(`len(file_info_extended.header_entries) of "HISTORY" header ==${assertItem.headerHistoryCount}`, ()=> {
+                let count = 0;
+                FileInfoResponse.fileInfoExtended[''].headerEntries.find((f)=>{
+                    let fstring = String(f.name);
+                    let historyMatched = /HISTORY/;
+                    if (fstring.match(historyMatched)){
+                        count++;
+                    };
+                });
+                expect(count).toEqual(assertItem.headerHistoryCount);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {

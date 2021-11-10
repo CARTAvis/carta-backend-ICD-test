@@ -399,7 +399,7 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
                     };
                 });
                 expect(count).toEqual(assertItem.headerHistoryCount);
-            })
+            });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
                 assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
