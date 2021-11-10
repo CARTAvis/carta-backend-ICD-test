@@ -265,6 +265,10 @@ let assertItem: AssertItem = {
                         numericValue: 258,
                         comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio'
                     },
+                    {
+                        name: "COMMENT",
+                        comment: 'casacore non-standard usage: 4 LSD, 5 GEO, 6 SOU, 7 GAL'
+                    },
                     { name: "TELESCOP", value: "ALMA" },
                     { name: "DATE-OBS", value: "2016-04-03T13:02:58.799982" },
                     { name: "TIMESYS", value: "UTC" },

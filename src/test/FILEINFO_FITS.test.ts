@@ -10,12 +10,16 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
+    headerCount: number;
+    headerHistoryCount: number;
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoResponse: CARTA.IFileInfoResponse;
 };
 
 let assertItem: AssertItem = {
+    headerCount: 2389,
+    headerHistoryCount: 2315,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -381,8 +385,20 @@ describe("FILEINFO_FITS: Testing if info of an FITS image file is correctly deli
                 });
             });
 
-            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length}`, () => {
-                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended['0'].headerEntries.length)
+            test(`len(file_info_extended.header_entries)==${assertItem.headerCount}`, () => {
+                expect(FileInfoResponse.fileInfoExtended['0'].headerEntries.length).toEqual(assertItem.headerCount);
+            });
+
+            test(`len(file_info_extended.header_entries) of "HISTORY" header ==${assertItem.headerHistoryCount}`, ()=> {
+                let count = 0;
+                FileInfoResponse.fileInfoExtended['0'].headerEntries.find((f)=>{
+                    let fstring = String(f.name);
+                    let historyMatched = /HISTORY/;
+                    if (fstring.match(historyMatched)){
+                        count++;
+                    };
+                });
+                expect(count).toEqual(assertItem.headerHistoryCount);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {

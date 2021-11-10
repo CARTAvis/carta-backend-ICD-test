@@ -43,6 +43,7 @@ let assertItem: AssertItem = {
                 stokesVals: [],
                 computedEntries: [
                     { name: "Name", value: "M17_SWex.hdf5" },
+                    { name: 'HDU', value: '0' },
                     { name: "Shape", value: "[640, 800, 25, 1]" },
                     {
                         name: "Number of channels",
