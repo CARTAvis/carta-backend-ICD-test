@@ -10,6 +10,7 @@ let listFileTimeout = config.timeout.listFile;
 let openFileTimeout = config.timeout.openFile;
 
 interface AssertItem {
+    headerCount: number;
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoExtendedString: string[];
@@ -17,6 +18,7 @@ interface AssertItem {
 };
 
 let assertItem: AssertItem = {
+    headerCount: 53,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -114,7 +116,7 @@ let assertItem: AssertItem = {
                         numericValue: 2000
                     },
                     {
-                        name: "CROTA",
+                        name: "CROTA2",
                         value: "0.000000000000E+00",
                         entryType: 1,
                         comment: " [] The Rotation angle"
@@ -211,7 +213,7 @@ let assertItem: AssertItem = {
                         numericValue: 2000
                     },
                     {
-                        name: "CROTA",
+                        name: "CROTA2",
                         value: "0.000000000000E+00",
                         entryType: 1,
                         comment: " [] The Rotation angle"
@@ -308,7 +310,7 @@ let assertItem: AssertItem = {
                         numericValue: 2000
                     },
                     {
-                        name: "CROTA",
+                        name: "CROTA2",
                         value: "0.000000000000E+00",
                         entryType: 1,
                         comment: " [] The Rotation angle"
@@ -377,7 +379,6 @@ describe("FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is corre
 
             test(`FILE_INFO_RESPONSE.file_info.type = ${CARTA.FileType.FITS}`, () => {
                 expect(FileInfoResponse.fileInfo.type).toBe(assertItem.fileInfoResponse.fileInfo.type);
-                // console.log(FileInfoResponse.fileInfoExtended[assertItem.fileInfoExtendedString[0]])
             });
 
             assertItem.fileInfoExtendedString.map((input, index) => {
@@ -425,16 +426,24 @@ describe("FILEINFO_FITS_MULTIHDU: Testing if info of an FITS image file is corre
                         });
                     });
 
-                    test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length}`, () => {
-                        expect(FileInfoResponse.fileInfoExtended[input].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.length)
+                    test(`len(file_info_extended.header_entries)==${assertItem.headerCount}`, () => {
+                        expect(FileInfoResponse.fileInfoExtended[input].headerEntries.length).toEqual(assertItem.headerCount)
                     });
 
                     test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
+                        let FileInfoResponse_value = [];
+                        FileInfoResponse.fileInfoExtended[input].headerEntries.map((f) => {
+                            let keysNum = Object.keys(f).length;
+                            if (keysNum > 1) {
+                                FileInfoResponse_value.push(f)
+                            };
+                        });
+
                         assertItem.fileInfoResponse.fileInfoExtended[input].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
                             if (isNaN(parseFloat(entry.value))){
-                                expect(FileInfoResponse.fileInfoExtended[input].headerEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                                expect(FileInfoResponse_value.find(f => f.name == entry.name).value).toEqual(entry.value);
                             } else {
-                                expect(parseFloat(FileInfoResponse.fileInfoExtended[input].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                                expect(parseFloat(FileInfoResponse_value.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                             }
                         });
                     });
