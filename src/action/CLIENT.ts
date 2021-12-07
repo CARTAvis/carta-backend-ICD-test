@@ -5,7 +5,7 @@ let nodeusage = require("usage");
 const fs = require("fs");
 const procfs = require("procfs-stats");
 export class Client {
-    IcdVersion: number = 17;
+    IcdVersion: number = 25;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
