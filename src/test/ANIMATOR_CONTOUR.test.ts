@@ -140,6 +140,10 @@ let assertItem: AssertItem = {
         ],
 };
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms)).then(() => { console.log('sleep!') });
+}
+
 describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () => {
 
     let Connection: Client;
@@ -217,6 +221,7 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
 
         describe(`(Case 2) Play some channels backwardly`, () => {
             test(`Preparation`, async () => {
+                await sleep(3000);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
                 let tt = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             }, readFileTimeout);
