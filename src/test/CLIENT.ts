@@ -80,6 +80,10 @@ export class Client {
         [72, CARTA.StopFileList],
         [73, CARTA.SplataloguePing],
         [74, CARTA.SplataloguePong],
+        [75, CARTA.PvRequest],
+        [76, CARTA.PvResponse],
+        [77, CARTA.PvProgress],
+        [78, CARTA.StopPvCalc],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
