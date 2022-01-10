@@ -13,7 +13,8 @@ interface AssertItem {
     openFile: CARTA.IOpenFile[];
     addTilesReq: CARTA.IAddRequiredTiles[];
     setCursor: CARTA.ISetCursor[];
-    SpatialProfileData: CARTA.ISpectralProfileData[]
+    SpatialProfileData: CARTA.ISpectralProfileData[];
+    setImageChannel: CARTA.ISetImageChannels[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
@@ -76,8 +77,33 @@ let assertItem: AssertItem = {
         }, 
     ],
     SpatialProfileData:[
-
-    ]
+        {
+            profiles:[],
+            x: 216,
+            y: 216,
+            value: 0.004661305341869593,
+        },
+        {
+            profiles:[],
+            x: 216,
+            y: 216,
+            value: 0.0016310831997543573,
+        }
+    ],
+    setImageChannel:
+        [
+            {
+                fileId: 1,
+                channel: 109,
+                stokes: 0,
+                requiredTiles: {
+                    fileId: 1,
+                    tiles: [0],
+                    compressionType: CARTA.CompressionType.ZFP,
+                    compressionQuality: 11,
+                },
+            },
+        ]
 };
 
 describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
@@ -134,14 +160,19 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             expect(ack4.RasterTileData[0].fileId).toEqual(1);
         });
 
+        let ack5: AckStream;
         test(`Match spatial and spectral of two images`,async()=>{
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
 
             let spectralProfileDataResponse = await Connection.stream(2);
-            expect(spectralProfileDataResponse.SpatialProfileData[0].value).toEqual(0.004661305341869593);
-            expect(spectralProfileDataResponse.SpatialProfileData[1].value).toEqual(0.0016310831997543573
-                );
+            expect(spectralProfileDataResponse.SpatialProfileData[0].value).toEqual(assertItem.SpatialProfileData[0].value);
+            expect(spectralProfileDataResponse.SpatialProfileData[1].value).toEqual(assertItem.SpatialProfileData[1].value);
+
+            await Connection.send(CARTA.SetImageChannels,assertItem.setImageChannel[0]);
+            ack5 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            let ack5Count = ack5.RegionHistogramData.length + ack5.SpatialProfileData.length + ack5.RasterTileSync.length + ack5.RasterTileData.length;
+            expect(ack5Count).toEqual(5);
         });
     });
 
