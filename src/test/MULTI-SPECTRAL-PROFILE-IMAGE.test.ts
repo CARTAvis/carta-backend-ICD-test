@@ -10,7 +10,8 @@ let openFileTimeout = config.timeout.openFile;
 interface AssertItem {
     precisionDigits: number;
     registerViewer: CARTA.IRegisterViewer;
-    openFile: CARTA.IOpenFile;
+    openFile: CARTA.IOpenFile[];
+    addTilesReq: CARTA.IAddRequiredTiles[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
@@ -18,14 +19,36 @@ let assertItem: AssertItem = {
         sessionId: 0,
         clientFeatureFlags: 5,
     },
-    openFile: {
-        directory: testSubdirectory,
-        file: "HD163296_CO_2_1.fits",
-        fileId: 100,
-        hdu: "",
-        renderMode: CARTA.RenderMode.RASTER,
-    },
-        
+    openFile: [
+        {
+            directory: testSubdirectory,
+            file: "HD163296_CO_2_1.fits",
+            fileId: 0,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+        {
+            directory: testSubdirectory,
+            file: "HD163296_13CO_2-1.fits",
+            fileId: 1,
+            hdu: "",
+            renderMode: CARTA.RenderMode.RASTER,
+        },
+    ],
+    addTilesReq: [
+        {
+            fileId: 0,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [16777216, 16781312, 16777217, 16781313],
+        },
+        {
+            fileId: 1,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [16777216, 16781312, 16777217, 16781313],
+        },
+    ],  
 };
 
 describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
@@ -37,10 +60,17 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
-    describe(`Prepare images`, () => {
-        test(`Should open image ${assertItem.openFile.file}:`, async () => {
-            await Connection.openFile(assertItem.openFile);
+    describe(`Prepare the first images`, () => {
+        test(`Should open image ${assertItem.openFile[0].file}:`, async () => {
+            await Connection.openFile(assertItem.openFile[0]);
         }, openFileTimeout);
+
+        let ack: AckStream;
+        test(`return RASTER_TILE_DATA(Stream) and check total length `, async()=>{
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
+            ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq[0].tiles.length);
+        })
     });
 
     afterAll(() => Connection.close());
