@@ -69,7 +69,22 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
         test(`return RASTER_TILE_DATA(Stream) and check total length `, async()=>{
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-            expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq[0].tiles.length);
+            expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[0].tiles.length);
+            expect(ack.RasterTileSync.length).toEqual(2);
+        })
+    });
+
+    describe(`Prepare the second images`, () => {
+        test(`Should open image ${assertItem.openFile[1].file}:`, async () => {
+            await Connection.openFile(assertItem.openFile[1]);
+        }, openFileTimeout);
+
+        let ack: AckStream;
+        test(`return RASTER_TILE_DATA(Stream) and check total length `, async()=>{
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+            ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[1].tiles.length);
+            expect(ack.RasterTileSync.length).toEqual(2);
         })
     });
 
