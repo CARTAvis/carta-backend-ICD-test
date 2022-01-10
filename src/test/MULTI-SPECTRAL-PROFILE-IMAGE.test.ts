@@ -12,6 +12,8 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile[];
     addTilesReq: CARTA.IAddRequiredTiles[];
+    setCursor: CARTA.ISetCursor[];
+    SpatialProfileData: CARTA.ISpectralProfileData[]
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
@@ -48,7 +50,34 @@ let assertItem: AssertItem = {
             compressionType: CARTA.CompressionType.ZFP,
             tiles: [16777216, 16781312, 16777217, 16781313],
         },
-    ],  
+        {
+            fileId: 0,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+        {
+            fileId: 1,
+            compressionQuality: 11,
+            compressionType: CARTA.CompressionType.ZFP,
+            tiles: [0],
+        },
+    ], 
+    setCursor: [
+        {
+            fileId: 0,
+            point: { x: 216, y: 216 },
+    
+        }, 
+        {
+            fileId: 1,
+            point: { x: 216, y: 216 },
+    
+        }, 
+    ],
+    SpatialProfileData:[
+
+    ]
 };
 
 describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
@@ -79,13 +108,41 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             await Connection.openFile(assertItem.openFile[1]);
         }, openFileTimeout);
 
-        let ack: AckStream;
+        let ack2: AckStream;
         test(`return RASTER_TILE_DATA(Stream) and check total length `, async()=>{
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
-            ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-            expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq[1].tiles.length);
-            expect(ack.RasterTileSync.length).toEqual(2);
+            ack2 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            expect(ack2.RasterTileData.length).toEqual(assertItem.addTilesReq[1].tiles.length);
+            expect(ack2.RasterTileSync.length).toEqual(2);
+            expect(ack2.RasterTileData[0].fileId).toEqual(1);
         })
+    });
+
+    describe(`Plot multi image in the spectral profiler:`,()=>{
+        let ack3: AckStream;
+        let ack4: AckStream;
+        test(`Set two images in tile=[0]`,async()=>{
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[2]);
+            ack3 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            expect(ack3.RasterTileData.length).toEqual(assertItem.addTilesReq[2].tiles.length);
+            expect(ack3.RasterTileSync.length).toEqual(2);
+
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[3]);
+            ack4 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            expect(ack4.RasterTileData.length).toEqual(assertItem.addTilesReq[3].tiles.length);
+            expect(ack4.RasterTileSync.length).toEqual(2);
+            expect(ack4.RasterTileData[0].fileId).toEqual(1);
+        });
+
+        test(`Match spatial and spectral of two images`,async()=>{
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
+
+            let spectralProfileDataResponse = await Connection.stream(2);
+            expect(spectralProfileDataResponse.SpatialProfileData[0].value).toEqual(0.004661305341869593);
+            expect(spectralProfileDataResponse.SpatialProfileData[1].value).toEqual(0.0016310831997543573
+                );
+        });
     });
 
     afterAll(() => Connection.close());
