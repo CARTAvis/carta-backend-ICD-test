@@ -15,6 +15,8 @@ interface AssertItem {
     setCursor: CARTA.ISetCursor[];
     SpatialProfileData: CARTA.ISpectralProfileData[];
     setImageChannel: CARTA.ISetImageChannels[];
+    setRegion: CARTA.ISetRegion;
+    setSpectralRequirements: CARTA.ISetSpectralRequirements[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 4,
@@ -90,20 +92,54 @@ let assertItem: AssertItem = {
             value: 0.0016310831997543573,
         }
     ],
-    setImageChannel:
-        [
-            {
+    setImageChannel:[
+        {
+            fileId: 1,
+            channel: 109,
+            stokes: 0,
+            requiredTiles: {
                 fileId: 1,
-                channel: 109,
-                stokes: 0,
-                requiredTiles: {
-                    fileId: 1,
-                    tiles: [0],
-                    compressionType: CARTA.CompressionType.ZFP,
-                    compressionQuality: 11,
-                },
+                tiles: [0],
+                compressionType: CARTA.CompressionType.ZFP,
+                compressionQuality: 11,
             },
-        ]
+        },
+    ],
+    setRegion: {
+        fileId: 0,
+        regionId: -1,
+        regionInfo: {
+            regionType: CARTA.RegionType.RECTANGLE,
+            controlPoints: [{ x: 149.20297029702965, y: 283.93564356435644 }, { x: 128.31683168316835, y: 132.59405940594058 }],
+            rotation: 0.0,
+        }
+    },
+    setSpectralRequirements: [
+        {
+            fileId: 1,
+            regionId: 1,
+            spectralProfiles: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.Mean,
+                    ],
+                }
+            ],
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            spectralProfiles: [
+                {
+                    coordinate: "z",
+                    statsTypes: [
+                        CARTA.StatsType.Mean,
+                    ],
+                }
+            ],
+        },
+    ],
 };
 
 describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
@@ -161,7 +197,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
         });
 
         let ack5: AckStream;
-        test(`Match spatial and spectral of two images`,async()=>{
+        test(`Match spatial and spectral of two images`, async()=>{
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
 
@@ -173,6 +209,21 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             ack5 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             let ack5Count = ack5.RegionHistogramData.length + ack5.SpatialProfileData.length + ack5.RasterTileSync.length + ack5.RasterTileData.length;
             expect(ack5Count).toEqual(5);
+        });
+
+        test(`Set a Region in one of the images`, async()=>{
+            await Connection.send(CARTA.SetRegion,assertItem.setRegion);
+            let RegionResponse = await Connection.receive(CARTA.SetRegionAck);
+        });
+
+        test(`Plot two images' spectral profiles`, async()=>{
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[0]);
+            let tt1 = await Connection.receive(CARTA.SpectralProfileData);
+            console.log(tt1);
+
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[1]);
+            let tt2 = await Connection.receive(CARTA.SpectralProfileData);
+            console.log(tt2);
         });
     });
 
