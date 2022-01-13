@@ -2,11 +2,14 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.moment;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
-
+interface ISpectralProfileIndexValue {
+    index: number;
+    value: number;
+}
 interface AssertItem {
     precisionDigits: number;
     registerViewer: CARTA.IRegisterViewer;
@@ -17,9 +20,10 @@ interface AssertItem {
     setImageChannel: CARTA.ISetImageChannels[];
     setRegion: CARTA.ISetRegion;
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
+    ReturnSpectralProfileData: CARTA.ISpectralProfileIndexValue[];
 }
 let assertItem: AssertItem = {
-    precisionDigits: 4,
+    precisionDigits: 7,
     registerViewer: {
         sessionId: 0,
         clientFeatureFlags: 5,
@@ -110,7 +114,7 @@ let assertItem: AssertItem = {
         regionId: -1,
         regionInfo: {
             regionType: CARTA.RegionType.RECTANGLE,
-            controlPoints: [{ x: 149.20297029702965, y: 283.93564356435644 }, { x: 128.31683168316835, y: 132.59405940594058 }],
+            controlPoints: [{ x: 213, y: 277 }, { x: 100, y: 100 }],
             rotation: 0.0,
         }
     },
@@ -138,6 +142,32 @@ let assertItem: AssertItem = {
                     ],
                 }
             ],
+        },
+    ],
+    ReturnSpectralProfileData: [
+        {
+            index: 0,
+            value: -0.00016075078396044214,
+        },
+        {
+            index: 50,
+            value: -0.0003499732626060578,
+        },
+        {
+            index: 100,
+            value: 0.0006450462917699296,
+        },
+        {
+            index: 0,
+            value: -0.0003030317879095289,
+        },
+        {
+            index: 125,
+            value: -0.00029067863631328104,
+        },
+        {
+            index: 225,
+            value: 0.0,
         },
     ],
 };
@@ -216,14 +246,23 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             let RegionResponse = await Connection.receive(CARTA.SetRegionAck);
         });
 
-        test(`Plot two images' spectral profiles`, async()=>{
+        test(`Plot two images' spectral profiles and check the values`, async()=>{
             await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[0]);
-            let tt1 = await Connection.receive(CARTA.SpectralProfileData);
-            console.log(tt1);
+            let temp1 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let SecondImageSpectralProfile = temp1.SpectralProfileData.slice(-1)[0];
+            expect(SecondImageSpectralProfile.fileId).toEqual(1);
+            expect(SecondImageSpectralProfile.progress).toEqual(1);
+            expect(SecondImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[0].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[0].value,assertItem.precisionDigits);
+            expect(SecondImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[1].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[1].value,assertItem.precisionDigits);
+            expect(SecondImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[2].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[2].value,assertItem.precisionDigits);
 
             await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[1]);
-            let tt2 = await Connection.receive(CARTA.SpectralProfileData);
-            console.log(tt2);
+            let temp2 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let FirstImageSpectralProfile = temp2.SpectralProfileData.slice(-1)[0];
+            expect(FirstImageSpectralProfile.progress).toEqual(1);
+            expect(FirstImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
+            expect(FirstImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
+            expect(FirstImageSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
         });
     });
 
