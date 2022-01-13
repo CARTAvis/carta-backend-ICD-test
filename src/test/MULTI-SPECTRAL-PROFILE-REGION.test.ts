@@ -15,7 +15,7 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     openFile: CARTA.IOpenFile;
     addTilesReq: CARTA.IAddRequiredTiles;
-    setCursor: CARTA.ISetCursor;
+    setRegion: CARTA.ISetRegion[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 7,
@@ -25,25 +25,38 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-            file: "HD163296_CO_2_1.fits",
-            fileId: 0,
-            hdu: "",
-            renderMode: CARTA.RenderMode.RASTER,
-        },
+        file: "HD163296_CO_2_1.fits",
+        fileId: 0,
+        hdu: "",
+        renderMode: CARTA.RenderMode.RASTER,
+    },
         
-    addTilesReq: 
+    addTilesReq: {
+        fileId: 0,
+        compressionQuality: 11,
+        compressionType: CARTA.CompressionType.ZFP,
+        tiles: [16777216, 16781312, 16777217, 16781313],
+    },
+    setRegion: [
         {
             fileId: 0,
-            compressionQuality: 11,
-            compressionType: CARTA.CompressionType.ZFP,
-            tiles: [16777216, 16781312, 16777217, 16781313],
+            regionId: -1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 213, y: 277 }, { x: 100, y: 100 }],
+                rotation: 0.0,
+            }
         },
-    setCursor: 
         {
             fileId: 0,
-            point: { x: 216, y: 216 },
-    
-        }, 
+            regionId: -1,
+            regionInfo: {
+                regionType: CARTA.RegionType.RECTANGLE,
+                controlPoints: [{ x: 213, y: 277 }, { x: 100, y: 100 }],
+                rotation: 0.0,
+            }
+        },
+    ]
 };
 
 describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
