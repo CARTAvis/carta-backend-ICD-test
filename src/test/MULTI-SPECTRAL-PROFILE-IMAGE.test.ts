@@ -20,7 +20,7 @@ interface AssertItem {
     setImageChannel: CARTA.ISetImageChannels[];
     setRegion: CARTA.ISetRegion;
     setSpectralRequirements: CARTA.ISetSpectralRequirements[];
-    ReturnSpectralProfileData: CARTA.ISpectralProfileIndexValue[];
+    ReturnSpectralProfileData: ISpectralProfileIndexValue[];
 }
 let assertItem: AssertItem = {
     precisionDigits: 7,
