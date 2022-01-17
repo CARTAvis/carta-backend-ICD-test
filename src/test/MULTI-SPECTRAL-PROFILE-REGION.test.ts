@@ -43,7 +43,7 @@ let assertItem: AssertItem = {
             regionId: -1,
             regionInfo: {
                 regionType: CARTA.RegionType.RECTANGLE,
-                controlPoints: [{ x: 213, y: 277 }, { x: 100, y: 100 }],
+                controlPoints: [{ x: 210, y: 220 }, { x: 50, y: 50 }],
                 rotation: 0.0,
             }
         },
@@ -52,7 +52,7 @@ let assertItem: AssertItem = {
             regionId: -1,
             regionInfo: {
                 regionType: CARTA.RegionType.RECTANGLE,
-                controlPoints: [{ x: 213, y: 277 }, { x: 100, y: 100 }],
+                controlPoints: [{ x: 150, y: 170 }, { x: 35, y: 35 }],
                 rotation: 0.0,
             }
         },
@@ -68,7 +68,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
         await Connection.send(CARTA.CloseFile, { fileId: -1 });
     }, connectTimeout);
 
-    describe(`Prepare the first images`, () => {
+    describe(`Prepare the images`, () => {
         test(`Should open image ${assertItem.openFile.file}:`, async () => {
             await Connection.openFile(assertItem.openFile);
         }, openFileTimeout);
@@ -80,6 +80,19 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             expect(ack.RasterTileData.length).toEqual(assertItem.addTilesReq.tiles.length);
             expect(ack.RasterTileSync.length).toEqual(2);
         })
+    });
+
+    describe(`Plot multi regions in the spectral profiler:`,()=>{
+        test(`Set two Regions in the images`, async()=>{
+            await Connection.send(CARTA.SetRegion,assertItem.setRegion[0]);
+            let RegionResponse1 = await Connection.receive(CARTA.SetRegionAck);
+            expect(RegionResponse1.regionId).toEqual(1);
+
+            await Connection.send(CARTA.SetRegion,assertItem.setRegion[1]);
+            let RegionResponse2 = await Connection.receive(CARTA.SetRegionAck);
+            expect(RegionResponse2.regionId).toEqual(2);
+        });
+
     });
 
 
