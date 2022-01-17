@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.moment;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
@@ -102,11 +102,23 @@ let assertItem: AssertItem = {
         },
         {
             index: 0,
-            value: -0.00023187858529677354,
+            value: 0.0062467408097798246,
         },
         {
             index: 100,
-            value: 0.056362498725418875,
+            value: 0.06037216936383088,
+        },
+        {
+            index: 200,
+            value: 0.0,
+        },
+        {
+            index: 0,
+            value: 0.0062001189561202924,
+        },
+        {
+            index: 100,
+            value: 0.05867533210175882,
         },
         {
             index: 200,
@@ -158,11 +170,22 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[1]);
             let temp2 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
             let SecondStatisticsSpectralProfile = temp2.SpectralProfileData.slice(-1)[0];
-            // expect(FirstRegionSpectralProfile.regionId).toEqual(1);
+            expect(SecondStatisticsSpectralProfile.regionId).toEqual(1);
             expect(SecondStatisticsSpectralProfile.progress).toEqual(1);
-            // expect(FirstRegionSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
-            // expect(FirstRegionSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
-            // expect(FirstRegionSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
+            expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
+            expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
+            expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
+        });
+
+        test(`Plot two statistics in the spectral profiles within one SetSpectralRequirement request and check the values`,async()=>{
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[2]);
+            let temp3 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let ThirdStatisticsSpectralProfile = temp3.SpectralProfileData.slice(-1)[0];
+            expect(ThirdStatisticsSpectralProfile.regionId).toEqual(1);
+            expect(ThirdStatisticsSpectralProfile.progress).toEqual(1);
+            expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[6].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[6].value,assertItem.precisionDigits);
+            expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[7].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[7].value,assertItem.precisionDigits);
+            expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[8].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[8].value,assertItem.precisionDigits);
         });
     });
 
