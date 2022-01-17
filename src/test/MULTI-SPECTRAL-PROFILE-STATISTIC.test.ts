@@ -151,7 +151,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
     });
 
     describe(`Plot multi statistics in one region in the spectral profiler:`,()=>{
-        test(`Set one Regions in the images`, async()=>{
+        test(`Set one Region in the images`, async()=>{
             await Connection.send(CARTA.SetRegion,assertItem.setRegion);
             let RegionResponse1 = await Connection.receive(CARTA.SetRegionAck);
             expect(RegionResponse1.regionId).toEqual(1);
