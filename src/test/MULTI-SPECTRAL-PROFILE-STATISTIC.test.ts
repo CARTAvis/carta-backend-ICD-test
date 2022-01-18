@@ -127,7 +127,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
+describe("MULTI-SPECTRAL-PROFILE-STATISTIC: Test plotting the multi-spectral profiles with setting multi statistics in one region", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
@@ -163,6 +163,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             let FirstStatisticsSpectralProfile = temp1.SpectralProfileData.slice(-1)[0];
             expect(FirstStatisticsSpectralProfile.regionId).toEqual(1);
             expect(FirstStatisticsSpectralProfile.progress).toEqual(1);
+            expect(FirstStatisticsSpectralProfile.profiles[0].statsType).toEqual(CARTA.StatsType.Mean);
             expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[0].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[0].value,assertItem.precisionDigits);
             expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[1].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[1].value,assertItem.precisionDigits);
             expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[2].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[2].value,assertItem.precisionDigits);
@@ -172,6 +173,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             let SecondStatisticsSpectralProfile = temp2.SpectralProfileData.slice(-1)[0];
             expect(SecondStatisticsSpectralProfile.regionId).toEqual(1);
             expect(SecondStatisticsSpectralProfile.progress).toEqual(1);
+            expect(SecondStatisticsSpectralProfile.profiles[0].statsType).toEqual(CARTA.StatsType.RMS);
             expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
             expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
             expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
@@ -183,6 +185,7 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             let ThirdStatisticsSpectralProfile = temp3.SpectralProfileData.slice(-1)[0];
             expect(ThirdStatisticsSpectralProfile.regionId).toEqual(1);
             expect(ThirdStatisticsSpectralProfile.progress).toEqual(1);
+            expect(ThirdStatisticsSpectralProfile.profiles[0].statsType).toEqual(CARTA.StatsType.Sigma);
             expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[6].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[6].value,assertItem.precisionDigits);
             expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[7].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[7].value,assertItem.precisionDigits);
             expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[8].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[8].value,assertItem.precisionDigits);
