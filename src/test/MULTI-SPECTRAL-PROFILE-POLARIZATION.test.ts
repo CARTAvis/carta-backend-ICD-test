@@ -2,7 +2,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout = config.timeout.openFile;
@@ -37,7 +37,7 @@ let assertItem: AssertItem = {
         fileId: 0,
         compressionQuality: 11,
         compressionType: CARTA.CompressionType.ZFP,
-        tiles: [16777216, 16781312, 16777217, 16781313],
+        tiles: [33558529,33558528, 33554433,33554432,33562625,33558530,33562624,33554434,33562626],
     },
     setRegion: {
         fileId: 0,
@@ -54,7 +54,25 @@ let assertItem: AssertItem = {
             regionId: 1,
             spectralProfiles: [
                 {
-                    coordinate: "z",
+                    coordinate: "Iz",
+                    statsTypes: [
+                        CARTA.StatsType.Mean,
+                    ],
+                }
+            ],
+        },
+        {
+            fileId: 0,
+            regionId: 1,
+            spectralProfiles: [
+                {
+                    coordinate: "Iz",
+                    statsTypes: [
+                        CARTA.StatsType.Mean,
+                    ],
+                },
+                {
+                    coordinate: "Qz",
                     statsTypes: [
                         CARTA.StatsType.Mean,
                     ],
@@ -78,62 +96,50 @@ let assertItem: AssertItem = {
                     ],
                 },
                 {
-                    coordinate: "z",
+                    coordinate: "Uz",
                     statsTypes: [
                         CARTA.StatsType.Mean,
                     ],
                 },
             ],
         },
-        {
-            fileId: 0,
-            regionId: 1,
-            spectralProfiles: [
-                {
-                    coordinate: "Iz",
-                    statsTypes: [
-                        CARTA.StatsType.Mean,
-                    ],
-                }
-            ],
-        },
     ],
     ReturnSpectralProfileData: [
         {
             index: 0,
-            value: -0.0007642408502170499,
+            value: 0.0007088588552472904,
         },
         {
-            index: 100,
-            value: 0.014224687421439227,
+            index: 2,
+            value: 0.0012602472319775562,
         },
         {
-            index: 200,
-            value: 0.0,
-        },
-        {
-            index: 0,
-            value: 0.0062467408097798246,
-        },
-        {
-            index: 100,
-            value: 0.06037216936383088,
-        },
-        {
-            index: 200,
-            value: 0.0,
+            index: 4,
+            value: 0.0007855336842870678,
         },
         {
             index: 0,
-            value: 0.0062001189561202924,
+            value: -0.00012210526080733863,
         },
         {
-            index: 100,
-            value: 0.05867533210175882,
+            index: 2,
+            value: -0.000033854758947925195,
         },
         {
-            index: 200,
-            value: 0.0,
+            index: 4,
+            value: -0.000008830321254663674,
+        },
+        {
+            index: 0,
+            value: 0.000010325868837087967,
+        },
+        {
+            index: 2,
+            value: -0.0000024363279953331134,
+        },
+        {
+            index: 4,
+            value: 0.000031310824961024904,
         },
     ],
 };
@@ -168,36 +174,37 @@ describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially ma
             expect(RegionResponse1.regionId).toEqual(1);
         });
 
-        // test(`Plot two statistics in the spectral profiles and check the values`, async()=>{
-        //     await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[0]);
-        //     let temp1 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
-        //     let FirstStatisticsSpectralProfile = temp1.SpectralProfileData.slice(-1)[0];
-        //     expect(FirstStatisticsSpectralProfile.regionId).toEqual(1);
-        //     expect(FirstStatisticsSpectralProfile.progress).toEqual(1);
-        //     expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[0].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[0].value,assertItem.precisionDigits);
-        //     expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[1].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[1].value,assertItem.precisionDigits);
-        //     expect(FirstStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[2].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[2].value,assertItem.precisionDigits);
+        test(`Plot two polarizations in the spectral profiles and check the values`, async()=>{
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[0]);
+            let temp1 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let FirstPolarizationSpectralProfile = temp1.SpectralProfileData.slice(-1)[0];
+            expect(FirstPolarizationSpectralProfile.regionId).toEqual(1);
+            expect(FirstPolarizationSpectralProfile.progress).toEqual(1);
+            expect(FirstPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[0].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[0].value,assertItem.precisionDigits);
+            expect(FirstPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[1].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[1].value,assertItem.precisionDigits);
+            expect(FirstPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[2].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[2].value,assertItem.precisionDigits);
 
-        //     await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[1]);
-        //     let temp2 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
-        //     let SecondStatisticsSpectralProfile = temp2.SpectralProfileData.slice(-1)[0];
-        //     expect(SecondStatisticsSpectralProfile.regionId).toEqual(1);
-        //     expect(SecondStatisticsSpectralProfile.progress).toEqual(1);
-        //     expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
-        //     expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
-        //     expect(SecondStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
-        // });
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[1]);
+            let temp2 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let SecondPolarizationSpectralProfile = temp2.SpectralProfileData.slice(-1)[0];
+            expect(SecondPolarizationSpectralProfile.regionId).toEqual(1);
+            expect(SecondPolarizationSpectralProfile.progress).toEqual(1);
+            expect(SecondPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[3].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[3].value,assertItem.precisionDigits);
+            expect(SecondPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[4].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[4].value,assertItem.precisionDigits);
+            expect(SecondPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[5].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[5].value,assertItem.precisionDigits);
+        });
 
-        // test(`Plot two statistics in the spectral profiles within one SetSpectralRequirement request and check the values`,async()=>{
-        //     await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[2]);
-        //     let temp3 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
-        //     let ThirdStatisticsSpectralProfile = temp3.SpectralProfileData.slice(-1)[0];
-        //     expect(ThirdStatisticsSpectralProfile.regionId).toEqual(1);
-        //     expect(ThirdStatisticsSpectralProfile.progress).toEqual(1);
-        //     expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[6].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[6].value,assertItem.precisionDigits);
-        //     expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[7].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[7].value,assertItem.precisionDigits);
-        //     expect(ThirdStatisticsSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[8].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[8].value,assertItem.precisionDigits);
-        // });
+        test(`Plot three polarizations in the spectral profiles within one SetSpectralRequirement request and check the values`,async()=>{
+            await Connection.send(CARTA.SetSpectralRequirements,assertItem.setSpectralRequirements[2]);
+            let temp3 = await Connection.streamUntil((type, data) => type == CARTA.SpectralProfileData && data.progress == 1);
+            let ThirdPolarizationSpectralProfile = temp3.SpectralProfileData.slice(-1)[0];
+            expect(ThirdPolarizationSpectralProfile.regionId).toEqual(1);
+            expect(ThirdPolarizationSpectralProfile.progress).toEqual(1);
+            expect(ThirdPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[6].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[6].value,assertItem.precisionDigits);
+            expect(ThirdPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[7].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[7].value,assertItem.precisionDigits);
+            expect(ThirdPolarizationSpectralProfile.profiles[0].values[assertItem.ReturnSpectralProfileData[8].index]).toBeCloseTo(assertItem.ReturnSpectralProfileData[8].value,assertItem.precisionDigits);
+        
+        });
     });
 
     afterAll(() => Connection.close());
