@@ -172,7 +172,7 @@ let assertItem: AssertItem = {
     ],
 };
 
-describe("MATCH_SPATIAL: Test cursor value and spatial profile with spatially matched images", () => {
+describe("MULTI-SPECTRAL-PROFILE-IMAGE: Test plotting the multi-spectral profiles with two matched images", () => {
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
