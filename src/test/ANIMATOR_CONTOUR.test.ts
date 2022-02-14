@@ -190,9 +190,9 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     );
                 };
                 // Pick up the streaming messages
-                // Channel 11 & 12: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
-                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length * 2 + 4 + 2 + 2);
-
+                // Channel 11 & 12: RasterTileData + RasterTileSync(start & end) + ContourImageData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length * 2 + 4 + 4 + 2);
+                
                 // Send StopAnimator
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
@@ -269,8 +269,8 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     // console.log(contourImageData)
                 };
                 // Pick up the streaming messages
-                // Channel 8 & 7: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData + ContourImageData
-                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length * 2 + 4 + 2 + 2 + 2);
+                // Channel 8 & 7: RasterTileData + RasterTileSync(start & end) + ContourImageData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length *  2 + 4 + 4 + 2);
 
                 // Send StopAnimator
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[1]);
