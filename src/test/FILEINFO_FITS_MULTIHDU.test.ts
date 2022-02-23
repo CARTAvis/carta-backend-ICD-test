@@ -58,6 +58,8 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "MJy/sr" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
+                    { name: "Right Ascension Range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "Declination Range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
                     { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
@@ -155,6 +157,8 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "MJy/sr" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
+                    { name: "Right Ascension Range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "Declination Range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
                     { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
@@ -252,6 +256,8 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "1" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
+                    { name: "Right Ascension Range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "Declination Range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
                     { name: "XTENSION", value: "IMAGE", comment: ' Java FITS: Wed Oct 01 10:15:59 CEST 2014' },
