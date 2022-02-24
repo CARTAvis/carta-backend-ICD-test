@@ -50,7 +50,7 @@
         "openCatalogLarge": 100000,
         "concatStokes": 3000,
         "openLargeFiles": 60000,
-        "pvRequest": 10000
+        "pvRequest": 12000
     },
     "repeat": {
         "concurrent": 10,
