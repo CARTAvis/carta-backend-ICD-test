@@ -98,7 +98,7 @@ let assertItem: AssertItem = {
     imageDataSequence2: [178,5,40,1,83,169,68,79,96,83,72]
 };
 
-describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
+describe("PV_GENERATOR_CASA:Testing PV generator with .image file.", () => {
 
     let Connection: Client;
     beforeAll(async () => {
