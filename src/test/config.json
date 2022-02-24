@@ -49,7 +49,8 @@
         "spectralLineRequestWide": 60000,
         "openCatalogLarge": 100000,
         "concatStokes": 3000,
-        "openLargeFiles": 60000
+        "openLargeFiles": 60000,
+        "pvRequest": 10000
     },
     "repeat": {
         "concurrent": 10,
