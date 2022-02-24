@@ -158,6 +158,9 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             let TilesResponse = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
             let Tile1 = TilesResponse.RasterTileData[0];
+            expect(Tile1.tiles[0].layer).toEqual(1);
+            expect(Tile1.tiles[0].width).toEqual(145);
+            expect(Tile1.tiles[0].x).toEqual(1);
             for (let i=0; i<assertItem.imageData1.length; i++) {
                 expect(Tile1.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData1[i]);
             }
@@ -166,6 +169,9 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
             }
             
             let Tile2 = TilesResponse.RasterTileData[1];
+            expect(Tile2.tiles[0].layer).toEqual(1);
+            expect(Tile2.tiles[0].width).toEqual(256);
+            expect(Tile2.tiles[0].height).toEqual(250);
             for (let i=0; i<assertItem.imageData2.length; i++) {
                 expect(Tile2.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData2[i]);
             }
