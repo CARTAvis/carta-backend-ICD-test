@@ -8,7 +8,7 @@ let testServerUrl: string = config.serverURL0;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let readTimeout: number = config.timeout.readFile;
-let messageTimeout: number = config.timeout.messageEvent;
+let PVTimeout: number = config.timeout.pvRequest;
 
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
@@ -19,6 +19,11 @@ interface AssertItem {
     setSpatialReq: CARTA.ISetSpatialRequirements[];
     setRegion: CARTA.ISetRegion[];
     setPVRequest: CARTA.IPvRequest;
+    imageDataIndex: number[];
+    imageData1: number[];
+    imageDataSequence1: number[];
+    imageData2: number[];
+    imageDataSequence2: number[];
 };
 
 let assertItem: AssertItem = {
@@ -86,6 +91,11 @@ let assertItem: AssertItem = {
         regionId:1,
         width:3,
     },
+    imageDataIndex: [0,2500,5000,7500,10000,15000,20000,25000],
+    imageData1: [243,79,158,57,153,57,47,144],
+    imageDataSequence1: [243,216,6,114,144,11,20,192,82,21,57],
+    imageData2: [239,10,170,6,135,250,209,230],
+    imageDataSequence2: [178,5,40,1,83,169,68,79,96,83,72]
 };
 
 describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
@@ -102,7 +112,7 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
     });
 
     describe(`Go to "${assertItem.filelist.directory}" folder`, () => {
-        beforeAll(async () => {
+        test(`(step 1): Open File`,async () => {
             await Connection.send(CARTA.CloseFile, { fileId: -1 });
             let OpenFileResponse = await Connection.openFile(assertItem.openFile);
             expect(OpenFileResponse.OpenFileAck.success).toEqual(true);
@@ -111,71 +121,58 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
 
         }, readTimeout);
 
-        test(`(step 2)`, async()=>{
+        test(`(step 2): set cursor and add required tiles`, async()=>{
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[0]);
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[0]);
             await Connection.stream(4);
             // await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
         })
 
-        // test(`step 3:SET_SPATIAL_REQUIREMENTS`, async()=>{
-        //     await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
-        //     let t3 = await Connection.receiveAny();
-        //     // console.log(t3);
-        // });
+        test(`(step 3): set SET_SPATIAL_REQUIREMENTS`, async()=>{
+            await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
+            let SpatialProfileDataResponse = await Connection.receive(CARTA.SpatialProfileData);
+        });
 
-        // test(`Step 4:SET_REGION`,async()=>{
-        //     await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
-        //     let t4 = await Connection.receiveAny();
-        //     console.log(t4);
-        // });
+        test(`(Step 4): set SET_REGION`,async()=>{
+            await Connection.send(CARTA.SetRegion, assertItem.setRegion[0]);
+            let RegionResponse = await Connection.receive(CARTA.SetRegionAck);
+            expect(RegionResponse.regionId).toEqual(1);
+            expect(RegionResponse.success).toEqual(true);
+        });
 
-        // test(`Step 5:PV Request`, async()=>{
-        //     await Connection.send(CARTA.PvRequest, assertItem.setPVRequest);
-        //     let PVresponse = await Connection.receive(CARTA.PvResponse);
-        //     let ReceiveProgress = PVresponse.progress;
-        //     if (ReceiveProgress != 1) {
-        //         while (ReceiveProgress < 1) {
-        //             PVresponse = await Connection.receive(CARTA.PvResponse);
-        //             ReceiveProgress = PVresponse.progress;
-        //             console.warn('' + assertItem.openFile.file + ' Catalog loading progress :', ReceiveProgress);
-        //         };
-        //     };
-        // },100000)
+        test(`(Step 5): PV Request`, async()=>{
+            await Connection.send(CARTA.PvRequest, assertItem.setPVRequest);
+            let PVresponse = await Connection.receive(CARTA.PvResponse);
+            let ReceiveProgress = PVresponse.progress;
+            if (ReceiveProgress != 1) {
+                while (ReceiveProgress < 1) {
+                    PVresponse = await Connection.receive(CARTA.PvResponse);
+                    ReceiveProgress = PVresponse.progress;
+                    console.warn('' + assertItem.openFile.file + ' PV response progress :', ReceiveProgress);
+                };
+            };
+        },PVTimeout)
 
-        // test(`Step 6: default after PV`, async()=>{
-        //     await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
-        //     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
-        //     let t6 = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        //     let t61 = t6.RasterTileData[0];
-        //     // console.log(t61);
-        //     // console.log(t61.tiles[0].imageData[0])
-        //     // console.log(t61.tiles[0].imageData[2500]);
-        //     // console.log(t61.tiles[0].imageData[5000]);
-        //     // console.log(t61.tiles[0].imageData[7500]);
-        //     // console.log(t61.tiles[0].imageData[10000]);
-        //     // console.log(t61.tiles[0].imageData[15000]);
-        //     // console.log(t61.tiles[0].imageData[20000]);
-        //     // console.log(t61.tiles[0].imageData[25000]);
-        //     // console.log("============================")
-        //     // for (let i = 18800; i <= 18810; i++) {
-        //     //     console.log(t61.tiles[0].imageData[i]);
-        //     // }
-        //     let t62 = t6.RasterTileData[1];
-        //     console.log(t62);
-        //     console.log(t62.tiles[0].imageData[0])
-        //     console.log(t62.tiles[0].imageData[2500]);
-        //     console.log(t62.tiles[0].imageData[5000]);
-        //     console.log(t62.tiles[0].imageData[7500]);
-        //     console.log(t62.tiles[0].imageData[10000]);
-        //     console.log(t62.tiles[0].imageData[15000]);
-        //     console.log(t62.tiles[0].imageData[20000]);
-        //     console.log(t62.tiles[0].imageData[25000]);
-        //     console.log("============================")
-        //     for (let i = 35500; i <= 35510; i++) {
-        //         console.log(t62.tiles[0].imageData[i]);
-        //     }
-        // })
+        test(`(Step 6): request 2 tiles after PV response`, async()=>{
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+            let TilesResponse = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            let Tile1 = TilesResponse.RasterTileData[0];
+            for (let i=0; i<assertItem.imageData1.length; i++) {
+                expect(Tile1.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData1[i]);
+            }
+            for (let i = 0; i <= 10; i++) {
+                expect(Tile1.tiles[0].imageData[i+18800]).toEqual(assertItem.imageDataSequence1[i]);
+            }
+            
+            let Tile2 = TilesResponse.RasterTileData[1];
+            for (let i=0; i<assertItem.imageData2.length; i++) {
+                expect(Tile2.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData2[i]);
+            }
+            for (let i = 0; i <= 10; i++) {
+                expect(Tile2.tiles[0].imageData[i+35500]).toEqual(assertItem.imageDataSequence2[i]);
+            }
+        })
 
     });
 
