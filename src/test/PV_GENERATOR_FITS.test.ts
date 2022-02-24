@@ -34,7 +34,7 @@ let assertItem: AssertItem = {
     filelist: { directory: testSubdirectory },
     openFile: {
         directory: testSubdirectory,
-        file: "HD163296_CO_2_1.image",
+        file: "HD163296_CO_2_1.fits",
         hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -153,7 +153,7 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
             };
         },PVTimeout)
 
-        test(`(Step 6): request 2 tiles after PV response`, async()=>{
+        test(`(Step 6 & 7): request 2 tiles after PV response`, async()=>{
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
             await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
             let TilesResponse = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
