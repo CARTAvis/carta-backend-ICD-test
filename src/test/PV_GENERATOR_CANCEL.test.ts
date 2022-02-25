@@ -102,7 +102,7 @@ let assertItem: AssertItem = {
     },
 };
 
-describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
+describe("PV_GENERATOR_CANCEL: cancel PV request and request it again", () => {
 
     let Connection: Client;
     beforeAll(async () => {
