@@ -154,7 +154,10 @@ describe("PV_GENERATOR_CASA:Testing PV generator with .image file.", () => {
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
                     }
                 };
-            };
+            } else {
+                let PVRegionHistogramResponse = await Connection.receiveAny();
+                let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+            }
         },PVTimeout)
 
         test(`(Step 6 & 7): request 2 tiles after PV response`, async()=>{

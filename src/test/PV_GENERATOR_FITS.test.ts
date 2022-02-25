@@ -154,7 +154,10 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
                     }
                 };
-            };
+            } else {
+                let PVRegionHistogramResponse = await Connection.receiveAny();
+                let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+            }
         },PVTimeout)
 
         test(`(Step 6 & 7): request 2 tiles after PV response`, async()=>{
