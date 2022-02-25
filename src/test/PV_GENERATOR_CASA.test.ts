@@ -154,7 +154,7 @@ describe("PV_GENERATOR_CASA:Testing PV generator with .image file.", () => {
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
                     }
                 };
-            } else {
+            } else if (ReceiveProgress === 1) {
                 let PVRegionHistogramResponse = await Connection.receiveAny();
                 let finalPVResponse = await Connection.receive(CARTA.PvResponse);
             }

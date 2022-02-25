@@ -154,7 +154,7 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
                     }
                 };
-            } else {
+            } else if (ReceiveProgress === 1) {
                 let PVRegionHistogramResponse = await Connection.receiveAny();
                 let finalPVResponse = await Connection.receive(CARTA.PvResponse);
             }
