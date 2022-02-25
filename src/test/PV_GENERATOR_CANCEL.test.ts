@@ -166,32 +166,53 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
             
         },PVTimeout)
 
-        // test(`(Step 6 & 7): request 2 tiles after PV response`, async()=>{
-        //     await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
-        //     await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
-        //     let TilesResponse = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-        //     let Tile1 = TilesResponse.RasterTileData[0];
-        //     expect(Tile1.tiles[0].layer).toEqual(1);
-        //     expect(Tile1.tiles[0].width).toEqual(145);
-        //     expect(Tile1.tiles[0].x).toEqual(1);
-        //     for (let i=0; i<assertItem.imageData1.length; i++) {
-        //         expect(Tile1.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData1[i]);
-        //     }
-        //     for (let i = 0; i <= 10; i++) {
-        //         expect(Tile1.tiles[0].imageData[i+18800]).toEqual(assertItem.imageDataSequence1[i]);
-        //     }
+        test(`(Step 6): Request PV Request again`, async()=>{
+            await Connection.send(CARTA.PvRequest, assertItem.setPVRequest);
+            let PVresponse = await Connection.receive(CARTA.PvProgress);
+            let ReceiveProgress = PVresponse.progress;
+            if (ReceiveProgress != 1) {
+                while (ReceiveProgress < 1) {
+                    PVresponse = await Connection.receive(CARTA.PvProgress);
+                    ReceiveProgress = PVresponse.progress;
+                    console.warn('Re-request ' + assertItem.openFile.file + ' PV response progress :', ReceiveProgress);
+                    if (ReceiveProgress === 1) {
+                        let PVRegionHistogramResponse = await Connection.receiveAny();
+                        let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+                    }
+                };
+            } else if (ReceiveProgress === 1) {
+                let PVRegionHistogramResponse = await Connection.receiveAny();
+                let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+            }
             
-        //     let Tile2 = TilesResponse.RasterTileData[1];
-        //     expect(Tile2.tiles[0].layer).toEqual(1);
-        //     expect(Tile2.tiles[0].width).toEqual(256);
-        //     expect(Tile2.tiles[0].height).toEqual(250);
-        //     for (let i=0; i<assertItem.imageData2.length; i++) {
-        //         expect(Tile2.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData2[i]);
-        //     }
-        //     for (let i = 0; i <= 10; i++) {
-        //         expect(Tile2.tiles[0].imageData[i+35500]).toEqual(assertItem.imageDataSequence2[i]);
-        //     }
-        // })
+        },PVTimeout)
+
+        test(`(Step 7 & 8): request 2 tiles after PV response`, async()=>{
+            await Connection.send(CARTA.SetCursor, assertItem.setCursor[1]);
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq[1]);
+            let TilesResponse = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            let Tile1 = TilesResponse.RasterTileData[0];
+            expect(Tile1.tiles[0].layer).toEqual(1);
+            expect(Tile1.tiles[0].width).toEqual(145);
+            expect(Tile1.tiles[0].x).toEqual(1);
+            for (let i=0; i<assertItem.imageData1.length; i++) {
+                expect(Tile1.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData1[i]);
+            }
+            for (let i = 0; i <= 10; i++) {
+                expect(Tile1.tiles[0].imageData[i+18800]).toEqual(assertItem.imageDataSequence1[i]);
+            }
+            
+            let Tile2 = TilesResponse.RasterTileData[1];
+            expect(Tile2.tiles[0].layer).toEqual(1);
+            expect(Tile2.tiles[0].width).toEqual(256);
+            expect(Tile2.tiles[0].height).toEqual(250);
+            for (let i=0; i<assertItem.imageData2.length; i++) {
+                expect(Tile2.tiles[0].imageData[assertItem.imageDataIndex[i]]).toEqual(assertItem.imageData2[i]);
+            }
+            for (let i = 0; i <= 10; i++) {
+                expect(Tile2.tiles[0].imageData[i+35500]).toEqual(assertItem.imageDataSequence2[i]);
+            }
+        })
 
     });
 
