@@ -142,13 +142,17 @@ describe("PV_GENERATOR_FITS:Testing PV generator with fits file.", () => {
 
         test(`(Step 5): PV Request`, async()=>{
             await Connection.send(CARTA.PvRequest, assertItem.setPVRequest);
-            let PVresponse = await Connection.receive(CARTA.PvResponse);
+            let PVresponse = await Connection.receive(CARTA.PvProgress);
             let ReceiveProgress = PVresponse.progress;
             if (ReceiveProgress != 1) {
                 while (ReceiveProgress < 1) {
-                    PVresponse = await Connection.receive(CARTA.PvResponse);
+                    PVresponse = await Connection.receive(CARTA.PvProgress);
                     ReceiveProgress = PVresponse.progress;
                     console.warn('' + assertItem.openFile.file + ' PV response progress :', ReceiveProgress);
+                    if (ReceiveProgress === 1) {
+                        let PVRegionHistogramResponse = await Connection.receiveAny();
+                        let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+                    }
                 };
             };
         },PVTimeout)
