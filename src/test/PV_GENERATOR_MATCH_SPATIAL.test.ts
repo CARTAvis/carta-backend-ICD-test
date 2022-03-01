@@ -169,6 +169,12 @@ describe("PV_GENERATOR_MATCH_SPATIAL:Testing PV generator with two spatially mat
                     if (ReceiveProgress === 1) {
                         let PVRegionHistogramResponse = await Connection.receiveAny();
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+                        expect(PVRegionHistogramResponse.fileId).toEqual(1000);
+                        expect(PVRegionHistogramResponse.regionId).toEqual(-1);
+                        expect(PVRegionHistogramResponse.progress).toEqual(1);
+                        expect(finalPVResponse.openFileAck.fileId).toEqual(1000);
+                        expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("HD163296_CO_2_1_pv.fits");
+                        expect(finalPVResponse.success).toEqual(true)
                     }
                 };
             } else if (ReceiveProgress === 1) {
@@ -189,6 +195,12 @@ describe("PV_GENERATOR_MATCH_SPATIAL:Testing PV generator with two spatially mat
                     if (ReceiveProgress === 1) {
                         let PVRegionHistogramResponse = await Connection.receiveAny();
                         let finalPVResponse = await Connection.receive(CARTA.PvResponse);
+                        expect(PVRegionHistogramResponse.fileId).toEqual(2000);
+                        expect(PVRegionHistogramResponse.regionId).toEqual(-1);
+                        expect(PVRegionHistogramResponse.progress).toEqual(1);
+                        expect(finalPVResponse.openFileAck.fileId).toEqual(2000);
+                        expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("HD163296_CO_2_1_pv.image");
+                        expect(finalPVResponse.success).toEqual(true)
                     }
                 };
             } else if (ReceiveProgress === 1) {
