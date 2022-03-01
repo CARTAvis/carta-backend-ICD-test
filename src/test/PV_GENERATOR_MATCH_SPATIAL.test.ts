@@ -18,11 +18,6 @@ interface AssertItem {
     setSpatialReq: CARTA.ISetSpatialRequirements[];
     setRegion: CARTA.ISetRegion[];
     setPVRequest: CARTA.IPvRequest[];
-    imageDataIndex: number[];
-    imageData1: number[];
-    imageDataSequence1: number[];
-    imageData2: number[];
-    imageDataSequence2: number[];
 };
 
 let assertItem: AssertItem = {
