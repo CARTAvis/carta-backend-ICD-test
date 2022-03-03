@@ -165,6 +165,7 @@ describe("PV_GENERATOR_CANCEL: cancel PV request and request it again", () => {
             } 
             
         },PVTimeout)
+        console.log(PVTimeout);
 
         test(`(Step 6): Request PV Request again`, async()=>{
             await Connection.send(CARTA.PvRequest, assertItem.setPVRequest);
