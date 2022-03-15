@@ -30,7 +30,7 @@
         "contour": 30000,
         "cubeHistogram": 60000,
         "cancel": 5000,
-        "concurrent": 4000,
+        "concurrent": 7000,
         "messageEvent": 500,
         "mouseEvent": 1000,
         "cursor": 500,
