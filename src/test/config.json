@@ -21,7 +21,7 @@
         "connection": 1100,
         "listFile": 1200,
         "openFile": 2100,
-        "readFile": 4100,
+        "readFile": 6000,
         "saveFile": 3000,
         "readLargeImage": 90000,
         "changeChannel": 3000,
