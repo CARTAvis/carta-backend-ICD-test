@@ -58,7 +58,7 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "MJy/sr" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
-                    { name: "RA range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "RA range", value: "[07:01:55.064, 07:15:06.258]" },
                     { name: "DEC range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
@@ -157,7 +157,7 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "MJy/sr" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
-                    { name: "RA range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "RA range", value: "[07:01:55.064, 07:15:06.258]" },
                     { name: "DEC range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
@@ -256,7 +256,7 @@ let assertItem: AssertItem = {
                     { name: "Celestial frame", value: "FK5, J2000" },
                     { name: "Pixel unit", value: "1" },
                     { name: "Pixel increment", value: "-14\", 14\"" },
-                    { name: "RA range", value: "[07:15:06.258, 07:01:59.873]" },
+                    { name: "RA range", value: "[07:01:55.064, 07:15:06.258]" },
                     { name: "DEC range", value: "[-12.14.22.907, -08.51.38.954]" },
                 ],
                 headerEntries: [
