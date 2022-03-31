@@ -52,7 +52,7 @@ export class MessageController {
         return MessageController.staticInstance;
     }
 
-    private static readonly IcdVersion = 24;
+    private static readonly IcdVersion = 26;
     private static readonly DefaultFeatureFlags = CARTA.ClientFeatureFlags.WEB_ASSEMBLY | CARTA.ClientFeatureFlags.WEB_GL;
     private static readonly MaxConnectionAttempts = 15;
     private static readonly ConnectionAttemptDelay = 1000;
