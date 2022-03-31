@@ -13,9 +13,6 @@ interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
     fileInfoRequest: CARTA.IFileInfoRequest;
     fileInfoResponse: CARTA.IFileInfoResponse;
-    lenComputedEntries: number;
-    lenHeaderEntries: number;
-    precisionDigit?: number;
 };
 
 let assertItem: AssertItem = {
@@ -27,7 +24,6 @@ let assertItem: AssertItem = {
         file: "M17_SWex.miriad",
         hdu: "",
     },
-    precisionDigit: 4,
     fileInfoResponse: {
         success: true,
         message: "",
@@ -45,11 +41,259 @@ let assertItem: AssertItem = {
                 depth: 25,
                 stokes: 1,
                 stokesVals: [],
+                computedEntries: [
+                    { name: "Name", value: "M17_SWex.miriad" },
+                    { name: "Shape", value: "[640, 800, 25, 1]" },
+                    {
+                        name: "Number of channels",
+                        value: "25",
+                        entryType: 2,
+                        numericValue: 25
+                    },
+                    {
+                        name: "Number of polarizations",
+                        value: "1",
+                        entryType: 2,
+                        numericValue: 1
+                    },
+                    { name: "Coordinate type", value: "Right Ascension, Declination" },
+                    { name: "Projection", value: "SIN" },
+                    { name: "Image reference pixels", value: "[321, 401]" },
+                    { name: "Image reference coords", value: "[18:20:21.0000, -016.12.10.0000]" },
+                    { name: "Image ref coords (deg)", value: "[275.088 deg, -16.2028 deg]" },
+                    { name: "Celestial frame", value: "FK5, J2000" },
+                    { name: "Spectral frame", value: "BARY" },
+                    { name: "Velocity definition", value: "RADIO" },
+                    { name: "Pixel unit", value: "Jy/beam" },
+                    { name: "Pixel increment", value: "-0.4\", 0.4\"" },
+                    { name: "Restoring beam", value: "2.06105\" X 1.49126\", -74.6267 deg" }
+                ],
+                headerEntries: [
+                    {
+                        name: 'XTENSION',
+                        value: 'IMAGE',
+                        comment: 'IMAGE extension'
+                      },
+                    { name: "BITPIX", value: "-32", entryType: 2, numericValue: -32, comment: 'Floating point (32 bit)' },
+                    { name: "NAXIS", value: "4", entryType: 2, numericValue: 4 },
+                    { name: "NAXIS1", value: "640", entryType: 2, numericValue: 640 },
+                    { name: "NAXIS2", value: "800", entryType: 2, numericValue: 800 },
+                    { name: "NAXIS3", value: "25", entryType: 2, numericValue: 25 },
+                    { name: "NAXIS4", value: "1", entryType: 2, numericValue: 1 },
+                    { name: 'PCOUNT', value: '0', entryType: 2 },
+                    {
+                        name: 'GCOUNT',
+                        value: '1',
+                        entryType: 2,
+                        numericValue: 1
+                      },
+                    {
+                        name: "BSCALE",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1,
+                        comment: 'PHYSICAL = PIXEL*BSCALE + BZERO'
+                    },
+                    {
+                        name: "BZERO",
+                        value: "0.000000000000E+00",
+                        entryType: 1,
+                    },
+                    {
+                        name: "BMAJ",
+                        value: "5.725135932445E-04",
+                        entryType: 1,
+                        numericValue: 0.0005725135932445429
+                    },
+                    {
+                        name: "BMIN",
+                        value: "4.142385813538E-04",
+                        entryType: 1,
+                        numericValue: 0.00041423858135383447
+                    },
+                    {
+                        name: "BPA",
+                        value: "-7.462673187256E+01",
+                        entryType: 1,
+                        numericValue: -74.6267318725586
+                    },
+                    { name: "BTYPE", value: "Intensity" },
+                    { name: "OBJECT" },
+                    { name: "BUNIT", value: "Jy/beam", comment: 'Brightness (pixel) unit' },
+                    {
+                        name: "EQUINOX",
+                        value: "2000.0",
+                        entryType: 1,
+                        numericValue: 2000
+                    },
+                    { name: "RADESYS", value: "FK5" },
+                    {
+                        name: "LONPOLE",
+                        value: "1.800000000000E+02",
+                        entryType: 1,
+                        numericValue: 180
+                    },
+                    {
+                        name: "LATPOLE",
+                        value: "-1.620277777779E+01",
+                        entryType: 1,
+                        numericValue: -16.202777777790004
+                    },
+                    {
+                        name: "PC1_1",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC2_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC3_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC4_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_2", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC2_2",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC3_2", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC4_2", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_3", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC2_3", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC3_3",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "PC4_3", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC1_4", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC2_4", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PC3_4", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "PC4_4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "CTYPE1", value: "RA---SIN" },
+                    {
+                        name: "CRVAL1",
+                        value: "2.750875000001E+02",
+                        entryType: 1,
+                        numericValue: 275.08750000009996
+                    },
+                    {
+                        name: "CDELT1",
+                        value: "-1.111111111111E-04",
+                        entryType: 1,
+                        numericValue: -0.00011111111111110002
+                    },
+                    { name: "CRPIX1", value: "321.0", entryType: 1, numericValue: 321 },
+                    { name: "CUNIT1", value: "deg" },
+                    { name: "CTYPE2", value: "DEC--SIN" },
+                    {
+                        name: "CRVAL2",
+                        value: "-1.620277777779E+01",
+                        entryType: 1,
+                        numericValue: -16.202777777790004
+                    },
+                    {
+                        name: "CDELT2",
+                        value: "1.111111111111E-04",
+                        entryType: 1,
+                        numericValue: 0.00011111111111110002
+                    },
+                    { name: "CRPIX2", value: "401.0", entryType: 1, numericValue: 401 },
+                    { name: "CUNIT2", value: "deg" },
+                    { name: "CTYPE3", value: "FREQ" },
+                    {
+                        name: "CRVAL3",
+                        value: "8.675139618840E+10",
+                        entryType: 1,
+                        numericValue: 86751396188.40004
+                    },
+                    {
+                        name: "CDELT3",
+                        value: "-2.442377011414E+05",
+                        entryType: 1,
+                        numericValue: -244237.7011414
+                    },
+                    { name: "CRPIX3", value: "1.0", entryType: 1, numericValue: 1 },
+                    { name: "CUNIT3", value: "Hz" },
+                    { name: "CTYPE4", value: "STOKES" },
+                    {
+                        name: "CRVAL4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    {
+                        name: "CDELT4",
+                        value: "1.000000000000E+00",
+                        entryType: 1,
+                        numericValue: 1
+                    },
+                    { name: "CRPIX4", value: "1.0", entryType: 1, numericValue: 1 },
+                    { name: "CUNIT4" },
+                    { name: "PV2_1", value: "0.000000000000E+00", entryType: 1 },
+                    { name: "PV2_2", value: "0.000000000000E+00", entryType: 1 },
+                    {
+                        name: "RESTFRQ",
+                        value: "8.675429000000E+10",
+                        entryType: 1,
+                        numericValue: 86754290000.00003,
+                        comment: 'Rest Frequency (Hz)'
+                    },
+                    { name: "SPECSYS", value: "BARYCENT", comment: 'Spectral reference frame' },
+                    {
+                        name: "ALTRVAL",
+                        value: "9.999999914138E+03",
+                        entryType: 1,
+                        numericValue: 9999.999914137677,
+                        comment: 'Alternate frequency reference value'
+                    },
+                    {
+                        name: "ALTRPIX",
+                        value: "1.0",
+                        entryType: 1, numericValue: 1,
+                        comment: 'Alternate frequency reference pixel'
+                    },
+                    {
+                        name: "VELREF",
+                        value: "258",
+                        entryType: 2,
+                        numericValue: 258,
+                        comment: '1 LSR, 2 HEL, 3 OBS, +256 Radio'
+                    },
+                    {
+                        name: "COMMENT",
+                        comment: 'casacore non-standard usage: 4 LSD, 5 GEO, 6 SOU, 7 GAL'
+                    },
+                    { name: "TELESCOP", value: "ALMA" },
+                    { name: "DATE-OBS", value: "2016-04-03T13:02:58.799982" },
+                    { name: "TIMESYS", value: "UTC" },
+                    {
+                        name: "OBSGEO-X",
+                        value: "2225142.180269",
+                        entryType: 1,
+                        numericValue: 2225142.180269
+                    },
+                    {
+                        name: "OBSGEO-Y",
+                        value: "-5440307.370349",
+                        entryType: 1,
+                        numericValue: -5440307.370349
+                    },
+                    {
+                        name: "OBSGEO-Z",
+                        value: "-2481029.851874",
+                        entryType: 1,
+                        numericValue: -2481029.851874
+                    },
+                ],
             },
         },
     },
-    lenComputedEntries: 15,
-    lenHeaderEntries: 70,
 };
 
 describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly delivered by the backend", () => {
@@ -126,29 +370,32 @@ describe("FILEINFO_MIRIAD: Testing if info of an MIRIAD image file is correctly 
                 expect(FileInfoResponse.fileInfoExtended[''].stokesVals).toEqual(assertItem.fileInfoResponse.fileInfoExtended[''].stokesVals);
             });
 
-            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.lenComputedEntries}`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].computedEntries.length).toEqual(assertItem.lenComputedEntries);
+            test(`len(FILE_INFO_RESPONSE.file_info_extended.computed_entries)==${assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.length}`, () => {
+                expect(FileInfoResponse.fileInfoExtended[''].computedEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.length);
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.computed_entries`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].computedEntries).toMatchSnapshot();
+                assertItem.fileInfoResponse.fileInfoExtended[''].computedEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    if (isNaN(parseFloat(entry.value))){
+                        expect(FileInfoResponse.fileInfoExtended[''].computedEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
+                    } else {
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended[''].computedEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
+                    }
+                });
             });
 
-            test(`len(file_info_extended.header_entries)==${assertItem.lenHeaderEntries}`, () => {
-                expect(FileInfoResponse.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.lenHeaderEntries)
+            test(`len(file_info_extended.header_entries)==${assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.length}`, () => {
+                expect(FileInfoResponse.fileInfoExtended[''].headerEntries.length).toEqual(assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.length)
             });
 
             test(`assert FILE_INFO_RESPONSE.file_info_extended.header_entries`, () => {
-                FileInfoResponse.fileInfoExtended[''].headerEntries.map(item => {
-                    if(item["numericValue"]){
-                        expect(item).toMatchSnapshot({
-                            numericValue: expect.any(Number),
-                        });
-                        expect(item["numericValue"].toExponential(assertItem.precisionDigit)).toMatchSnapshot();;
+                assertItem.fileInfoResponse.fileInfoExtended[''].headerEntries.map((entry: CARTA.IHeaderEntry, index) => {
+                    if (isNaN(parseFloat(entry.value)) && entry.value != undefined){
+                        expect(FileInfoResponse.fileInfoExtended[''].headerEntries.find(f => f.name == entry.name).value).toEqual(entry.value);
                     } else {
-                        expect(item).toMatchSnapshot();
+                        expect(parseFloat(FileInfoResponse.fileInfoExtended[''].headerEntries.find(f => f.name == entry.name).value)).toEqual(parseFloat(entry.value));
                     }
-                })
+                });
             });
         });
     });

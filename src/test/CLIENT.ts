@@ -9,7 +9,7 @@ export interface IOpenFile {
     RegionHistogramData: CARTA.RegionHistogramData;
 }
 export class Client {
-    IcdVersion: number = 24;
+    IcdVersion: number = 26;
     CartaType = new Map<number, any>([
         [0, CARTA.ErrorData],
         [1, CARTA.RegisterViewer],
@@ -80,6 +80,10 @@ export class Client {
         [72, CARTA.StopFileList],
         [73, CARTA.SplataloguePing],
         [74, CARTA.SplataloguePong],
+        [75, CARTA.PvRequest],
+        [76, CARTA.PvResponse],
+        [77, CARTA.PvProgress],
+        [78, CARTA.StopPvCalc],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
@@ -466,6 +470,8 @@ export class Client {
             MomentResponse: [],
             MomentProgress: [],
             SpectralLineResponse: [],
+            PvProgress: [],
+            PvResponse: [],
         };
 
         return new Promise<AckStream>((resolve, reject) => {
@@ -531,6 +537,12 @@ export class Client {
                         break;
                     case CARTA.SpectralLineResponse:
                         ack.SpectralLineResponse.push(data);
+                        break;
+                    case CARTA.PvProgress:
+                        ack.PvProgress.push(data);
+                        break;
+                    case CARTA.PvResponse:
+                        ack.PvResponse.push(data);
                         break;
                 }
                 if (isDone(eventType, data, ack)) {
@@ -680,6 +692,8 @@ export interface AckStream {
     MomentResponse: CARTA.MomentResponse[];
     MomentProgress: CARTA.MomentProgress[];
     SpectralLineResponse: CARTA.SpectralLineResponse[];
+    PvProgress: CARTA.PvProgress[];
+    PvResponse: CARTA.PvResponse[];
 }
 interface ProcessedSpatialProfile extends CARTA.ISpatialProfile { values: Float32Array; }
 function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatialProfile {

@@ -190,9 +190,9 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     );
                 };
                 // Pick up the streaming messages
-                // Channel 11 & 12: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData
-                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length * 2 + 4 + 2 + 2);
-
+                // Channel 11 & 12: RasterTileData + RasterTileSync(start & end) + ContourImageData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[0].requiredTiles.tiles.length * 2 + 4 + 4 + 2);
+                
                 // Send StopAnimator
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[0]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[0]);
@@ -214,6 +214,28 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                 }
             });
         });
+        afterAll(() => Connection.close());
+    });
+});
+
+describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () => {
+
+    let Connection: Client;
+    describe(`Register a session`, () => {
+        beforeAll(async () => {
+            Connection = new Client(testServerUrl);
+            await Connection.open();
+            await Connection.registerViewer(assertItem.registerViewer);
+
+            await Connection.openFile(assertItem.openFile);
+        }, openFileTimeout);
+
+        test(`Preparation`, async () => {
+            await Connection.send(CARTA.AddRequiredTiles, assertItem.addTilesReq);
+            await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
+            await Connection.send(CARTA.SetContourParameters, assertItem.setContour);
+            await Connection.stream(assertItem.setContour.levels.length);
+        }, readFileTimeout);
 
         describe(`(Case 2) Play some channels backwardly`, () => {
             test(`Preparation`, async () => {
@@ -247,26 +269,26 @@ describe("ANIMATOR_CONTOUR: Testing animation playback with contour lines", () =
                     // console.log(contourImageData)
                 };
                 // Pick up the streaming messages
-                // Channel 9 & 8: RasterTileData + RasterTileSync(start & end) + SpatialProfileData + RegionHistogramData + ContourImageData
-                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length * 2 + 4 + 2 + 2 + 2);
+                // Channel 8 & 7: RasterTileData + RasterTileSync(start & end) + ContourImageData + RegionHistogramData
+                let RetreiveMessages = await Connection.stream(assertItem.startAnimation[1].requiredTiles.tiles.length *  2 + 4 + 4 + 2);
 
                 // Send StopAnimator
                 await Connection.send(CARTA.StopAnimation, assertItem.stopAnimation[1]);
                 await Connection.send(CARTA.SetImageChannels, assertItem.setImageChannel[1]);
                 await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
-                expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation[1].endFrame.channel);
+                expect(sequence.slice(-1)[0]).toEqual(assertItem.stopAnimation[1].endFrame.channel - 1);
             }, playAnimatorTimeout);
 
             test(`Received image channels should be in sequence`, async () => {
                 console.warn(`(Step 2) Sequent channel index: ${sequence}`);
                 sequence.map((id, index) => {
-                    let channelId = -index + assertItem.startAnimation[1].startFrame.channel;
+                    let channelId = -index + assertItem.startAnimation[1].startFrame.channel - 1;
                     expect(id).toEqual(channelId);
                 });
             });
 
             test(`Received image contours should be in sequence`, async () => {
-                for (let i = assertItem.startAnimation[1].startFrame.channel; i > assertItem.stopAnimation[1].endFrame.channel - 1; i--) {
+                for (let i = assertItem.startAnimation[1].startFrame.channel -1 ; i > assertItem.stopAnimation[1].endFrame.channel - 2; i--) {
                     expect(contourImageData.filter(data => data.progress == 1 && data.channel == (i)).length).toEqual(assertItem.setContour.levels.length);
                 }
             });
