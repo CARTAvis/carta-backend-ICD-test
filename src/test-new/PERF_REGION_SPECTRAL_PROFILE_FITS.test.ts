@@ -312,7 +312,7 @@ describe(`PERF_REGION_SPECTRAL_PROFILE`,() => {
         });
 
         test(`(Step 2)"${assertItem.fileOpen[0].file}" SET_REGION_ACK should arrive within ${readRegionTimeout} ms`, async() => {
-            let setRegionAck = await msgController.setRegion(assertItem.setRegion[0]);
+            let setRegionAck = await msgController.setRegion(assertItem.setRegion[0].fileId,assertItem.setRegion[0].regionId,assertItem.setRegion[0].regionInfo);
             expect(setRegionAck.success).toEqual(true);
         });
 
