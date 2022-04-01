@@ -11,8 +11,10 @@ describe("GET_FILELIST_DEFAULT_PATH tests: Testing generation of a file list at 
     }, connectTimeout);
     
     test(`Connect to the backend`, async()=>{
-        expect(msgController.connectionStatus).toBe(ConnectionStatus.ACTIVE);
+        expect(msgController.connectionStatus).toEqual(ConnectionStatus.ACTIVE);
     })
 
-    afterAll(() => msgController.closeConnection());
+    afterAll(() => {
+        msgController.closeConnection();
+    });
 });
