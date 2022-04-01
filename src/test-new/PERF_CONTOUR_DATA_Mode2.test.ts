@@ -91,7 +91,7 @@ describe("PERF_CONTOUR_DATA",()=>{
 
     let basepath: string;
     test(`Get basepath`, async () => {
-        let fileListResponse = await msgController.getFileList("$BASE");
+        let fileListResponse = await msgController.getFileList("$BASE",0);
         basepath = fileListResponse.directory;
     });
 
