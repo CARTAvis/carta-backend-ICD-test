@@ -246,7 +246,7 @@ describe(`PERF_REGION_SPECTRAL_PROFILE`,() => {
 
     let basepath: string;
     test(`Get basepath`, async () => {
-        let fileListResponse = await msgController.getFileList("$BASE");
+        let fileListResponse = await msgController.getFileList("$BASE",0);
         basepath = fileListResponse.directory;
     });
 

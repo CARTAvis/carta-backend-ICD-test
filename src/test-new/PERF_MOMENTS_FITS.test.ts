@@ -85,7 +85,7 @@ describe("PERF_LOAD_IMAGE",()=>{
     checkConnection();
     let basepath: string;
     test(`Get basepath`, async () => {
-        let fileListResponse = await msgController.getFileList("$BASE");
+        let fileListResponse = await msgController.getFileList("$BASE",0);
         basepath = fileListResponse.directory;
     });
 

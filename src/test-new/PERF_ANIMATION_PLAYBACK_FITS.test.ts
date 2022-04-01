@@ -134,7 +134,7 @@ describe("PERF_ANIMATION_PLAYBACK",() => {
     checkConnection();
     let basepath: string;
     test(`Get basepath`, async () => {
-        let fileListResponse = await msgController.getFileList("$BASE");
+        let fileListResponse = await msgController.getFileList("$BASE",0);
         basepath = fileListResponse.directory;
     });
 
