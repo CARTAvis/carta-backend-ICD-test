@@ -57,16 +57,16 @@ function Stream(cartaType: any, InputNum: number) {
                         resolve(MomentProgressData);
                     }
                 });
-            case CARTA.MomentResponse:
-                let MomentResponseData: any[] = [];
-                let resMomentResponseData = msgController.momentResponseStream.pipe(take(InputNum));
-                resMomentResponseData.subscribe(data => {
-                    MomentResponseData.push(data);
-                    _count++
-                    if (_count === InputNum) {
-                        resolve(MomentResponseData);
-                    }
-                })
+            // case CARTA.MomentResponse:
+            //     let MomentResponseData: any[] = [];
+            //     let resMomentResponseData = msgController.momentResponseStream.pipe(take(InputNum));
+            //     resMomentResponseData.subscribe(data => {
+            //         MomentResponseData.push(data);
+            //         _count++
+            //         if (_count === InputNum) {
+            //             resolve(MomentResponseData);
+            //         }
+            //     })
 
         }
     })

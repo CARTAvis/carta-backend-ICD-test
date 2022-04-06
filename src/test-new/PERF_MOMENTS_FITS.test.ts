@@ -2,6 +2,7 @@ import { CARTA } from "carta-protobuf";
 import config from "./config.json";
 import { checkConnection, Stream } from './myClient';
 import { MessageController } from "./MessageController";
+import { take } from 'rxjs/operators';
 
 
 let testServerUrl = config.serverURL0;
@@ -9,7 +10,7 @@ let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let openFileTimeout: number = 7000;//config.timeout.openFile;
 let readFileTimeout = 5000;//config.timeout.readFile;
-let momentTimeout = 400000;//config.timeout.moment;
+let momentTimeout = 30000;//config.timeout.moment;
 
 interface AssertItem {
     precisionDigit: number;
@@ -115,23 +116,21 @@ describe("PERF_LOAD_IMAGE",()=>{
         let FileId: number[] = [];
         let MomentProgressData: any[] = [];
         let RegionHistogramData: any[] = []
-        let MomentResponse: any[] = []
+        let MomentResponse: CARTA.IMomentResponse;
         describe(`Moment generator`,()=>{
             test(`(Step 3)"${assertItem.openFile[0].file}": Receive a series of moment progress within ${momentTimeout}ms`, async()=>{
                 // would like to print out the progress, then modify the MessageController.ts
                 // the RequestMoment will not return MomenResponse
                 // the MomentResponse becomes a stream
-                msgController.requestMoment(assertItem.momentRequest);
-                MomentProgressData =  await Stream(CARTA.MomentProgress,9);
+                MomentResponse = await msgController.requestMoment(assertItem.momentRequest);
+                // MomentProgressData =  await Stream(CARTA.MomentProgress,9);
                 // console.log(MomentProgressData);
 
-                RegionHistogramData = await Stream(CARTA.RegionHistogramData,13);
+                // RegionHistogramData = await Stream(CARTA.RegionHistogramData,13);
                 // console.log(RegionHistogramData);
-                FileId = RegionHistogramData.map(data => data.fileId);
-                // console.log(FileId)
-
-                MomentResponse = await Stream(CARTA.MomentResponse,1);
+                FileId = MomentResponse.openFileAcks.map(data => data.fileId);
                 // console.log(MomentResponse);
+                // console.log(FileId)
 
                 // let _count = 0
                 // let resMomentProgressData = msgController.momentProgressStream.pipe(take(9));
@@ -149,6 +148,7 @@ describe("PERF_LOAD_IMAGE",()=>{
                 // resRegionHistogramData.subscribe(data => {
                 //     RegionHistogramData.push(data);
                 // })
+                // console.log(RegionHistogramData)
 
                 // let resMomentResponse = msgController.momentResponseStream.pipe(take(1));
                 // resMomentResponse.subscribe(data => {
@@ -163,27 +163,27 @@ describe("PERF_LOAD_IMAGE",()=>{
             });
 
             test(`Assert MomentResponse.success = true`,()=>{
-                expect(MomentResponse[0].success).toBe(true);
+                expect(MomentResponse.success).toBe(true);
             });
 
             test(`Assert MomentResponse.openFileAcks.length = ${assertItem.momentRequest.moments.length}`,()=>{
-                expect(MomentResponse[0].openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
+                expect(MomentResponse.openFileAcks.length).toEqual(assertItem.momentRequest.moments.length);
             });
 
             test(`Assert all MomentResponse.openFileAcks[].success = true`,()=>{
-                MomentResponse[0].openFileAcks.map(ack => {
+                MomentResponse.openFileAcks.map(ack => {
                     expect(ack.success).toBe(true);
                 })
             });
 
             test(`Assert all openFileAcks[].fileId > 0`,()=>{
-                MomentResponse[0].openFileAcks.map(ack => {
+                MomentResponse.openFileAcks.map(ack => {
                     expect(ack.fileId).toBeGreaterThan(0);
                 });
             });
 
             test(`Assert openFileAcks[].fileInfo.name`,()=>{
-                MomentResponse[0].openFileAcks.map((ack,index)=>{
+                MomentResponse.openFileAcks.map((ack,index)=>{
                     expect(ack.fileInfo.name).toEqual(assertItem.openFile[0].file + ".moment." + momentName[index])
                 });
             });
