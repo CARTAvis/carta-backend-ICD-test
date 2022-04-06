@@ -480,7 +480,12 @@ export class MessageController {
     }
 
     @action("set channels")
-    setChannels(fileId: number, channel: number, stokes: number, requiredTiles: CARTA.IAddRequiredTiles): boolean {
+    setChannels(input: CARTA.ISetImageChannels): boolean {
+        let fileId = input.fileId;
+        let channel = input.channel;
+        let stokes = input.stokes;
+        let requiredTiles = input.requiredTiles;
+        
         if (this.connectionStatus === ConnectionStatus.ACTIVE) {
             const message = CARTA.SetImageChannels.create({fileId, channel, stokes, requiredTiles});
             this.logEvent(CARTA.EventType.SET_IMAGE_CHANNELS, this.eventCounter, message, false);
