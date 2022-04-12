@@ -47,6 +47,7 @@ let assertItem: AssertItem = {
                 stokesVals: [],
                 computedEntries: [
                     { name: "Name", value: "spire500_ext.fits" },
+		    { name: "Data type", value: "float" },
                     { name: 'HDU', value: '1' },
                     { name: 'Extension name', value: 'image' },
                     { name: "Shape", value: "[830, 870]" },
@@ -146,6 +147,7 @@ let assertItem: AssertItem = {
                 stokesVals: [],
                 computedEntries: [
                     { name: "Name", value: "spire500_ext.fits" },
+                    { name: "Data type", value: "float" },		    
                     { name: 'HDU', value: '6' },
                     { name: 'Extension name', value: 'error' },
                     { name: "Shape", value: "[830, 870]" },
@@ -245,6 +247,7 @@ let assertItem: AssertItem = {
                 stokesVals: [],
                 computedEntries: [
                     { name: "Name", value: "spire500_ext.fits" },
+                    { name: "Data type", value: "float" },		    
                     { name: 'HDU', value: '7' },
                     { name: 'Extension name', value: 'coverage' },
                     { name: "Shape", value: "[830, 870]" },
