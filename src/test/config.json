@@ -1,6 +1,6 @@
 {
-    "serverURL": "wss://carta.asiaa.sinica.edu.tw/socketdev",
-    "serverURL0": "ws://127.0.0.1:3002",
+    "serverURL13": "wss://carta.asiaa.sinica.edu.tw/socketdev",
+    "serverURL1": "ws://127.0.0.1:3002",
     "path": {
         "root": ".",
         "base": "$BASE",
@@ -28,7 +28,7 @@
         "playImages": 8000,
         "renderImages": 5000,
         "contour": 30000,
-        "cubeHistogram": 60000,
+        "cubeHistogram": 90000,
         "cancel": 5000,
         "concurrent": 7000,
         "messageEvent": 500,
