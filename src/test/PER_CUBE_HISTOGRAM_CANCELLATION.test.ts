@@ -133,7 +133,7 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
 
                 test("(Step4) Assert no more REGION_HISTOGRAM_DATA returns", async () => {
                     /// After 5 seconds, the request of the per-cube histogram is cancelled.
-                    await new Promise(end => setTimeout(() => end(), cancelTimeout));
+                    await new Promise<void>(end => setTimeout(() => end(), cancelTimeout));
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.cancelHistogramRequirements);
                     // Receive messages until get two ErrorData
                     await Connection.streamUntil((type, data, ack) => type == CARTA.ErrorData && ack.ErrorData.length == 2);
@@ -142,7 +142,7 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
 
                 test("(Step5) Assert a renew REGION_HISTOGRAM_DATA as the progress = 1.0", async () => {
                     /// Then request to get the per-cube histogram again in 2 seconds.
-                    await new Promise(end => setTimeout(() => end(), 2000));
+                    await new Promise<void>(end => setTimeout(() => end(), 2000));
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     let ack = await Connection.streamUntil((type, data) => type == CARTA.RegionHistogramData && data.progress == 1);
                     RegionHistogramData = ack.RegionHistogramData.slice(-1)[0];
