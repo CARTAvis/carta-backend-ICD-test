@@ -86,6 +86,8 @@ export class Client {
         [78, CARTA.StopPvCalc],
         [79, CARTA.FittingRequest],
         [80, CARTA.FittingResponse],
+        [81, CARTA.SetVectorOverlayParameters],
+        [82, CARTA.VectorOverlayTileData],
     ]);
     CartaTypeValue(type: any): number {
         let ret: number = 0;
