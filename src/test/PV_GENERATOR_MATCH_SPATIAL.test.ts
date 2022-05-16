@@ -10,6 +10,7 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let readTimeout: number = config.timeout.readFile;
 let PVTimeout: number = config.timeout.pvRequest;
+let Match2ImageTimeout: number = 10000;
 
 interface SpatialProfileDataExtend extends CARTA.ISpatialProfileData {
     index?: number;
@@ -168,7 +169,7 @@ describe("PV_GENERATOR_MATCH_SPATIAL:Testing PV generator with two spatially mat
             expect(Response.profiles[0].start).toEqual(assertItem.returnPVSpatial.profiles[0].start);
             expect(Response.profiles[0].end).toEqual(assertItem.returnPVSpatial.profiles[0].end);
             expect(Response.profiles[0].values[assertItem.returnPVSpatial.index]).toEqual(assertItem.returnPVSpatial.indexValue);
-        });
+        }, Match2ImageTimeout);
 
         test(`(Step 7): 1st image PV Request`, async()=>{
             await Connection.send(CARTA.PvRequest, assertItem.setPVRequest[0]);
