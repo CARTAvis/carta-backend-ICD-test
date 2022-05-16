@@ -163,7 +163,7 @@ describe("PV_GENERATOR_WIDE:Testing PV generator with wide (~all sky) image", ()
                         expect(PVRegionHistogramResponse.regionId).toEqual(-1);
                         expect(finalPVResponse.openFileAck.fileId).toEqual(1000);
                         expect(finalPVResponse.openFileAck.fileInfoExtended.height).toEqual(16);
-                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(180);
+                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(182);
                         expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("Gaussian-cutted_pv.fits");
                         expect(finalPVResponse.success).toEqual(true);
                     }
@@ -176,7 +176,7 @@ describe("PV_GENERATOR_WIDE:Testing PV generator with wide (~all sky) image", ()
                 expect(PVRegionHistogramResponse.regionId).toEqual(-1);
                 expect(finalPVResponse.openFileAck.fileId).toEqual(1000);
                 expect(finalPVResponse.openFileAck.fileInfoExtended.height).toEqual(16);
-                expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(180);
+                expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(182);
                 expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("Gaussian-cutted_pv.fits");
                 expect(finalPVResponse.success).toEqual(true);
             }
@@ -206,7 +206,7 @@ describe("PV_GENERATOR_WIDE:Testing PV generator with wide (~all sky) image", ()
                         expect(PVRegionHistogramResponse.regionId).toEqual(-1);
                         expect(finalPVResponse.openFileAck.fileId).toEqual(1000);
                         expect(finalPVResponse.openFileAck.fileInfoExtended.height).toEqual(16);
-                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(92);
+                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(94);
                         expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("Gaussian-cutted_pv.fits");
                         expect(finalPVResponse.success).toEqual(true);
                     }
@@ -219,7 +219,7 @@ describe("PV_GENERATOR_WIDE:Testing PV generator with wide (~all sky) image", ()
                         expect(PVRegionHistogramResponse.regionId).toEqual(-1);
                         expect(finalPVResponse.openFileAck.fileId).toEqual(1000);
                         expect(finalPVResponse.openFileAck.fileInfoExtended.height).toEqual(16);
-                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(92);
+                        expect(finalPVResponse.openFileAck.fileInfoExtended.width).toEqual(94);
                         expect(finalPVResponse.openFileAck.fileInfo.name).toEqual("Gaussian-cutted_pv.fits");
                         expect(finalPVResponse.success).toEqual(true);
             }
