@@ -706,6 +706,7 @@ function processSpatialProfile(profile: CARTA.ISpatialProfile): ProcessedSpatial
             coordinate: profile.coordinate,
             start: profile.start,
             end: profile.end,
+            lineAxis: profile.lineAxis,
             values: new Float32Array(profile.rawValuesFp32.slice().buffer)
         };
     }

@@ -1,5 +1,6 @@
 import { CARTA } from "carta-protobuf";
 import * as Long from "long";
+import { Report } from "performance/SocketOperation";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
@@ -9,6 +10,12 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let readTimeout: number = config.timeout.readFile;
 let PVTimeout: number = config.timeout.pvRequest;
+let Match2ImageTimeout: number = 10000;
+
+interface SpatialProfileDataExtend extends CARTA.ISpatialProfileData {
+    index?: number;
+    indexValue?: number;
+}
 
 interface AssertItem {
     registerViewer: CARTA.IRegisterViewer;
@@ -18,6 +25,7 @@ interface AssertItem {
     setSpatialReq: CARTA.ISetSpatialRequirements[];
     setRegion: CARTA.ISetRegion[];
     setPVRequest: CARTA.IPvRequest[];
+    returnPVSpatial: SpatialProfileDataExtend;
 };
 
 let assertItem: AssertItem = {
@@ -66,7 +74,7 @@ let assertItem: AssertItem = {
         {
             fileId: 1,
             regionId: 1,
-            spatialProfiles: [{coordinate:"x", mip:1}, {coordinate:"y", mip:1}]
+            spatialProfiles: [{coordinate:"", mip:1, width:3}]
         },
     ],
     setRegion: [
@@ -92,6 +100,13 @@ let assertItem: AssertItem = {
             width:3,
         },
     ],
+    returnPVSpatial: {
+        fileId:1,
+        regionId:1,
+        profiles: [{coordinate:"", start: 0, end: 400}],
+        index: 100,
+        indexValue: 0.00860303919762373,
+    }
 };
 
 describe("PV_GENERATOR_MATCH_SPATIAL:Testing PV generator with two spatially matched images", () => {
@@ -147,10 +162,14 @@ describe("PV_GENERATOR_MATCH_SPATIAL:Testing PV generator with two spatially mat
         test(`(step 6): Match the first image to the second image`, async()=>{
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[0]);
             await Connection.send(CARTA.SetSpatialRequirements, assertItem.setSpatialReq[1]);
-            let ErrorDataResponse = await Connection.receiveAny();
-            // console.log(ErrorDataResponse);
-            expect(ErrorDataResponse.severity).toEqual(3);
-        });
+            let Response = await Connection.receiveAny();
+            expect(Response.fileId).toEqual(assertItem.returnPVSpatial.fileId);
+            expect(Response.regionId).toEqual(assertItem.returnPVSpatial.regionId);
+            expect(Response.profiles[0].coordinate).toEqual(assertItem.returnPVSpatial.profiles[0].coordinate);
+            expect(Response.profiles[0].start).toEqual(assertItem.returnPVSpatial.profiles[0].start);
+            expect(Response.profiles[0].end).toEqual(assertItem.returnPVSpatial.profiles[0].end);
+            expect(Response.profiles[0].values[assertItem.returnPVSpatial.index]).toEqual(assertItem.returnPVSpatial.indexValue);
+        }, Match2ImageTimeout);
 
         test(`(Step 7): 1st image PV Request`, async()=>{
             await Connection.send(CARTA.PvRequest, assertItem.setPVRequest[0]);
