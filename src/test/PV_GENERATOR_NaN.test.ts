@@ -19,9 +19,7 @@ interface AssertItem {
     setSpatialReq: CARTA.ISetSpatialRequirements[];
     setRegion: CARTA.ISetRegion[];
     setPVRequest: CARTA.IPvRequest;
-    imageDataIndex1: number[];
     imageDataIndex2: number[];
-    imageData1: number[];
     imageDataSequence1: number[];
     imageData2: number[];
     imageDataSequence2: number[];
@@ -61,11 +59,11 @@ let assertItem: AssertItem = {
         },
         {
             fileId: 1000,
-            point: { x: 35, y: 6 },
+            point: { x: 260, y: 11 },
         },
         {
             fileId: 1000,
-            point: { x: 252, y: 6 },
+            point: { x: 64, y: 8 },
         },
     ],
     setSpatialReq: [
@@ -96,12 +94,10 @@ let assertItem: AssertItem = {
         regionId:1,
         width:3,
     },
-    imageDataIndex1: [0,100,190],
-    imageData1: [241,91,0],
-    imageDataSequence1: [0,68,34,0,17,160,0,33,40,65,129],
+    imageDataSequence1: [0,0,0,0,0,0,0,0],
     imageDataIndex2: [0,500,1000,1500,2000,3000],
-    imageData2: [0,0,0,50,128,136],
-    imageDataSequence2: [230,33,3,225,152,240,36,116,85,222,192]
+    imageData2: [241,77,63,201,254,220],
+    imageDataSequence2: [245,112,51,42,145,32,151,35,241,6,107]
 };
 
 describe("PV_GENERATOR_NaN:Testing PV generator with a region covers NaN and none pixel.", () => {
@@ -176,11 +172,8 @@ describe("PV_GENERATOR_NaN:Testing PV generator with a region covers NaN and non
                 expect(Tile1.tiles[0].width).toEqual(5);
                 expect(Tile1.tiles[0].height).toEqual(25);
                 expect(Tile1.tiles[0].x).toEqual(1);
-                for (let i=0; i<assertItem.imageData1.length; i++) {
-                    expect(Tile1.tiles[0].imageData[assertItem.imageDataIndex1[i]]).toEqual(assertItem.imageData1[i]);
-                }
-                for (let i = 0; i <= 10; i++) {
-                    expect(Tile1.tiles[0].imageData[i+50]).toEqual(assertItem.imageDataSequence1[i]);
+                for (let i = 0; i < assertItem.imageDataSequence1.length; i++) {
+                    expect(Tile1.tiles[0].imageData[i]).toEqual(assertItem.imageDataSequence1[i]);
                 }
             
                 expect(Tile2.tiles[0].layer).toEqual(1);
@@ -197,11 +190,8 @@ describe("PV_GENERATOR_NaN:Testing PV generator with a region covers NaN and non
                 expect(Tile2.tiles[0].width).toEqual(5);
                 expect(Tile2.tiles[0].height).toEqual(25);
                 expect(Tile2.tiles[0].x).toEqual(1);
-                for (let i=0; i<assertItem.imageData1.length; i++) {
-                    expect(Tile2.tiles[0].imageData[assertItem.imageDataIndex1[i]]).toEqual(assertItem.imageData1[i]);
-                }
-                for (let i = 0; i <= 10; i++) {
-                    expect(Tile2.tiles[0].imageData[i+50]).toEqual(assertItem.imageDataSequence1[i]);
+                for (let i = 0; i < assertItem.imageDataSequence1.length; i++) {
+                    expect(Tile2.tiles[0].imageData[i]).toEqual(assertItem.imageDataSequence1[i]);
                 }
             
                 expect(Tile1.tiles[0].layer).toEqual(1);
@@ -224,8 +214,9 @@ describe("PV_GENERATOR_NaN:Testing PV generator with a region covers NaN and non
 
             await Connection.send(CARTA.SetCursor, assertItem.setCursor[2]);
             let SpatialProfileDataResponse2 = await Connection.receive(CARTA.SpatialProfileData);
+            console.log(SpatialProfileDataResponse2)
             expect(SpatialProfileDataResponse2.fileId).toEqual(1000);
-            expect(SpatialProfileDataResponse2.value).toEqual(-0.0017899001250043511);
+            expect(SpatialProfileDataResponse2.value).toEqual(-0.0035615740343928337);
         })
 
     });
