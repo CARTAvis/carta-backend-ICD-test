@@ -10,7 +10,7 @@ let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let readTimeout: number = config.timeout.readFile;
 let PVTimeout: number = config.timeout.pvRequest;
-let Match2ImageTimeout: number = 10000;
+let Match2ImageTimeout: number = 20000;
 
 interface SpatialProfileDataExtend extends CARTA.ISpatialProfileData {
     index?: number;
