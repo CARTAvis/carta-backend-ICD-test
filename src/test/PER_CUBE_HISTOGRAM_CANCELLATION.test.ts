@@ -36,7 +36,7 @@ let assertItem: AssertItem = {
     },
     openFile: {
         directory: testSubdirectory,
-        file: "supermosaic.10.fits",
+        file: "SDC335.579-0.292.spw0-channel-cutted.line.fits",
         fileId: 0,
         hdu: "0",
         renderMode: CARTA.RenderMode.RASTER,
@@ -68,14 +68,14 @@ let assertItem: AssertItem = {
         channel: -2,
         histograms: 
         {
-            numBins: 2775,
-            binWidth: 0.7235205769538879,
-            firstBinCenter: -1773.2998046875,
+            numBins: 342,
+            binWidth: 0.0007966686389409006,
+            firstBinCenter: -0.09137402474880219,
         },
-        lengthOfHistogramBins: 2775,
-        binValues: [{ index: 2500, value: 9359604 },],
-        mean: 18.742310255027036,
-        stdDev: 22.534721826342878,
+        lengthOfHistogramBins: 342,
+        binValues: [{ index: 170, value: 10548 },],
+        mean: 0.00005560920907762894,
+        stdDev: 0.012523454128847715,
     },
     precisionDigits: 4,
 };
@@ -112,11 +112,11 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
             let ReceiveProgress: number;
             let RegionHistogramData: CARTA.RegionHistogramData;
             describe(`Set histogram requirements:`, () => {
-                test(`(Step1) "${assertItem.openFile.file}" REGION_HISTOGRAM_DATA should arrive completely within 6000 ms:`, async () => {
+                test(`(Step1) "${assertItem.openFile.file}" REGION_HISTOGRAM_DATA should arrive completely within 20000 ms:`, async () => {
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
                     ReceiveProgress = RegionHistogramData.progress;
-                }, 6000);
+                }, 20000);
 
                 test(`(Step2) REGION_HISTOGRAM_DATA.progress > 0 and REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramData.regionId}`, () => {
                     expect(ReceiveProgress).toBeGreaterThan(0);
@@ -150,7 +150,7 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
                     expect(ReceiveProgress).toEqual(1);
                     expect(RegionHistogramData.histograms.binWidth).toBeCloseTo(assertItem.regionHistogramData.histograms.binWidth, assertItem.precisionDigits);
                     expect(RegionHistogramData.histograms.bins.length).toEqual(assertItem.regionHistogramData.lengthOfHistogramBins);
-                    expect(RegionHistogramData.histograms.bins[2500]).toEqual(assertItem.regionHistogramData.binValues[0].value);
+                    expect(RegionHistogramData.histograms.bins[170]).toEqual(assertItem.regionHistogramData.binValues[0].value);
                     expect(RegionHistogramData.channel).toEqual(assertItem.regionHistogramData.channel);
                     expect(RegionHistogramData.histograms.firstBinCenter).toBeCloseTo(assertItem.regionHistogramData.histograms.firstBinCenter, assertItem.precisionDigits);
                     expect(RegionHistogramData.histograms.numBins).toEqual(assertItem.regionHistogramData.histograms.numBins);
