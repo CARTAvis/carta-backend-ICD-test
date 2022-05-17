@@ -112,11 +112,11 @@ describe("PER_CUBE_HISTOGRAM_CANCELLATION: Testing calculations of the per-cube 
             let ReceiveProgress: number;
             let RegionHistogramData: CARTA.RegionHistogramData;
             describe(`Set histogram requirements:`, () => {
-                test(`(Step1) "${assertItem.openFile.file}" REGION_HISTOGRAM_DATA should arrive completely within 20000 ms:`, async () => {
+                test(`(Step1) "${assertItem.openFile.file}" REGION_HISTOGRAM_DATA should arrive completely within 30000 ms:`, async () => {
                     await Connection.send(CARTA.SetHistogramRequirements, assertItem.setHistogramRequirements);
                     RegionHistogramData = await Connection.receive(CARTA.RegionHistogramData);
                     ReceiveProgress = RegionHistogramData.progress;
-                }, 20000);
+                }, 30000);
 
                 test(`(Step2) REGION_HISTOGRAM_DATA.progress > 0 and REGION_HISTOGRAM_DATA.region_id = ${assertItem.regionHistogramData.regionId}`, () => {
                     expect(ReceiveProgress).toBeGreaterThan(0);
