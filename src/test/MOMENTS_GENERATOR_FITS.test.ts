@@ -146,15 +146,15 @@ describe("MOMENTS_GENERATOR_FITS: Testing moments generator for a given region o
             });
         });
 
-        test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 652`, () => {
+        test(`Assert openFileAcks[].fileInfoExtended.headerEntries.length = 85`, () => {
             ack.MomentResponse[0].openFileAcks.map((ack, index) => {
-                expect(ack.fileInfoExtended.headerEntries.length).toEqual(652);
+                expect(ack.fileInfoExtended.headerEntries.length).toEqual(85);
             });
         });
 
-        test(`Assert openFileAcks[].fileInfoExtended.computedEntries.length = 18`, () => {
+        test(`Assert openFileAcks[].fileInfoExtended.computedEntries.length = 19`, () => {
             ack.MomentResponse[0].openFileAcks.map((ack, index) => {
-                expect(ack.fileInfoExtended.computedEntries.length).toEqual(18);
+                expect(ack.fileInfoExtended.computedEntries.length).toEqual(19);
             });
         });
 
