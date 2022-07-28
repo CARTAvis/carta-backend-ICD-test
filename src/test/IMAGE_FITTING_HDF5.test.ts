@@ -28,7 +28,7 @@ let assertItem: AssertItem = {
     filelist: { directory: testSubdirectory },
     fileOpen: {
         directory: testSubdirectory,
-        file: "M17_SWex-channel0-addOneGaussian.image",
+        file: "M17_SWex-channel0-addOneGaussian.hdf5",
         hdu: "0",
         fileId: 0,
         renderMode: CARTA.RenderMode.RASTER,
@@ -108,7 +108,7 @@ let assertItem: AssertItem = {
     precisionDigits: 6,
 };
 
-describe("IMAGE_FITTING_CASA test: Testing Image Fitting (with and without fov) with casa file.", () => {
+describe("IMAGE_FITTING_HDF5 test: Testing Image Fitting (with and without fov) with hdf5 file.", () => {
 
     let Connection: Client;
     beforeAll(async () => {

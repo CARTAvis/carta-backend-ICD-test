@@ -1,7 +1,4 @@
 import { CARTA } from "carta-protobuf";
-
-import * as Long from "long";
-
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
