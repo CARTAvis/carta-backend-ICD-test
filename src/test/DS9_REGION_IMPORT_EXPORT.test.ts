@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL0;
+let testServerUrl = config.serverURL;
 let testSubdirectory = config.path.QA;
 let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
