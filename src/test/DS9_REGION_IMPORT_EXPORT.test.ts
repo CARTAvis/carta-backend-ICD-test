@@ -3,7 +3,7 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 
-let testServerUrl = config.serverURL;
+let testServerUrl = config.serverURL0;
 let testSubdirectory = config.path.QA;
 let regionSubdirectory = config.path.region;
 let connectTimeout = config.timeout.connection;
@@ -69,33 +69,33 @@ let assertItem: AssertItem = {
         success: true,
         regions: {
             '1': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 40, y: 100 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 40, y: 100 }],
                 regionType: CARTA.RegionType.RECTANGLE,
             },
             '2': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 40 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 100, y: 40 }],
                 regionType: CARTA.RegionType.RECTANGLE,
             },
             '3': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 40 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 200, y: 40 }],
                 rotation: 45,
                 regionType: CARTA.RegionType.RECTANGLE,
             },
             '4': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 320, y: 600 }, { x: 400, y: 400 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 319, y: 599 }, { x: 399, y: 399 }],
                 regionType: CARTA.RegionType.POLYGON,
             },
             '5': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 200, y: 200 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 200, y: 200 }],
                 regionType: CARTA.RegionType.ELLIPSE,
             },
             '6': {
-                controlPoints: [{ x: 320, y: 400 }, { x: 100, y: 20 }],
+                controlPoints: [{ x: 319, y: 399 }, { x: 100, y: 20 }],
                 regionType: CARTA.RegionType.ELLIPSE,
                 rotation: 45,
             },
             '7': {
-                controlPoints: [{ x: 320, y: 300 }],
+                controlPoints: [{ x: 319, y: 299 }],
                 regionType: CARTA.RegionType.POINT,
             },
         },
