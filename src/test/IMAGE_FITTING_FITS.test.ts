@@ -105,7 +105,7 @@ let assertItem: AssertItem = {
             log: 'Gaussian fitting with 1 component'
         }
     ],
-    precisionDigits: 6,
+    precisionDigits: 2,
 };
 
 describe("IMAGE_FITTING_FITS test: Testing Image Fitting (with and without fov) with fits file.", () => {
