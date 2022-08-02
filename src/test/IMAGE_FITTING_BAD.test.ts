@@ -101,7 +101,7 @@ let assertItem: AssertItem = {
             message: 'fit did not converge'
         }
     ],
-    precisionDigits: 6,
+    precisionDigits: 2,
 };
 
 describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with bad initial guess (2 components), then exceeds the maximum iteration number of 200.", () => {
