@@ -2,8 +2,9 @@ import { CARTA } from "carta-protobuf";
 import { Client, AckStream } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
+import { execSync } from "child_process";
 
-let testServerUrl: string = config.serverURL;
+let testServerUrl: string = config.serverURL0;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
@@ -17,6 +18,8 @@ interface AssertItem {
     setCursor: CARTA.ISetCursor;
     fittingRequest: CARTA.IFittingRequest[];
     fittingResponse: CARTA.IFittingResponse[];
+    fittingResponseMacOS12: CARTA.IFittingResponse[];
+    fittingResponseLinux: CARTA.IFittingResponse[];
     precisionDigits: number;
 };
 
@@ -101,16 +104,99 @@ let assertItem: AssertItem = {
             message: 'fit did not converge'
         }
     ],
+    fittingResponseMacOS12: [
+        {
+            resultValues: [
+                {
+                    center: {x: 129.52934425744016, y: 285.4183410816301}, 
+                    amp: 0.4657574006276674,
+                    fwhm: {x: -1.0178734138400989, y: 0.0643954893477044},
+                    pa: 356.65196671978725
+                }, 
+                {
+                    center: {x: 324.3426307770264, y: 324.34813278164734}, 
+                    amp: 9.995057596365545,
+                    fwhm: {x: 29.40129200278109, y: 117.49460686897025},
+                    pa: 0.5241778093682095
+                }
+            ],
+            resultErrors: [
+                {
+                    center: {},
+                    fwhm: {},
+                },
+                {
+                    center: {x: 0.14270290674700617, y: 0.03926940295174565},
+                    amp: 0.011881771744524577,
+                    fwhm: {x: 0.045959932685532584, y: 0.18286860946141664},
+                    pa: 0.0049460116505525625
+                }
+            ],
+            success: true,
+            log: 'Gaussian fitting with 2 component',
+            message: 'exceeded max number of iterations'
+        },
+        {
+            resultValues: [],
+            resultErrors: [],
+            success: true,
+            message: 'fit did not converge'
+        }
+    ],
+    fittingResponseLinux: [
+        {
+            resultValues: [
+                {
+                    center: {x: 135.44304395891785, y: 279.2872847693339}, 
+                    amp: 0.3679796147238359,
+                    fwhm: {x: 0.10606045985196957, y: 0.28676758030525856},
+                    pa: 280.48905602819553
+                }, 
+                {
+                    center: {x: 324.3493469406151, y: 324.34873891574335}, 
+                    amp: 9.99701377626984,
+                    fwhm: {x: 29.399853003901757, y: 117.47343456730091},
+                    pa: 0.5291923527559826
+                }
+            ],
+            resultErrors: [
+                {
+                    center: {},
+                    fwhm: {},
+                },
+                {
+                    center: {x: 0.14270290674700617, y: 0.03926940295174565},
+                    amp: 0.011881771744524577,
+                    fwhm: {x: 0.045959932685532584, y: 0.18286860946141664},
+                    pa: 0.0049460116505525625
+                }
+            ],
+            success: true,
+            log: 'Gaussian fitting with 2 component',
+            message: 'exceeded max number of iterations'
+        },
+        {
+            resultValues: [],
+            resultErrors: [],
+            success: true,
+            message: 'fit did not converge'
+        }
+    ],
     precisionDigits: 2,
 };
 
+let platformOS: String;
+let MacOSNumber: any;
 describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with bad initial guess (2 components), then exceeds the maximum iteration number of 200.", () => {
 
     let Connection: Client;
     beforeAll(async () => {
         Connection = new Client(testServerUrl);
         await Connection.open();
-        await Connection.registerViewer(assertItem.register);
+        let registerViewerAck = await Connection.registerViewer(assertItem.register);
+        platformOS = registerViewerAck.platformStrings.platform;
+        let MacOSNumberResponse = execSync('sw_vers -productVersion',{encoding: 'utf-8'});
+        MacOSNumber = Math.floor(Number(MacOSNumberResponse))
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
@@ -135,6 +221,8 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
 
                 ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq.tiles.length);
+                console.log(platformOS)
+                console.log(MacOSNumber)
             }, openFileTimeout);
 
         });
@@ -143,38 +231,152 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
             test(`Send Image fitting request and match the result`, async()=>{
                 await Connection.send(CARTA.FittingRequest, assertItem.fittingRequest[0]);
                 let response = await Connection.receive(CARTA.FittingResponse);
-                
-                expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
-                expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
-                expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].amp, assertItem.precisionDigits);
-                expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
-                expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
-                expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].pa, assertItem.precisionDigits);
-                expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.x, assertItem.precisionDigits);
-                expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.y, assertItem.precisionDigits);
-                expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].amp, assertItem.precisionDigits);
-                expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
-                expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
-                expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].pa, assertItem.precisionDigits);
-                expect(response.success).toEqual(assertItem.fittingResponse[0].success);
 
-                expect(response.resultErrors[0].center.x).toEqual(0);
-                expect(response.resultErrors[0].center.y).toEqual(0);
-                expect(response.resultErrors[0].fwhm.x).toEqual(0);
-                expect(response.resultErrors[0].fwhm.y).toEqual(0);
-                expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.x, assertItem.precisionDigits);
-                expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.y, assertItem.precisionDigits);
-                expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].amp, assertItem.precisionDigits);
-                expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
-                expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
-                expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].pa, assertItem.precisionDigits);
+                if (MacOSNumber === 11 || platformOS === 'macOS') {
+                    expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].pa, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].pa, assertItem.precisionDigits);
+                    expect(response.success).toEqual(assertItem.fittingResponse[0].success);
+
+                    expect(response.resultErrors[0].center.x).toEqual(0);
+                    expect(response.resultErrors[0].center.y).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                    expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].amp, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].pa, assertItem.precisionDigits);
                 
-                expect(response.log).toContain(assertItem.fittingResponse[0].log);
-                expect(response.message).toContain(assertItem.fittingResponse[0].message);
+                    expect(response.log).toContain(assertItem.fittingResponse[0].log);
+                    expect(response.message).toContain(assertItem.fittingResponse[0].message);
+                } else if (MacOSNumber === 12 || platformOS === 'macOS') {
+                    expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[0].pa, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultValues[1].pa, assertItem.precisionDigits);
+                    expect(response.success).toEqual(assertItem.fittingResponseMacOS12[0].success);
+
+                    expect(response.resultErrors[0].center.x).toEqual(0);
+                    expect(response.resultErrors[0].center.y).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                    expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].amp, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponseMacOS12[0].resultErrors[1].pa, assertItem.precisionDigits);
+                
+                    expect(response.log).toContain(assertItem.fittingResponseMacOS12[0].log);
+                    expect(response.message).toContain(assertItem.fittingResponseMacOS12[0].message);
+                } else if (platformOS === 'Linux') {
+                    expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].pa, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[1].pa, assertItem.precisionDigits);
+                    expect(response.success).toEqual(assertItem.fittingResponseLinux[0].success);
+
+                    expect(response.resultErrors[0].center.x).toEqual(0);
+                    expect(response.resultErrors[0].center.y).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                    expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].amp, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponseLinux[0].resultErrors[1].pa, assertItem.precisionDigits);
+                
+                    expect(response.log).toContain(assertItem.fittingResponseLinux[0].log);
+                    expect(response.message).toContain(assertItem.fittingResponseLinux[0].message);
+                } else {
+                    expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].pa, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].pa, assertItem.precisionDigits);
+                    expect(response.success).toEqual(assertItem.fittingResponse[0].success);
+
+                    expect(response.resultErrors[0].center.x).toEqual(0);
+                    expect(response.resultErrors[0].center.y).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                    expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].amp, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].pa, assertItem.precisionDigits);
+                
+                    expect(response.log).toContain(assertItem.fittingResponse[0].log);
+                    expect(response.message).toContain(assertItem.fittingResponse[0].message);
+                }
+                
+                // expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
+                // expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
+                // expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].amp, assertItem.precisionDigits);
+                // expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                // expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                // expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].pa, assertItem.precisionDigits);
+                // expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.x, assertItem.precisionDigits);
+                // expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].center.y, assertItem.precisionDigits);
+                // expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].amp, assertItem.precisionDigits);
+                // expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                // expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                // expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultValues[1].pa, assertItem.precisionDigits);
+                // expect(response.success).toEqual(assertItem.fittingResponse[0].success);
+
+                // expect(response.resultErrors[0].center.x).toEqual(0);
+                // expect(response.resultErrors[0].center.y).toEqual(0);
+                // expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                // expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                // expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                // expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                // expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].amp, assertItem.precisionDigits);
+                // expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                // expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                // expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponse[0].resultErrors[1].pa, assertItem.precisionDigits);
+                
+                // expect(response.log).toContain(assertItem.fittingResponse[0].log);
+                // expect(response.message).toContain(assertItem.fittingResponse[0].message);
             },imageFittingTimeout)
         })
 
-        describe(`(Case 2) Image fitting with FoV:`, ()=>{
+        describe(`(Case 2) Image fitting: fit did not converge`, ()=>{
             test(`Send Image fitting request and match the result`, async()=>{
                 await Connection.send(CARTA.FittingRequest, assertItem.fittingRequest[1]);
                 let response = await Connection.receive(CARTA.FittingResponse);
