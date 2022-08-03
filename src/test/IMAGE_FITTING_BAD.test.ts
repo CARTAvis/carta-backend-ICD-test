@@ -4,7 +4,7 @@ import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 import { execSync } from "child_process";
 
-let testServerUrl: string = config.serverURL0;
+let testServerUrl: string = config.serverURL;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
@@ -195,8 +195,11 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         await Connection.open();
         let registerViewerAck = await Connection.registerViewer(assertItem.register);
         platformOS = registerViewerAck.platformStrings.platform;
-        let MacOSNumberResponse = execSync('sw_vers -productVersion',{encoding: 'utf-8'});
-        MacOSNumber = Math.floor(Number(MacOSNumberResponse))
+        if (platformOS === "macOS") {
+            let MacOSNumberResponse = execSync('sw_vers -productVersion',{encoding: 'utf-8'});
+            MacOSNumber = Math.floor(Number(MacOSNumberResponse));
+        }
+        
     }, connectTimeout);
 
     test(`Connection open? | `, () => {
@@ -221,8 +224,6 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
 
                 ack = await Connection.streamUntil((type, data) => type == CARTA.RasterTileSync ? data.endSync : false);
                 expect(ack.RasterTileData.length).toBe(assertItem.addTilesReq.tiles.length);
-                console.log(platformOS)
-                console.log(MacOSNumber)
             }, openFileTimeout);
 
         });
