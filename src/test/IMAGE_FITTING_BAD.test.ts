@@ -197,7 +197,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         platformOS = registerViewerAck.platformStrings.platform;
         if (platformOS === "macOS") {
             let MacOSNumberResponse = execSync('sw_vers -productVersion',{encoding: 'utf-8'});
-            MacOSNumber = Math.floor(Number(MacOSNumberResponse));
+            MacOSNumber = Number(MacOSNumberResponse.slice(0,2));
         }
         
     }, connectTimeout);
