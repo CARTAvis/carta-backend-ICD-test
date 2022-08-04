@@ -4,7 +4,7 @@ import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 import { execSync } from "child_process";
 
-let testServerUrl: string = config.serverURL;
+let testServerUrl: string = config.serverURL0;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
@@ -187,6 +187,7 @@ let assertItem: AssertItem = {
 
 let platformOS: String;
 let MacOSNumber: any;
+let MacOSNumberResponse: any;
 describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with bad initial guess (2 components), then exceeds the maximum iteration number of 200.", () => {
 
     let Connection: Client;
@@ -196,7 +197,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         let registerViewerAck = await Connection.registerViewer(assertItem.register);
         platformOS = registerViewerAck.platformStrings.platform;
         if (platformOS === "macOS") {
-            let MacOSNumberResponse = execSync('sw_vers -productVersion',{encoding: 'utf-8'});
+            MacOSNumberResponse = String(execSync('sw_vers -productVersion',{encoding: 'utf-8'}));
             MacOSNumber = Number(MacOSNumberResponse.slice(0,2));
         }
         
@@ -233,7 +234,9 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
                 await Connection.send(CARTA.FittingRequest, assertItem.fittingRequest[0]);
                 let response = await Connection.receive(CARTA.FittingResponse);
 
-                if (MacOSNumber === 11 && platformOS === 'macOS') {
+                if (MacOSNumberResponse === "11.6.1" && platformOS === 'macOS') {
+                    console.log(response.resultValues[0])
+                    console.log(response.resultValues[1])
                     expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
                     expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
                     expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].amp, assertItem.precisionDigits);
