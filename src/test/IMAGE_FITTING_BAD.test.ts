@@ -21,6 +21,7 @@ interface AssertItem {
     fittingResponseMacOS110601: CARTA.IFittingResponse[];
     fittingResponseMacOS12: CARTA.IFittingResponse[];
     fittingResponseLinux: CARTA.IFittingResponse[];
+    fittingResponseUbuntu2204: CARTA.IFittingResponse[];
     precisionDigits: number;
 };
 
@@ -222,12 +223,53 @@ let assertItem: AssertItem = {
             message: 'fit did not converge'
         }
     ],
+    fittingResponseUbuntu2204: [
+        {
+            resultValues: [
+                {
+                    center: {x: 141.19569242428403, y: 274.468080399765}, 
+                    amp: 0.0073312614530695805,
+                    fwhm: {x: 1.8888434341244704, y: 0.003414731271306315},
+                    pa: 289.1517791897806
+                }, 
+                {
+                    center: {x: 324.34387675503626, y: 324.3494127204754}, 
+                    amp: 9.995719972488988,
+                    fwhm: {x: 29.395209261545435, y: 117.53236329753543},
+                    pa: 0.5369662783821492
+                }
+            ],
+            resultErrors: [
+                {
+                    center: {},
+                    fwhm: {},
+                },
+                {
+                    center: {x: 0.14270290674700617, y: 0.03926940295174565},
+                    amp: 0.011794239703922002,
+                    fwhm: {x: 0.045959932685532584, y: 0.18286860946141664},
+                    pa: 0.004197561925501329
+                }
+            ],
+            success: true,
+            log: 'Gaussian fitting with 2 component',
+            message: 'exceeded max number of iterations'
+        },
+        {
+            resultValues: [],
+            resultErrors: [],
+            success: true,
+            message: 'fit did not converge'
+        }
+    ],
     precisionDigits: 2,
 };
 
 let platformOS: String;
 let MacOSNumber: any;
 let MacOSNumberResponse: any;
+let ubuntuNumber: any;
+let isUbunutu2204: boolean;
 describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with bad initial guess (2 components), then exceeds the maximum iteration number of 200.", () => {
 
     let Connection: Client;
@@ -242,6 +284,10 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
             if (MacOSNumberResponse.toString().includes('11.6.1')) {
                 MacOSNumber = '11.6.1';
             }
+        }
+        if (platformOS === "Linux"){
+            let Response = String(execSync('lsb_release -a',{encoding: 'utf-8'}));
+            isUbunutu2204 = Response.includes("22.04");
         }
         
     }, connectTimeout);
@@ -333,7 +379,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
                 
                     expect(response.log).toContain(assertItem.fittingResponseMacOS12[0].log);
                     expect(response.message).toContain(assertItem.fittingResponseMacOS12[0].message);
-                } else if (platformOS === 'Linux') {
+                } else if (platformOS === 'Linux' && isUbunutu2204 === false) {
                     expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.x, assertItem.precisionDigits);
                     expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.y, assertItem.precisionDigits);
                     expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].amp, assertItem.precisionDigits);
@@ -361,6 +407,34 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
                 
                     expect(response.log).toContain(assertItem.fittingResponseLinux[0].log);
                     expect(response.message).toContain(assertItem.fittingResponseLinux[0].message);
+                } else if (platformOS === 'Linux' && isUbunutu2204 === true) {
+                    expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[0].fwhm.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[0].pa).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].pa, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].center.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].amp).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].amp, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultValues[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultValues[1].pa).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[1].pa, assertItem.precisionDigits);
+                    expect(response.success).toEqual(assertItem.fittingResponseUbuntu2204[0].success);
+
+                    expect(response.resultErrors[0].center.x).toEqual(0);
+                    expect(response.resultErrors[0].center.y).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.x).toEqual(0);
+                    expect(response.resultErrors[0].fwhm.y).toEqual(0);
+                    expect(response.resultErrors[1].center.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].center.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].center.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].center.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].amp).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].amp, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].fwhm.x, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].fwhm.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].fwhm.y, assertItem.precisionDigits);
+                    expect(response.resultErrors[1].pa).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultErrors[1].pa, assertItem.precisionDigits);
+                
+                    expect(response.log).toContain(assertItem.fittingResponseUbuntu2204[0].log);
+                    expect(response.message).toContain(assertItem.fittingResponseUbuntu2204[0].message);
                 } else {
                     expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.x, assertItem.precisionDigits);
                     expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponse[0].resultValues[0].center.y, assertItem.precisionDigits);
