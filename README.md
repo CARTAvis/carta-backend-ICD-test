@@ -41,3 +41,8 @@ We do not recomment to do it because the Jest has no guarantee of process in ord
 
 ## Log message
 If the backend responds unexpectedly or crashes, `Event Type` messages can be logged by setting `log.event` to `True` in the `src/test/config.json` configuration file. This may help debugging. 
+
+## Image download
+To download the images for the test, please visit:
+[https://carta.asiaa.sinica.edu.tw/images/](https://carta.asiaa.sinica.edu.tw/images/)
+The webpage list all the needed images for each stage of the ICD test. All the images for each stage are packed into **.tgz** file and can be downloaded by simply clicking on the **Download all files** hyper link. You can also download these files through wget command by clicking on the **wget** button to copy the command and then paste it to your terminal for download.
