@@ -269,7 +269,7 @@ let platformOS: String;
 let MacOSNumber: any;
 let MacOSNumberResponse: any;
 let ubuntuNumber: any;
-let isUbunutu2204: boolean;
+let isUbunutu2204orRedHat9: boolean;
 describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with bad initial guess (2 components), then exceeds the maximum iteration number of 200.", () => {
 
     let Connection: Client;
@@ -287,7 +287,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         }
         if (platformOS === "Linux"){
             let Response = String(execSync('lsb_release -a',{encoding: 'utf-8'}));
-            isUbunutu2204 = Response.includes("22.04");
+            isUbunutu2204orRedHat9 = Response.includes("22.04") || Response.includes("Red Hat") || Response.includes("9.0");
         }
         
     }, connectTimeout);
@@ -379,7 +379,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
                 
                     expect(response.log).toContain(assertItem.fittingResponseMacOS12[0].log);
                     expect(response.message).toContain(assertItem.fittingResponseMacOS12[0].message);
-                } else if (platformOS === 'Linux' && isUbunutu2204 === false) {
+                } else if (platformOS === 'Linux' && isUbunutu2204orRedHat9 === false) {
                     expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.x, assertItem.precisionDigits);
                     expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].center.y, assertItem.precisionDigits);
                     expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseLinux[0].resultValues[0].amp, assertItem.precisionDigits);
@@ -407,7 +407,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
                 
                     expect(response.log).toContain(assertItem.fittingResponseLinux[0].log);
                     expect(response.message).toContain(assertItem.fittingResponseLinux[0].message);
-                } else if (platformOS === 'Linux' && isUbunutu2204 === true) {
+                } else if (platformOS === 'Linux' && isUbunutu2204orRedHat9 === true) {
                     expect(response.resultValues[0].center.x).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].center.x, assertItem.precisionDigits);
                     expect(response.resultValues[0].center.y).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].center.y, assertItem.precisionDigits);
                     expect(response.resultValues[0].amp).toBeCloseTo(assertItem.fittingResponseUbuntu2204[0].resultValues[0].amp, assertItem.precisionDigits);
