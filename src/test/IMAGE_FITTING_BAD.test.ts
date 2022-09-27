@@ -287,7 +287,7 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         }
         if (platformOS === "Linux"){
             let Response = String(execSync('lsb_release -a',{encoding: 'utf-8'}));
-            isUbunutu2204orRedHat9 = Response.includes("22.04") || Response.includes("Red Hat") || Response.includes("9.0");
+            isUbunutu2204orRedHat9 = Response.includes("22.04") || Response.includes("Red Hat Enterprise Linux 9.0");
         }
         
     }, connectTimeout);
