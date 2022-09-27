@@ -4,7 +4,7 @@ import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 import { execSync } from "child_process";
 
-let testServerUrl: string = config.serverURL;
+let testServerUrl: string = config.serverURL0;
 let testSubdirectory: string = config.path.QA;
 let connectTimeout: number = config.timeout.connection;
 let openFileTimeout: number = config.timeout.openFile;
@@ -287,7 +287,8 @@ describe("IMAGE_FITTING_BAD test: Testing Image Fitting with fits file but with 
         }
         if (platformOS === "Linux"){
             let Response = String(execSync('lsb_release -a',{encoding: 'utf-8'}));
-            isUbunutu2204 = Response.includes("22.04");
+            isUbunutu2204 = Response.includes("22.04") || Response.includes("Red Hat Enterprise Linux 9.0");
+            console.log(Response);
         }
         
     }, connectTimeout);
