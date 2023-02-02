@@ -1,6 +1,6 @@
 # CARTA Backend ICD test
 ```diff
-- This repository will be replaced by CARTAvis/ICD-RxJS (2023 Feb 02).
+- This repository has been replaced by CARTAvis/ICD-RxJS (2023 Feb 02).
 ```
 
 **This repository will only maintain the protobuf instead of ICD tests**
