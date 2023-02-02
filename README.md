@@ -1,11 +1,11 @@
 # CARTA Backend ICD test
 ```diff
-- This repository will be replaced by CARTA RxJS ICD tests soon (2022 Nov 21).
+- This repository will be replaced by CARTAvis/carta-backend-ICD-RxJS (2023 Feb 02).
 ```
 
 **This repository will only maintain the protobuf instead of ICD tests**
 
-The ICD tests please visit [CARTA RxJS ICD tests](https://github.com/acdo2002/carta-backend-ICD-rxjs)
+The CARTA ICD tests please visit [carta-backend-ICD-RxJS](https://github.com/CARTAvis/carta-backend-ICD-RxJS)
 
 A couple of integration tests run by the protobuff interface and websocket offer a white-box testing on CARTA backend.
 
