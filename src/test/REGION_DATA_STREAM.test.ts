@@ -4,7 +4,7 @@ import { Client } from "./CLIENT";
 import config from "./config.json";
 const WebSocket = require('isomorphic-ws');
 
-let testServerUrl = config.serverURL;
+let testServerUrl = config.serverURL0;
 let testSubdirectory = config.path.QA;
 let connectTimeout = config.timeout.connection;
 let readFileTimeout = config.timeout.readFile;
@@ -87,16 +87,7 @@ let assertItem: AssertItem = {
     {
         fileId: 0,
         regionId: 1,
-        stats: [
-            CARTA.StatsType.NumPixels,
-            CARTA.StatsType.Sum,
-            CARTA.StatsType.Mean,
-            CARTA.StatsType.RMS,
-            CARTA.StatsType.Sigma,
-            CARTA.StatsType.SumSq,
-            CARTA.StatsType.Min,
-            CARTA.StatsType.Max
-        ],
+        statsConfigs: [{coordinate: 'z', statsTypes: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10] }]
     },
     regionStatsData:
     {
